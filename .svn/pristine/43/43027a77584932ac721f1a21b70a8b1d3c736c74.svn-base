@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/Homep.css" />
+
+	</head>
+	<style>
+		html {
+			overflow: hidden;
+		}
+		
+		.top {
+			background: #F5F5F5;
+		}
+		
+		#setTwoCode {
+			font-size: 12px;
+			margin-top: 6px;
+			color: #FEA356;
+		}
+		
+		#slider {
+			height: 150px;
+		}
+		
+		.mengbi {
+			width: 100%;
+			height: 100%;
+			background: #747474;
+			position: fixed;
+			z-index: 100;
+			opacity: 0.8;
+			display: none;
+			top: 44px;
+		}
+		
+		.mui-badge {
+			background: none;
+		}
+		
+		.positionRelative {
+			position: relative;
+		}
+		
+		.type {
+			float: right;
+			position: absolute;
+			right: 20px;
+			top: 30px;
+		}
+		
+		.title {
+			border-top: 0;
+		}
+		
+		.Middle {
+			width: 100%;
+			height: 100px;
+			background: #F5F5F5;
+			padding: 6px;
+		}
+		
+		.Middle>div {
+			width: calc((100% - 6px) /2);
+			height: 100%;
+			float: left;
+			background: white !important;
+		}
+		
+		.Middle>div:last-child {
+			margin-left: 6px;
+		}
+		
+		.MiddleC1>div:first-child {
+			width: 60%;
+			height: 100%;
+			float: right;
+			padding-top: 24px;
+			padding-left: 10px;
+		}
+		
+		.MiddleC1>div:last-child {
+			width: 46px;
+			height: 46px;
+			border-radius: 100%;
+			color: white;
+			margin-top: 22px;
+			/*//calc((100px - 46px) / 2)*/
+			margin-right: 10px !important;
+		}
+		
+		.bottom {
+			position: relative;
+			overflow-y: scroll;
+			z-index: 99;
+			height: 300px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon iconfont  mui-pull-right" id="setTwoCode">邀请码</a>
+			<h1 class="mui-title">参与团队</h1>
+		</header>
+		<div class="mui-content">
+			<div class="top">
+				<!--
+	            	作者：1223998825@qq.com
+	            	时间：2017-11-10
+	            	描述：可拖动轮播图
+	            -->
+				<div id="slider" class="mui-slider">
+					<img src="../../img/Inteam.png" alt="" />
+				</div>
+				<!--
+	            	作者：1223998825@qq.com
+	            	时间：2017-11-10
+	            	描述：四大天王
+	           -->
+				<div class="Middle">
+					<div class="MiddleC1" id="TaskList">
+						<div class="">
+							<span class="font_14">任务管理</span><br/>
+							<span class="font_12">查看可执行任务</span>
+						</div>
+						<div class="Four_2" style="float: right;margin-right:4px">
+							<span class="mui-icon iconfont">&#xe77b;</span>
+						</div>
+					</div>
+					<div class="MiddleC1" id="Team">
+						<div class="">
+							<span class="font_14">团队管理</span><br/>
+							<span class="font_12">查看所有成员</span>
+						</div>
+						<div class="Four_4" style="float: right;margin-right:4px">
+							<span class="mui-icon iconfont">&#xe6e6;</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="bottom">
+				<div class="title"><span></span> &nbsp;&nbsp;团队消息</div>
+				<ul class="mui-table-view" id="TeamMessage">
+				</ul>
+			</div>
+		</div>
+		<div class="mengbi"></div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({
+
+	});
+	var _self = "";
+	var _TeamUserId = "";
+	var UserInfo = "";
+	app.ready(function() {
+		_self = plus.webview.currentWebview().ParticTeamData;
+		UserInfo = app.accountInfo('info');
+		BtnEvents();
+
+		//获取团队发布的任务
+		getTeamReleaseTask();
+		
+		NoData.bgImg('bottom','../../img/BGIMG.png');
+	});
+
+	///Btn
+	function BtnEvents() {
+		//		//团队管理
+		$("#Team").on('tap', function() {
+			mui.openWindow({
+				url: './TeamList.html',
+				id: 'TeamList',
+				extras: {
+					_teamId: _self.TeamId,
+					_teamName: _self.TeamName
+				}
+			})
+		});
+
+		//任务管理
+		$("#TaskList").on('tap', function() {
+			mui.openWindow({
+				url: '../Task/TaskList.html',
+				id: 'TaskList',
+				extras: {
+					_teamId: _self.TeamId,
+					_teamName: _self.TeamName
+				}
+			});
+		});
+
+		///设备管理
+		$("#Equipment").on('tap', function() {
+			mui.openWindow({
+				url: '../Equipment/EquipmentList.html',
+				id: 'Equipment',
+				extras: {
+					_teamId: _self.TeamId,
+					_teamName: _self.TeamName,
+					_TeamUserId: _self.UserId,
+				}
+			});
+		});
+
+		//分享二维码
+		$("#setTwoCode").on('tap',
+			function() {
+				//生成二维码
+				var TeamCode = JSON.stringify({
+					"_teamId": _self.TeamId,
+					"status": "2"
+				});
+				mui.openWindow({
+					url: '../TwoCode/ShareCode.html',
+					id: 'ShareCode',
+					extras: {
+						data: TeamCode
+					}
+				})
+			});
+		//点击参与团队动画
+		$(".bottom").on('swipeup', function() {
+			var off = $(".bottom").offset().top;
+			$(".bottom").animate({
+				top: -(off - 44) + 'px',
+				height: "800px",
+			});
+		});
+		$(".bottom").on('swipedown ', function() {
+			$(".bottom").animate({
+				top: "0px",
+				height: "300px"
+			})
+		})
+	};
+
+	//获取团队发布的任务
+	function getTeamReleaseTask() {
+		var TeamCaptain = "";
+		UseIdGetName.getUserName(_self.TeamUserId, function(username) {
+			TeamCaptain = username;
+		});
+		var option = {
+			api: '/XhxManage/XHX_TaskDistribution/GetPageListJson',
+			data: {
+				"page": 1,
+				"rows": 100,
+				"sidx": "TaskDistributionId",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					Undertaker: _self.TeamUserId,
+					TeamExamine: 1
+				})
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				if( result['rows']){
+					NoData.ClearImg('bottom');
+				};
+				var rows = result['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $hmtl = $(
+						'<li class="mui-table-view-cell mui-media TaskId positionRelative" data-index='+i+'  TaskBtrid=' + row['TaskDistributionId'] + '>' +
+						'<a href="javascript:;">' +
+						'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+						'<div class="mui-media-body font_14">' +
+						'发布人:' + TeamCaptain + '' +
+						'<p class="mui-ellipsis">作业描述:' + row['WorkDescription'] + '</p>' +
+						'<p class="mui-ellipsis">发布时间：'+row['CreateDate'].substr(0,19)+'</p>' +
+						'</div>' +
+						'<div class="type"></div>' +
+						'</a>' +
+						'</li>'
+					);
+					$hmtl.appendTo($('#TeamMessage'));
+					
+					//查看任务作业区域
+					$hmtl.on('tap',function(){
+						var index = $(this).attr('data-index');
+						mui.openWindow({
+							url:'../Task/TaskPositionDetials.html',
+							id:'TaskPositionDetials',
+							extras:{
+								data:rows[index],
+								type:"TeamTask",
+							}
+						});
+					});
+				};
+				getTaskExecute();
+			},
+			error: function() {},
+		};
+		app.post3_2(option);
+	};
+
+	//获取任务执行者列表
+	function getTaskExecute() {
+		var option = {
+			api: '/XhxManage/XHX_TaskExecute/GetPageListJson',
+			data: {
+				"page": 1,
+				"rows": 100,
+				"sidx": "TeamId",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					TeamId: _self.TeamId,
+				})
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				var rows = result['rows']; 
+				for(var j in rows) {
+					var row = rows[j];
+					$(".TaskId").each(function(i) {
+						if($(".TaskId").eq(i).attr('TaskBtrid') == row['TaskDistributionId'] && row['WorkUser'] == UserInfo.UserId) {
+							if(row['Examine'] == 1) {
+								$('.TaskId').eq(i).remove();
+							};
+						};
+					});
+				};
+			},
+			error: function() {
+			},
+		};
+		app.post3_2(option);
+	};
+
+</script>

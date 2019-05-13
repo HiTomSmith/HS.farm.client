@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link href="../../../css/style.css" rel="stylesheet" />
+		<link href="../../../css/list.css" rel="stylesheet" />
+		<link href="../../../css/addCar.css" rel="stylesheet" />
+		<link href="../../../css/icons-extra.css" rel="stylesheet" />
+		<link href="../../../css/Commodity.css" rel="stylesheet" />
+		<style>
+			.ShoopCat-list {
+				height: 100%;
+				padding-bottom: 100px;
+				overflow-y: scroll;
+			};
+			
+		</style>
+	</head>
+
+	<body>
+		<!--侧滑菜单容器 mui-draggable-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-slide-in ">
+			<!--菜单部分-->
+			<aside id="offCanvasSide" class="mui-off-canvas-right">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll" style="padding-bottom: 50px;">
+					</div>
+					<div class="screen-footer">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="Reset">重置</button>
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block">确定</button>
+					</div>
+				</div>
+			</aside>
+			<div class="mui-inner-wrap">
+				<header class="mui-bar mui-bar-nav">
+					<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<h1 class="mui-title">配件管理</h1>
+				</header>
+				<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+					<div class="Mask"></div>
+					<div class="mui-row bar">
+						<!--<div class="mui-col-sm-6 mui-col-xs-6"><span class="active bar-items">农药</span></div>
+						<div class="mui-col-sm-6 mui-col-xs-6"><span class="bar-items">肥料</span></div>-->
+						<!--<div class="mui-col-sm-4 mui-col-xs-4">
+							<a class="mui-col-sm-4 mui-col-xs-4 mui-action-menu" id="offCanvasBtn" href="#offCanvasSide">
+								<span class="bar-items mui-icon-extra mui-icon-extra-filter">筛选</span>
+							</a>
+						</div>-->
+					</div>
+					<div class="mui-table-view-cell list" id="queryData" style="padding-bottom: 0px;padding-top: 0px;border-radius: 4px 4px 0px 0px;">
+
+				</div>
+					<div class="mui-scroll">
+						<div class="boxList">
+							<div class="content">
+								<div class="mui-row CommodityLists" >
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- off-canvas backdrop -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+			<div class="footer ">
+				<div class="shop-car">
+					<img src="../../../img/car.png" alt="" />
+				</div>
+				<div class="title">
+					<span style="color:white;">合计：</span>
+					<span class="yellow" style="color:white;">￥<span class="MoneyTotal" style="color:white;">0</span></span>
+				</div>
+				<div class="purchase font_18" id="purchase">
+					确认
+				</div>
+			</div>
+			<!--购物车-->
+			<div class="ShoopCar">
+				<div class="ShoopCar-title">
+					<span>已选商品</span>
+					<span class="clearShop">清空购物车</span>
+				</div>
+				<div class="ShoopCat-list">
+					<ul class="mui-table-view Shoop-edit">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script src="../../../js/addCar.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var keyboardStatus, oglHeight, _self, GoodsList
+	app.ready(function() { 
+		oglHeight = document.querySelector("body").offsetHeight;
+		_self = plus.webview.currentWebview();
+		console.log(JSON.stringify(_self))
+//		console.log(JSON.stringify(_self.GoodsDetal)) 
+		userInfo = app.accountInfo('info'); 
+
+		Commodity.CommodityList(); //商品列表
+		Commodity.Taps(); //操作类
+//		Commodity.Tab(); //操作类
+
+        app.QueryHTML("#queryData");
+		query();
+	});
+
+	//创建商品对象 
+	var Commodity = {
+		
+		//商品列表
+		CommodityList: function() {
+			var send ={
+				"page": 1,
+				"rows": 999,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({})
+			};
+			PartsManageByGet.getPartsListJson(send, function(cb) {
+				$('.CommodityLists').html('');
+				var rows = cb['rows'];
+				GoodsList = rows;
+				
+				
+				for(var j in _self.GoodsDetal) {
+					for(var i in GoodsList) {
+						console.log(_self.GoodsDetal[j].PartsListId)
+						console.log(GoodsList[i].PartsListId)
+						if(GoodsList[i].PartsListId == _self.GoodsDetal[j].PartsListId) {
+							GoodsList[i].number = _self.GoodsDetal[j].number;
+							break; 
+						}
+
+					} 
+
+				}
+
+				Commodity.showList();
+				Commodity.ShopCard();
+			});
+		},
+
+		showList: function(condition) {
+			$('.CommodityLists').html("");
+
+			var rows = GoodsList;
+			for(var i in rows) {
+				var row = rows[i];
+//				console.log(JSON.stringify(row)) 
+			if (condition==undefined|| (row.FullName).indexOf(condition)!=-1){
+	
+				var $html = $(
+					'<div class="mui-col-sm-6 mui-col-xs-6 content-items" CommId=' + row['PartsListId'] + '>' +
+					'<div class="title">' +
+					'<div class="byline">' +
+					'<div class="title-name">' +
+					'' + row['ShortName'] + '' +
+					'</div>' +
+					'<div class="money" PartPrice='+ row['Price'] +' >' +
+					'￥' + row['Price'] + '.00' +
+					'</div>' +
+					'</div>' +
+					'<div class="buy">' +
+					'<button class="reduce" data-index=' + i + '></button>' +
+					'<span class="num font_10 num12"  CommId=' + row['PartsListId'] + '>'+(row['number'] ? row['number'] : 0)+'</span>' +
+					'<button class="plus" id="plus1" data-index=' + i + '></button>' +
+					'</div>' +
+					'</div>' +
+					'</div>'
+				);
+				$html.appendTo($('.CommodityLists'));
+				//加加
+				$html.find('.plus').on('tap', function() {
+
+					var index = $(this).attr('data-index');
+//					console.log(index)
+					var num = $(this).parent().children("span").text()
+					num++;
+					$(this).parent().children("span").text(num);
+
+					GoodsList[index].number = num;
+
+					Commodity.ShopCard();
+					addCar({
+						begin: $(this),
+						end: $('.shop-car'),
+						img: '../../../img/bankbg1.png',
+						callback: function() {}
+					});
+				});
+				//减去数量
+				$html.find('.reduce').on('tap', function() {
+					
+					var index = $(this).attr('data-index');
+					var num = $(this).parent().children("span").text()
+					console.log(index)
+					console.log(num) 
+					num--;
+					if(num < 1) {
+						num = 0; 
+					};
+                    
+					$(this).parent().children("span").text(num);
+					
+					GoodsList[index].number = num;
+					Commodity.ShopCard();
+
+				});
+
+				}
+			};
+
+		},
+
+		EidtGoods: function(commid, number) {
+			
+			$(".num12").each(function(i) {
+				if($(".num12").eq(i).attr("CommId") == commid) {
+					$(".num12").eq(i).text(number);
+				}
+			})
+		},
+
+		//加入购物车
+		ShopCard: function() {
+			
+			$(".Shoop-edit").html("");
+			var heji = 0;
+			for(var i in GoodsList) {
+
+				var row = GoodsList[i];
+
+//				console.log(JSON.stringify(row)); 
+				if(row.number > 0) {
+					
+					
+					var $html = $(
+						'<li class="mui-table-view-cell Shoop-edit-items" CommId=' + row['PartsListId'] + '>' +
+						'<div class="ShoopCat-product-name">' + row['ShortName'] + '</div>' +
+						'<div class="ShoopCat-money">' +
+						'<div class="ShoopCat-pirce">￥' + row['Price'] + '</div>' +
+						'<div class="ShoopCat-Calculation">' +
+						'<button class="reduce"  CommId=' + row['PartsListId'] + ' data-index=' + i + '></button>' +
+						'<span class="num font_10">' + row.number + '</span>' +
+						'<button class="plus" id="plus1"  CommId=' + row['PartsListId'] + ' data-index=' + i + '></button>' +
+						'</div>' +
+						'</div>' +
+						'</li>'
+					);
+					$html.appendTo($(".Shoop-edit"));
+
+					//加入购物车
+					$html.find('.plus').on('tap', function() {
+
+						var index = $(this).attr('data-index');
+						var CommId = $(this).attr('CommId');
+						
+						var num = $(this).parent().children("span").text()
+						num++;
+						
+						GoodsList[index].number = num;
+						$(this).parent().children("span").text(num)
+						
+						Commodity.EidtGoods(CommId, num);
+						heji += GoodsList[index].Price;
+						$(".MoneyTotal").text(heji);
+						
+
+					});
+					//减去数量
+					$html.find('.reduce').on('tap', function() {
+						
+						var index = $(this).attr('data-index');
+						var CommId = $(this).attr('CommId');
+						
+						var num = $(this).parent().children("span").text()
+						num--;
+
+						if(num < 1) {
+							num = 0;
+						};
+						$(this).parent().children("span").text(num)
+						GoodsList[index].number = num;
+						Commodity.EidtGoods(CommId, num);
+						heji -= GoodsList[index].Price;
+						$(".MoneyTotal").text(heji);
+						
+						
+						if(num < 1) {
+							
+							Commodity.ShopCard();
+							
+						};
+						
+ 
+					});
+					
+					heji += row.number * parseFloat(row.Price);
+				}
+				$(".MoneyTotal").text(heji);
+			}
+		},
+
+		//监听键盘弹出事件
+		keyboard: function() {
+			var tempHeight = document.querySelector("body").offsetHeight;
+			if(tempHeight == oglHeight) {
+				keyboardStatus = true;
+				// 这里自己添加逻辑
+			} else {
+				keyboardStatus = false;
+			};
+			return keyboardStatus;
+		},
+		
+		//确认选好的配件
+		Savefarmer: function() {
+			
+			var strChildEntity = [];
+			for(var key in GoodsList) {
+				if(GoodsList[key].number > 0) {
+					strChildEntity.push(GoodsList[key]);
+				}
+			}; 
+			//p判断是否添加了商品
+			if(strChildEntity.length < 1) {
+				app.toast('请先添加商品！');
+				return false;
+			}
+					
+//			var send = {
+//				keyValue: _self['GoodOrder'],
+//				entity: {},
+//				strChildEntitys: JSON.stringify(strChildEntity)
+//			};
+//			
+			dialog.Dialogbox('提示', '确认保存这些配件？', function(cb) {
+					var index = plus.webview.getWebviewById('goodslist');
+					var FatherView = plus.webview.getWebviewById('ManuOrderDetails');
+					if(cb == 1) {
+						mui.fire(FatherView, 'Refresh');
+						setTimeout(function() {
+//							index.close();
+						}, 500)
+						app.toast('编辑成功！');
+						var RepairDetails = plus.webview.getWebviewById('RepairDetails');
+						mui.fire(RepairDetails, 'send', {
+					    data: strChildEntity
+					      });
+					mui.back();
+						
+					} else if(cb == 0) {
+						app.toast('已取消');
+						dialog.CloseLogBox();
+					} else {
+						app.toast('已取消');
+					};
+				});
+//			
+//			
+//			console.log(JSON.stringify(send))
+//			SetOrder.SaveOrderForms(send, function(cb) {
+//				console.log(JSON.stringify(cb))
+//				dialog.Dialogbox('提示', '确认保存这些配件？', function(cb) {
+//					var index = plus.webview.getWebviewById('goodslist');
+//					var FatherView = plus.webview.getWebviewById('ManuOrderDetails');
+//					if(cb == 1) {
+//						mui.fire(FatherView, 'Refresh');
+//						setTimeout(function() {
+////							index.close();
+//						}, 500)
+//						app.toast('编辑成功！');
+//						var RepairDetails = plus.webview.getWebviewById('RepairDetails');
+//						mui.fire(RepairDetails, 'send', {
+//					    data: strChildEntity
+//					      });
+//					mui.back();
+//						
+//					} else if(cb == 0) {
+//						app.toast('已取消');
+//						dialog.CloseLogBox();
+//					} else {
+//						app.toast('已取消');
+//					};
+//				});
+//			});
+		},
+		//操作类
+		Taps: function() {
+			var offCanvasWrapper = mui('#offCanvasWrapper');
+
+			//筛选
+			$(".screen-items span").each(function() {
+				$(this).on('tap', function() {
+					if($(this).hasClass('checkClass')) {
+						$(this).removeClass('checkClass');
+					} else {
+						$(this).addClass('checkClass')
+					};
+				});
+			});
+			//重置
+			$("#Reset").on('tap', function() {
+				$(".screen-items span").each(function() {
+					$(this).removeClass('checkClass');
+				});
+			});
+			//隐藏购物车
+			$(".ShoopCar").on('swipedown', function() {
+				//判断册页打开时不可显示
+				if(!offCanvasWrapper.offCanvas().isShown()) {
+					$(this).removeClass('CarShow');
+					$(this).addClass('CarHide');
+					$(".Mask").fadeOut(100);
+				};
+			});
+			//显示购物车
+			$(".footer").on('swipeup', function() {
+				if(!offCanvasWrapper.offCanvas().isShown() && Commodity.keyboard()) {
+					$(".ShoopCar").removeClass('CarHide');
+					$(".ShoopCar").addClass('CarShow');
+					$(".Mask").fadeIn(100);
+				};
+			});
+
+			//显示购物i车
+			$(".shop-car").on('tap', function() {
+				if(!offCanvasWrapper.offCanvas().isShown() && Commodity.keyboard()) {
+					$(".ShoopCar").removeClass('CarHide');
+					$(".ShoopCar").addClass('CarShow');
+					$(".Mask").fadeIn(100);
+				};
+			});
+
+			//点击蒙板隐藏购物车
+			$(".Mask").on('tap', function() {
+				$(".ShoopCar").removeClass('CarShow');
+				$(".ShoopCar").addClass('CarHide');
+				$(".Mask").fadeOut(100);
+			});
+
+			//清空购物车
+			$(".clearShop").on('tap', function() {
+				var send = {
+					keyValue: _self['GoodOrder']
+				};
+				console.log(JSON.stringify(send))
+				SetOrder.ClearOrderDetails(send, function(cb) {
+					console.log(JSON.stringify(cb))
+					if(cb['type'] == 1) {
+//						for(var key in localStorage) {
+//							if(key.indexOf('shoop') != -1 && key.indexOf(_self['GoodOrder']) != -1) {
+//								alert(222)
+//								var row = JSON.parse(localStorage[key])[0];
+//								var keys = _self['GoodOrder'] + row['GoodsId'] + 'shoop';
+//								var local = localStorage.removeItem(keys);
+//								localStorage.removeItem(local);
+//								var FatherView = plus.webview.getWebviewById('RepairDetails');
+//								mui.fire(FatherView, 'send');
+//							}
+//						};
+						$(".Shoop-edit").html('');
+						$(".content-items").each(function(j) {
+							$(".content-items .num").eq(j).text(0);
+						});
+						$(".MoneyTotal").text("0.00元");
+					} else {
+						app.toast('清除失败！');
+					};
+				});
+			});
+
+			//确认
+			$("#purchase").on('tap', function() {
+				Commodity.Savefarmer();
+			});
+
+		}
+	};
+	
+	//商品查询
+	function query() {
+		//开始查询
+		$("#search").on('tap', function() {
+			btnsShield(3, "search");
+		    var condition = $("#SrarchStart").val();
+			if(condition == "") {
+				app.toast('请输入查询内容！');
+				return false;
+			};
+				
+			Commodity.showList(condition);
+			
+		});
+	};
+</script>

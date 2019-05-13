@@ -1,0 +1,59 @@
+html{
+			background: #F5F5F5;
+		}
+		.mui-content{
+			margin:0;
+			padding:0;
+		}
+		.mui-active{
+			background: white !important;
+		}
+		.mui-row>div {
+			height: 26px;
+		    line-height: 26px;
+		}
+		.mui-row>div:nth-child(1){
+			text-align: left !important;
+		}
+		.mui-row>div:nth-child(2){
+			text-align: center !important;
+		}
+		.mui-row>div:last-child{
+			text-align: right !important;
+		}
+		.Uav{
+			height:100%;
+		}
+		.list>p{
+			padding:10px 0px;
+			border-top:1px solid #F5F5F5 ;
+		}
+		.ttle{
+			padding:10px 0px;
+		}
+		.vale{
+			color: #717171;
+		}
+		#Repair{
+			display: none;
+		}
+		.btns{
+			position: fixed;
+			bottom: 0;
+			z-index: 999;
+			width:calc(100% - 16px);
+			display: none;
+			height: 44px;
+			margin-left: 8px;
+			border-radius: 4px;
+			overflow: hidden;
+			margin-bottom: 8px;
+		}
+		.btns>div{
+			height:44px;
+		}
+		.btns>div>button{
+			height:44px;
+			margin:0 auto;
+			border-radius: 0;
+		}

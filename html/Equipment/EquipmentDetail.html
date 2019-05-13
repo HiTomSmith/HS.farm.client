@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+	</head>
+	<style>
+		.list>.EquipmentLease:first-child {
+			border: none !important;
+		}
+		
+		.mui-active {
+			background: white !important;
+		}
+		
+		.mui-row {
+			width: 100%;
+			position: fixed;
+			height: 50px;
+			bottom: 0px;
+		}
+		
+		.mui-row>div {
+			height: 50px;
+		}
+		
+		.mui-row button {
+			margin: 0 auto;
+			border-radius: 4px;
+			width: 92%;
+		}
+		
+		#delete {
+			border: 1px solid #FF6666;
+			background: #FF6666;
+		}
+		
+		.text {
+			border: none !important;
+			width: 80% !important;
+			height: 100% !important;
+			padding: 0 !important;
+			margin: 0 !important;
+		}
+		
+		.EquipmentLease,
+		.vale {
+			/*color: #9D9D9D*/
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">设备信息</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="userEquipment">
+				<!--<li class="mui-table-view-cell mui-media list">
+					<input class="text" type="text" name="" id="" />
+				</li>-->
+			</ul>
+			<div class="mui-row">
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-block " id="edit">保存</button>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-block " id="delete">移除</button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({});
+
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+
+	var UserInfo, _self
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		EQDetails.Text(); //显示设备详细信息
+		EQDetails.Btns(); //显示设备详细信息
+		//判断是否为租赁设备，不可移除
+		if(_self.Ownership==4){
+			$(".mui-row").html('');
+			var $html = $(
+				'<div class="mui-col-sm-12 mui-col-xs-12">'+
+					'<button type="button" class="mui-btn mui-btn-blue mui-btn-block " id="edit">保存</button>'+
+				'</div>'
+			);
+			$html.appendTo($(".mui-row"));
+			$("#edit").off();
+			$html.on('tap',function(){
+				EQDetails.Edit();
+			});
+			//
+		};
+	});
+
+	//显示设备详细信息
+	var EQDetails = {
+		Text: function() {
+			var $html = $(
+				'<li class="mui-table-view-cell mui-media list">' + //_self['Extent']
+				'<p class="mui-ellipsis EquipmentLease ">厂家：<span class="vale">' + _self['Name'] + '</span></p>' +
+				'<p class="mui-ellipsis EquipmentLease ">型号：<span class="vale">' + _self['CarrierSpecs'] + '</span></p>' +
+				'<p class="mui-ellipsis EquipmentLease ">喷幅：<span class="vale"><input class="text font_12" type="text" id="Extent" value=' + _self['Extent'] + '></span></p>' +
+				'<p class="mui-ellipsis EquipmentLease ">数量：<span class="vale">' + _self['ExtentNumber'] + '</span></p>' +
+				'<p class="mui-ellipsis EquipmentLease ">序列号：<span class="vale">' + _self['CarrierCord'] + '</span></p>' +
+				'<p class="mui-ellipsis EquipmentLease ">设备码：<span class="vale">' + _self['IMEI'] + '</span></p>' +
+				'</li>'
+			);
+			$html.appendTo($("ul"));
+		},
+		Btns: function() {
+			//保存
+			$("#edit").on('tap', function() {
+				EQDetails.Edit();
+			});
+			//删除
+			$("#delete").on('tap', function() {
+				EQDetails.delete();
+			});
+		},
+		//保存
+		Edit: function() {
+			var CarrierId = _self.CarrierId;
+			//
+			var sendData = {
+				keyValue: CarrierId,
+				entity: {
+					Extent: $("#Extent").val()
+				}
+			};
+			//更新设备喷幅；
+			TaskObj.SaveCarrier(sendData, function(cb) {
+				if(cb['type'] == 1) {
+					var EquipmentList = plus.webview.getWebviewById('EquipmentList');
+					mui.fire(EquipmentList,'pageflowrefresh');
+					app.toast('修改成功！');
+				} else {
+					app.toast('修改失败！');
+				};
+			});
+		},
+		//删除
+		delete: function() {
+			//判断当前使用者和拥有者是否为同一人
+			if(_self.UserId!=_self.WorkUser){
+				app.toast('请先收回设备！');
+				return false;
+			};
+			dialog.Dialogbox('提示', '确认移除设备？', function(cb) {
+				if(cb == 1) {
+					var CarrierId = _self.CarrierId;
+					RemoveEquipment(CarrierId);
+					plus.nativeUI.showWaiting();
+				} else if(cb == 0) {
+					dialog.CloseLogBox(); 
+				} else {
+					app.toast('已取消');
+				};
+			});
+		},
+	};
+	
+	
+	//移除设备
+	function RemoveEquipment(CarrierId) {
+		var option = {
+			api: '/XhxManage/XHX_Carrier/RemoveForm',
+			data: {
+				keyValue: CarrierId
+			},
+			success: function(data) {
+				plus.nativeUI.closeWaiting();
+				var result = eval("(" + data + ")");
+				if(result['type'] == "1") {
+					app.toast('删除成功！');
+					var EquipmentList = plus.webview.getWebviewById('EquipmentList');
+					mui.fire(EquipmentList,'pageflowrefresh');
+					dialog.CloseLogBox(); 
+					mui.back();
+				} else {
+					app.toast('删除失败');
+				}
+			},
+			error: function(data) {
+				app.toast('删除失败');
+			}
+		};
+		app.post3_1(option)
+	}
+</script>

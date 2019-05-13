@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		* {
+			-webkit-user-select: none;
+		}
+		
+		html,
+		body,
+		.mui-content {
+			margin-top: 0px !important;
+			padding: 0px !important;
+			height: 100%;
+			overflow: hidden;
+		}
+		
+		#bcid {
+			background: black;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:44px;
+		}
+		
+		.mui-plus .plus {
+			display: inline;
+		}
+		
+		.plus {
+			display: none;
+		}
+		
+		#topPopover {
+			position: fixed;
+			top: 16px;
+			right: 6px;
+		}
+		
+		#topPopover .mui-popover-arrow {
+			left: auto;
+			right: 6px;
+		}
+		
+		p {
+			text-indent: 22px;
+		}
+		
+		span.mui-icon {
+			font-size: 14px;
+			color: #15AE3F;
+			margin-left: -15px;
+			padding-right: 10px;
+		}
+		#turnTheLight>img{
+			width:20px;
+			height:18px;
+			margin-top: 12px;
+			margin-right: 4px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-pull-right" id="turnTheLight"><img src="../../img/led.png" alt="" /></a>
+			<h1 class="mui-title">扫一扫</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div id="bcid"></div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var _teamId = "";
+	var userInfo = "";
+	app.ready(function() {
+		var osaction = plus.webview.currentWebview().tap;
+		if(osaction == "osaction") {
+			mui.back = function() {
+				app.CustomClose(osaction);
+			}
+		}
+		
+		userInfo = app.accountInfo('info');
+		plus.nativeUI.showWaiting();
+		setTimeout(function() {
+			startRecognize();
+			plus.nativeUI.closeWaiting();
+		}, 400)
+	});
+
+	//扫一扫 
+	function startRecognize(status) { 
+
+		try {
+			var filter = [plus.barcode.QR, plus.barcode.CODE128, plus.barcode.EAN13, plus.barcode.EAN8];
+			//自定义的扫描控件样式  
+			var styles = {
+				frameColor: "#29E52C",
+				scanbarColor: "#29E52C",
+				background: "",
+			}
+			//扫描控件构造  
+			scan = new plus.barcode.Barcode('bcid', filter, styles);
+			scan.onmarked = onmarked;
+			scan.onerror = onerror;
+			scan.start();
+			//打开关闭闪光灯处理  
+			//var flag = false;  
+			document.getElementById("turnTheLight").addEventListener('tap', function() {
+				scan.setFlash(true);
+			});
+		} catch(e) {
+			//alert("出现错误啦:\n" + e);
+		}
+
+		function onerror(e) {
+			alert(e);
+		};
+
+		function onmarked(type, result, status) {
+			
+			var status = plus.webview.currentWebview().status;
+			console.log(status)
+			var id = "";
+			if(status == undefined) {
+				var data = eval("(" + result + ")");
+				console.log(JSON.stringify(data))
+				status = data['status'];
+				id = data['_teamId'];
+			};
+		
+			console.log(type)
+			var text = '';
+			switch(type) {
+				case plus.barcode.QR:
+					text = 'QR: ';
+					break;
+				case plus.barcode.EAN13:
+					text = 'EAN13: ';
+					break;
+				case plus.barcode.EAN8:
+					text = 'EAN8: ';
+					break;
+			};
+			//////判断status ==1->>添加设备
+			switch(status) {
+				case "1":
+				    var EquipmentList = plus.webview.getWebviewById('EquipmentList');
+					mui.fire(EquipmentList, 'goback', {
+						SN:result,
+					});
+//					var AddEquiment = plus.webview.getWebviewById('AddEquipment');
+//					mui.fire(AddEquiment, "IMEI", {
+//						"IMEI": result
+//					});
+					mui.back();
+					break;
+				case "2":
+					//调用加入团队接口
+					PleaseTeam(id);
+					break;
+				case "3":
+					//领取设备接口
+//					var userid = plus.webview.currentWebview().UserId1;
+
+					
+					Receive(userInfo.UserId, result,plus.webview.currentWebview().CarrierCord,plus.webview.currentWebview().IMEI);
+					break;
+				case "4":
+					//收回设备
+					var userid = plus.webview.currentWebview().workerid;
+					var teamleader = plus.webview.currentWebview().teamleader;
+//					var IMEI = plus.webview.currentWebview().IMEI;
+//					if(result != IMEI) {
+//						app.toast('不是正确对应的设备码');
+//						mui.back();
+//						return false;
+//					};
+                    console.log(result)
+					TB(userid, result,plus.webview.currentWebview().CarrierCord,plus.webview.currentWebview().CarrierId,teamleader);
+					break;
+				case "5":
+					//申请任务
+					ApplyProjectTask(result);
+					break;
+				case "6":
+					//返回物流单号
+					ReturnExpressRealId(result);
+				break;
+				default:
+					alert('无法识别');
+					mui.back();
+					//分析扫描结果：是URL就跳转 ，不是就提示 
+					//				        if(result.indexOf('http://')==0  || result.indexOf('https://')==0){ 
+					//				            plus.nativeUI.confirm(result, function(i){ 
+					//				                if(i.index == 0){ 
+					//				                     
+					//				                    back();//返回上一页 
+					//				                    plus.runtime.openURL(result); 
+					//				                }else{ 
+					//				                    back();//返回上一页 
+					//				                } 
+					//				            }, '', ['打开', '取消']); 
+					//				        } else{ 
+					//				            back();//返回上一页 
+					//				            plus.nativeUI.alert(result); 
+					//				        } 
+					break;
+
+			};
+		};
+	}
+
+	////申请加入团队
+	function PleaseTeam(id) {
+		//alert(userInfo.UserName+'------------'+userInfo.UserId)
+		plus.nativeUI.showWaiting();
+		var keyValue = id;
+		console.log(keyValue)
+		if(keyValue==userInfo.RoleId){
+			app.toast('禁止的操作');
+			return false;
+		};
+		var option = {
+			api: '/XhxManage/XHX_Team/IsAgree?keyValue=' + keyValue,
+			data: {
+				UserId: userInfo.UserId,
+				UserName: userInfo.UserName
+			},
+			success: function(data) {
+				console.log(data)
+				var result = eval("(" + data + ")");
+				if(result['type'] == "1") {
+					//app.toast(result['message']); 
+					app.toast('申请成功，等待队长审核');
+				} else if(result['type'] == "3") {
+					app.toast(result['message']);
+				} else {
+					app.toast('申请失败');
+				};
+				plus.nativeUI.closeWaiting();
+				mui.back();
+			},
+			error: function(data) {
+				app.toast('申请失败')
+			}
+		};
+		app.post3_1(option)
+	};
+
+	///领取设备接口
+	function Receive(userid, result,CarrierCord,IMEI) {
+		var index = result.lastIndexOf("\#");
+		result = result.substring(index + 1, result.length);
+		var imei = plus.webview.currentWebview()._imei;
+		
+		//用当前result获取对应的设备码
+		//判断当前得到的二维码类型
+		if(result.indexOf('HS')==-1){
+			refuse(userInfo.companyId,result);
+			
+		}else if (result== CarrierCord)
+		{
+				console.log(IMEI)
+				refuse(userInfo.companyId,IMEI);
+				
+		} else{
+			app.toast('当前设备与选择设备不符！')
+		};
+//		////同意
+		function refuse(Tem, result) {
+			//alert(9999)
+			console.log(result)
+			plus.nativeUI.showWaiting();
+			var option = {
+				api: '/XhxManage/XHX_Carrier/IsYseWordXHX',
+				data: {
+					workUser: userInfo.UserId,
+					IsWordOk: 2,
+					imei: result,
+					TeamId: Tem
+				},
+				success: function(data) {
+					var result = eval("(" + data + ")");
+					if(result['type'] == "1") {
+						app.toast('领取成功');
+						plus.nativeUI.closeWaiting();
+						var workman = plus.webview.getWebviewById('workman');
+						mui.fire(workman, "pageflowrefresh");
+						var teamleader = plus.webview.getWebviewById('teamleader');
+						mui.fire(teamleader, "pageflowrefresh");
+					} else {
+						console.log(data)
+						app.toast('操作失败')
+						plus.nativeUI.closeWaiting();
+					};
+					mui.back();
+				},
+				error: function(data) {
+					
+					plus.nativeUI.closeWaiting();
+					app.toast('操作失败')
+					mui.back();
+				}
+			};
+			app.post3_1(option);
+		};
+	}
+
+	///收回设备接口
+	function TB(userid, result1,CarrierCord,CarrierId,teamleader) {
+//		alert(1111)
+		plus.nativeUI.showWaiting();
+		//用当前result获取对应的设备码
+		//判断当前得到的二维码类型
+		if(result1.indexOf('HS')==-1){
+			refuse(userInfo.companyId,result1,userid);
+		}else{
+			var index = result1.lastIndexOf("\#");
+			var newUrl = result1.substring(index + 1, result1.length);
+			if (newUrl==CarrierCord){
+//				alert(1111)
+				refuse(userInfo.companyId, CarrierId,userid,teamleader);
+				
+			} else{
+				plus.nativeUI.closeWaiting();
+				app.toast('当前回收的设备不符');
+				mui.back();
+			}
+			
+		};
+		////同意
+		function refuse(Tem, result1, userid,teamleader) {
+			console.log(Tem);
+			console.log(result1);
+			console.log(result1);
+			//alert("UserId:"+userInfo.UserId+"----"+"WorkUsersId:"+userid+"----"+"IMEI:"+result1+"----"+"TeamId:"+Tem+"----");
+			var option = {
+				api: '/XhxManage/XHX_Carrier/OutXHX',
+				data: {
+					UserId: userInfo.UserId,
+					WorkUsersId: userid,
+					IMEI: result1,
+					TeamId: Tem
+				},
+				success: function(data) {
+					console.log(JSON.stringify(data))
+					var result = eval("(" + data + ")");
+					if(result['type'] == "1") {
+						app.toast('收回成功');
+						plus.nativeUI.closeWaiting();			
+						var teamleader = plus.webview.getWebviewById('teamleader');
+						mui.fire(teamleader, "pageflowrefresh");
+						var EquipmentList = plus.webview.getWebviewById('EquipmentList');
+						mui.fire(EquipmentList, "pageflowrefresh");
+					} else {
+						plus.nativeUI.closeWaiting(); 
+						app.toast('操作失败');
+					}
+					mui.back();
+				},
+				error: function(data) {
+					app.toast('操作失败了')
+				}
+			};
+			app.post3_1(option)
+		}
+	}
+
+	//申请执行任务
+	function ApplyProjectTask(result) {
+		var data = JSON.parse(result);
+		var sendData = {
+			keyValue:data['ProJectId'],
+			entity: {
+				TaskDistributionId:data['ProJectId'],
+				TeamId: userInfo.RoleId,
+				Undertaker: userInfo.UserId,
+				UndertakerId: userInfo.UserId,
+				TeamExamine: 1
+			},
+		};
+		TaskObj.ScanCode(sendData, function(cb) {
+			if(cb['type'] == '1') {
+				app.toast('领取任务成功！');
+				mui.back();
+			} else {
+				app.toast('领取任务失败,或者已经被人承接');
+				mui.back();
+			};
+			plus.nativeUI.closeWaiting();
+		});
+	};
+	
+	//返回物流单号
+	function ReturnExpressRealId(result){
+		var Num = plus.webview.getWebviewById('ExpDetails');
+		mui.fire(Num,'sendData',{
+			ExpressRealId:result
+		});
+		mui.back();
+	};
+	///从相册中选取二维码
+	// 从相册中选择二维码图片 
+	function scanPicture() {
+		plus.gallery.pick(function(path) {
+			plus.barcode.scan(path, startRecognize, function(error) {
+				plus.nativeUI.alert('无法识别此图片');
+			});
+		}, function(err) {
+			plus.nativeUI.alert('Failed: ' + err.message);
+		});
+	}
+</script>

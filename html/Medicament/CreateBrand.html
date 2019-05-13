@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.min.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+
+	</head>
+	<style>
+		.list {
+			padding-top: 0px !important;
+		}
+		
+		.mui-active {
+			background: white !important;
+		}
+		
+		.iconfont {
+			font-size: 24px;
+			color: #717171;
+			opacity: 0.8;
+			display: block;
+			line-height: 50px;
+			padding-right: 14px;
+		}
+		
+		.CreateTeam {
+			padding: 0;
+		}
+		
+		label {
+			width: 26% !important;
+		}
+		
+		input {
+			width: 50% !important;
+		}
+		
+		.mui-input-row {
+			border-top: 1px solid #F5F5F5;
+		}
+		
+		.footer {
+			height: 44px;
+			position: fixed;
+			width: 100%;
+			bottom: 10px;
+			text-align: center;
+		}
+		
+		.Save {
+			height: 44px;
+			width: 95%;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">品牌管理</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll">
+				<li class="mui-table-view-cell mui-media list CreateTeam">
+					<div class="mui-input-row" style="display: none;">
+						<label class="">企业</label>
+						<input type="text" id="EnterpriseName" placeholder="请选择" name="EnterpriseName" readonly="readonly">
+						<input type="text" id="GoodsManufactorId" placeholder="请选择" name="GoodsManufactorId" readonly="readonly" style="display: none;">
+						
+					</div>
+					<div class="mui-input-row">
+						<label class="">品牌：</label>
+						<input type="text" id="BrandName" placeholder="请选择" name="BrandName">
+					</div>
+					<div class="mui-input-row">
+						<label>备注：</label>
+						<input type="text" id="Remarks" placeholder="请输入" name="Remarks" maxlength="50">
+					</div>
+				</li>
+			</ul>
+			<div class="footer">
+				<button type="button" class="mui-btn mui-btn-blue Save" id="Save">保存</button>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var UserInfo, goodbrand, _self, Manufactor, ManufactorLists
+	app.ready(function() {
+		UserInfo = app.accountInfo('info'); //用户信息
+		_self = plus.webview.currentWebview(); //父页面传参
+		Manufactor = [];
+		ManufactorLists = new mui.PopPicker();
+		Brand.IsAdd(); //判断当前是编辑还是新增
+		Brand.getManufactorList(); //厂家列表
+		Brand.Taps(); //判断当前是编辑还是新增
+	});
+
+	var Brand = {
+		//判断当前是编辑还是新增
+		IsAdd: function() {
+			if(_self['data']) {
+				Brand.IsEdit();
+			};
+		},
+		//获取厂家列表
+		getManufactorList: function() {
+			var send = {
+				"page": 1,
+				"rows": 102,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					ParentId: '144da086-41f8-4099-8b93-2014e73ea8b1'
+				})
+			};
+			getLeaseInterface.getEnterpriseList(send, function(cb) {
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					console.log(row['FullName'])
+					Manufactor.push({
+						text: row['FullName'],
+						value: row['OrganizeId']
+					});
+				};
+				ManufactorLists.setData(Manufactor); //选择企业
+				$("#EnterpriseName").on('tap', function() {
+					ManufactorLists.show(function(item){
+						$("#GoodsManufactorId").val(item[0]['value']);
+						$("#EnterpriseName").val(item[0]['text']); //企业名称
+					});
+				});
+			});
+		},
+		//如果当前是编辑
+		IsEdit: function() {
+			var sendData = {
+				keyValue: _self['data']['GoodsManufactorId']
+			};
+			getLeaseInterface.getEnterprise(sendData, function(cb) {
+				$("#EnterpriseName").val(cb['FullName']); //企业名称
+			});
+			$("#GoodsManufactorId").val(_self['data']['GoodsManufactorId']);//企业Id
+			$("#BrandName").val(_self['data']['GoodsBrandName']); //品牌名称 
+			$("#Remarks").val(_self['data']['Description']); //备注
+		},
+		//事件
+		Taps: function() {
+			//新增
+			$("#Save").on('tap', function() {
+				var value = $("#BrandName").val();
+				if(value==""){
+					mui.toast("请输入品牌");
+					return;
+				}
+				var sendData
+				//判断有无主键来确认是新增还是编辑
+				if(_self['data']) {
+					//编辑
+					sendData = {
+						keyValue: _self['data']['GoodsBrandId'],
+						entity: {
+							GoodsBrandName: $("#BrandName").val(),
+							Description: $("#Remarks").val(),
+							GoodsManufactorId:$("#GoodsManufactorId").val(),
+						}
+					};
+				} else {
+					//新增
+					sendData = {
+						GoodsBrandName: $("#BrandName").val(),
+						Description: $("#Remarks").val(),
+						GoodsManufactorId: UserInfo.CompanyId
+					};
+				};
+				Medicament.CreateBrand(sendData, function(cb) {
+					if(cb['type']==1){
+						app.toast('操作成功!');
+						var FatherView = plus.webview.getWebviewById('BrandManage');
+						mui.fire(FatherView,'fresh');
+						mui.back();
+					}else{
+						app.toast('操作失败!');
+					}
+				});
+			});
+		},
+	};
+</script>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+	</head>
+	<style>
+		html,body,.mui-content{
+			height:100%;
+		}
+		.mui-badge {
+			background: white !important;
+			text-align: right;
+			border-radius: 0 !important;
+		}
+		li{
+			border-bottom: 1px solid #F5F5F5;
+		}
+		.mui-badge>img {
+			width: 24px;
+			height: 24px;
+		}
+		/*图片*/
+		.logo{
+			margin-top:12px;
+		}
+		/*搜索*/
+		.search{
+			height:40px;
+		}
+		.search>input{
+			width:75% !important;
+			height:30px !important;
+		}
+		#search{
+			width:20%;
+		}
+		.tittle1 {
+		}
+		.phone1 {
+			padding-top:4px !important;
+			width: 100%;
+			display: inline-block;
+			float: left;
+		}
+		.address1{
+			width: 100%;
+			display: inline-block;
+			float: left;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">服务中心</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+			</ul>
+			<ul class="mui-table-view mui-scroll" id="OrganizeList">
+				<!--<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="../../img/leaseUav.png">
+					<div class="mui-media-body font_14 tittle1">
+						
+					<span class="mui-ellipsis font_12 phone1" id="phone" phone='+row['OuterPhone']+'>电话：<span style="color:#03A3FF">' + row['OuterPhone'] + '</span></span>
+					<span class="mui-ellipsis font_12 address1">地址：' + address + '</span>
+					</div>
+					</a>
+					<span class="mui-badge" data-index=' + i + ' lat=' + row['Lng'] + ' lng=' + row['Lat'] + ' address=' + row['Address'] + ' style="color:#a7a7a7"><img src="../../img/daohang.png"><br/><div>' + regg + '</div></span>
+					</li>-->
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var sendData = "";
+	app.ready(function() {
+
+		mui.back= function(){
+			var osaction= plus.webview.currentWebview().tap;
+			app.CustomClose(osaction);
+		} 
+
+		sendData = {
+			"page": 1,
+			"rows": 99,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({})
+		};
+		getSaleCompanyList(); //销售公司列表
+		NoData.bgImg('mui-content','../../img/BGIMG.png');
+		app.CustomHTML("#OrganizeList");
+		screen();//开始查询；
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: true //不显示滚动条
+	});
+	///获取销售公司列表
+	///获取销售公司
+	function getSaleCompanyList() {
+		var option = {
+			api: '/BaseManage/Organize/GetOrganize',
+			data:sendData,
+			success: function(data) {
+				var result = JSON.parse(data);
+				var rows = result['rows'];
+				var position_temp = "";
+				for(var i in rows) {
+					var row = rows[i];
+					position_temp += row.Lng + "," + row.Lat + '|';
+				};
+				getPostition(position_temp, rows);
+			},
+			error: function(data) {
+				app.toast('获取销售公司信息失败')
+			}
+		};
+		app.post3_4(option)
+	};
+
+	//获取当前用户坐标
+	function getPostition(position_temp, result) {
+		var positionUser = {};
+		plus.geolocation.getCurrentPosition(translatePoint, function(e) {
+			mui.toast("异常:" + e.message);
+		});
+
+		function translatePoint(position) {
+			currentLon = position.coords.longitude;
+			currentLat = position.coords.latitude;
+			CalculationDistance(position_temp, currentLon, currentLat, result);
+		};
+	};
+
+	//计算距离
+	function CalculationDistance(position_temp, currentLon, currentLat, result) {
+		$.ajax({
+			type: "get",
+			url: 'http://restapi.amap.com/v3/distance?origins=' + position_temp.substring(0, position_temp.length - 1) + '&destination=' + currentLon + ',' + currentLat + '&key=4cd8c018f64883bc22c41d1f2f685956',
+			async: true,
+			success: function(data) {
+				var arr = [];
+				if(data['results']){
+					NoData.ClearImg('mui-content');
+				};
+				//循环距离
+				for(var i in data['results']) {
+					var row = data['results'][i];
+					result[i].distance = parseInt(row['distance']);
+				};
+				//冒泡排序
+				for(var i in result){
+					arr.push(result[i]['distance']);
+				};
+				for(var i=0;i<result.length-1;i++){
+					for(var j=i+1;j<result.length;j++){
+						if(result[i]['distance']>result[j]['distance']){
+							var temp=result[i];  
+							result[i]=result[j];  
+							result[j]=temp;  
+						};
+					};
+				};
+				
+				//循环输出
+				for(var i in result) {
+					var row = result[i];
+					var regg = "";
+					var address = "";
+					//距离	
+					if(row.distance < 1000) {
+						regg = row.distance + 'm';
+					} else if(row.distance >= 1000) {
+						regg = (Math.round(row.distance / 100) / 10).toFixed(1) + "km";
+					};
+					//地址
+					if(row['Address'] != null) {
+						if(row['Address'].length > 10) {
+							address = row.Address.substring(0, 10) + '...';
+						} else {
+							address = row.Address;
+						};
+					};
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list">' +
+						'<a href="javascript:;">' +
+						'<img class="mui-media-object mui-pull-left logo" src="../../img/leaseUav.png">' +
+						'<div class="mui-media-body font_14 tittle1">' + 
+						'' + row['ShortName'] + '' +
+						'<span class="mui-ellipsis font_12 phone1" id="phone" phone='+row['OuterPhone']+'>电话：<span style="color:#03A3FF">' + row['OuterPhone'] + '</span></span>' +
+						'<span class="mui-ellipsis font_12 address1">地址：' + address + '</span>' +
+						'</div>' +
+						'</a>' +
+						'<span class="mui-badge" data-index=' + i + ' lat=' + row['Lng'] + ' lng=' + row['Lat'] + ' address=' + row['Address'] + ' style="color:#a7a7a7"><img src="../../img/daohang.png"><br/><div>' + regg + '</div></span>' +
+						'</li>'
+					);
+					$html.appendTo($("#OrganizeList"));
+					//查看轨迹
+					$html.find('.mui-badge').on('tap', function() {
+						var lng = $(this).attr('lng');
+						var lat = $(this).attr('lat');
+						mui.openWindow({
+							url:'./Route.html',
+							id:'Route',
+							extras:{company_lng:lng,company_lat:lat,now_lng:currentLon,now_lat:currentLat}
+						});
+					});
+
+					//拨打电话
+					$html.find('#phone').on('tap', function() {
+						var phone = $(this).attr('phone');
+						mui.confirm('确认拨打电话？', '拨打', function(e) {
+							if(e.index == 0) {
+								app.toast('已经取消');
+							} else {
+								plus.device.dial(phone, false);
+							}
+						});
+					});
+
+				};
+			},
+		});
+	};
+	
+	//筛选查询
+	function screen(){
+		//开始查询
+		$("#search").on('tap',function(){
+			btnsShield(3,"search");
+			var condition = $("#SrarchStart").val();
+//			if(condition==""){
+//				app.toast('请输入查询内容！');
+//				return false;
+//			};
+			sendData = {
+				"page": 1,
+				"rows": 99,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					"FullName":condition
+				})
+			};
+			$("#OrganizeList").html('');
+			getSaleCompanyList();
+		});
+	};
+</script>

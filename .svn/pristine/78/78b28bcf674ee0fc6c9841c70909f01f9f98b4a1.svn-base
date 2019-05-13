@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/Bcurrency.css" />
+	</head>
+	<style>
+		* {
+			color: #666666;
+		}
+		
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			width: 100%;
+		}
+		
+		.bar>div>span {
+			display: inline-block;
+		}
+		.bar>div>span:nth-child(2) {
+			display: none;
+		}
+		.Uav-time,
+		.Order span:nth-child(2) {
+			float: right;
+		}
+		
+		.mentNum,
+		.PaymentNum {
+			right: 22%;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">电池订单</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row bar App-Tittle">
+				<div class="mui-col-sm-4 mui-col-xs-4">
+					<span class="title activeT">未付款</span>
+					<span class="mentNum"></span>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4">
+					<span class="title">分期中</span>
+					<span class="PaymentNum"></span>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4">
+					<span class="title">已完成</span>
+				</div>
+			</div>
+			<!--展示订单列表-->
+			<ul class="mui-table-view mui-scroll" id="List">
+
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var iday = getNowFormatDate();
+	var UserInfo, sendData;
+	var OrderList = [];
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				CustomerId: UserInfo.UserId,
+				OrderTypeId: "473c994c-890b-4047-80e9-79f8efcb7321"
+			})
+		};
+
+		Order.GetData(sendData);
+		Order.tap();
+	});
+
+	//订单状态
+	var OrderStatus = [{
+			name: "下单",
+			key: 1,
+			label: "待审核"
+		},
+		{
+			name: "审核",
+			key: 2,
+			label: "待付款"
+		},
+		{
+			name: "付款",
+			key: 3,
+			label: "待发货"
+		},
+		{
+			name: "发货",
+			key: 4,
+			label: "待签收"
+		},
+		{
+			name: "签收",
+			key: 5,
+			label: "已完成"
+		}
+
+	];
+	//订单提交对象
+	var Order = {
+		//时间筛选
+		search: function() {
+			app.contentHTML("#List");
+			//开始查询并且返回查询结果
+			$("#search").on('tap', function() {
+				var str = "";
+				var staus = 0;
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				if(str == 0) {
+					app.toast('请选择筛选条件');
+					return false;
+				};
+				var sendData = {
+					"page": 1,
+					"rows": 999,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						StartTime: s,
+						EndTime: e,
+						DeleteMark: 1
+					})
+				};
+				Order.GetData(sendData);
+			});
+		},
+
+		//数量
+		Num: function() {
+			mentNum = 0;
+			PaymentNum = 0;
+			var rows = OrderList;
+			for(var i in rows) {
+				var row = rows[i];
+				//未付款数量
+				if(row.AuditStatus == 1) {
+					mentNum++;
+				}
+				//分期中数量
+				if(row.AuditStatus > 3 && row.AuditStatus < 7) {
+					PaymentNum++;
+				}
+			}
+			//判断当前如果当前数量超过99，那么最多只显示99 、、
+			//进行中订单数量
+			if(mentNum > 0) {
+				if(mentNum > 99) {
+					mentNum = 99;
+				};
+				$('.mentNum').show().text(mentNum);
+			} else {
+				$('.mentNum').hide();
+			};
+			//未处理数量
+			if(PaymentNum > 0) {
+				if(PaymentNum > 99) {
+					PaymentNum = 99;
+				};
+				$('.PaymentNum').show().text(PaymentNum)
+			} else {
+				$('.PaymentNum').hide();
+			};
+		},
+
+		//获取状态
+		getStrute: function(AuditStatus) {
+			for(var j = 0; j < OrderStatus.length; j++) {
+				var key = OrderStatus[j].key;
+				if(key == AuditStatus) {
+
+					if(key == 4) {
+						return '<span class="font_12" style="color:#fff;display: inline-block;margin-left:3%;background: #2B9CF9;border-radius: 4px 4px;">' + OrderStatus[j].label + '</span>';
+						break;
+					} else {
+						return '<span class="font_12" style="color:#3388FF;display: inline-block;margin-left:10%;">' + OrderStatus[j].label + '</span>';
+						break;
+					}
+				}
+			}
+		},
+
+		GetData: function(sendData) {
+			Orders.OrderLists(sendData, function(cb) {
+				console.log(JSON.stringify(cb))
+				$('#List').html('');
+				OrderList = cb['rows'];
+				Order.Num();
+				for(var i in OrderList) {
+					var row = OrderList[i];
+					if(row.AuditStatus == 1) { //状态1
+						var $html = $(
+							'<li class="mui-table-view-cell list lists font_14" data-index=' + i + ' >' +
+							'<a href="javascript:;">' +
+							'<div class="Uav">' +
+							'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+							'<span>订单号：' + row['OrderNumber'] + '</span>' +
+							'<span class="Uav-time">' + (row['CreateDate'].substr(0, 10)) + '</span>' +
+							'</div>' +
+							'<div class="mui-media-body Order">' +
+							'<p class="mui-ellipsis Order-Information font_14">' +
+							'<span class="GoodsName font_14">' + row['Description'] + '</span>' +
+							'<span class="font_14" style="color:#15AE3F;">' + row['PayMoney'] + '&nbsp;&nbsp;元</span>' +
+							'<span class="font_14" style="color:#15AE3F;">' + Order.getStrute(row['AuditStatus']) + '</span>' +
+							'</p>' +
+							'</div>' +
+							'</a>' +
+							'</li>'
+						);
+						$html.appendTo($('#List'));
+						//查看明细
+						$html.on('tap', function() {
+							var index = $(this).attr('data-index');
+							mui.openWindow({
+								url: 'instalmentsDetails.html',
+								id: 'instalmentsDetails',
+								extras: {
+									data: OrderList[index]
+								}
+							});
+						});
+					}
+				}
+			});
+		},
+		//获取订单列表
+		List: function(data) {
+
+			for(var i in data) {
+				var row = data[i];
+
+				var idayto = datedifference(iday, row['CheckDate']);
+
+				var $html = $(
+					'<li class="mui-table-view-cell list lists font_14" data-index=' + i + ' >' +
+					'<a href="javascript:;">' +
+					'<div class="Uav">' +
+					'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+					'<span>订单号：' + row['OrderNumber'] + '</span>' +
+					'<span class="Uav-time">' + (row['CreateDate'].substr(0, 10)) + '</span>' +
+					'</div>' +
+					'<div class="mui-media-body Order">' +
+					'<p class="mui-ellipsis Order-Information font_14">' +
+					'<span class="GoodsName font_14">' + row['Description'] + '</span>' +
+
+					//'<span class="font_14" style="color:#15AE3F;">' + row['PayMoney'] + '&nbsp;&nbsp;元</span>' +
+					'<span class="font_14" style="color:#15AE3F;padding-right: 5px;">' + Order.getStrute(row['AuditStatus']) + '</span>' +
+					(row['isfengqi'] ? '<span class="font_14"  style="color:red ;">' + '距离还款：' + idayto + '天' + '</span>' : '') +
+
+					'</p>' +
+					'</div>' +
+					'</a>' +
+					'</li>'
+				);
+
+				$html.appendTo($('#List'));
+				//查看明细
+				$html.on('tap', function() {
+					var index = $(this).attr('data-index');
+					mui.openWindow({
+						url: 'instalmentsDetails.html',
+						id: 'instalmentsDetails',
+						extras: {
+							data: data[index]
+						}
+					});
+				});
+
+			};
+		},
+
+		tap: function() {
+			//bar的循环点击筛选
+			$(".App-Tittle>div").each(function(i) {
+				$(".App-Tittle>div").eq(i).on('tap', function(ent) {
+					//					console.log(JSON.stringify(ent.handleObj.guid))
+					var j = ent.handleObj.guid - 1;
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".App-Tittle>div>.title").eq(j).hasClass('activeT')) {
+						return false;
+					};
+
+					$(".App-Tittle>div>.title").removeClass('activeT');
+
+					$(".App-Tittle>div>.title").eq(j).addClass('activeT');
+
+					$("#List").html('');
+
+					//					console.log($(".App-Tittle>div>.title").eq(j).text())
+
+					switch($(".App-Tittle>div>.title").eq(j).text()) {
+						case '未付款':
+							var data = [];
+							for(var i in OrderList) {
+								var row = OrderList[i];
+								if(row.AuditStatus == 1) {
+									data.push(row);
+								}
+							}
+
+							//app.DeleteSearch();
+							Order.List(data);
+							break;
+						case '分期中':
+							var data = [];
+							for(var i in OrderList) {
+								var row = OrderList[i];
+								if(row.AuditStatus > 3 && row.AuditStatus < 7) {
+									row.isdays = true;
+									row.isfengqi = true;
+									data.push(row);
+								}
+							}
+
+							//app.DeleteSearch();
+							Order.List(data);
+							break;
+						case '已完成':
+							var data = [];
+							for(var i in OrderList) {
+								var row = OrderList[i];
+								if(row.AuditStatus == 7) {
+									data.push(row);
+								}
+							}
+
+							Order.search();
+							Order.List(data);
+							break;
+					};
+				})
+			});
+		}
+	};
+
+	function getNowFormatDate() {
+		var date = new Date();
+		var seperator1 = "-";
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1;
+		var strDate = date.getDate();
+		if(month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if(strDate >= 0 && strDate <= 9) {
+			strDate = "0" + strDate;
+		}
+		var currentdate = year + seperator1 + month + seperator1 + strDate;
+		return currentdate;
+	}
+
+	function datedifference(sDate1, sDate2) { //sDate1和sDate2是2006-12-18格式  
+		var dateSpan,
+			tempDate,
+			iDays;
+		sDate1 = Date.parse(sDate1);
+		sDate2 = Date.parse(sDate2);
+		dateSpan = sDate2 - sDate1;
+		dateSpan = Math.abs(dateSpan);
+		iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+		return iDays
+	};
+
+	//回调刷新
+	window.addEventListener('fresh', function() {
+		Order.List(sendData);
+	});
+</script>

@@ -1,0 +1,265 @@
+*{
+	font-size: 12px;
+}
+ul,li{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.header{
+	height: 90px;
+	background: #15AE3F;
+}
+.header a{
+	color: #FFFFFF;
+	font-size: 18px;
+}
+.header h1{
+	color: #FFFFFF;
+	font-size: 19px;
+}
+.expressDelivery{
+	width: 35%;
+	height: 50px;
+	float: left;
+	color: #9B9B9B;
+	line-height: 50px;
+	text-align: center;
+	background-image: url(../img/peisong.png);
+	background-repeat:no-repeat;
+	background-size:100% 50px;
+	position: absolute;
+	padding-right: 10px;
+}
+.store{
+	width: 40%;
+	height: 50px;
+	float: left;
+	line-height: 40px;
+	text-align: center;
+	color: #9B9B9B;
+	background-image: url(../img/ziti.png);
+	background-repeat:no-repeat;
+	background-size:100% 50px;
+	position: absolute;
+	left: 95px;
+	/*border: 1px solid red;*/
+}
+.active{
+	color: #15AE3F;
+}
+.mui-content{
+	margin-top: 55px;
+}
+.content{
+	margin: 0 10px;
+	height: auto;
+	/*border: 1px solid green;*/
+}
+.addAdress{
+	display: flex;
+	height: 110px;
+/*	border: 1px solid green;*/
+	justify-content: center;
+	align-items: center;
+}
+.changeBar{
+	width: 100%;
+	height: 20px;
+	/*border: 1px solid red;*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.fillAdress{
+	height: 75px;
+	/*border: 1px solid green;*/
+	background: #FFFFFF;
+}
+.fillAdress>.fillAdressFirst{
+	height: 35px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #23241D;
+	margin-top: 10px;
+/*	border: 1px solid orange;*/
+	
+}
+.fillAdress>.fillAdressFirst>.fillAdressExpress{
+	text-align: right;
+	color: #1CB144;
+}
+.fillAdress>.fillAdressSecond{
+	height: 40px;
+	margin-top: 6px;
+	color: #9B9B9B;
+	/*border: 1px solid orange;*/
+}
+.addAdresschoose{
+	/*margin-top: 40px;*/
+	width: 70%;
+	height: 40px;
+	border: 1px solid green;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 15px;
+	color: #1CB144;
+}
+.goodDetais{
+	height: 90px;
+	margin-top: 10px;
+	/*border: 1px solid green;*/
+	background-color: #F4F4F4;
+}
+.goodDetais p:first-child{
+	color: #23241D;
+	font-size: 15px;
+}
+.goodDetais p:nth-child(2){
+	color: #9B9B9B;
+	font-size: 12px;
+}
+.goodDetais>div:first-child{
+	display:flex;
+	height: 90px;
+	justify-content: center;
+	align-items: center;
+	
+}
+.logoCenter{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+.goodDetais>div:nth-child(2){
+	height: 90px;
+	padding-left: 15px;
+	padding-top: 20px;
+}
+.remarks{
+	height: 50px;
+	/*border: 1px solid green;*/
+	margin-top: 10px;
+	border-bottom: 1px solid #F4F4F4;
+}
+.remarks span{
+	color: #23241D;
+	font-size: 13px;
+}
+.remarks>div:first-child{
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/*border: 1px solid red;*/
+}
+.remarks>div:nth-child(2){
+	height: 50px;
+	padding-top: 6px;
+}
+.remarks textarea{
+	color: #9B9B9B;
+	font-size: 12px;
+	border: none;
+}
+.feeList{
+	color: #23241D;
+	font-size: 12px;
+}
+.feeList>.cleanUnderline{
+	border-bottom: 1px solid #F4F4F4;
+	padding-bottom: 10px;
+}
+.moneyRight{
+	text-align: right;
+}
+.feeList .tai{
+	color: #9B9B9B;
+}
+.feeList .taiMiddle{
+	text-align: center;
+}
+.feeList>div{
+	margin-top: 15px;
+}
+.feeList .coupon,.feeList .total{
+/*	border: 1px solid red;*/
+	margin-top: 0px;
+}
+.coupon span{
+	color: red;
+	margin-left: 5px;
+}
+.coupon>div:nth-child(2){
+	text-align: right;
+}
+.total{
+	font-size: 13px;
+	border-bottom: 1px solid #F4F4F4;
+}
+.total>div:nth-child(2){
+	text-align: right;
+	color: #15AE3F;
+	font-size: 15px;
+}
+.total span{
+	margin-left: 5px;
+}
+.agreement{
+	margin-top: 15px;
+	font-size: 11px;
+	border-bottom: 1px solid #F4F4F4;
+	height: 40px;
+}
+.agreement span{
+	color: #9B9B9B;
+}
+.agreement a{
+	color: #15AE3F;
+}
+.footer{
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	height: 45px;
+	background: #FFFFFF;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+.footer button{
+	width: 70%;
+	height: 40px;
+	background-color: #15AE3F;
+	color: #FFFFFF;
+	font-size: 14px;
+	text-align: center;
+	border-radius: 20px;
+	border: none;
+}
+.footer button:first-child{
+	margin-right: 4px;
+}
+
+
+/*快递配送*/
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1544250053400'); /* IE9*/
+  src: url('iconfont.eot?t=1544250053400#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAUYAAsAAAAAB5wAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFY9kkkOY21hcAAAAYAAAABLAAABcOhEuP5nbHlmAAABzAAAAV0AAAGgFuZka2hlYWQAAAMsAAAALQAAADYTgUtGaGhlYQAAA1wAAAAcAAAAJAfeA4NobXR4AAADeAAAAAgAAAAICAAAAGxvY2EAAAOAAAAABgAAAAYA0AAAbWF4cAAAA4gAAAAgAAAAIAEXAJVuYW1lAAADqAAAAUUAAAJtPlT+fXBvc3QAAATwAAAAJQAAADY/Y0RheJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2BkYWCcwMDKwMHUyXSGgYGhH0IzvmYwYuRgYGBiYGVmwAoC0lxTGByeyzyXYW7438AQw9zA0AAUZgTJAQDhrwwdeJxjYGBgZWBgYAZiHSBmYWBgDGFgZAABP6AoI1icmYELLM7CoARWwwISfy7z/z+MBPJZwCQDIxvDKOABkzJQHjisIJiBEQBv2AndAHicXY0/S8NQFMXvMU3SvNr30j9JsUprk5jYFkKbpKlQLXYQBBcdRRxF3BSXuunm7CS4uDn4FYR+DT+IiIMEX9z08ri/wz333UMlkqW8Li3Ipxmd0Dld0hXN6YZu6Y7uiZBYSog+HM2q1O0JojTxA3cUp3ajZuscLcTReAp0csPtOJou1xq2HKZ+4I8q0uLQ3RCBRAuNKB3H8s8U4xAqh+MnaWQ31qCGyFVdU9wW5Clt/I/K85TvOftMCHaWt4OQ90tT1mSGVi4WCtXu9xdeciM7dvuoV3WNF9UCK8NaCno7xpux0xvuArvD7oQt2HZ3MANm2bXiJp438oDTVckN72kNq3n9AZYBlJItefxDRlgc72gH2WfElGrNgBpjwW0erGcXllsqLLOaZgg8lvXsAVF3M5ZBAxk38P3Br5qvtL3Uc5qKOoEU8qFqCtE2zSOJdSEOhWm2hSD6AX9jPZ8AAAB4nGNgZGBgAGKbc+fU4vltvjJwszCAwA3D5qPINAsD034gxcHABOIBABZ5CSAAAAB4nGNgZGBgbvjfwBDDwgACQJKRARUwAQBHCAJrBAAAAAQAAAAAAAAAANAAAAABAAAAAgCJAAsAAAAAAAIAAAAKAAoAAAD/AAAAAAAAeJxlj01OwzAQhV/6B6QSqqhgh+QFYgEo/RGrblhUavdddN+mTpsqiSPHrdQDcB6OwAk4AtyAO/BIJ5s2lsffvHljTwDc4Acejt8t95E9XDI7cg0XuBeuU38QbpBfhJto41W4Rf1N2MczpsJtdGF5g9e4YvaEd2EPHXwI13CNT+E69S/hBvlbuIk7/Aq30PHqwj7mXle4jUcv9sdWL5xeqeVBxaHJIpM5v4KZXu+Sha3S6pxrW8QmU4OgX0lTnWlb3VPs10PnIhVZk6oJqzpJjMqt2erQBRvn8lGvF4kehCblWGP+tsYCjnEFhSUOjDFCGGSIyujoO1Vm9K+xQ8Jee1Y9zed0WxTU/3OFAQL0z1xTurLSeTpPgT1fG1J1dCtuy56UNJFezUkSskJe1rZUQuoBNmVXjhF6XNGJPyhnSP8ACVpuyAAAAHicY2BigAAuBuyAiZGJkZmBJ7s0MTMls7I0rzijlIEBAC7/BUUAAAA=') format('woff'),
+  url('iconfont.ttf?t=1544250053400') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1544250053400#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-kuaidiyunshu:before { content: "\e71c"; }

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+	</head>
+	<style>
+		.iconfont {
+			font-size: 12px;
+			color: #717171;
+			opacity: 0.2;
+		}
+		
+		.CreateTeam {
+			height: 50px;
+			line-height: 50px;
+		}
+		
+		.team {
+			position: relative;
+		}
+		
+		.headIcoN {
+			margin-top: 8px;
+		}
+		
+		.phone1 {
+			margin-top: 10px;
+		}
+		
+		.team .xb {
+			position: absolute;
+			right: 15px;
+			top: 32px;
+		}
+		
+		.TeamNum {
+			position: absolute;
+			width: 40px;
+			height: 20px;
+			background: #15AE3F;
+			text-align: center;
+			line-height: 20px;
+			border-radius: 4px;
+			color: white;
+			right: 50px;
+			top: 32px;
+		}
+		
+		#ResetTeamName {
+			font-size: 20px;
+			color: #9D9D9D;
+			position: relative;
+			top: 2px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">团队管理</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media list CreateTeam">
+					<a href="javascript:;">
+						<span class="mui-pull-left">创建团队</span>
+						<span class="mui-pull-right iconfont">&#xe741;</span>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-scroll TeamList">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var UserInfo
+	var UserList = [];
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		TeamObj.getSSTeam(); //团队列表
+		TeamObj.Events(); //事件
+	});
+
+	//团队
+	var TeamObj = {
+		getSSTeam: function() {
+			var sendData = { 
+				Description: UserInfo.CompanyId,
+			};
+			UseIdGetList.getUserTeamTeamPreson(sendData, function(cb) {
+				console.log(JSON.stringify(cb))
+				var TeamNum = [];
+				var rowss = [];
+				for(var i in cb) {
+					var Num = 0;
+					var row = cb[i];
+					for(var j in cb) {
+						if(cb[i]['TeamId'] == cb[j]['TeamId']) {
+							Num++;
+							TeamNum.push({
+								'TeamId': row['TeamId'],
+								'Num': Num
+							});
+						};
+					}; 
+
+					if(cb[i]['Duties'] == "队长") {
+						rowss.push(cb[i]);
+					};
+					
+					UserList.push(row['UserId']);
+				};
+				for(var i in rowss) {
+					var row = rowss[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list team" data-index=' + i + ' value=' + row['TeamId'] + ' name=' + row['TeamName'] + '>' +
+						'<a href="javascript:;">' +
+						'<img class="mui-media-object mui-pull-left headIcoN" src="../../img/my-fill-light.png">' +
+						'<div class="mui-media-body">' +
+						'<span class="teamName font_14" id="onTeamName"><span class="Tname">' + row['TeamName'] + '</span> <span class="iconfont" value=' + row['TeamId'] + '  data-index=' + i + ' id="ResetTeamName">&#xe706;</span></span><br/>' +
+						'<div class="phone1 font_12">队长:' + row['UserName'] + '</div>' +
+						'<p class="mui-ellipsis temId" style="display: none;" >' + row['TeamId'] + '</p>' +
+						'<span class="mui-pull-right iconfont xb">&#xe741;</span>' +
+						'<div class="TeamNum">11人</div>' +
+						'</div>' +
+						'</a>' +
+						'</li>'
+					);
+					$html.appendTo($(".TeamList"));
+
+					//修改团队名称
+					$html.find('#ResetTeamName').on('tap', function(event) {
+						event.stopPropagation();
+						var _teamId = $(this).attr('value');
+						var index = $(this).attr('data-index');
+						dialog.Dialogbox('提示', '<input type="text" id="mangerName" placeholder="请输入新的团队名称"  style="border-radius:4px;margin-top:6px;height:40px">', function(cb) {
+							if(cb == 1) {
+								var keyValue = _teamId;
+								if($("#mangerName").val() != "") {
+									var XHX_TeamEntity = {
+										"TeamName": $("#mangerName").val(),
+										"TeamId": _teamId,
+									};
+									plus.nativeUI.showWaiting();
+									var option = {
+										api: '/XhxManage/XHX_Team/SaveForm?keyValue=' + keyValue,
+										data: XHX_TeamEntity,
+										success: function(data) {
+											var result = eval("(" + data + ")");
+											if(result['type'] == "1") {
+												app.toast("修改成功");
+												$(".Tname").eq(index).text($("#mangerName").val());
+												plus.nativeUI.closeWaiting();
+												dialog.CloseLogBox();
+											} else {
+												app.toast('修改失败')
+												plus.nativeUI.closeWaiting();
+											};
+										},
+										error: function() {
+											app.toast('修改失败')
+											plus.nativeUI.closeWaiting();
+										},
+									}
+									app.post3_1(option);
+								} else {
+									app.toast('团队名称不能为空')
+								}
+							} else if(cb == 0) {
+								dialog.CloseLogBox();
+							} else {
+								dialog.CloseLogBox();
+							};
+						});
+					});
+					//查看成员列表
+					$html.on('tap', function() {
+						var index = $(this).attr('data-index');
+						var TeamId = $(this).attr('value');
+						mui.openWindow({
+							url: './SSTeamPreson.html',
+							id: 'SSTeamPreson',
+							extras: {
+								data: TeamId,
+								List:UserList
+							}
+						});
+					});
+				};
+				//成员人数
+				for(var i in TeamNum) {
+					var row = TeamNum[i];
+					$(".temId").each(function(j) {
+						if(row['TeamId'] == $(".temId").eq(j).text()) {
+							$(".TeamNum").eq(j).text(row['Num'] + '人');
+						};
+					});
+				};
+			});
+		},
+
+		Events: function() {
+			//创建团队
+			$(".CreateTeam").on('tap', function() {
+				mui.openWindow({
+					url: 'CreateTeam.html',
+					id: 'CreateTeam'
+				});
+			});
+
+		},
+	};
+
+	//刷新当前页面
+	window.addEventListener('pageflowerfresh', function() {
+		$(".TeamList").html('');
+		TeamObj.getSSTeam(); //团队列表
+	});
+</script>

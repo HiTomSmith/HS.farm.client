@@ -1,0 +1,85 @@
+input{
+	font-family:"黑体";  
+}
+html,body{
+	height:100%
+}
+.mui-content{
+	height: 100%;
+	background: white;
+	border:1px solid white;
+}
+.allwidth{
+	width:100%;
+}
+.allheight{
+	height:100%:
+}
+.divcenter{
+	margin:0 auto;
+}
+.font_size12{
+	font-size:12px;
+}
+.text_center{
+	text-align: center;
+}
+.block{
+	display: block;
+}
+.logo{
+	height:92px;
+	margin-top:60px;
+}
+.logo img{
+	width:92px;
+	margin:0 auto;
+}
+.mui-input-group{
+	margin-top:60px;
+	width:84%;
+	background: white;
+}
+.mui-input-row{
+	clear: both !important;
+	position: relative;
+	border:none !important; 
+}
+.mui-input-row:nth-child(2){
+	margin-top:20px;
+	margin-bottom: 40px;
+}
+.mui-input-row>input{
+	height:44px;
+}
+.mui-input-row label{
+	width:20%;
+	height:44px;
+	border-radius: 65px 0 0 65px ;
+	background: #F5F5F5;
+}
+.mui-input-row label>img{
+	margin-top:2px;
+	width:16px;
+	height:18px;
+}
+.mui-input-row>input[type="text"],.mui-input-row>input[type="password"]{
+	background: #F5F5F5;
+	width:80%;
+	border-radius: 0 65px  65px 0;
+	color:#ACACB4;
+	font-size:16px;
+}
+.mui-input-row>input[type="button"]{
+	width:100%;
+	border-radius: 65px;
+	background: #15AE3F;
+	color:white;
+}
+.VerCode{
+	position: absolute;
+	top:10px;
+	font-size:12px;
+	right:12px;
+	color: #15AE3F;
+}

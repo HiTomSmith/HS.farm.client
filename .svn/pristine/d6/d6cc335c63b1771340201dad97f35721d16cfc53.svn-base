@@ -1,0 +1,22 @@
+<<<<<<< .mine
+.mui-bar {
+	background-color: #4cd964;
+}
+
+.mui-title {
+	color: #ffffff;
+}
+
+.mui-bar-nav.mui-bar .mui-icon {
+	color: #ffffff;
+
+		.mui-bar{
+			background-color: #15AE3F;
+		}
+		.mui-title{
+			color: #FFFFFF;
+		}
+		.mui-bar-nav.mui-bar .mui-icon{
+			color: #FFFFFF;
+			background: #15AE3F;
+		}

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		* {
+			color: #666666;
+		}
+		
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			width: 100%;
+		}
+		
+		.bar>div>span {
+			display: inline-block;
+		}
+		
+		.Uav-time,
+		.Order span:nth-child(2) {
+			float: right;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">配件订单</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row bar App-Tittle">
+				<div class="mui-col-sm-6 mui-col-xs-6 ">
+					<span class="tittle activeT ">进行中</span>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<span class="tittle">已完成</span>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="List">
+
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, localOrders;
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		Order.List();
+		Order.tap();
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	//订单状态
+	var OrderStatus = [{
+			name: "下单",
+			key: 0,
+			label: "待审核"
+		},
+		{
+			name: "审核",
+			key: 1,
+			label: "待付款"
+		},
+		{
+			name: "付款",
+			key: 2,
+			label: "待发货"
+		},
+		{
+			name: "发货",
+			key: 3,
+			label: "待签收"
+		},
+		{
+			name: "签收",
+			key: 4,
+			label: "完成"
+		}
+	];
+
+	//订单提交对象
+	var Order = {
+		//获取订单列表
+		List: function() {
+			if(UserInfo.OpenId == 5) {
+				var sendData = {
+					"page": 1,
+					"rows": 999,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						OrganizeId: UserInfo.CompanyId
+					})
+				}
+			} else {
+				var sendData = {
+					"page": 1,
+					"rows": 999,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+//						OrganizeId: UserInfo.CompanyId
+					})
+				}
+			}
+
+			console.log(JSON.stringify(sendData))
+			PartsManageByGet.getPartsOrderList(sendData, function(cb) {
+				console.log(JSON.stringify(cb))
+				console.log(JSON.stringify(cb))
+				if(cb['total'] >= 0) {
+					localOrders = cb['rows'];
+					var qr_orders = [];
+					for(var j = 0; j < localOrders.length; j++) {
+						if(UserInfo.OpenId == 10) { //调度
+							if(localOrders[j].AuditStatus == 0) {
+								qr_orders.push(localOrders[j]);
+							}
+						} else if(UserInfo.OpenId == 13) { //财务
+							if(localOrders[j].AuditStatus == 1) {
+								qr_orders.push(localOrders[j]);
+							}
+						} else if(UserInfo.OpenId == 12) { //发货
+							if(localOrders[j].AuditStatus == 2) {
+								qr_orders.push(localOrders[j]);
+							}
+						} else {
+							if(localOrders[j].AuditStatus < 4) {
+								qr_orders.push(localOrders[j]);
+							}
+						}
+					}
+					Order.showList(qr_orders);
+				} else {
+					app.toast('操作失败!');
+				}
+
+			})
+		},
+		//展示列表
+		showList: function(orders) {
+			$('#List').html('');
+			var rows = orders;
+			for(var i in rows) {
+				var row = rows[i];
+				console.log(JSON.stringify(row)) 
+				var $html = $(
+					'<li class="mui-table-view-cell list lists font_14" data-index=' + i + ' GoodsId=' + row['GoodsBrandId'] + ' >' +
+					'<a href="javascript:;">' +
+					'<div class="Uav">' +
+					'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+					'<span>订单号：' + row['OrderNumber'] + '</span>' +
+					'<span class="Uav-time">' + (row['CreateDate'].substr(0, 10)) + '</span>' +
+					'</div>' +
+					'<div class="mui-media-body Order">' +
+					'<p class="mui-ellipsis Order-Information font_14">' +
+					'<span class="font_12" style="color:#15AE3F;">' + row['CustomerName'] + '</span>' +
+//					'<span class="font_12" style="color:#15AE3F;">' + row['PayMoney'] + '元</span>' +
+					Order.getStrute(row['AuditStatus']) +
+					'</p>' +
+					'</div>' +
+					'</a>' +
+					'</li>'
+				);
+
+				$html.appendTo($('#List'));
+
+				//查看明细
+				$html.on('tap', function() {
+					var index = $(this).attr('data-index');
+					mui.openWindow({
+						url: './PartsOrderDetail.html',
+						id: 'PartsOrderDetail',
+						extras: {
+							PartOrder: rows[index],
+							OpenId: UserInfo.OpenId
+						}
+					})
+				});
+			};
+		},
+		//获取状态
+		getStrute: function(AuditStatus) {
+			for(var j = 0; j < OrderStatus.length; j++) {
+				var key = OrderStatus[j].key;
+				if(key == AuditStatus) {
+					if(key == 1) {
+						return '<span class="font_12" style="color:#fff;display: inline-block;margin-left: 90px;background: #1E9FEF;border-radius: 4px 4px;">' + OrderStatus[j].label + '</span>';
+						break;
+					} else if(key == 2) {
+						return '<span class="font_12" style="color:#fff;display: inline-block;margin-left: 90px;background: #1E9FEF;border-radius: 4px 4px;">' + OrderStatus[j].label + '</span>';
+						break;
+					} else {
+						return '<span class="font_12" style="color:#3388FF;display: inline-block;margin-left: 90px;">' + OrderStatus[j].label + '</span>';
+						break;
+					}
+				}
+			}
+		},
+
+		tap: function() {
+			//bar的循环点击筛选
+			$(".App-Tittle>div").each(function(i) {
+				$(".App-Tittle>div").eq(i).on('tap', function() {
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".App-Tittle>div>.tittle").eq(i).hasClass('activeT')) {
+						return false;
+					};
+					$("#List").html('');
+					$(".App-Tittle>div>.tittle").removeClass('activeT');
+					$(".App-Tittle>div>.tittle").eq(i).addClass('activeT');
+					switch($(".App-Tittle>div>.tittle").eq(i).text()) {
+						case '进行中':
+							var qr_orders = [];
+							for(var j = 0; j < localOrders.length; j++) {
+								if(UserInfo.OpenId == 10) { //调度
+									if(localOrders[j].AuditStatus == 0) {
+										qr_orders.push(localOrders[j]);
+									}
+								} else if(UserInfo.OpenId == 13) { //财务
+									if(localOrders[j].AuditStatus == 1) {
+										qr_orders.push(localOrders[j]);
+									}
+								} else if(UserInfo.OpenId == 12) { //发货
+									if(localOrders[j].AuditStatus == 2) {
+										qr_orders.push(localOrders[j]);
+									}
+								} else {
+									if(localOrders[j].AuditStatus < 4) {
+										qr_orders.push(localOrders[j]);
+									}
+								}
+							}
+							Order.showList(qr_orders);
+							break;
+						case '已完成':
+						console.log(JSON.stringify(localOrders))
+							var qr_orders = [];
+							for(var j = 0; j < localOrders.length; j++) {
+								if(UserInfo.OpenId == 10 && localOrders[j].AuditStatus == 1) {
+									qr_orders.push(localOrders[j]);
+								}
+								if(UserInfo.OpenId == 13 && localOrders[j].AuditStatus > 1) {
+									qr_orders.push(localOrders[j]);
+								}
+								if(UserInfo.OpenId == 12 && localOrders[j].AuditStatus > 2) {
+									qr_orders.push(localOrders[j]);
+								}
+								if((UserInfo.OpenId == 5||UserInfo.OpenId == 15) && localOrders[j].AuditStatus ==4) {
+									qr_orders.push(localOrders[j]);
+								}
+							}
+							console.log(JSON.stringify(qr_orders))
+							Order.showList(qr_orders);
+							break;
+					};
+				})
+			});
+		}
+	};
+
+	///回调刷新
+	window.addEventListener('fresh', function() {
+		location.reload();
+		Order.List();
+	});
+	//刷新刷新刷新
+	////子页
+	//app.toast('操作成功！');
+	//var FatherView = plus.webview.getWebviewById('PartsOrder');
+	//mui.fire(FatherView, 'fresh');
+	//mui.back();	
+	////父页
+	//window.addEventListener('fresh', function() {
+	//	Order.List();
+	//});
+</script>

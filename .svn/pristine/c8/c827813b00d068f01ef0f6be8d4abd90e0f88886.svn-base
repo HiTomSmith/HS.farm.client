@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/list.css"/>
+	</head>
+	<style>
+		label{
+			padding-left:22px !important;
+		}
+		.userPhone{
+			position: relative;
+		}
+		.userPhone>.mui-icon{
+			position: absolute;
+			z-index: 100;
+			right:10px;
+			top:10px;
+			color:#717171;
+		}
+		.corptype{
+			color:#E4E4E4;
+			font-size: 12px;
+			margin-top:8px;
+			opacity: 0.2;
+		}
+		.mui-input-group{
+			margin-top:0 !important;
+		}
+		.mui-input-row {
+			position:relative;
+		}
+		.Arrow{
+			position: absolute;
+			left:-2px;
+			top:14px;
+			color:  #15AE3F;
+		}
+		.list{
+			padding-bottom: 4px !important;
+		}
+		.mui-active{
+			background: white !important;
+		}
+		label{
+			width: 33% !important;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right"></a>
+		    <h1 class="mui-title">新建任务</h1>
+		</header>
+		<div class="mui-content">
+		    <form class="mui-input-group">
+		    	<ul class="mui-table-view mui-scroll">
+		    		<li class="mui-table-view-cell mui-media list">
+		    			<div class="mui-input-row userPhone">
+				         	<span class="iconfont Arrow mui-pull-left">&#xe734;</span>
+				            <label class="Required">用户电话</label>
+				            <input type="text" class="mui-input-clear" placeholder="请选择" id="LiaisonType" name="LiaisonType" maxlength="11" onkeyup="if(/\D/.test(this.value)){app.toast('只能输入数字');this.value='';}">
+				            <span class="mui-icon iconfont" id="phoneBook">&#xe6fd;</span> 
+				        </div>
+				         <div class="mui-input-row">
+				         	<span class="iconfont Arrow mui-pull-left">&#xe73d;</span>
+				            <label class="Required">用户姓名</label>
+				            <input type="text" class="mui-input-clear" placeholder="请输入" id="Liaison" name="Liaison">
+				        </div>
+				         <div class="mui-input-row" >
+				         	<span class="iconfont Arrow mui-pull-left">&#xe72e;</span>
+				            <label class="Required">作业亩数</label>
+				            <input type="text" class="mui-input-clear" placeholder="请输入" id="Quantity" name="Quantity" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" > 
+				        </div>
+				         <div class="mui-input-row userPhone OpenId" style="display: none;">
+				         	<span class="iconfont Arrow mui-pull-left">&#xe6e2;</span>
+				            <label class="Required">管理人</label>
+				            <input type="text" class="mui-input-clear" placeholder="请选择（农民管理）" id="Manager" name="Manager" readonly="readonly"> 
+				        	<span class="mui-icon iconfont corptype">&#xe741;</span> 
+				         </div>
+				         <div class="mui-input-row userPhone OpenId" style="display: none;" id="CJHide">
+				         	<span class="iconfont Arrow mui-pull-left">&#xe6e4;</span>
+				            <label class="Required">承接人</label>
+				            <input type="text" class="mui-input-clear" placeholder="请选择（团队承接）" id="Undertake" name="Undertaker" readonly="readonly"> 
+				        	<span class="mui-icon iconfont corptype">&#xe741;</span> 
+				         </div>
+		    		</li>
+		    		<li class="mui-table-view-cell mui-media list">
+		    			 <div class="mui-input-row userPhone">
+				        	<span class="iconfont Arrow mui-pull-left">&#xe712;</span>
+				            <label class="Required">任务地址</label>
+				            <input type="text" class="mui-input-clear" placeholder="请填写" id="Geocoding" name="Geocoding">
+				        </div>
+				         <div class="mui-input-row">
+				         	<span class="iconfont Arrow mui-pull-left">&#xe706;</span>
+				            <label class="Required">任务名称</label>
+				            <input type="text" class="mui-input-clear" placeholder="请输入" id="Description" name="Description">
+				        </div>
+				         <div class="mui-input-row">
+				         	<span class="iconfont Arrow mui-pull-left">&#xe6fb;</span>
+				            <label class="Required">每亩单价</label>
+				            <input type="text" class="mui-input-clear" placeholder="请输入" id="Price" name="Price" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" >
+				            <input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="DistributionType" name="DistributionType" value="1" style="display: none;">
+				            <input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="TeamExamine" name="TeamExamine" value="0" style="display: none;">
+				            <input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="Examine" name="Examine" value="1" style="display: none;">
+				            <input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="TeamId" name="TeamId"  style="display: none;">		
+				            <input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="EmployerId" name="EmployerId"  style="display: none;">		        	
+				            <input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="ManageId" name="ManageId"  style="display: none;">		        	
+				            <input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="UndertakerId" name="UndertakerId"  style="display: none;">	
+				            <input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="IsBear" name="IsBear"  style="display: none;">
+				        </div>
+				        <div class="mui-input-row userPhone">
+				        	<span class="iconfont Arrow mui-pull-left">&#xe768;</span>
+				            <label class="Required">作物种类</label> 
+				            <input type="text" class="mui-input-clear" placeholder="请选择" id="WorkDescription" name="WorkDescription" readonly="readonly"> 
+				            <span class="mui-icon iconfont corptype">&#xe741;</span> 
+				        </div>
+				        <div class="mui-input-row userPhone">
+				        	<span class="iconfont Arrow mui-pull-left">&#xe76b;</span>
+				            <label class="Required">药剂种类</label> 
+				            <input type="text" class="mui-input-clear" placeholder="请选择" id="MedicamenType" name="MedicamenType" readonly="readonly"> 
+				            <span class="mui-icon iconfont corptype">&#xe741;</span> 
+				        </div>
+				        <div class="mui-input-row userPhone" >
+				        	<span class="iconfont Arrow mui-pull-left">&#xe6f9;</span>
+				            <label class="">任务区域</label>
+				            <input type="text" class="mui-input-clear" placeholder="请绘制" id="Region" name="Region" readonly="readonly">
+				            <span class="mui-icon iconfont corptype">&#xe741;</span> 
+				        </div>
+		    		</li>
+				</ul>
+		    </form>
+		    <button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="CreatTask">开始作业</button>
+		</div> 
+	</body> 
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var TaskRegion = "";
+	app.ready(function(){
+		userInfo = app.accountInfo('info');
+		$("#TeamId").val(userInfo.RoleId);
+		$("#EmployerId").val(userInfo.UserId);
+		$("#ManageId").val(userInfo.UserId); 
+		//$("#UndertakerId").val(userInfo.UserId);
+		if(userInfo.OpenId==6){
+			$("#CJHide").remove();
+		}
+		BthEvents();
+		//判断OpenId==5的时候为服务站
+		//点击为农民创建任务
+		$('#menu').on('tap',function(){
+			$('.OpenId').toggle(); 
+		});
+		CteatTaskUndertaker();//创建任务承接者(团队承接)
+		CreateTaskEmployerId();//创建任务管理者(农民管理) 
+	});
+	
+	
+	//
+	function BthEvents(){
+		///通讯录
+		$("#phoneBook").on('tap',function(){
+			mui.openWindow({
+				'url':'../user/PhoneBook.html',
+				'id':'PhoneBook',
+			})
+		})
+		
+		//做物种类
+		$("#WorkDescription").on('tap',function(){
+			MedicamentCrops.Crop(function(cb){
+				var result = cb;
+				var Crop = [];
+					var CropList = new mui.PopPicker();
+					for(var i in result){
+						var row = result[i];
+						Crop.push({text:row['ItemName'],value:row['ItemValue']});
+					};
+					CropList.setData(Crop);
+					CropList.show(function(item){
+						$("#WorkDescription").val(item[0]['text']);
+					})
+			});
+		});
+		
+		//获取药剂种类
+		$("#MedicamenType").on('tap',function(){
+			MedicamentCrops.Medicament(function(cb){
+				var result = cb;
+				var Crop = [];
+					var CropList = new mui.PopPicker();
+					for(var i in result){
+						var row = result[i];
+						Crop.push({text:row['ItemName'],value:row['ItemValue']});
+					};
+					CropList.setData(Crop);
+					CropList.show(function(item){
+						$("#MedicamenType").val(item[0]['text']);
+					})
+			});
+		});
+		
+		//绘制任务区域
+		$("#Region").on('tap',function(){
+			mui.openWindow({
+				url:'TaskRegion.html',
+				id:'TaskRegion',
+			});
+		});
+		
+		//创建任务
+		$("#CreatTask").on('tap',function(){
+			if($("#LiaisonType").val()==""){
+				app.toast('用户电话不能为空！');
+				return false;
+			};
+			if($("#Liaison").val()==""){
+				app.toast('用户姓名不能为空！');
+				return false;
+			};
+			if($("#Quantity").val()==""){
+				app.toast('作业亩数不能为空！');
+				return false;
+			};
+			if($("#WorkDescription").val()==""){
+				app.toast('作物种类不能为空！');
+				return false;
+			};
+			if($("#MedicamenType").val()==""){
+				app.toast('药剂种类不能为空！');
+				return false;
+			};
+			if($("#Price").val()==""){
+				app.toast('单价不能为空！');
+				return false;
+			};
+			if($("#Description").val()==""){
+				app.toast('任务名称不能为空！');
+				return false;
+			};
+			if($("#Geocoding").val()==""){
+				app.toast('请输入作业地址！');
+				return false;
+			};
+			
+			var XHX_TaskDistributionEntity = $("form").serializeJSON();
+			XHX_TaskDistributionEntity['Region'] = JSON.stringify(TaskRegion);
+			//console.log(JSON.stringify(XHX_TaskDistributionEntity))
+			if(userInfo.OpenId==5){
+				XHX_TaskDistributionEntity['OrganizeId'] = userInfo.CompanyId;
+			};
+			plus.nativeUI.showWaiting();
+			var option = {
+				api:'/XhxManage/XHX_TaskDistribution/SaveForms3',
+				data:XHX_TaskDistributionEntity,
+				success:function(data){
+					var result = eval("("+data +")");
+					if(result['type']=="1"){
+						app.toast('创建完成');
+						plus.nativeUI.closeWaiting();
+						//创建任务成功之后刷新任务列表
+						//var Task = plus.webview.getWebviewById('Task');
+						//plus.webview.getWebviewById('CreatTask').reload();
+						//mui.fire(Task,'pageflowrefresh');
+						mui.back();
+					}else{
+						app.toast('创建失败');
+						plus.nativeUI.closeWaiting();
+					};
+				},
+				error:function(data){
+					app.toast('创建失败');
+					plus.nativeUI.closeWaiting();
+				}
+			};
+			app.post3_1(option)
+		});
+	};
+	
+	//创建任务管理者(农民管理) CreateTaskEmployerId
+	function CreateTaskEmployerId(){
+		$("#Manager").on('tap',function(){
+			mui.openWindow({
+				url:'../Sstation/UserList.html',
+				id:'UserList'
+			});
+		});
+	};
+	//创建任务承接者(团队承接) CteatTaskUndertaker
+	function CteatTaskUndertaker(){
+		var sendData = {
+			Description:userInfo.CompanyId
+			//Duties:"队长"
+		}; 
+		UseIdGetList.getUserTeamTeamPreson(sendData, function(cb) {
+			//console.log(JSON.stringify(cb))
+				var TeamPreson = new mui.PopPicker();
+				var List = [];
+				for(var i in cb) {
+					var row = cb[i];
+					if(row['UserId'] != userInfo.UserId) {
+						List.push({
+							text: row['UserName'],
+							value: row['UserId'],
+							value1:row['TeamId'],
+						})
+					};
+				};
+				TeamPreson.setData(List);
+				//承接者
+				$("#Undertake").on('tap',function(){
+					TeamPreson.show(function(item) {
+						$("#Undertake").val(item[0]['text']);
+						$("#UndertakerId").val(item[0]['value']);
+						$("#Undertaker").val(item[0]['value']);
+						$("#TeamId").val(item[0]['value1']);
+					});
+				});
+			});
+	};
+	
+	///
+	window.addEventListener('SetCustomer',function(e){
+		var Telephone  = eval("("+e.detail.SetCustomer+")");
+ 		if(Telephone!=null){ 
+ 			$("#Liaison").val(Telephone[0]['realName']); 
+ 			$("#LiaisonType").val(Telephone[0]['phone']); 
+ 		}; 
+	})
+	
+	window.addEventListener('SetRegion',function(e){
+		TaskRegion = e.detail.data;
+		$("#Region").val('绘制完成('+e.detail.Area+'亩)');
+	});
+	//设置任务管理人
+	window.addEventListener('setadmin',function(e){
+		var text1 = e.detail;
+//		console.log(JSON.stringify(text1))
+		$("#Manager").val(text1['text'].substr(0,text1['text'].indexOf('Tel')));
+		$("#ManageId").val(text1['UserId']); 
+		$("#IsBear").val(1);
+	});
+	
+	
+</script>

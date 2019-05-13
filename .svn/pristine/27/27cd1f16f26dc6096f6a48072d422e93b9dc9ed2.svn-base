@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../css/TaskList.css" />
+	</head>
+	<style>
+		html,body,.mui-content{
+			height:100%;
+			width:100%;
+			overflow: hidden;
+		}
+		.Apply {
+			margin-top: -30px;
+		}
+		
+		.Appoint {
+			margin-top: 30px;
+		}
+		
+		.mui-pciker-list>li {
+			background: none;
+		}
+		
+		.equipment {
+			position: relative;
+		}
+		
+		.selection {
+			position: absolute;
+			top: 40px;
+			right: 20px;
+		}
+		
+		.endTask {
+			margin-right: 90px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon mui-pull-right" id="hisTask">历史任务</a>
+			<h1 class="mui-title">我的任务</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+				<div class="mui-row head" style="background: #2b5987 !important;color:white">
+					<div class="mui-col-sm-4 mui-col-xs-4" id="TaskingLen">当前任务 <br/><span>0</span></div>
+					<div class="mui-col-sm-4 mui-col-xs-4" id="TaskEndNU">已作业亩数<br/><span>0</span></div>
+					<div class="mui-col-sm-4 mui-col-xs-4" id="TaskSurplusNu">剩余亩数<br/><span>0</span></div>
+				</div>
+				<!--<li class="mui-table-view-cell mui-media">
+				        <a href="javascript:;">
+				            <img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+				            <div class="mui-media-body">
+				                幸福
+				                <p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+				            </div>
+				        </a>
+				    </li>-->
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var _self = "";
+	var UserInfo = ""; //用户信息
+	app.ready(function() {
+		_self = plus.webview.currentWebview();
+		UserInfo = app.accountInfo('info');
+		
+		getMyTask.TaskDetail();
+		NoData.bgImg('mui-content','../../img/BGIMG.png');
+	});
+
+	///获取当前自己创建或者领取的任务
+	var getMyTask = {
+		_teamId: UserInfo.RoleId,
+		//获取任务列表创建标签
+		TaskDetail: function() {
+			//获取任务列表 
+			UseIdGetList.GetTeamNum({TeamId: UserInfo.RoleId,TeamExamine:"",Examine:"",DeleteMark:0,OrganizeId: (UserInfo.OpenId==5)?UserInfo.CompanyId:""},function(cb){
+				var rows = cb;
+				var TaskLen = 0; //任务数量
+				var TaskEndNU = 0; //已作业亩数
+				var TaskArea = 0; //任务总作业量
+				if(cb != "") {
+					NoData.ClearImg('mui-content');
+					for(var i=0;i<rows.length;i++) {
+						var row = rows[i];
+						var ProjectName = ""; //判断是否有项目名称
+						var onlyTeaskArea = (row['SprayArea']==null)?0:row['SprayArea'];//单个任务的总作业量
+						TaskEndNU+=onlyTeaskArea;    
+						//判断当前任务执行者是否绑定设备
+						var IEMItext = "";
+						if(row['IMEI'] == null) {
+							IEMItext = "绑定设备";
+						} else {
+							IEMItext = "绑定成功";
+						};
+						//判断是否有项目名称
+						if(row['ProjectName'] == null) {
+							ProjectName = row['Description'];
+						} else {
+							ProjectName = row['ProjectName'] + '<span style="font-size:12px"> ' + row['TaskName'] + '</span>';
+						};
+						//单个任务的总作业量
+						var $html = $(
+							'<li class="mui-table-view-cell mui-media" data-index=' + i + ' value=' + row['TaskDistributionId'] + ' pa='+row['RealArea']+' sa='+row['SprayArea']+' pg='+row['SprayQuality']+'>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+							'<div class="mui-media-body font_14">' +
+							'' + ProjectName + '' +
+							//'<p class="mui-ellipsis font_size12">开始时间：<span>'+row['CreateDate']+'</span></p>'+&nbsp;&nbsp;&nbsp;&nbsp;单价：'+row['Price']+'
+							'<p class="mui-ellipsis font_12" >作物种类：<span>' + row['WorkDescription'] + '</span></p>' +
+							'<p class="mui-ellipsis font_12">单价：<span>' + row['Price'] + '</span></p>' +
+							'</div>' +
+							'<span class="mui-badge mui-badge-primary selection   mui-badge-inverted"  data='+row['TaskExecuteId']+'><button type="button" class="mui-btn mui-btn-blue">' + IEMItext + '</button></span>' +
+							'</a>' +
+							'</li>' +
+							'<div class="mui-row" data-index=' + i + '  value=' + row['TaskDistributionId'] + '>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已作业亩数: <span class="font_12">' + onlyTeaskArea + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已评估亩数: <span class="font_12">' + ((row['RealArea']==null)?0:row['RealArea'])+ '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">合格率: <span class="font_12">' + ((row['SprayQuality']==null)?0:row['SprayQuality']) + '%</span></div>' +
+							'</div>'
+						);
+						$html.appendTo($(".mui-table-view"));
+						TaskLen = i;
+						//						
+						//绑定设备开始作业
+						$html.find('.selection').on('tap', function() {
+							var Executeid = $(this).attr('data');
+							getMyTask.getEquipment(Executeid);
+							return false;
+						});
+						//查看任务执行者
+						$html.on('tap', function() {
+							var index = $(this).attr('data-index');
+							var Distribution = $(this).attr("text1");
+							rows[index]['RealArea'] =  $(this).attr('pa');//以评估
+							rows[index]['SprayQuality'] =  $(this).attr('pg');//合格率
+							rows[index]['SprayArea'] =  $(this).attr('sa');//以作业
+							mui.openWindow({
+								url: './TaskExecute.html',
+								id: 'TaskExecute',
+								extras: {
+									TaskDistributionData: rows[index]
+								},
+							});
+							return false;
+						});
+						TaskArea+=row['Quantity'];
+					};
+				};
+				var TaskNO = parseInt(TaskLen) + 1;
+				var TotalSurplusArea = TaskArea - TaskEndNU;
+				//任务数量  ///总共的以作业亩数   ///总共的为作业亩数
+				$("#TaskingLen>span").text(  rows.length );
+				$("#TaskEndNU>span").text(  TaskEndNU.toFixed(2)  );
+				$("#TaskSurplusNu>span").text(  TotalSurplusArea.toFixed(2) );
+			});
+		},
+	};
+	///刷新数据
+	window.addEventListener('pageflowrefresh',function(e){
+		$(".mui-table-view").html('');
+		getMyTask.TaskDetail();
+	});
+</script>
+
+ 
+				
+			

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.min.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.mui-row>div {
+			text-align: left;
+		}
+		
+		.save {
+			margin: 0;
+			position: fixed;
+			bottom: 10px;
+			border-radius: 4px;
+			width: 96%;
+			left: 2%;
+		}
+		
+		.icon {
+			height: 48px;
+			border: none;
+			font-size: 30px;
+			right: 10px;
+			line-height: 30px;
+			color: #6c6c6c;
+		}
+		
+		#List {
+			z-index: -1 !important;
+			padding-bottom: 300px;
+		}
+		
+		#PerTotal>li>.mui-row>div {
+			text-align: center !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">账户充值</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label class="Required">充值账户</label>
+					<input type="text" class="mui-input-clear" placeholder="请选择" readonly="readonly" id="UserName">
+					<span class="icon iconfont" id="User">&#xe731;</span>
+				</div>
+				<div class="mui-input-row">
+					<label class="Required">充值金额</label>
+
+					<input type="number" class="mui-input-clear" placeholder="请输入" id="Money">
+
+					<!--<input type="number" class="mui-input-clear" placeholder="请输入" id="Money" onkeyup="if(/\D/.test(this.value)){app.toast('只能输入数字');this.value='';}">-->
+				</div>
+				<div class="mui-input-row">
+					<label class="Required">充值时间</label>
+					<input type="text" class="mui-input-clear" id="Description">
+				</div>
+			</form>
+			<ul class="mui-table-view" id="PerTotal"></ul>
+			<ul class="mui-table-view mui-scroll" id="List">
+			</ul>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block save">确认</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, s, end, send, NowTime
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		Finance.Taps();
+		NowTime = new Date().format().substr(0, 10);
+		$("#Description").val(NowTime);
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	var Finance = {
+		//添加日期查询功能
+		search: function() {
+			app.contentHTML(".mui-input-group");
+			$(".mui-input-group").css({
+				'margin-top': '6px'
+			})
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				end = $("#SrarchEnd").val();
+				if(s == "" && end == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				send = {
+					"page": 1,
+					"rows": 20,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						StartTime: ((s) ? s : '1970-01-01'),
+						EndTime: ((end) ? end : '2099-09-09'),
+						UserID: sendData
+					})
+				};
+				plus.nativeUI.showWaiting();
+				Finance.UserFinanceList(send);
+			});
+		},
+		//获取当前用户的充值记录
+		UserFinanceList: function(send) {
+			Backstage.FinanceList(send, function(cb) {
+				$("#List").html('');
+				$("#PerTotal").html('');
+
+				var income = 0;
+				var outcome = 0;
+				var rows = JSON.parse(cb)['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+
+					if(row['PayMoney'] == null) {
+						type = row['IncomeItem'];
+						TMoney = '+' + row['IncomeMoney'];
+						income += row['IncomeMoney'];
+					} else {
+						type = row['PayItem'];
+						TMoney = '-' + row['PayMoney'];
+						outcome += row['PayMoney'];
+					};
+
+					if(row['IncomeMoney'] != null && row['PayMoney'] == null) {
+						type = row['IncomeItem'];
+						TMoney = '+' + row['IncomeMoney'];
+					}
+
+					if(row['PayMoney'] != null && row['IncomeMoney'] == null) {
+						type = row['PayItem'];
+						TMoney = '-' + row['PayMoney'];
+					}
+
+					var $html = $(
+						'<li class="mui-table-view-cell list">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' +
+						'<span class="Name" value=' + rows['UserID'] + '></span><span class="Color717171 font_12">(' + type + ')</span>' +
+						'</div>' +
+						'<div class="mui-row">' +
+						'<div class="mui-col-sm-6 mui-col-xs-6 font_12">' +
+						'费用：<span class="Color717171">' + TMoney + '元</span>' +
+						'</div>' +
+						'<div class="mui-col-sm-6 mui-col-xs-6 font_12" style="text-align: right;">' +
+						'余额：<span class="Color717171">' + row['AccountMoney'] + '</span>' +
+						'</div>' +
+						'</div>' +
+						'</li>'
+					);
+					$html.appendTo($("#List"));
+				};
+				//计算总共支出，收入
+				var $html1 = $(
+					'<li class="mui-table-view-cell list font_12">' +
+					'<div class="mui-row">' +
+					'<div class="mui-col-sm-6 mui-col-xs-6">收入（元）：' + income + '</div>' +
+					'<div class="mui-col-sm-6 mui-col-xs-6">支出（元）：' + outcome + '</div>' +
+					'</div>' +
+					'</li>'
+				);
+				$html1.appendTo($("#PerTotal"));
+			});
+		},
+		Taps: function() {
+			//验证输入是否为正整数或正整数保留两位小数
+			$("#Money").on('keyup', function() {
+				var inputVal = $("#Money").val();
+//				var regu = /^(\+)?\d+(\.\d+)?$/;
+				var regu = /^(\+)?\d+(\.\d{1,2})?$/;
+				if(regu.test(inputVal)){
+					
+				}else{
+					inputVal = $("#Money").val('')
+				}
+			    });
+
+			//选择用户
+			$("#User").on('tap', function() {
+				mui.openWindow({
+					url: './UserList.html',
+					id: 'BUserList'
+				});
+			});
+			//选择开始时间
+			$("#Description").on('tap', function() {
+				var epicker = new mui.DtPicker({
+					type: "date",
+					beginDate: new Date(2017, 06, 01), ///$("#Description").val()这个是默认时间，随后切换
+					endDate: new Date(2020, 11, 30)
+				});
+				epicker.show(function(item) {
+					$('#Description').val(item['text']);
+				});
+			});
+			//确认充值
+			$(".save").on('tap', function() { //userifoid,money
+				if($("#UserName").val() == "") {
+					app.toast('请选择充值用户');
+					return false;
+				};
+				if($("#Money").val() == "") {
+					app.toast('请输入充值金额');
+					return false;
+				};
+				//请选择充值时间
+				if($("#Description").val() == "") {
+					app.toast('请选择充值时间');
+					return false;
+				};
+				var send = {
+					userinfoid: sendData,
+					money: $("#Money").val(),
+					time: $('#Description').val()
+				};
+				//提醒再次确认
+				dialog.Dialogbox('提示', '是否确认充值？', function(cb) {
+					if(cb == 1) {
+						LeaseInterface.Reacharge(send, function(cb) {
+							if(cb['type'] == 1) {
+								app.toast('充值成功！');
+								var BFinance = plus.webview.getWebviewById('BFinance');
+								mui.fire(BFinance, 'pageflowerfresh');
+								dialog.CloseLogBox();
+								mui.back();
+							} else {
+								app.toast('充值失败！');
+							};
+						});
+					} else if(cb == 0) {
+						dialog.CloseLogBox();
+					} else {
+						app.toast('已取消');
+					};
+				});
+			});
+		},
+	};
+
+	window.addEventListener('pageflowerfresh', function(e) {
+		var text = e.detail.text.substring(0, e.detail.text.indexOf('T'));
+		sendData = e.detail.UserId;
+		$("#UserName").val(text);
+		Finance.search();
+		send = {
+			"page": 1,
+			"rows": 20,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				StartTime: ((s) ? s : '1970-01-01'),
+				EndTime: ((end) ? end : '2099-09-09'),
+				UserID: sendData
+			})
+		};
+		Finance.UserFinanceList(send);
+	});
+</script>

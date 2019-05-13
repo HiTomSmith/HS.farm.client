@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/Homep.css" />
+	</head>
+	<style>
+		.mengbi {
+			width: 100%;
+			height: 100%;
+			background: #747474;
+			position: fixed;
+			top: 0;
+			z-index: 11101;
+			opacity: 0.8;
+			display: none;
+		}
+		
+		.headlines {
+			height: 60px;
+			background: white;
+			padding: 4px 0px;
+			overflow: hidden;
+		}
+		
+		.headlines>div {
+			height: 30px;
+			float: left;
+			line-height: 30px;
+			border-radius: 4px;
+			margin: 10px 0px;
+		}
+		
+		.headlines>div:first-child {
+			padding-left: 10px;
+			color: #f36;
+		}
+		
+		.headlines>div:nth-child(2) {
+			width: 60px;
+			text-align: center;
+			background: #15AE3F;
+			color: white;
+			margin-left: 10px;
+		}
+		
+		#UDmessage {
+			position: relative;
+			left: 25px;
+			height: 30px;
+			width: 55%;
+			overflow: hidden;
+		}
+		
+		#UDmessage>ul {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			z-index: 999;
+			top: -14px;
+		}
+		
+		#UDmessage>ul>li {
+			list-style: none;
+		}
+		/*两条滑动*/
+		
+		.Tslider2 {
+			animation: change 5s ease;
+			animation-iteration-count: infinite;
+			animation-fill-mode: forwards;
+		}
+		
+		@keyframes change {
+			0% {
+				top: -14px;
+			}
+			50% {
+				top: -46px;
+			}
+			100% {
+				top: -14px;
+			}
+		}
+		/*三条滑动*/
+		
+		.Tslider3 {
+			animation: change3 5s ease;
+			animation-iteration-count: infinite;
+			animation-fill-mode: forwards;
+		}
+		
+		@keyframes change3 {
+			0% {
+				top: -14px;
+			}
+			50% {
+				top: -46px;
+			}
+			75% {
+				top: -78px;
+			}
+			100% {
+				top: -14px;
+			}
+		}
+		/*4条滑动*/
+		
+		.Tslider4 {
+			animation: change4 10s ease;
+			animation-iteration-count: infinite;
+			animation-fill-mode: forwards;
+		}
+		
+		@keyframes change4 {
+			0% {
+				top: -14px;
+			}
+			25% {
+				top: -46px;
+			}
+			50% {
+				top: -78px;
+			}
+			75% {
+				top: -110px;
+			}
+			100% {
+				top: -14px;
+			}
+		}
+		
+		.type {
+			float: right;
+			position: absolute;
+			right: 20px;
+			top: 30px;
+		}
+		
+		.bottom {
+			position: relative;
+			z-index: 10000;
+			margin-bottom: 10px;
+			height: 400px;
+			overflow-y: scroll;
+			display: none;
+		}
+		
+		#message {
+			height: 100%;
+			overflow-y: scroll;
+		}
+		/*根据情况加载图标*/
+		
+		#ManufactorOrder,
+		#Order,
+		#GetUav,
+		#Purchase,
+		#BrandMan,
+		#MedicamentMan,
+		#Battery,
+		#BDevidedOrder,
+		#partsOrder,
+		#partsPurchase {
+			display: none;
+		}
+		
+	</style>
+
+	<body>
+		<div class="mui-content">
+			<div class="top">
+				<div id="slider" class="mui-slider">
+					<img src="../../img/new-fileWathing.png" alt="" style="width:100%;position: absolute;z-index: -1;height:158px" />
+				</div>
+			</div>
+			<div class="mui-row">
+				<div class="mui-col-sm-3 mui-col-xs-3" id="ManufactorOrder">
+					<div class="Four_1">
+						<span class="mui-icon iconfont">&#xe780;</span>
+					</div>
+					<span class="text">订单管理</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="Order">
+					<div class="Four_2">
+						<span class="mui-icon iconfont">&#xe769;</span>
+					</div>
+					<span class="text">药剂订单</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="Purchase">
+					<div class="Four_3">
+						<span class="mui-icon iconfont">&#xe77f;</span>
+					</div>
+					<span class="text">药剂采购</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="GetUav">
+					<div class="Four_4">
+						<span class="mui-icon iconfont">&#xe6de;</span>
+					</div>
+					<span class="text">作业数据</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="BrandMan">
+					<div class="Four_5">
+						<span class="mui-icon iconfont">&#xe780;</span>
+					</div>
+					<span class="text">品牌管理</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="MedicamentMan">
+					<div class="Four_6">
+						<span class="mui-icon iconfont">&#xe780;</span>
+					</div>
+					<span class="text">药剂管理</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="Battery">
+					<div style="background: #FF6666;">
+						<span class="mui-icon iconfont">&#xe6fa;</span>
+					</div>
+					<span class="text">电池分期</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="BDevidedOrder">
+					<div style="background: #007799;">
+						<span class="mui-icon iconfont">&#xe6fd;</span>
+					</div>
+					<span class="text">分期订单</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="partsPurchase">
+					<div style="background:#6E8DF1">
+						<span class="mui-icon iconfont">&#xe6fd;</span>
+					</div>
+					<span class="text">配件采购</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3" id="partsOrder">
+					<div style="background:#6E8DF1">
+						<span class="mui-icon iconfont">&#xe769;</span>
+					</div>
+					<span class="text">配件订单</span>
+				</div>
+			</div>
+			<div class="bottom">
+				<div class="title"><span></span> &nbsp;&nbsp;任务</div>
+				<ul class="mui-table-view " id="message">
+
+				</ul>
+			</div>
+			<div class="mengbi"></div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var userInfo = null;
+	var status = "close";
+	var page = null;
+	var _teamId = "";
+	var messageLen = 0;
+	app.ready(function() {
+		mui("#slider").slider({
+			interval: 2000
+		});
+		var _self, _next, _index, timer, Homep
+		_self = plus.webview.currentWebview();
+		_next = plus.webview.getWebviewById("Lease");
+		index = plus.webview.getWebviewById("page");
+		page = plus.webview.getWebviewById('page');
+		Homep = plus.webview.getWebviewById('Homep');
+		userInfo = app.accountInfo('info');
+		_teamId = userInfo.RoleId;
+		getAppMessage();
+		Tap();
+	});
+
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	///获取消息列表
+	function getAppMessage() {
+		var option = {
+			api: '/Login/NewsImgs',
+			success: function(data) {
+				//message
+				var cb = JSON.parse(data);
+				var result = JSON.parse(cb['message']);
+				var str = [];
+				var sort = [];
+				for(var i in result) {
+					var row = result[i];
+					var topTitle_news = "";
+					if(row.Img2 == null) {
+						str.push(i);
+						if(str.length <= 2) {
+							if(row.Title.length >= 20) {
+								topTitle_news = row.Title.substr(0, 15) + '...'
+							} else {
+								topTitle_news = row.Title;
+							}
+							var $html = $(
+								'<li class="mui-table-view-cell mui-media" data-index=' + i + '>						' +
+								'<a href="javascript:;">															' +
+								'<img class="mui-media-object mui-pull-left" src="' + a + '' + row.Img + '">		' +
+								'<div class="mui-media-body font_14">														' +
+								'' + topTitle_news + '																	' +
+								'<p class="mui-ellipsis font_12">' + row.Title2 + '</p>										' +
+								'<p class="mui-ellipsis font_12">' + row.CreateDate.substring(0, 10) + '</p>						' +
+								'</div>																				' +
+								'</a>																				' +
+								'</li>'
+							);
+							//$html.appendTo($("#message"));
+							//							$html.on('tap', function() {
+							//								var index = $(this).attr('data-index');
+							//								Href_close(index, result);
+							//							});
+						}
+					} else {
+						//这里的消息是小图
+						//向轮播图里添加图片
+						sort.push(i);
+					};
+				};				
+				//mui-slider
+				var $html_lop = $(
+					'<div class="mui-slider-group mui-slider-loop loop"><div class="mui-slider-item  mui-slider-item-duplicate"><a href="#"><img src="' + app.his_root + result[sort[2]]['Img2'] + '"/></a></div>' +
+					'<div class="mui-slider-item loop_img"><a href="#"><img src="' + app.his_root + result[sort[0]]['Img2'] + '"/><span class="newsd"  style="display:none">' + result[sort[0]]['NewsId'] + '</span></a></div>' +
+					'<div class="mui-slider-item loop_img"><a href="#"><img src="' + app.his_root + result[sort[1]]['Img2'] + '"/><span class="newsd"  style="display:none">' + result[sort[1]]['NewsId'] + '</span></a></div>' +
+					'<div class="mui-slider-item loop_img"><a href="#"><img src="' + app.his_root + result[sort[2]]['Img2'] + ' "/><span class="newsd"  style="display:none">' + result[sort[2]]['NewsId'] + '</span></a></div>' +
+					'<div class="mui-slider-item  mui-slider-item-duplicate loop_img"><a href="#"><img src="' + app.his_root + result[sort[0]]['Img2'] + '"/></a></div></div>'
+				);
+				$html_lop.appendTo($('.mui-slider'));
+				mui("#slider").slider({
+					interval: 2000
+				});
+				$('.loop_img').each(function(k) {
+					$('.loop_img').eq(k).on('tap', function() {
+						Href_close(k, result[k]['Title3'], $('.newsd').eq(k).html());
+					});
+				});
+			},
+		};
+		app.post3_4(option)
+	};
+
+	function Href_close(index, result, newsd) {
+		var nwsid = "";
+		var backButtonPress = 0;
+		//判断如果有微信链接地址跳转，如果没有则传主键打开内部页面
+		var userMessage = "";
+		//		if(newsd == undefined) {
+		//			for(var j in result) {
+		//				var row = result[j];
+		//				if(result[j]['title3'] == null || result[j]['title3'] == "") {
+		//					userMessage = 'html/service/bannerText.html';
+		//					nwsid = result[j]['newsId'];
+		//				} else {
+		//					userMessage = result[index]['title3'];
+		//				};
+		//			};
+		//		} else {
+		//			userMessage = result[index]['title3'];
+		//		};
+		mui.openWindow({
+			url: '../Message/External.html', //userMessage,
+			id: 'External',
+			extras: {
+				NEwsId: nwsid,
+				Href: result
+			},
+		});
+	};
+
+	//获取web端发布任务
+	function getWebTaskDistributionId() {
+		$('#message').html('');
+		var sendData = {
+			"page": 1,
+			"rows": 4,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				IsBear: 0,
+				Examine: 1
+			})
+		};
+		UseIdGetName.getTaskDistributionTask(sendData, function(cb) {
+			var rows = cb['rows'];
+			if(cb['rows'][0]) {
+				NoData.ClearImg('bottom');
+			};
+			message += cb.length;
+			var sort = [];
+			for(var i in rows) {
+				var row = rows[i];
+				sort.push(i);
+				if(sort.length < 5) {
+					var $hmtl = $(
+						'<li class="mui-table-view-cell mui-media TaskId positionRelative" data-index=' + i + ' Undertaker=' + row['Undertaker'] + ' TaskBtrid=' + row['TaskDistributionId'] + '>' +
+						'<a href="javascript:;">' +
+						'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+						'<div class="mui-media-body font_14">' +
+						'任务：' + row['Description'] + '' +
+						'<p class="mui-ellipsis">作业描述:' + ((row['WorkDescription'] == null) ? '暂无' : row['WorkDescription']) + '</p>' +
+						//'<p class="mui-ellipsis">任务量：' + row['Quantity'] + '亩 &nbsp; &nbsp;单价：' + row['Price'] + '元</p>' +
+						'<p class="mui-ellipsis">发布时间:' + row['CreateDate'].substr(0, 20) + '</p>' +
+						'</div>' +
+						'<div class="type"></div>' +
+						'</a>' +
+						'</li>'
+					);
+					$hmtl.appendTo($('#message'));
+					//查看任务详情
+					$hmtl.on('tap', function() {
+						var index = $(this).attr('data-index');
+						mui.openWindow({
+							url: '../Task/TaskPositionDetials.html',
+							id: 'TaskPositionDetials',
+							extras: {
+								data: rows[index],
+								type: 'WebTask'
+							}
+						});
+					});
+				};
+			};
+
+		});
+	};
+
+	function Tap() {
+		var menuType = true;
+		//关闭册页
+		$(".mengbi").on('tap', function() {
+			clearTimeout(run);
+			if(menuType) {
+				closeOrOpenWindow(page);
+				menuType = false;
+			};
+			var run = setTimeout(function() {
+				menuType = true;
+			}, 2000)
+		});
+		//判断厂家和服务站的区别		
+		if(userInfo['OpenId'] == 9) {
+			$("#ManufactorOrder,#BrandMan,#MedicamentMan").show();
+		} else if(userInfo['OpenId'] == 5) {
+			$(".bottom,#Order,#GetUav,#Purchase,#Battery,#BDevidedOrder,#partsPurchase,#partsOrder").show();
+			getWebTaskDistributionId();
+		} else if(userInfo['OpenId'] == 4) {
+			$(".bottom,#Order,#GetUav,#Purchase,#Battery,#BDevidedOrder").show();
+			getWebTaskDistributionId();
+		};
+		//商品
+		$("#Commodity").on('tap', function() {
+			mui.openWindow({
+				url: '../Commodity/Commodity.html',
+				id: 'Commodity'
+			});
+		});
+		//订单
+		$("#Order").on('tap', function() {
+			mui.openWindow({
+				url: '../Medicament/Order.html',
+				id: 'MedOrder'
+			});
+		});
+		//采购
+		$("#Purchase").on('tap', function() {
+			mui.openWindow({
+				url: '../Medicament/Purchase.html',
+				id: 'Purchase'
+			});
+		});
+
+		//作业数据
+		$("#GetUav").on('tap', function() {
+			mui.openWindow({
+				url: '../HxMap/UavDistribution.html',
+				id: 'GetUav'
+			});
+		});
+
+		//订单管理
+		$("#ManufactorOrder").on("tap", function() {
+			mui.openWindow({
+				url: '../Manufactor/ManuOrder.html',
+				id: 'ManuOrder'
+			});
+		});
+		//品牌管理
+		$("#BrandMan").on("tap", function() {
+			mui.openWindow({
+				url: '../Medicament/BrandManage.html',
+				id: 'BrandManage'
+			});
+		});
+		//药剂管理
+		$("#MedicamentMan").on("tap", function() {
+			mui.openWindow({
+				url: '../Medicament/MedicamentManage.html',
+				id: 'MedicamentManage'
+			});
+		});
+		//电池分期
+		$("#Battery").on("tap", function() {
+			mui.openWindow({
+				url: '../Battery/battery.html',
+				id: 'battery'
+			});
+		});
+
+		//电池分期订单
+		$("#BDevidedOrder").on("tap", function() {
+			mui.openWindow({
+				url: '../Battery/batteryOrder.html',
+				id: 'batteryOrder'
+			});
+		});
+		
+		//配件采购
+		$("#partsPurchase").on("tap", function() {
+			mui.openWindow({
+				url: '../Parts/PartsPurchase.html',
+				id: 'PartsPurchase'
+			});
+		})
+		//配件订单
+		$("#partsOrder").on("tap", function() {
+			mui.openWindow({
+				url: '../Parts/PartsOrder.html',
+				id: 'PartsOrder'
+			});
+		})
+		//点击参与团队动画
+		$(".bottom").on('swipeup', function() {
+			var off = $(".bottom").offset().top;
+			var len = $("#message>li").length;
+			if(off > 100 && len > 0) {
+				$(".bottom").animate({
+					top: -(off + 6) + 'px',
+				}).css({
+					'background-position': 'center 30%',
+				});
+			};
+		});
+		$(".bottom").on('swipedown ', function() {
+			$(".bottom").animate({
+				top: "0px",
+			}).css({
+				'background-position': 'center 30%',
+			});
+		})
+
+	};
+
+	window.addEventListener('slider', function(e) {
+		status = event.detail.slider;
+	});
+</script>

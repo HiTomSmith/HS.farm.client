@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link href="../css/hszb.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/Page.css" />
+	</head>
+	<style>
+		.mui-scroll,
+		.mui-content {
+			height: calc(100% - 15px);
+		}
+		
+		.mengbi {
+			width: 100%;
+			height: 100%;
+			background: white;
+			/*#747474*/
+			position: fixed;
+			top: 0;
+			z-index: 10000;
+			display: none;
+		}
+		
+		.mengbiclose {
+			position: absolute;
+			z-index: 100000;
+			bottom: 30px;
+			left: calc((100% - 40px) /2);
+			display: none;
+		}
+		
+		.mengbiclose>span {
+			font-size: 40px !important;
+			color: #FEAA64;
+			transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			/* IE 9 */
+			-moz-transform: rotate(45deg);
+			/* Firefox */
+			-webkit-transform: rotate(45deg);
+			/* Safari 和 Chrome */
+			-o-transform: rotate(45deg);
+		}
+		
+		#Mores>.mui-row {
+			position: absolute;
+			z-index: 100000;
+			bottom: 170px;
+			width: 100%;
+			display: none;
+		}
+		
+		#Mores>.mui-row>div {
+			text-align: center;
+		}
+		
+		.Four_1 {
+			width: 46px;
+			height: 46px;
+			border-radius: 50%;
+			margin: 0 auto;
+			margin-bottom: 20px;
+		}
+		
+		.mui-row span {
+			color: #8f8f94;
+		}
+		
+		.Four_1>span {
+			margin-top: 10px;
+			font-size: 26px;
+			color: white;
+		}
+		
+		#NewTask>.Four_1 {
+			background: #FF6666;
+		}
+		
+		#TaskAdmin>.Four_1 {
+			background: #58C3F1;
+		}
+		
+		#NewLease>.Four_1 {
+			background: #e6507b;
+		}
+		
+		#MyLease>.Four_1 {
+			background: #fea356;
+		}
+		
+		#Pjdd>.Four_1 {
+			background: #189DEF;
+		}
+		
+		#partsPurchase>.Four_1 {
+			background: #4474F0;
+		}
+		#WorkData>.Four_1 {
+			background: #336699;
+		}
+		.btnsShield {
+			position: fixed;
+			width: 100%;
+			height: 80px;
+			z-index: 100;
+			opacity: 0.8;
+			bottom: 0;
+			background: #747474;
+			display: none;
+		}
+	</style>
+
+	<body>
+
+		<!-- 主页面标题 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon iconfont  mui-pull-right" id="TwoCode" style="background: #15AE3F;">&#xe751;</a>
+			<a class="mui-icon iconfont  mui-pull-left" id="Sideslip" style="background: #15AE3F;">&#xe73d;</a>
+			<h1 class="mui-title" style="background: #15AE3F;">主页</h1>
+		</header>
+
+		<div class="mui-content">
+			<nav class="mui-bar mui-bar-tab" id="nav">
+				<a class="mui-tab-item mui-active" value="./PageChildren/Homep.html" id="Homep">
+					<span class="mui-icon iconfont">&#xe71c;</span>
+					<span class="mui-tab-label">首页</span>
+				</a>
+				<a class="mui-tab-item" value="./PageChildren/Lease.html" id="Lease">
+					<span class="mui-icon iconfont">&#xe756;</span>
+					<span class="mui-tab-label">租赁</span>
+				</a>
+				<a class="mui-tab-item" value="./PageChildren/Draw.html" id="More">
+					<img src="../img/center.png" alt="" />
+					<span class="mui-tab-label Mouse font_12">更多</span>
+				</a>
+				<a class="mui-tab-item" value="./PageChildren/Task.html" id="Task">
+					<span class="mui-icon iconfont">&#xe77b;</span>
+					<span class="mui-tab-label">团队</span>
+				</a>
+				<a class="mui-tab-item" value="./PageChildren/User.html" id="User">
+					<span class="mui-icon iconfont">&#xe72e;</span>
+					<span class="mui-tab-label">地块</span>
+				</a>
+			</nav>
+			<div class="mengbi">
+
+			</div>
+			<div id="Mores">
+				<div class="mui-row">
+					<div class="mui-col-sm-3 mui-col-xs-3" id="NewTask">
+						<div class="Four_1">
+							<span class="mui-icon iconfont">&#xe6fd;</span>
+						</div>
+						<span class="text font_14">新建任务</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="TaskAdmin">
+						<div class="Four_1">
+							<span class="mui-icon iconfont">&#xe77b;</span>
+						</div>
+						<span class="text font_14">任务管理</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="NewLease">
+						<div class="Four_1">
+							<span class="mui-icon iconfont">&#xe756;</span>
+						</div>
+						<span class="text font_14">新机租赁</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="MyLease">
+						<div class="Four_1">
+							<span class="mui-icon iconfont">&#xe6de;</span>
+						</div>
+						<span class="text font_14">我的订单</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="Pjdd" style="margin-top: 15px;">
+						<div class="Four_1">
+							<span class="mui-icon iconfont">&#xe6de;</span>
+						</div>
+						<span class="text font_14">配件订单</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="partsPurchase" style="margin-top: 15px;">
+						<div class="Four_1">
+							<span class="mui-icon iconfont">&#xe6de;</span>
+						</div>
+						<span class="text font_14">配件采购</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="WorkData" style="margin-top: 15px;">
+						<div class="Four_1">
+							<span class="mui-icon iconfont">&#xe6de;</span> 
+						</div>
+						<span class="text font_14">作业数据</span>
+					</div>
+				</div>
+				<div class="mengbiclose">
+					<span class="mui-icon iconfont cls">&#xe6e0;</span>
+				</div>
+
+			</div>
+			<div class="btnsShield"></div>
+		</div>
+	</body>
+
+</html>
+<script src="../js/mui.min.js"></script>
+<script src="../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script src="../js/mui.enterfocus.js"></script>
+<script src="../js/jquery-2.1.4.min.js"></script>
+<script src="../js/jquery.serialize-json.js"></script>
+<script src="../js/validator.js"></script>
+<script src="../js/hx.functor.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/data-unit.js"></script>
+<script src="../js/setData.js"></script>
+<script>
+	function account() {
+		//4 嗨森植保 5 服务站 6 服务站飞手，队长,7农民,8后天管理人员 9 厂家
+		if(user['OpenId'] == 6) { //服务站飞手
+			mui.init({
+				//swipeBack: false,
+				gestureConfig: {
+					swipe: true
+				},
+				subpages: [{
+					url: './PageChildren/Task.html', //子页面HTML地址，支持本地地址和网络地址
+					id: 'Task', //子页面标志
+					styles: {
+						width: '100%',
+						left: "0%",
+						bottom: '0px', //子页面底部位置
+						top: "44px",
+					}
+				}]
+			});
+		} else if(user['OpenId'] == 7 || user['OpenId'] == null) { //服务站
+			mui.init({
+				//swipeBack: false,
+				gestureConfig: {
+					swipe: true
+				},
+				subpages: [{
+					url: './PageChildren/User.html', //子页面HTML地址，支持本地地址和网络地址
+					id: 'Task', //子页面标志
+					styles: {
+						width: '100%',
+						left: "0%",
+						bottom: '0px', //子页面底部位置
+						top: "44px",
+					}
+				}]
+			});
+		} else if(user['OpenId'] == 9) { //9厂家
+			mui.init({
+				//swipeBack: false,
+				gestureConfig: {
+					swipe: true
+				},
+				subpages: [{
+					url: './PageChildren/Homep.html', //子页面HTML地址，支持本地地址和网络地址
+					id: 'Task', //子页面标志
+					styles: {
+						width: '100%',
+						left: "0%",
+						bottom: '0px', //子页面底部位置
+						top: "44px",
+					}
+				}]
+			});
+		} else if(user['OpenId'] == 5 || user['OpenId'] == 4 ||user['OpenId'] == 15) { //
+			mui.init({
+				//swipeBack: false,
+				gestureConfig: {
+					swipe: true
+				},
+				subpages: [{
+						url: './PageChildren/HomeSever2.html', //子页面HTML地址，支持本地地址和网络地址
+						id: 'Homep', //子页面标志
+						styles: {
+							bottom: '70px', //子页面底部位置
+							width: '100%',
+							top: "44px",
+						}
+					},
+					{
+						url: './PageChildren/Lease.html', //子页面HTML地址，支持本地地址和网络地址
+						id: 'Lease', //子页面标志
+						styles: {
+							width: '100%',
+							left: "100%",
+							bottom: '70px', //子页面底部位置
+							top: "44px",
+						}
+					},
+					{
+						url: './PageChildren/Task.html', //子页面HTML地址，支持本地地址和网络地址
+						id: 'Task', //子页面标志
+						styles: {
+							width: '100%',
+							left: "300%",
+							bottom: '70px', //子页面底部位置
+							top: "44px",
+						}
+					},
+					{
+						url: './PageChildren/User.html', //子页面HTML地址，支持本地地址和网络地址
+						id: 'User', //子页面标志
+						styles: {
+							width: '100%',
+							left: "400%",
+							bottom: '70px', //子页面底部位置
+							top: "44px",
+						}
+					},
+
+				]
+			});
+		} else if(user['OpenId'] == 8) { //后台管理人员
+			mui.init({
+				//swipeBack: false,
+				gestureConfig: {
+					swipe: true
+				},
+				subpages: [{
+					url: './Backstage/Bpage.html', //子页面HTML地址，支持本地地址和网络地址
+					id: 'Bpage', //子页面标志
+					styles: {
+						width: '100%',
+						left: "0%",
+						bottom: '0px', //子页面底部位置
+						top: "44px",
+					}
+				}]
+			});
+		} else if(user['OpenId'] > 9) { //后台管理人员
+			mui.init({
+				//swipeBack: false,
+				gestureConfig: {
+					swipe: true
+				},
+				subpages: [{
+					url: './Backstage/Bpage.html', //子页面HTML地址，支持本地地址和网络地址
+					id: 'Bpage', //子页面标志
+					styles: {
+						width: '100%',
+						left: "0%",
+						bottom: '0px', //子页面底部位置
+						top: "44px",
+					}
+				}]
+			});
+		};
+		CreateMenu();
+		ResetBack();
+		BtnTapEvents();
+
+		//暂时屏蔽
+		IsUserId(user);
+	};
+
+	var user
+	app.ready(function() {
+		user = app.accountInfo('info');
+		//区分帐号信息
+		account();
+		getAddress();
+//		closeMore();
+	})
+
+	//点击事件
+	function BtnTapEvents() {
+		$('#Homep').bind('tap', function() {
+			changSub(1);
+			$(".mui-title").text('首页');
+			$('#Homep').find('.iconfont').html('&#xe71c;');
+			$('#Lease').find('.iconfont').html('&#xe756;');
+			$('#Task').find('.iconfont').html('&#xe77b;');
+			$('#User').find('.iconfont').html('&#xe72e;');
+		});
+		$('#Lease').bind('tap', function() {
+			changSub(2);
+			$(".mui-title").text('租赁');
+			$('#Lease').find('.iconfont').html('&#xe755;');
+			$('#Homep').find('.iconfont').html('&#xe71d;');
+			$('#Task').find('.iconfont').html('&#xe77b;');
+			$('#User').find('.iconfont').html('&#xe72e;');
+		});
+		//$('#Draw').on('tap',function(){changSub(3)});
+		$('#Task').bind('tap', function() {
+			changSub(3);
+			$(".mui-title").text('团队');
+			$('#Task').find('.iconfont').html('&#xe77a;');
+			$('#Lease').find('.iconfont').html('&#xe756;');
+			$('#Homep').find('.iconfont').html('&#xe71d;');
+			$('#User').find('.iconfont').html('&#xe72e;');
+		});
+		$("#User").bind('tap', function() {
+			changSub(4);
+			$(".mui-title").text('地块');
+			$('#User').find('.iconfont').html('&#xe72d;');
+			$('#Task').find('.iconfont').html('&#xe77b;');
+			$('#Lease').find('.iconfont').html('&#xe756;');
+			$('#Homep').find('.iconfont').html('&#xe71d;');
+		});
+		//////扫一扫
+		$("#TwoCode").on('tap', function() {
+			mui.openWindow({
+				url: 'TwoCode/TwoCode.html',
+				id: 'TwoCode',
+			});
+		});
+
+		/////更多里的按钮
+		/////新建任务
+		$("#NewTask").on('tap', function() {
+			mui.openWindow({
+				url: 'Task/CreatTask.html',
+				id: 'CreatTask',
+			});
+		});
+		//////任务管理
+		$("#TaskAdmin").on('tap', function() {
+			mui.openWindow({
+				url: 'Task/TaskList.html',
+				id: 'TaskList',
+			});
+		});
+		/////新机租赁
+		$("#NewLease").on('tap', function() {
+			mui.openWindow({
+				url: 'Lease/NewLease.html',
+				id: 'NewLease',
+			});
+		}); 
+		/////我的订单
+		$("#MyLease").on('tap', function() {
+			mui.openWindow({
+				url: 'Lease/LeaseList.html',
+				id: 'LeaseList',
+			});
+		});
+		//更多
+		$("#More").on('tap', function() {
+			openMore();
+		});
+		//配件订单
+		$("#Pjdd").on('tap', function() {
+			mui.openWindow({
+				url: 'Parts/PartsOrder.html',
+				id: 'PartsOrder',
+			});
+		});
+
+		//配件采购
+		$("#partsPurchase").on('tap', function() {
+			mui.openWindow({
+				url: 'Parts/PartsPurchase.html',
+				id: 'PartsPurchase'
+			});
+		});
+		//作业数据
+		$("#WorkData").on('tap', function() {
+			mui.openWindow({
+				url: 'HxMap/UavDistribution.html',
+				id: 'UavDistribution'
+			});
+		});
+		//关闭更多
+		$(".mengbiclose").on('tap', function() {
+			closeMore();
+		});
+	};
+
+	function closeMore() {
+		var Homep = plus.webview.getWebviewById('Homep');
+		var Lease = plus.webview.getWebviewById('Lease');
+		var Task = plus.webview.getWebviewById('Task');
+		var User = plus.webview.getWebviewById('User');
+		Homep.show();
+		Lease.show();
+		Task.show();
+		User.show();
+		$(".mengbi, .mengbiclose,#Mores>.mui-row").fadeOut('slow');
+	};
+
+	function openMore() {
+		var Homep = plus.webview.getWebviewById('Homep');
+		var Lease = plus.webview.getWebviewById('Lease');
+		var Task = plus.webview.getWebviewById('Task');
+		var User = plus.webview.getWebviewById('User');
+		$(".mengbi,.mengbiclose,#Mores>.mui-row").fadeIn('slow');
+		Homep.hide();
+		Lease.hide();
+		Task.hide();
+		User.hide();
+	};
+
+	//页面切换 
+	function changSub(index, html) {
+		console.log(index)
+		var Homep = GetWebViewObj("Homep");
+		var Lease = GetWebViewObj("Lease");
+		var Draw = GetWebViewObj("Draw");
+		var Task = GetWebViewObj("Task");
+		var User = GetWebViewObj("User");
+
+		Homep.setStyle({
+			left: (index - 1) * 100 + "%"
+		});
+		console.log(JSON.stringify(Homep.getStyle()))
+		Lease.setStyle({
+			left: (2 - index) * 100 + "%"
+		});
+		console.log(JSON.stringify(Lease.getStyle()))
+		//Draw.setStyle({left:(3 - index) * 100+"%"});
+		Task.setStyle({
+			left: (3 - index) * 100 + "%"
+		});
+		console.log(JSON.stringify(Task.getStyle()))
+		User.setStyle({
+			left: (4 - index) * 100 + "%"
+		});
+		console.log(JSON.stringify(User.getStyle()))
+	}
+	///获取当前窗口对象 
+	function GetWebViewObj(id) {
+		return plus.webview.getWebviewById(id);
+	}
+
+	//判断当前用户是否实名认证
+	function IsUserId(user) {
+		var option = {
+			api: "/BaseManage/User/GetMobile",
+			data: {
+				Mobile: user.Account
+			},
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				var result = JSON.parse(data);
+				//alert(JSON.stringify((result)))
+				if(result[0]['PostId'] == null || result[0]['PostId'] == "") { //
+					app.toast('请实名认证~');
+					setTimeout(function() {
+						app.wndOpenNew('NameAuthentication', './user/NameAuthentication.html');
+					}, 1000);
+				};
+				//				var row = eval("(" + data + ")");
+				//				for(var i in row) {
+				//					var rows = row[i];
+				//					if(rows['RealName'] == null) {};
+				//				};
+			},
+			error: function(data) {
+
+			},
+		};
+		app.post3_2(option);
+	};
+
+	function ResetBack() {
+		/////安卓默认返回事件覆盖
+		var backButtonPress = 0;
+		mui.back = function() {
+			var message_wx = plus.webview.getWebviewById('message_wx');
+			var ExpWindow = plus.webview.getWebviewById('ExpWindow');
+			if(message_wx) {
+				plus.webview.close('message_wx');
+			} else if(ExpWindow) {
+				plus.webview.close('ExpWindow');
+			} else {
+				//返回事件更改
+				backButtonPress++;
+				if(backButtonPress > 1) {
+					plus.runtime.quit();
+				} else {
+					plus.nativeUI.toast('再按一次退出应用');
+				}
+				setTimeout(function() {
+					backButtonPress = 0;
+				}, 1000);
+			}
+		};
+	};
+
+	//创建侧滑页面
+	function CreateMenu() {
+		var menu_style = {
+			left: '-70%',
+			width: '70%',
+			popGesture: "none",
+			render: "always"
+		};
+		//		if(mui.os.ios) {
+		//			menu_style.zindex = -1;
+		//		}
+		//处理侧滑导航，为了避免和子页面初始化等竞争资源，延迟加载侧滑页面；
+		menu = mui.openWindow({
+			id: 'menu',
+			url: 'menu.html',
+			styles: menu_style,
+			show: {
+				aniShow: 'none'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+		var page = plus.webview.getWebviewById('page');
+		var Sideslip = document.getElementById("Sideslip");
+		page.interceptTouchEvent(true);
+		Sideslip.addEventListener('click', function(e) {
+			closeOrOpenWindow(page);
+		});
+	}
+
+	//关闭菜单
+	function closeMenu(menu, page) {
+		plus.webview.startAnimation({
+			view: menu,
+			styles: {
+				fromLeft: "0",
+				toLeft: "-70%"
+			}
+		}, {
+			view: page,
+			styles: {
+				fromLeft: "70%",
+				toLeft: "0"
+			}
+		});
+	};
+
+	//认证成功调一次租赁接口\
+	function getAddress() {
+		var UserInfo = app.accountInfo('info');
+		var sendData = {
+			userEntity: {
+				UserId: UserInfo.UserId,
+				Account: UserInfo.Account,
+				Password: UserInfo.Password,
+				Secretkey: UserInfo.Secretkey,
+				RealName: UserInfo.UserName,
+				Gender: 0,
+				Mobile: UserInfo.Account,
+				DeleteMark: 0,
+				EnabledMark: 1,
+				CreateUserId: UserInfo.UserId,
+				PostName: UserInfo.IPAddressName,
+				OrganizeId: UserInfo.CompanyId,
+			}
+		};
+		LeaseInterface.SaveLeaseUser(sendData, function(cb) {
+			plus.nativeUI.closeWaiting();
+		});
+	};
+</script>

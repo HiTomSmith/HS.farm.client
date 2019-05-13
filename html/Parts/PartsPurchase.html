@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/addCar.css" rel="stylesheet" />
+		<link href="../../css/icons-extra.css" rel="stylesheet" />
+		<link href="../../css/Commodity.css" rel="stylesheet" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/imageViewr.css" />
+		<style>
+			.ShoopCat-list {
+				height: 100%;
+				padding-bottom: 100px;
+				overflow-y: scroll;
+			}
+			
+			.showBrand {
+				color: #1E9FEF;
+			}
+			
+			#PicturePreview {
+				max-width: 100%;
+				height: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--侧滑菜单容器 mui-draggable-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-slide-in ">
+			<div class="mui-inner-wrap">
+				<header class="mui-bar mui-bar-nav">
+					<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<h1 class="mui-title">配件采购</h1>
+				</header>
+				<div class="mui-content">
+					<ul class="mui-table-view" style="position: fixed;top: 45px; left: 9px; z-index: 8;">
+						<li class="mui-table-view-cell list">
+							<div class="mui-row brand brand-active ">
+								<div class="mui-col-sm-3 mui-col-xs-3">
+									<span>用途分类 &nbsp;&nbsp;</span>
+								</div>
+								<span class="iconfont font_12 showBrand ">&#xe741;</span>
+							</div>
+						</li>
+						<li class="mui-table-view-cell list" id="queryData" style="padding-bottom: 0px;padding-top: 0px;border-radius: 4px 4px 0px 0px;">
+
+						</li>
+					</ul>
+					<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper" style="margin-top:165px;">
+						<div class="Mask"></div>
+						<div class="mui-scroll">
+							<div class="boxList">
+								<div class="content">
+									<div class="mui-row CommodityLists">
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- off-canvas backdrop -->
+					<div class="mui-off-canvas-backdrop"></div>
+				</div>
+			</div>
+			<div class="footer ">
+				<div class="shop-car">
+					<img src="../../img/car.png" alt="" />
+				</div>
+				<div class="title">
+					<span style="color:white;">合计：</span>
+					<span class="yellow" style="color:white;">￥<span class="MoneyTotal" style="color:white;">0</span></span>
+				</div>
+				<div class="purchase font_18" id="purchase">
+					采购
+				</div>
+			</div>
+			<!--购物车-->
+			<div class="ShoopCar">
+				<div class="ShoopCar-title">
+					<span>已选商品</span>
+					<span class="clearShop">清空购物车</span>
+				</div>
+				<div class="ShoopCat-list">
+					<ul class="mui-table-view Shoop-edit">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/addCar.js"></script>
+<script src="../../js/mui.zoom.js"></script>
+<script src="../../js/mui.previewimage.js"></script>
+<script>
+	mui.init();
+	mui.previewImage();
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var keyboardStatus, oglHeight, UserInfo, _self;
+	var rows = "";
+	var SelectRows = [];
+	var WaitStorage = [];
+	var medicamlist = null;
+	app.ready(function() {
+		oglHeight = document.querySelector("body").offsetHeight;
+		_self = plus.webview.currentWebview();
+		UserInfo = app.accountInfo('info');
+		Commodity.CommodityList(); //商品列表
+		//		Commodity.PurchaseList();
+		Commodity.Taps(); //操作类
+		clearShop();
+		app.QueryHTML("#queryData");
+		query();
+	});
+
+	//创建商品对象 
+	var Commodity = {
+		//商品列表
+		CommodityList: function(sendData) {
+			var send = {
+				"page": 1,
+				"rows": 999,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": ''
+			};
+			PartsManageByGet.getPartsListJson(send, function(cb) {
+				$('.CommodityLists').html('');
+				rows = cb['rows'];
+				medicamlist = rows;
+				Commodity.PurchaseList()
+			});
+
+		},
+		//根据用途类型搜索
+		PurchaseList: function() {
+			var $html = $(
+				'<span class="brand-items" index-id="P"><span>MG-1P</span></span>' +
+				'<span class="brand-items" index-id="S"><span>MG-1S</span></span>' +
+				'<span class="brand-items" index-id="1"><span>MG-1</span></span>' +
+				'<span class="brand-items" index-id="R"><span>MG-1P RTK</span></span>' +
+				'<span class="brand-items" index-id="A"><span>MG-1A</span></span>'
+			);
+			$html.appendTo($(".brand"));
+			var indexValue = $(".brand-items").eq(0).attr('index-id');
+			bindInfo(indexValue);
+			$html.on("tap", function(indexValue) {
+				var indexValue = $(this).attr('index-id');
+				bindInfo(indexValue);
+				shopBindToInfo();
+			});
+			Commodity.tap();
+		},
+		tap: function() {
+			//bar 循环点击
+			$(".brand-items").each(function(i) {
+				$(this).on('tap', function() {
+					$(".brand-items>span").removeClass('brand-items-active');
+					$(".brand-items>span").eq(i).addClass('brand-items-active');
+				});
+			});
+			//展开商品分类
+			$(".showBrand").on('tap', function() {
+				if($(".brand").hasClass('brand-active')) {
+					$(".brand").removeClass('brand-active');
+				} else {
+					$(".brand").addClass('brand-active');
+				};
+			});
+
+		},
+		//购物车中的操作
+		DefinitionShopEvent: function() {
+			//操作已选商品的加减 
+			$(".Shoop-edit-items").each(function(i) {
+				//加加
+				$(".Shoop-edit-items .plus").eq(i).off();
+				$(".Shoop-edit-items .plus").eq(i).on('tap', function() {
+					var CommId = $(".Shoop-edit-items .plus").eq(i).attr('CommId');
+					var num = $(".Shoop-edit-items .num").eq(i).text();
+					num++;
+					$(".Shoop-edit-items .num").eq(i).text(num);
+					$(".content-items").each(function(j) {
+						if($(".Shoop-edit-items").eq(i).attr('CommId') == $(".content-items").eq(j).attr('CommId')) {
+							$(".content-items .num").eq(j).text($(".Shoop-edit-items .num").eq(i).text());
+							var partsJson = localStorage.getItem(CommId + 'storage_partsId');
+							var parts = JSON.parse(partsJson);
+							parts.Inventory = $(".Shoop-edit-items .num").eq(i).text();
+							localStorage.setItem(CommId + 'storage_partsId', JSON.stringify(parts));
+							var price = $(".ShoopCat-pirce").eq(i).attr('PartPrice');
+							var MoneyTotal = $(".MoneyTotal").text();
+							var total = Number(price) + Number(MoneyTotal);
+							$(".MoneyTotal").text(total);
+						};
+					});
+				});
+
+				//减减
+				$(".Shoop-edit-items .reduce").eq(i).off();
+				$(".Shoop-edit-items .reduce").eq(i).on('tap', function() {
+					var parts = '';
+					var num = $(".Shoop-edit-items .num").eq(i).text();
+					var CommId = $(".Shoop-edit-items .reduce").eq(i).attr('CommId');
+					var price = $(".ShoopCat-pirce").eq(i).attr('PartPrice');
+					var MoneyTotal = $(".MoneyTotal").text();
+					if(Number(MoneyTotal) >= Number(price) && num > 0) {
+						var total = Number(MoneyTotal) - Number(price);
+						$(".MoneyTotal").text(total);
+					}
+					num--;
+					$(".Shoop-edit-items .num").eq(i).text(num);
+					$(".content-items").each(function(j) {
+						if($(".Shoop-edit-items").eq(i).attr('CommId') == $(".content-items").eq(j).attr('CommId')) {
+							$(".content-items .num").eq(j).text($(".Shoop-edit-items .num").eq(i).text())
+							var partsJson = localStorage.getItem(CommId + 'storage_partsId');
+							parts = JSON.parse(partsJson);
+							parts.Inventory = $(".Shoop-edit-items .num").eq(i).text();
+						};
+					});
+					if(num <= 0) {
+						$(".Shoop-edit-items").eq(i).remove();
+						localStorage.removeItem(CommId + 'storage_partsId');
+						Commodity.DefinitionShopEvent();
+					} else {
+						localStorage.setItem(CommId + 'storage_partsId', JSON.stringify(parts));
+						Commodity.DefinitionShopEvent();
+					}
+				});
+			});
+		},
+		//监听键盘弹出事件
+		keyboard: function() {
+			var tempHeight = document.querySelector("body").offsetHeight;
+			if(tempHeight == oglHeight) {
+				keyboardStatus = true;
+				// 这里自己添加逻辑
+			} else {
+				keyboardStatus = false;
+			};
+			return keyboardStatus;
+		},
+		//操作类
+		Taps: function() {
+
+			var offCanvasWrapper = mui('#offCanvasWrapper');
+			//隐藏购物车
+			$(".ShoopCar").on('swipedown', function() {
+				//判断册页打开时不可显示
+				if(!offCanvasWrapper.offCanvas().isShown()) {
+					$(this).removeClass('CarShow');
+					$(this).addClass('CarHide');
+					$(".Mask").fadeOut(100);
+				};
+			});
+			//显示购物车
+			$(".footer").on('swipeup', function() {
+				if(!offCanvasWrapper.offCanvas().isShown() && Commodity.keyboard()) {
+					$(".ShoopCar").removeClass('CarHide');
+					$(".ShoopCar").addClass('CarShow');
+					$(".Mask").fadeIn(100);
+				};
+			});
+			//显示购物i车
+			$(".shop-car").on('tap', function() {
+				if(!offCanvasWrapper.offCanvas().isShown() && Commodity.keyboard()) {
+					$(".ShoopCar").removeClass('CarHide');
+					$(".ShoopCar").addClass('CarShow');
+					$(".Mask").fadeIn(100);
+				};
+			});
+
+			//点击蒙板隐藏购物车
+			$(".Mask").on('tap', function() {
+				$(".ShoopCar").removeClass('CarShow');
+				$(".ShoopCar").addClass('CarHide');
+				$(".Mask").fadeOut(100);
+			});
+
+			//清空购物车
+			$(".clearShop").on('tap', function() {
+				clearShop()
+			});
+			//支付
+			$("#purchase").on('tap', function() {
+				var total = $(".MoneyTotal").text();
+				if(total == "" || total <= 0) {
+					app.toast('请选择配件!');
+					return;
+				}
+				//订单对象
+				var PartsOrderEntity = {
+					OrderNumber: createOrderNum(),
+					CustomerName: UserInfo.UserName,
+					CustomerId: UserInfo.UserId,
+					//组织机构
+					OrganizeId: UserInfo.CompanyId,
+					//购买人收货人姓名
+					ReceivingMan: UserInfo.UserName,
+					//购买人联系方式
+					ReceivingTele: UserInfo.Account,
+					//购买人地址
+					ReceivingAddress: $(".UserAddress").attr('address'),
+					CreateUserId: UserInfo.UserId,
+					CreateUserName: UserInfo.UserName,
+					//订单金额
+					PayMoney: total,
+					CreateDate: getSystemTime(),
+					AuditStatus: 0,
+					IsValid: 1,
+					IsPay: 0,
+					PayType: 0
+				}
+				var strChildEntity = [];
+				for(var key in localStorage) {
+					if(key.indexOf('storage_partsId') != -1) {
+						var row = JSON.parse(localStorage[key]);
+						strChildEntity.push(row);
+					}
+				};
+				mui.openWindow({
+					url: "./PurchaseDetail.html",
+					id: 'PurchaseDetail'
+				})
+				localStorage.setItem('PartOrderEntityStorage', JSON.stringify(PartsOrderEntity));
+				localStorage.setItem('PartOrderDetailStorage', JSON.stringify(strChildEntity));
+				var PurchaseDetail = plus.webview.getWebviewById('PurchaseDetail');
+				mui.fire(PurchaseDetail, 'refresh');
+			});
+		}
+	};
+
+	function savePartsDetailForLocalStorage(row, num) {
+		row.Inventory = num;
+		row.CreateUserId = UserInfo.UserId;
+		row.CreateUserName = UserInfo.UserName;
+		row.OrganizeId = UserInfo.CompanyId;
+		row.ModifyUserId = '';
+		row.ModifyUserName = '';
+		row.ModifyDate = '';
+		row.CreateDate = '';
+		localStorage.setItem(row.PartsListId + 'storage_partsId', JSON.stringify(row));
+	}
+
+	function addShopCar(data) {
+		var existData = localStorage.getItem(data.PartsListId + 'storage_partsId');
+		if(existData != null) {
+			//第一次购买时
+			if(data.Inventory == 1) {
+				var row = data;
+				var $html = $(
+					'<li class="mui-table-view-cell Shoop-edit-items" CommId=' + row['PartsListId'] + '>' +
+					'<div class="ShoopCat-product-name">' + row['ShortName'] + '</div>' +
+					'<div class="ShoopCat-money">' +
+					'<div class="ShoopCat-pirce" PartPrice=' + row['Price'] + '>￥' + row['Price'] + '</div>' +
+					'<div class="ShoopCat-Calculation">' +
+					'<button class="reduce"  CommId=' + row['PartsListId'] + '></button>' +
+					'<span class="num font_10">' + row['Inventory'] + '</span>' +
+					'<button class="plus" id="plus1"  CommId=' + row['PartsListId'] + '></button>' +
+					'</div>' +
+					'</div>' +
+					'</li>'
+				);
+				$html.appendTo($(".Shoop-edit"));
+			}
+			//持续购买时
+			if(data.Inventory > 1) {
+				$(".Shoop-edit-items").each(function(i) {
+					$(".content-items").each(function(j) {
+						if($(".Shoop-edit-items").eq(i).attr('CommId') == $(".content-items").eq(j).attr('CommId')) {
+							$(".Shoop-edit-items .num").eq(i).text($(".content-items .num").eq(j).text());
+						};
+					});
+				});
+			}
+		}
+	}
+
+	function reduceShopCar(data) {
+		var existData = localStorage.getItem(data.PartsListId + 'storage_partsId');
+		if(existData != null) {
+			//购买数量减为0时
+			if(data.Inventory <= 0) {
+				//在购物车列表中指定删除
+				$(".Shoop-edit-items").each(function(i) {
+					if($(".Shoop-edit-items").eq(i).attr("CommId") == data.PartsListId) {
+						$(".Shoop-edit-items").eq(i).remove();
+					}
+				})
+				//在缓存中删除
+				localStorage.removeItem(data.PartsListId + 'storage_partsId');
+			} else {
+				$(".Shoop-edit-items").each(function(i) {
+					if($(".Shoop-edit-items").eq(i).attr("CommId") == data.PartsListId) {
+						$(".Shoop-edit-items .num").eq(i).text(data.Inventory);
+					}
+				})
+			}
+		}
+	}
+
+	function clearShop() {
+		for(var key in localStorage) {
+			if(key.indexOf('storage_partsId') != -1) {
+				localStorage.removeItem(key);
+				var FatherView = plus.webview.getWebviewById('PartsPurchase');
+				mui.fire(FatherView, 'Refresh');
+			}
+		};
+		$(".Shoop-edit").html('');
+		$(".content-items").each(function(j) {
+			$(".content-items .num").eq(j).text(0);
+		});
+		$(".MoneyTotal").text(0);
+	}
+
+	function createOrderNum() {
+		var resultDate = new Date();
+		var year = resultDate.getFullYear(); //获取完整的年份(4位,1970-????)
+		var month = resultDate.getMonth() + 1;
+		var dates = resultDate.getDate();
+		var hours = resultDate.getHours();
+		var minutes = resultDate.getMinutes();
+		var seconds = resultDate.getSeconds();
+		return year + '' + Appendzero(month) + '' + Appendzero(dates) + '' + Appendzero(hours) + '' + Appendzero(minutes) + '' + Appendzero(seconds);
+	}
+
+	function getSystemTime() {
+		var resultDate = new Date();
+		var year = resultDate.getFullYear(); //获取完整的年份(4位,1970-????)
+		var month = resultDate.getMonth() + 1;
+		var dates = resultDate.getDate();
+		var hours = resultDate.getHours();
+		var minutes = resultDate.getMinutes();
+		var seconds = resultDate.getSeconds();
+		return year + '-' + Appendzero(month) + '-' + Appendzero(dates) + ' ' + Appendzero(hours) + ':' + Appendzero(minutes) + ':' + Appendzero(seconds);
+	}
+
+	function Appendzero(obj) {
+		if(obj < 10) return "0" + "" + obj;
+		else return obj;
+	}
+    
+    //显示列表的操作
+	function bindInfo(indexValue) {
+		$('.CommodityLists').html('');
+		for(var j in medicamlist) {
+			if(medicamlist[j].Purpose.indexOf(indexValue) != -1) {
+				var i = $(".title-name").length
+				var findResult = medicamlist[j];
+				//console.log((app.his_host + findResult['ThumbImage']))
+				var $html = $(
+					'<div style="height:120px;" class="mui-col-sm-6 mui-col-xs-6 content-items" CommId=' + findResult['PartsListId'] + '>' +
+					'<img data-preview-src="" data-preview-group="1"  id="PicturePreview" style="height:120px; padding: 10px;" src=' + (app.his_host + findResult['ThumbImage']) + ' alt="" />' +
+					'<div class="title">' +
+					'<div class="byline">' +
+					'<div class="title-name" style="width:200px;font-size: 12px;">' +
+					'' + findResult['ShortName'] + '' +
+					'</div>' +
+					'<div class="Specifications mui-ellipsis font_10">' +
+					'规格：' + findResult['Constituents'] + '' +
+					'</div>' +
+					'<div class="money" style="font-size: 12px;">' +
+					'￥' + findResult['Price'] + '.00' +
+					'</div>' +
+					'</div>' +
+					'<div class="buy">' +
+					'<button class="reduce" data-oldindex=' + j + ' data-index=' + i + ' data-price=' + findResult['Price'] + '></button>' +
+					'<span class="num font_10">0</span>' +
+					'<button class="plus" id="plus1" data-oldindex=' + j + ' data-index=' + i + ' data-price=' + findResult['Price'] + '></button>' +
+					'</div>' +
+					'</div>' +
+					'</div>'
+				);
+				$html.appendTo($('.CommodityLists'));
+				//加入购物车
+				$html.find('.plus').on('tap', function() {
+					var index = $(this).attr('data-index');
+					var oldindex = $(this).attr('data-oldindex');
+					var num = $('.num').eq(index).text();
+					num++;
+					$('.num').eq(index).text(num);
+					addCar({
+						begin: $(this),
+						end: $('.shop-car'),
+						img: '../../img/bankbg1.png',
+						callback: function() {}
+					});
+					var price = $(this).attr('data-price');
+					var MoneyTotal = $(".MoneyTotal").text();
+					var total = Number(price) + Number(MoneyTotal);
+					$(".MoneyTotal").text(total);
+					//组装成配件订单详情表的记录，并存入数组	
+
+					savePartsDetailForLocalStorage(medicamlist[oldindex], num);
+					addShopCar(medicamlist[oldindex])
+					Commodity.DefinitionShopEvent()
+				});
+				//图片预览
+				$html.find("#PicturePreview").on('tap', function(i) {
+
+				});
+				//减去数量
+				$html.find('.reduce').on('tap', function() {
+					var index = $(this).attr('data-index');
+					var oldindex = $(this).attr('data-oldindex');
+					var num = $('.num').eq(index).text();
+					//先减金额 先减NUM为0后，会绕过下面判断一直减下去
+					var price = $(this).attr('data-price');
+					var MoneyTotal = $(".MoneyTotal").text();
+					if(Number(MoneyTotal) >= Number(price) && num > 0) {
+						var total = Number(MoneyTotal) - Number(price);
+						$(".MoneyTotal").text(total);
+					}
+					num--;
+					if(num < 1) {
+						num = 0;
+					};
+					$('.num').eq(index).text(num);
+					savePartsDetailForLocalStorage(medicamlist[oldindex], num);
+					reduceShopCar(medicamlist[oldindex])
+					Commodity.DefinitionShopEvent()
+				});
+			}
+		}
+	}
+
+	function shopBindToInfo() {
+		$(".Shoop-edit-items").each(function(i, e) {
+			var partsListId = $(this).attr('CommId');
+			var num = $(".ShoopCat-Calculation>.num").eq(i).text();
+			$(".content-items").each(function(i, e) {
+				if(partsListId == $(this).attr('CommId')) {
+					$(this).find("span").text(num)
+				}
+			})
+		})
+	}
+
+	function limitStr(ojbString) {
+		if(ojbString.length > 18) {
+			return ojbString.substring(0, 18) + "..."
+		}
+		return ojbString
+	}
+
+	//查询列表
+	function queryInfo(obj) {
+		$('.CommodityLists').html('');
+		for(var j in obj) {
+			var i = $(".title-name").length
+			var findResult = obj[j];
+			//console.log((app.his_host + findResult['ThumbImage']))
+			var $html = $(
+				'<div style="height:120px;" class="mui-col-sm-6 mui-col-xs-6 content-items" CommId=' + findResult['PartsListId'] + '>' +
+				'<img data-preview-src="" data-preview-group="1"  id="PicturePreview" style="height:120px; padding: 10px;" src=' + (app.his_host + findResult['ThumbImage']) + ' alt="" />' +
+				'<div class="title">' +
+				'<div class="byline">' +
+				'<div class="title-name" style="width:200px;font-size: 12px;">' +
+				'' + findResult['ShortName'] + '' +
+				'</div>' +
+				'<div class="Specifications mui-ellipsis font_10">' +
+				'规格：' + findResult['Constituents'] + '' +
+				'</div>' +
+				'<div class="money" style="font-size: 12px;">' +
+				'￥' + findResult['Price'] + '.00' +
+				'</div>' +
+				'</div>' +
+				'<div class="buy">' +
+				'<button class="reduce" data-oldindex=' + j + ' data-index=' + i + ' data-price=' + findResult['Price'] + '></button>' +
+				'<span class="num font_10">0</span>' +
+				'<button class="plus" id="plus1" data-oldindex=' + j + ' data-index=' + i + ' data-price=' + findResult['Price'] + '></button>' +
+				'</div>' +
+				'</div>' +
+				'</div>'
+			);
+			$html.appendTo($('.CommodityLists'));
+			//加入购物车
+			$html.find('.plus').on('tap', function() {
+				var index = $(this).attr('data-index');
+				var oldindex = $(this).attr('data-oldindex');
+				var num = $('.num').eq(index).text();
+				num++;
+				$('.num').eq(index).text(num);
+				addCar({
+					begin: $(this),
+					end: $('.shop-car'),
+					img: '../../img/bankbg1.png',
+					callback: function() {}
+				});
+				var price = $(this).attr('data-price');
+				var MoneyTotal = $(".MoneyTotal").text();
+				var total = Number(price) + Number(MoneyTotal);
+				$(".MoneyTotal").text(total);
+				//组装成配件订单详情表的记录，并存入数组	
+
+				savePartsDetailForLocalStorage(obj[oldindex], num);
+				addShopCar(obj[oldindex])
+				Commodity.DefinitionShopEvent()
+			});
+			//图片预览
+			$html.find("#PicturePreview").on('tap', function(i) {
+
+			});
+			//减去数量
+			$html.find('.reduce').on('tap', function() {
+				var index = $(this).attr('data-index');
+				var oldindex = $(this).attr('data-oldindex');
+				var num = $('.num').eq(index).text();
+				//先减金额 先减NUM为0后，会绕过下面判断一直减下去
+				var price = $(this).attr('data-price');
+				var MoneyTotal = $(".MoneyTotal").text();
+				if(Number(MoneyTotal) >= Number(price) && num > 0) {
+					var total = Number(MoneyTotal) - Number(price);
+					$(".MoneyTotal").text(total);
+				}
+				num--;
+				if(num < 1) {
+					num = 0;
+				};
+				$('.num').eq(index).text(num);
+				savePartsDetailForLocalStorage(obj[oldindex], num);
+				reduceShopCar(obj[oldindex])
+				Commodity.DefinitionShopEvent()
+			});
+		}
+	}
+
+	//商品查询
+	function query() {
+		//开始查询
+		$("#search").on('tap', function() {
+			btnsShield(3, "search");
+			var condition = $("#SrarchStart").val();
+			if(condition == "") {
+				app.toast('请输入查询内容！');
+				return false;
+			};
+			var sendData = {
+				name: condition
+			};
+			PartsManageByGet.getSearchGoods(sendData, function(cb) {
+				queryInfo(cb);
+
+			});
+		});
+	};
+</script>

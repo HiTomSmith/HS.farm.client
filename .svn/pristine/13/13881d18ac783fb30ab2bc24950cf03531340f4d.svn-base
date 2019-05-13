@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/Lease.css" />
+		<link href="../../css/mui.picker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+	</head>
+	<style>
+		html,body{
+			height:100%;
+		}
+		.mui-content{
+			height: 100%;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title ">历史订单</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view" id="getNoPayList">
+			    
+			</ul>
+		</div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo = "";
+	app.ready(function(){
+		UserInfo = app.accountInfo('info');
+		//btnClickEvents();
+		//getNoPayList();
+		PlanPayLease();
+		NoData.bgImg('mui-content','../../img/BGIMG.png');
+	});
+	var status1= [
+			"<span class='mui-badge state1'>等待支付</span>",
+			'<span class="mui-badge state1 mui-badge-yellow">已付款</span>', 
+			'<span class="mui-badge state1 mui-badge-primary" >商家已发货</span>',
+			'<span class="mui-badge state1 mui-badge-success">客户已收货</span>',
+			'<span class="mui-badge state1 mui-badge-royal">申请退租</span>',
+			'<span class="mui-badge state1 mui-badge-green">客户已发货</span>',
+			'<span class="mui-badge state1 mui-badge-green">商家已收货</span>',
+			'<span class="mui-badge state1 mui-badge-green">维修</span>',
+			'<span class="mui-badge state1 mui-badge-green">完成</span>',
+			'<span class="mui-badge state1 mui-badge-green">已经失效</span>'
+		];
+	///获取历史订单
+	function PlanPayLease(){
+		var option = {
+			api:'/PlanManage/LeaseTable/GetPageListJson',
+			data:{
+				"page": 1,
+				"rows": 100,
+				"sidx": "UserInfoId",
+				"sord": "asc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId,
+					DeleteMark:1,
+					LeaseState:8,
+				})
+			},
+			success:function(data){
+				var result = JSON.parse(data);
+				if(result['rows']['RealName']){
+					NoData.ClearImg('mui-content');
+				};
+				var rows = result['rows'];
+				for(var i in rows){
+					var row = rows[i];
+					var $html = $(
+								'<li class="mui-table-view-cell mui-media" data-index='+i+' style="border-right:2px solid black">'+
+							        '<a href="javascript:;">'+
+							            '<img class="mui-media-object mui-pull-left" src="../../img/leaseUav.png">'+
+							            '<div class="mui-media-body">'+
+							               ' 租赁人:'+row['RealName']+''+
+							                '<p class="mui-ellipsis">序列号：'+row['SN']+'</p>'+
+							               ' <p class="mui-ellipsis">型号：'+row['Model']+'</p>'+
+							            '</div>'+
+							            ''+status1[row['LeaseState']]+''+
+							        '</a>'+
+							   ' </li>'
+							);
+					$html.appendTo($("#getNoPayList"));
+					$html.on('tap',function(){
+						var index = $(this).attr('data-index');
+						mui.openWindow({
+							url:'HisLeaseDetails.html',
+							id:'HisLeaseDetails',
+							extras:{
+								data:rows[index],
+							}
+						});
+					});
+				};
+			},
+			error:function(data){
+				
+			}
+		};
+		app.post3_4(option);
+	};
+	
+</script>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<link href="../../css/AfterService.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				height: 100%;
+			}
+			
+			.top {
+				margin-top: 15px;
+			}
+			
+			.fontSet {
+				height: 50px;
+			}
+			
+			.bottom {
+				margin-top: 30px;
+			}
+			
+			.fontSetBig {
+				width: 100%;
+				height: 25px;
+				margin-bottom: 0;
+				color: #3C3C3C;
+				font-size: 15px;
+				text-align: left;
+			}
+			
+			.fontSetSmall {
+				width: 100%;
+				height: 25px;
+				color: #9C9C9C;
+				font-size: 13px;
+				text-align: left;
+			}
+			
+			.topImgContainer,.centerImgContainer,.bottomImgContainer{
+				display: flex;
+				justify-content: space-between;
+				flex-wrap: wrap;
+			}
+			
+			.face {
+				/*border: 1px solid green;*/
+				height: 130px;
+				width: 48%;
+				margin-top: 10px;
+			}
+			
+			.side {
+				height: 130px;
+				width: 48%;
+				margin-top: 10px;
+			}
+			
+			.faceImg {
+				height: 80%;
+				/*border: 1px solid blue;*/
+			}
+			
+			.sideImg {
+				/*border: 1px solid blue;*/
+				height: 100%;
+			}
+			
+			.imgText {
+				height: 20%;
+				background: #D2D2D2;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: #FFFFFF;
+				font-size: 14px;
+			}
+			
+			.faceFont,
+			.sideFont {
+				height: 30px;
+				background: #D2D2D2;
+				color: #FFFFFF;
+				text-align: center;
+				line-height: 30px;
+			}
+			
+			.btn {
+				width: 100%;
+				position: fixed;
+				bottom: 10px;
+				right: 0;
+				z-index: 22;
+			}
+			
+			.btn>button {
+				height: 40px;
+				width: 70%;
+				background: #15AE3F;
+				border-radius: 20px;
+				border: none;
+				font-size: 14px;
+				color: #FFFFFF;
+				margin: 0 15%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">报案</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll" style="padding: 0 4%">
+
+				<div class="top">
+					<div class="fontSet">
+						<p class="fontSetBig">大环境照片</p>
+						<p class="fontSetSmall">周围环境照片至少1张包含有飞机的</p>
+					</div>
+					<div class="topImgContainer">
+						<div class="face" >
+							<div class="faceImg" id="uploadEnvirImg" action="create" img-value=""><img src="../../img/jh.png" width="100%" height="100%" /></div>
+							<p class="imgText">上传照片</p>
+						</div>
+					</div>
+
+				</div>
+				
+				<div class="bottom">
+					<div class="fontSet">
+						<p class="fontSetBig">机身编码照</p>
+						<p class="fontSetSmall">编码清晰可见且体现是现场拍摄</p>
+					</div>
+					<div class="centerImgContainer">
+						<div class="face">
+							<div class="faceImg" id="uploadCodeImg" action="create" img-value=""><img src="../../img/jh.png" width="100%" height="100%" /></div>
+							<p class="imgText">上传照片</p>
+						</div>
+					</div>
+
+				</div>
+				
+				
+				<div class="bottom" style="margin-bottom: 100px;">
+					<div class="fontSet">
+						<p class="fontSetBig">受损部位拍照</p>
+						<p class="fontSetSmall">可直观看到飞机受损部位，拍照目的明确</p>
+					</div>
+					<div class="bottomImgContainer">
+						<div class="face">
+							<div class="faceImg" id="uploadDamageImg" action="create" img-value=""><img src="../../img/jh.png" width="100%" height="100%" /></div>
+							<p class="imgText">上传照片</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="btn">
+			<button type="button" class="mui-btn" id="next">确认提交</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var UserInfo = "";
+
+	//环境图片个数
+	var huanjing_count = 1;
+	//机身编码图片个数
+	var code_count = 1;
+	//受损图片个数
+	var demage_count = 1;
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		report.tap();
+	});
+	var report = {
+		/*环境拼接html*/
+		addHtml: function(id) {
+			console.log("id:"+id)
+			var $html = $(
+				'<div class="side" action="create" data-index='+huanjing_count+'>' +
+				'<div class="sideImg"  id="pic_' + id + '"  img-value="" ><img src="../../img/jh.png" width="100%" height="100%" /></div>' +
+				'</div>'
+			);
+			$html.appendTo($(".topImgContainer"));
+			//找到元素 绑定事件
+			$html.on('tap', function() {
+				index = $(this).attr('data-index');
+				//图片上传
+				UploadPicture("pic_" + index);
+
+				//获取属性 
+				var action = $(this).attr('action');
+				if(action == "create") { // 如果 create 添加 空图片
+
+					huanjing_count = huanjing_count + 1;
+
+					report.addHtml(huanjing_count);
+
+					$(this).attr('action', 'end');
+					
+					console.log("环境个数："+huanjing_count)
+				}
+
+			})
+		},
+		
+		
+		/*机身编码拼接html*/
+		addCodeHtml: function(id) {
+			var $html = $(
+				'<div class="side" action="create" data-index='+code_count+'>' +
+				'<div class="sideImg"  id="pia_' + id + '"  img-value="" ><img src="../../img/jh.png" width="100%" height="100%" /></div>' +
+				'</div>'
+			);
+			$html.appendTo($(".centerImgContainer"));
+			
+			//找到元素 绑定事件
+			$html.on('tap', function() {
+				index = $(this).attr('data-index');
+				//图片上传
+				UploadPicture("pia_" + index);
+
+				//获取属性 
+				var action = $(this).attr('action');
+				console.log("code:"+action)
+				if(action == "create") { // 如果 create 添加 空图片
+
+					code_count = code_count + 1;
+
+					report.addCodeHtml(code_count);
+
+					$(this).attr('action', 'end');
+
+				}
+
+			})
+		},
+		
+		/*受损部位拼接html*/
+		addDemageHtml: function(id) {
+			var $html = $(
+				'<div class="side" action="create" data-index='+demage_count+'>' +
+				'<div class="sideImg"  id="pid_' + id + '"  img-value="" ><img src="../../img/jh.png" width="100%" height="100%" /></div>' +
+				'</div>'
+			);
+			$html.appendTo($(".bottomImgContainer"));
+			
+			//找到元素 绑定事件
+			$html.on('tap', function() {
+				index = $(this).attr('data-index');
+				//图片上传
+				UploadPicture("pid_" + index);
+
+				//获取属性 
+				var action = $(this).attr('action');
+				if(action == "create") { // 如果 create 添加 空图片
+
+					demage_count = demage_count + 1;
+
+					report.addDemageHtml(demage_count);
+
+					$(this).attr('action', 'end');
+
+				}
+
+			})
+		},
+		
+		tap: function() {
+
+			/*确认提交*/
+			$("#next").on('tap', function() {
+				mui.openWindow({
+					url: '../Lease/reportFinish.html',
+					id: 'reportFinish'
+				})
+			})
+
+			/*上传环境照片*/
+			$("#uploadEnvirImg").on('tap', function() {
+
+				var action = $("#uploadEnvirImg").attr('action')
+				if(action == "create") { // 如果 create 添加 空图片
+					report.addHtml(huanjing_count);
+					$("#uploadEnvirImg").attr('action', 'end');
+
+				}
+
+				UploadPicture('uploadEnvirImg');
+			})
+
+			/*上传机身编码照片*/
+			$("#uploadCodeImg").on('tap', function() {
+				
+				var action = $("#uploadCodeImg").attr('action')
+				if(action == "create") { // 如果 create 添加 空图片
+					report.addCodeHtml(code_count);
+					$("#uploadCodeImg").attr('action', 'end');
+
+				}
+
+				UploadPicture('uploadCodeImg');
+
+			})
+
+			/*上传受损照片*/
+			$("#uploadDamageImg").on('tap', function() {
+				var action = $("#uploadDamageImg").attr('action')
+				if(action == "create") { // 如果 create 添加 空图片
+					report.addDemageHtml(demage_count);
+					$("#uploadDamageImg").attr('action', 'end');
+
+				}
+
+				UploadPicture('uploadDamageImg');
+			})
+
+		}
+	}
+
+	//拍照或从相册选取
+	function UploadPicture(id) {
+		plus.nativeUI.actionSheet({
+			cancel: "取消",
+			buttons: [{
+					title: '拍照'
+				},
+				{
+					title: '相册选取'
+				},
+//				{
+//					title: '删除原图'
+//				},
+			]
+		}, function(e) {
+			switch(e.index) {
+				case 1:
+					Photograph(id);
+					break;
+				case 2:
+					galleryImg(id);
+					break;
+//				case 3:
+//					deleteImg(id);
+//					break;
+			};
+		});
+	};
+
+	//拍照
+	function Photograph(divid) {
+		var cmr = plus.camera.getCamera();
+		cmr.captureImage(function(p) {
+			plus.io.resolveLocalFileSystemURL(p, function(entry) {
+				ShowAndUploader(entry.toLocalURL(), entry.name, divid);
+			}, function(e) {
+				plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+			});
+		}, function(e) {}, {
+			filename: "_doc/camera/",
+			index: 1
+		});
+	}
+	//相册选取
+	function galleryImg(divid) {
+		plus.gallery.pick(function(p) {
+			console.log("p:" + p)
+			plus.io.resolveLocalFileSystemURL(p, function(entry) {
+				ShowAndUploader(entry.toLocalURL(), entry.name, divid);
+			}, function(e) {
+				plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+			});
+		}, function(e) {}, {
+			filename: "_doc/camera/",
+			filter: "image"
+		});
+	}
+
+	//删除div图片
+//	function deleteImg(divid) {
+//		$("#" + divid).attr("img-value", "");
+//		$("#" + divid).css({
+////			'background-image': 'none',
+//			'background-size': '100% 100%',
+//			'background-repeat': 'no-repeat',
+//			'background-position': 'center'
+//		});
+//	}
+
+	//显示并且上传
+	function ShowAndUploader(url, name, divid) {
+		console.log("地址：" + url)
+		console.log("名称：" + name)
+		console.log("id：" + divid)
+		$("#" + divid).css({
+			'background-image': 'url(' + url + ')',
+			'background-size': '100% 100%',
+			'background-repeat': 'no-repeat',
+			'background-position': 'center'
+
+		}).html('');
+
+		//将图片转换为base64上传
+		function image2Base64(img) {
+			var canvas = document.createElement("canvas");
+			//			canvas.width = img.width / 5;
+			//			canvas.height = img.height / 5;
+			canvas.width = img.width;
+			canvas.height = img.height;
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+			var newImageData = canvas.toDataURL("image/jpeg", 1); //重新生成图片
+			sendData = newImageData.split(',')[1]; //newImageData.replace("data:"+fileType+";base64,",' ');
+			var data = window.atob(sendData);
+			var ia = new Uint8Array(data.length);
+			for(var i = 0; i < data.length; i++) {
+				ia[i] = data.charCodeAt(i);
+			};
+			blob = new Blob([ia], {
+				type: "image/jpeg"
+			});
+			return blob;
+		};
+
+		var img = document.createElement("img");
+		img.src = url;
+
+		img.onload = function() {
+			var base64 = image2Base64(img);
+
+			var formData = new FormData();
+			formData.append(img, base64);
+			//setPicture(formData, divid);
+		};
+
+	}
+
+	function setPicture(formData, imgkey) {
+		plus.nativeUI.showWaiting();
+
+		$.ajax({
+			url: app.his_root + '/AccountCenter/Commodity/UploadFileApp', //请求地址
+			type: 'post',
+			data: formData, //发送数据
+			async: false,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				var result = JSON.parse(data);
+				if(result['type'] == 1) {
+					app.toast('上传成功')
+					console.log("message:" + result['message'])
+					$("#" + imgkey).attr("img-value", result['message'])
+
+				} else {
+					app.toast('上传失败！请更换图片');
+				};
+				plus.nativeUI.closeWaiting();
+			},
+			error: function() {
+				app.toast('上传失败');
+				target.value = "";
+				plus.nativeUI.closeWaiting();
+			}
+		});
+	};
+</script>

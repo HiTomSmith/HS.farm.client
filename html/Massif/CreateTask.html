@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/list.css" />
+	</head>
+	<style>
+		html,body,.mui-content{
+			height:100%;
+		}
+		.mui-content{
+			overflow-y: scroll;   
+		}
+		.userPhone {
+			position: relative;
+		}
+		
+		.userPhone>.mui-icon {
+			position: absolute;
+			z-index: 100;
+			right: 10px;
+			top: 10px;
+			color: #E4E4E4;
+		}
+		
+		.corptype {
+			color: #E4E4E4;
+			font-size: 12px;
+			margin-top: 8px;
+		}
+		
+		.mui-input-group {
+			margin-top: 0px;
+		}
+		label{
+			padding-left:22px !important;
+		}
+		.mui-input-row {
+			position:relative;
+		}
+		.Arrow{
+			position: absolute;
+			left:-2px;
+			top:14px;
+			color:  #15AE3F;
+		}
+		.list{
+			padding-bottom: 4px !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新建任务</h1>  
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row userPhone" style='display: none;'>
+					<label class="">用户电话</label>
+					<input type="text" class="mui-input-clear" placeholder="请选择用户电话" id="LiaisonType" name="LiaisonType">
+					<span class="mui-icon iconfont" id="phoneBook">&#xe6fd;</span>
+				</div>
+				<div class="mui-input-row" style='display: none;'>
+					<label class="">用户姓名</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入用户姓名" id="Liaison" name="Liaison">
+				</div>
+				<ul class="mui-table-view mui-scroll">
+		    		<li class="mui-table-view-cell mui-media list">
+		    			<div class="mui-input-row userPhone">
+		    				<span class="iconfont Arrow mui-pull-left">&#xe6f9;</span>
+							<label class="">任务地块</label>
+							<input type="text" class="mui-input-clear" placeholder="请选择地块信息" id="FieldId" name="FieldId" readonly="readonly">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row userPhone">
+							<span class="iconfont Arrow mui-pull-left">&#xe768;</span>
+							<label class="">作物种类</label>
+							<input type="text" class="mui-input-clear" placeholder="请选择作物种类" id="WorkDescription" name="WorkDescription" readonly="readonly">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row userPhone" style="border:none">
+							<span class="iconfont Arrow mui-pull-left">&#xe76b;</span>
+							<label class="">药剂种类</label>
+							<input type="text" class="mui-input-clear" placeholder="请选择作物种类" id="MedicamenType" name="MedicamenType" readonly="readonly">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+		    		</li>
+		    		<li class="mui-table-view-cell mui-media list">
+		    			
+		    			<div class="mui-input-row">
+		    				<span class="iconfont Arrow mui-pull-left">&#xe72e;</span>
+							<label class="">作业亩数</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入作业亩数" id="Quantity" name="Quantity" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">
+						</div>
+						<div class="mui-input-row">
+							<span class="iconfont Arrow mui-pull-left">&#xe6fb;</span>
+							<label class="">每亩单价</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入每亩提成" id="Price" name="Price" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">
+							<input type="text" class="mui-input-clear" placeholder="" id="DistributionType" name="DistributionType" value="0" style="display: none;">
+							<input type="text" class="mui-input-clear" placeholder="" id="TeamExamine" name="TeamExamine" value="0" style="display: none;">
+							<input type="text" class="mui-input-clear" placeholder="" id="Examine" name="Examine" value="1" style="display: none;">
+							<input type="text" class="mui-input-clear" placeholder="" id="TeamId" name="TeamId" style="display: none;">
+							<input type="text" class="mui-input-clear" placeholder="" id="EmployerId" name="EmployerId" style="display: none;">
+							<input type="text" class="mui-input-clear" placeholder="" id="Undertaker" name="Undertaker" style="display: none;">
+							<input type="text" class="mui-input-clear" placeholder="" id="UndertakerId" name="UndertakerId" style="display: none;">
+							
+						</div>
+						<div class="mui-input-row" style="border:none">
+							<span class="iconfont Arrow mui-pull-left">&#xe706;</span>
+							<label class="">任务名称</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入任务名称" id="Description" name="Description">
+						</div>
+				    </li>
+				</ul>
+			</form>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="CreatTask">保存</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	var _self = "";
+	var Field,FieldList,Region
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+		$("#TeamId").val(userInfo.RoleId)
+		BthEvents();
+		/////////
+		$('#Liaison').val(userInfo.UserName); //联系人
+		$('#EmployerId').val(userInfo.UserId); //联系人
+		$('#LiaisonType').val(userInfo.Account); //联系人电话
+		$("#UndertakerId").val(userInfo.UserId);
+		$("#Undertaker").val(userInfo.UserId);
+		_self = plus.webview.currentWebview();
+		GetFiled(); //获取地块
+		GetCrop();//作物 药剂
+		Field = [];
+		FieldList = new mui.PopPicker();
+	});
+
+	///获取地块
+	function GetFiled() {
+		var sendData = {
+			queryJson: JSON.stringify({
+				Landlord: userInfo.UserId
+			})
+		}
+		UseIdGetList.GetFieldId(sendData, function(cb) {
+			var result = cb;
+			for(var i in result) {
+				var row = result[i];
+				Field.push({
+					text: row['FieldName'],
+					value: row['FieldId'],
+					area: row['FieldArea'],
+					Region:row['FieldRegion']
+				});
+			};
+			FieldList.setData(Field);
+			//获取地块
+			$("#FieldId").on('tap', function() {
+				Region = [];
+				FieldList.show(function(item) {
+					$("#FieldId").val(item[0]['text']).attr('senDId', item[0]['value']);
+					$("#Quantity").val(item[0]['area']);
+					Region = item[0]['Region']
+				})
+			});
+
+		});
+
+	}
+
+	//获取作物种类 药剂种类
+	function GetCrop() {
+		//药剂种类
+		MedicamentCrops.Medicament(function(cb) {
+			var result = cb;
+			var Crop = [];
+			var CropList = new mui.PopPicker();
+			for(var i in result) {
+				var row = result[i];
+				Crop.push({
+					text: row['ItemName'],
+					value: row['ItemValue']
+				});
+			};
+			CropList.setData(Crop);
+			//获取药剂种类
+			$("#MedicamenType").on('tap', function() {
+				CropList.show(function(item) {
+					$("#MedicamenType").val(item[0]['text']);
+				})
+			});
+
+		});
+		//
+		//做物种类
+		$("#WorkDescription").on('tap', function() {
+			//获取作物种类
+
+			MedicamentCrops.Crop(function(cb) {
+				var result = cb;
+				var Crop = [];
+				var CropList = new mui.PopPicker();
+				for(var i in result) {
+					var row = result[i];
+					Crop.push({
+						text: row['ItemName'],
+						value: row['ItemValue']
+					});
+				};
+				CropList.setData(Crop);
+				CropList.show(function(item) {
+					$("#WorkDescription").val(item[0]['text']);
+
+				})
+			});
+		});
+	};
+
+	//
+	function BthEvents() {
+
+		//创建任务
+		$("#CreatTask").on('tap', function() {
+			var XHX_TaskDistributionEntity = $("form").serializeJSON();
+			XHX_TaskDistributionEntity.FieldId = $("#FieldId").attr('senDId');
+			XHX_TaskDistributionEntity.Region = JSON.stringify(Region);
+			XHX_TaskDistributionEntity.IsBear = 0;
+			if($("#FieldId").val() == "") {
+				app.toast('任务地块不能为空！');
+				return false;
+			};
+			if($("#Quantity").val() == "") {
+				app.toast('作业亩数不能为空！');
+				return false;
+			};
+			if($("#WorkDescription").val() == "") {
+				app.toast('作物种类不能为空！');
+				return false;
+			};
+			if($("#MedicamenType").val() == "") {
+				app.toast('药剂种类不能为空！');
+				return false;
+			};
+			if($("#Price").val() == "") {
+				app.toast('单价不能为空！');
+				return false;
+			};
+			if($("#Description").val() == "") {
+				app.toast('任务名称不能为空！');
+				return false;
+			};
+			plus.nativeUI.showWaiting();
+			var option = {
+				api: '/XhxManage/XHX_TaskDistribution/SaveForms3',
+				data: XHX_TaskDistributionEntity,
+				success: function(data) {
+					var result = eval("(" + data + ")");
+					if(result['type'] == "1") {
+						app.toast('创建完成');
+						plus.nativeUI.closeWaiting();
+						var Assessment = plus.webview.getWebviewById('Assessment');
+						mui.fire(Assessment, 'pageflowrefresh');
+						_self.close();
+					} else {
+						app.toast('创建失败');
+						plus.nativeUI.closeWaiting();
+					};
+				},
+				error: function(data) {
+					app.toast('创建失败');
+					plus.nativeUI.closeWaiting();
+				}
+			};
+			app.post3_1(option)
+		});
+	};
+
+	//
+	mui.back = function() {
+		_self.close();
+	};
+
+	///
+	window.addEventListener('SetCustomer', function(e) {
+		var Telephone = eval("(" + e.detail.SetCustomer + ")");
+		if(Telephone != null) {
+			$("#LiaisonType").val(Telephone[0]['realName']);
+			$("#Liaison").val(Telephone[0]['phone']);
+		};
+	})
+	
+	window.addEventListener('pageflowrefresh', function(e) {
+		Field = [];
+		FieldList = new mui.PopPicker();
+		GetFiled();
+	});
+</script>

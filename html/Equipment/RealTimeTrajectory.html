@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=2,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link rel="stylesheet" href="../../css/leaflet.css">
+		<link rel="stylesheet" href="../../css/leaflet.pm.css" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.picker.css" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../css/RealTimeTrajectory.css" />
+	</head>
+	<style>
+		p{
+			display: inline-block; 
+			text-align: left;
+			width: 100%;
+		}
+		.leaflet-popup-content{
+			width: 200px;
+		}
+		.Map{
+			width: 100%;
+			position: absolute;  
+            top: 45px;  
+            bottom: 200px;  
+			
+		}
+		
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">时实轨迹</h1>
+		</header>
+		<div class="mui-content">
+			<div class="Map" id="example2"></div>
+			<div class="mui-row">
+				<div class="mui-col-sm-3 mui-col-xs-3">
+					飞手
+					<br/>
+					<span class="flyerUserName">暂无</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3">
+					作物种类
+					<br/>
+					<span class="CropType">暂无</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3">
+					作业亩数
+					<br/>
+					<span class="Area">0</span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3">
+					<span class="time1">作业时间</span>
+					<br/>
+					<span class="time">2017-09-21</span>
+				</div>
+			</div>
+			<div class="footer">
+				<span>点击开始测量已作业面积</span>
+				<button type="button" class="mui-btn mui-btn-blue" id="startDraw">测量</button>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/leaflet.js"></script>
+<script src="../../js/leaflet.pm.min.js"></script>
+<script src="../../js/Leaflet.AccuratePosition.js"></script>
+<script src="../../js/GeometryUtil.js"></script>
+<script src="../../js/wgs84-to-gcj02.js"></script>
+<script src="../../js/xhx_map.js"></script>
+<script src="../../js/map.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({});
+	
+	var gpsList = [];
+	var linarr = [];
+	var _IMEI = "";
+	var _self = "";
+	var flyMark = "";
+	var showxy;
+	//工作量区域数;组RealTimeTrajectory.html
+	var worknumberList = [];
+	//飞行轨迹定义
+	var track = XHX_track.creatNew(map2, [], "track");
+	
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		_IMEI = _self.IMEI;
+		$(".flyerUserName").text(_self.WorkUserName);
+		//操作类
+		MapDraw.btns();
+		//获取设备对象
+		XHXEquipment.Extent(_IMEI);
+		//时时刷新数据
+		MapDraw.timer_showFlyer();
+		//获取当前设备绑定的任务信息
+		MapDraw.GetEquipmentTask();
+	});
+	
+	//设备对象
+	var XHXEquipment = {
+		Extent:function(_IMEI){ 
+			EquipmentObj.EquipmentList({queryJson:JSON.stringify({IMEI:_IMEI})},function(cb){
+				console.log(JSON.stringify(cb));
+				var EquipmentExtent = cb[0]['Extent'];//喷幅
+				MapDraw.getJobTrajectory(EquipmentExtent)//第一次绘制开始
+				MapDraw.RepeatDraw(EquipmentExtent);//时时刷新
+			})
+		}
+	};
+	
+	//绘制轨迹
+	var MapDraw = {
+		btns:function(){ 
+			$("#startDraw").on('tap',function(){
+				$("#startDraw").attr('disabled','disabled');
+				drawRegion();
+			});
+		},
+		//第一次绘制开始
+		getJobTrajectory:function(EquipmentExtent){
+			var timestamp = Date.parse(new Date());
+			timestamp = timestamp - 1200000;
+			var s1 = new Date(timestamp).format('yyyy-MM-dd hh:mm:ss');
+			$(".time").text(s1.substr(0,10));
+			var s2 = new Date(Date.parse(new Date())).format('yyyy-MM-dd hh:mm:ss');
+			var entiy = {keyValue:JSON.stringify({
+				IMEI: _IMEI, //Imei
+				StartTime:s1, //s1 
+				EndTime: s2 , //s2
+				//EnabledMark: 0//0定位，1没有定位
+				Extent:EquipmentExtent,
+			})} 
+			DrawObj.StartDraw(entiy,function(cb){
+				var result = cb;
+				if(result.length==0){
+					app.toast('当前没有作业数据');
+					return false;
+				};
+				
+				//飞机定义
+				var point = WGS84_to_GCJ02.creatNew().transform(parseFloat(result[0]['Lat']), parseFloat(result[0]['Lng']));
+					
+				flyMark = XHX_flymarker.creatNew(map2, point,"fly");
+				//定位到无人机位置
+				map2.setView(flyMark.getLatLng(),15);
+								
+				for(var i in result) {
+					//作业轨迹
+					var row = result[i];
+					var temp = WGS84_to_GCJ02.creatNew().transform(parseFloat(row.Lat), parseFloat(row.Lng));
+					linarr.push(row);
+					//绘制轨迹
+					track = track.addLatLng(temp);
+					if(i > result.length - 10) {
+						gpsList.push(row);
+					};
+				};
+			});
+		},
+		//时实接受数据开始
+		TimeTrack:function(){
+			var temp_gps;
+			if(gpsList.length > 0) {
+				temp_gps = gpsList[gpsList.length - 1];
+			} else {
+				temp_gps = showxy;
+			}
+			//console.log("发送开始：" + JSON.stringify(temp_gps));
+	
+			var timestamp = Date.parse(new Date());
+			//开始时间
+			var s1 = new Date(timestamp).format('yyyy-MM-dd hh:mm:ss');
+			$(".time1").text(s1.substr(0,10));
+			$(".time").text(s1.substr(10,s1.length));
+			if(temp_gps != undefined) {
+				s1 = new Date(temp_gps.GpsTime).format('yyyy-MM-dd hh:mm:ss');
+			}
+			//推后2分钟数据		
+			timestamp = timestamp + 1200000;
+			//结束时间
+			var s2 = new Date(timestamp).format('yyyy-MM-dd hh:mm:ss');
+			//读取接口
+			var entiy = {keyValue:JSON.stringify({
+				IMEI: _IMEI, //Imei
+				StartTime: s1,
+				EndTime: s2,
+				//EnabledMark: 1
+			})};
+			DrawObj.StartDraw(entiy,function(cb){
+				var result = cb;
+				console.log("接收到gps数据：" + JSON.stringify(result));
+				for(var i in result) {
+					//作业轨迹
+					var row = result[i];
+					linarr.push(row);
+					gpsList.push(row)
+				};
+			});
+		},
+		//时时刷新绘制
+		timer_showFlyer:function(){
+			setInterval(function() {
+				//当实时定位点少于2个的时候不在进行实时显示
+			if(gpsList.length < 2) return;
+				showxy = gpsList.shift();
+				//console.log(JSON.stringify(showxy));
+				if(showxy != undefined) {
+					//显示飞机位置
+					var temp = WGS84_to_GCJ02.creatNew().transform(parseFloat(showxy.Lat), parseFloat(showxy.Lng))
+		
+					flyMark = flyMark.setLatLng(temp);
+					//linarr.push([parseFloat(showxy.lng),parseFloat(showxy.lat)]);
+					//绘制轨迹
+					track = track.addLatLng(temp);
+					//显示速度、面积、高度、流量
+					//$("#spray_speed").text(showxy.speed + 'm/s');
+					//$("#spray_area").text(showxy.height);
+					//alert(new Date(showxy.gpsTime).format('yyyy-MM-dd hh:mm:ss')); 
+					//$("#spray_number").text(showxy.spray1);  
+				}
+			}, 700);
+		},
+		///时时调用接口绘制
+		//时时调用轨迹
+		RepeatDraw:function(EquipmentExtent){
+			setInterval(function() {
+				MapDraw.TimeTrack();
+				var Area = ConstantlyArea(linarr,5).toFixed(2);
+				$(".Area").text(Area);
+			}, 3000); 
+		},
+		
+		//获取当前设备绑定的任务信息
+		GetEquipmentTask:function(){
+			UseIdGetList.getTaskExecuteView({IMEI:_IMEI,DeleteMark:0}, function(data) {
+				var row = data[0];
+				//获取指定ID 的marker
+				setTimeout(function(){
+					$(".CropType").text(row['WorkDescription']);
+					flyMark.bindPopup('<b>任务名称：'+row['Description']+'</b></br><b>作业人：'+row['RealName']+'</b></br><b>作物种类：'+row['WorkDescription']+'</b></br><b>设备编号：'+row['IMEI']+'</b>')
+					.openPopup();
+				},3000) 
+			});
+		}
+	}
+	/////绘制完成回调
+	function Area(area,coordinate){
+		$("#startDraw").removeAttr('disabled');
+	};
+</script>

@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.min.css" />
+		<link rel="stylesheet" href="../../css/list.css" />
+	</head>
+	<style>
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			width: 100%;
+		}
+		
+		.mui-content {
+			padding-bottom: 100px;
+		}
+		
+		.Appoint {
+			margin-top: 30px;
+		}
+		
+		.mui-pciker-list>li {
+			background: none;
+		}
+		
+		.equipment {
+			position: relative;
+		}
+		
+		.selection {
+			position: absolute;
+			top: 40px;
+			right: 20px;
+		}
+		
+		.selection>button {
+			border: none;
+		}
+		
+		.endTask {
+			margin-right: 90px;
+		}
+		
+		.list {
+			padding-top: 12px !important;
+			border-bottom: 1px solid #F5F5F5;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的任务</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row">
+				<div class="mui-col-sm-6 mui-col-xs-6 font_14">
+					<div class="tittle activeT">任务</div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6 font_14">
+					<div class="tittle ">已完成任务</div>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="taskList">
+
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var _self = "";
+	var UserInfo = ""; //用户信息
+	var EquimpmentList = "";
+	var EquimpmentArray = [];
+	var Imei = "";
+	var EQ = [];
+	app.ready(function() {
+		_self = plus.webview.currentWebview();
+		UserInfo = app.accountInfo('info');
+		console.log(JSON.stringify(UserInfo));
+		Init(); //初始化页面
+	});
+
+	//预加载
+	function preload() {
+		////预加载历史任务
+		var TaskList = mui.preload({
+			url: './HisTaskList.html',
+			id: 'HisTaskList',
+		});
+	};
+
+	//初始化页面
+	function Init() {
+		getMyTask.TaskDetail();
+		preload();
+		///设备列表
+		EquimpmentList = new mui.PopPicker();
+		getMyTask.Equipment();
+		getMyTask.GetTaskEquipment(Imei);
+		NoData.bgImg('mui-content', '../../img/BGIMG.png');
+		TaskTab(); //任务种类切换
+	};
+
+	//任务种类切换
+	function TaskTab() {
+		$(".mui-row>div").each(function(i) {
+			$(".mui-row>div").eq(i).on('tap', function() {
+				//判断如果重复点击当前已经选中的状态 activeT
+				if($(".mui-row>div>.tittle").eq(i).hasClass('activeT')) {
+					return false;
+				};
+				$("#taskList").html('');
+				$(".mui-row>div>.tittle").removeClass('activeT');
+				$(".mui-row>div>.tittle").eq(i).addClass('activeT');
+
+				switch($(".mui-row>div>.tittle").eq(i).text()) {
+					case '任务':
+						Init();
+						app.DeleteSearch();
+						break;
+					case '已完成任务':
+						getMyTask.getHisTask();
+						app.contentHTML("#taskList");
+						//开始搜索查询
+						//开始查询并且返回查询结果
+						$("#search").on('tap', function() {
+							btnsShield(3, 'search');
+							var s = $("#SrarchStart").val();
+							var e = $("#SrarchEnd").val();
+							if(s == "" && e == "") {
+								app.toast('请选择时间')
+								return false;
+							};
+							getMyTask.getHisTask(s, e);
+							plus.nativeUI.showWaiting();
+							$("#taskList").html('');
+						});
+						break;
+				};
+			});
+		});
+	};
+
+	///获取当前自己创建或者领取的任务
+	var getMyTask = {
+		_teamId: UserInfo.RoleId,
+		//操作类
+		btns: function() {
+			//历史任务
+			$("#hisTask").on('tap', function() {
+				mui.openWindow({
+					url: './HisTaskList.html',
+					id: 'HisTaskList'
+				})
+			})
+		},
+		//获取当前用户的设备列表
+		Equipment: function() {
+			var sendData = {
+				queryJson: JSON.stringify({
+					WorkUser: UserInfo.UserId,
+					IsWordOk: 2,
+					IsUserOk: 2
+				})
+			};
+			UseIdGetList.getUserDevice(sendData, function(list) {
+				for(var i = 0; i < list.length; i++) {
+					var row = list[i];
+					if(JSON.stringify(EquimpmentArray).indexOf(row['CarrierId']) == -1) {
+						EquimpmentArray.push({
+							text: row['CarrierSpecs'] + "(" + row['CarrierCord'] + ")",
+							value: row['CarrierId']
+						});
+					};
+				};
+				EquimpmentList.setData(EquimpmentArray);
+			});
+		},
+
+		//获取任务列表创建标签  
+		TaskDetail: function() {
+			//获取任务列表  
+			var sendData = {
+				userId: UserInfo.UserId
+			};
+			//console.log(JSON.stringify(sendData))
+			UseIdGetList.GetTask(sendData, function(cb) {
+				//console.log(JSON.stringify(cb))
+				var TaskLen = 0; //任务数量  
+				var TaskEndNU = 0; //已作业亩数 
+				var TaskArea = 0; //任务总作业量 
+				var TaskList = [];
+				var rows = cb;
+				if(cb.length >= 1) {
+					NoData.ClearImg('mui-content');
+					//console.log(JSON.stringify(rows))
+					for(var i = 0; i < rows.length; i++) {
+						var row = rows[i];
+						var ProjectName = ""; //判断是否有项目名称
+						var onlyTeaskArea = (row['SprayArea'] == null) ? 0 : row['SprayArea']; //单个任务的总作业量
+						TaskEndNU += onlyTeaskArea;
+						//判断当前任务执行者是否绑定设备  
+						var IEMItext = "";
+						if(row['IMEI'] == null) {
+							IEMItext = "绑定设备";
+						} else {
+							IEMItext = "绑定成功";
+						};
+						//判断是否有项目名称
+						if(row['ProjectName'] == null) {
+							ProjectName = row['TaskName'];
+						} else {
+							ProjectName = row['ProjectName'] + '<span style="font-size:12px"> ' + row['TaskName'] + '</span>';
+						};
+						//console.log(row.UndertakerId)
+						//console.log(UserInfo.UserId)
+						//单个任务的总作业量
+						var $html = $(
+							'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + '>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+							'<div class="mui-media-body font_14">' +
+							'' + ProjectName + '' +
+							//'<p class="mui-ellipsis font_size12">开始时间：<span>'+row['CreateDate']+'</span></p>'+&nbsp;&nbsp;&nbsp;&nbsp;单价：'+row['Price']+'
+							'<p class="mui-ellipsis font_12" >作物种类：<span>' + row['WorkDescription'] + '</span></p>' +
+							//'<p class="mui-ellipsis font_12">单价：<span>' + row['Price'] + '</span></p>' +
+							'</div>' +
+							'<span class="mui-badge mui-badge-primary selection   mui-badge-inverted" deleteMark=' + row['DeleteMark'] + '  data=' + row['TaskDistributionId'] + '><button type="button" class=" mui-btn-blue">' + IEMItext + '</button></span>' +
+							'</a>' +
+							'</li>' +
+							'<div class="mui-row" data-index=' + i + '  value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + '>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已作业亩数: <span class="font_12">' + row['new_work_area'] / 100 + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已评估亩数: <span class="font_12">' + ((row['EstimateArea'] == null) ? 0 : row['EstimateArea']) + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">单价: <span class="font_12">' + row['Price'] + '</span></div>' +
+							'</div>'
+						);
+						$html.appendTo($("#taskList"));
+						TaskLen = i;
+						//			
+						//绑定设备开始作业
+						$html.find('.selection').on('tap', function() {
+							var ProjectId = $(this).attr('data');
+							//console.log(ProjectId)
+							getMyTask.setEquipment(ProjectId);
+							return false;
+						});
+						//查看任务执行者
+						$html.on('tap', function() {
+							var index = $(this).attr('data-index');
+							var Distribution = $(this).attr("text1");
+							rows[index]['RealArea'] = $(this).attr('pa'); //以评估
+							rows[index]['SprayQuality'] = $(this).attr('pg'); //合格率
+							rows[index]['SprayArea'] = $(this).attr('sa'); //以作业
+							mui.openWindow({
+								url: './TaskExecute.html',
+								id: 'TaskExecute',
+								extras: {
+									TaskDistributionData: rows[index]
+								},
+							});
+							return false;
+						});
+						TaskArea += row['Quantity'];
+
+					};
+				};
+				var TaskNO = parseInt(TaskLen) + 1;
+				var TotalSurplusArea = TaskArea - TaskEndNU;
+				var BLlen = $("#TaskingLen>span").text(); //获取本来长度
+				var BLTaskArea = $("#TaskEndNU>span").text(); //获取本来以作业面积；
+				var BLToatalTaskArea = $("#TaskSurplusNu>span").text(); //获取本来未作业亩数
+				//任务数量  ///总共的以作业亩数   ///总共的为作业亩数
+				setTimeout(function() {
+					$("#TaskingLen>span").text(rows.length + parseInt(BLlen));
+					$("#TaskEndNU>span").text((TaskEndNU + parseInt(BLTaskArea)).toFixed(2));
+					$("#TaskSurplusNu>span").text((TotalSurplusArea + parseInt(BLToatalTaskArea)).toFixed(2));
+				}, 500);
+
+			});
+		},
+
+		//获取团队里面我可以执行的任务
+		getTeamICanWorkTask: function() {
+			var sendData = {
+				ManageId: '',
+				EmployerId: "",
+				UndertakerId: UserInfo.UserId,
+				TeamExamine: "",
+				Examine: 1,
+				DeleteMark: 0,
+				StartTime: '1970-01-01',
+				EndTime: '2099-09-09',
+				OrganizeId: "",
+			};
+			//console.log(JSON.stringify(sendData))
+			UseIdGetList.GetTeamNum(sendData, function(cb) {
+				//获取当前团队的任务执行者列表
+				var sendData = {
+					queryJson: JSON.stringify({
+						WorkUser: UserInfo.UserId
+					})
+				};
+				UseIdGetList.ListgetTaskExecute(sendData, function(ece) {
+					var rows = [];
+					//判断当前用户的这条分包是否有任务执行者
+					for(var i in cb) {
+						for(var j in ece) {
+							if(cb[i]['TaskDistributionId'] == ece[j]['TaskDistributionId'] && ece[j]['WorkUser'] == cb[i]['WorkUser']) {
+								rows.push(cb[i]);
+							};
+						};
+					};
+					var TaskLen = 0; //任务数量
+					var TaskEndNU = 0; //已作业亩数
+					var TaskArea = 0; //任务总作业量
+					NoData.ClearImg('mui-content');
+					for(var i = 0; i < rows.length; i++) {
+						var row = rows[i];
+						//console.log(JSON.stringify(row))
+						var ProjectName = ""; //判断是否有项目名称
+						var onlyTeaskArea = (row['SprayArea'] == null) ? 0 : row['SprayArea']; //单个任务的总作业量
+						TaskEndNU += onlyTeaskArea;
+						//判断当前任务执行者是否绑定设备
+						var IEMItext = "";
+						if(row['IMEI'] == null) {
+							IEMItext = "绑定设备";
+						} else {
+							IEMItext = "绑定成功";
+						};
+						//判断是否有项目名称 
+						if(row['ProjectName'] == null) {
+							ProjectName = row['Description'];
+						} else {
+							ProjectName = row['ProjectName'] + '<span style="font-size:12px"> ' + row['TaskName'] + '</span>';
+						};
+						//单个任务的总作业量
+						var $html = $(
+							'<li class="mui-table-view-cell list mui-media" data-index=' + i + ' value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + '>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+							'<div class="mui-media-body font_14">' +
+							'' + ProjectName + '' +
+							'<p class="mui-ellipsis font_size12" >作物种类：<span>' + row['WorkDescription'] + '</span></p>' +
+							//'<p class="mui-ellipsis font_size12">单价：<span>' + row['Price'] + '</span></p>' +
+							'</div>' +
+							'<span class="mui-badge mui-badge-primary selection   mui-badge-inverted" deleteMark=' + row['DeleteMark'] + '  data=' + row['TaskDistributionId'] + '><button type="button" class="mui-btn mui-btn-blue">' + IEMItext + '</button></span>' +
+							'</a>' +
+							'</li>' +
+							'<div class="mui-row" data-index=' + i + '  value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + '>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已作业亩数: <span>' + onlyTeaskArea + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已评估亩数: <span>' + ((row['RealArea'] == null) ? 0 : row['RealArea']) + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">单价: <span class="font_12">' + row['Price'] + '</span></div>' +
+							'</div>'
+						);
+						$html.appendTo($("#taskList"));
+						TaskLen = i;
+						//						
+						//绑定设备开始作业
+						$html.find('.selection').on('tap', function() {
+							var ProjectId = $(this).attr('data');
+							getMyTask.setEquipment(ProjectId);
+							return false;
+						});
+
+						$html.on('tap', function() {
+							var index = $(this).attr('data-index');
+							var Distribution = $(this).attr("text1");
+							rows[index]['RealArea'] = $(this).attr('pa'); //以评估
+							rows[index]['SprayQuality'] = $(this).attr('pg'); //合格率
+							rows[index]['SprayArea'] = $(this).attr('sa'); //以作业
+							mui.openWindow({
+								url: './TaskExecute.html',
+								id: 'TaskExecute',
+								extras: {
+									TaskDistributionData: rows[index]
+								},
+							});
+							return false;
+						});
+
+						//						if((row.ManageId == UserInfo.UserId) || (row.EmployerId == UserInfo.UserId) || (row.UndertakerId == UserInfo.UserId)) {
+						//							//查看任务执行者
+						//							$html.on('tap', function() {
+						//								var index = $(this).attr('data-index');
+						//								var Distribution = $(this).attr("text1");
+						//								rows[index]['RealArea'] = $(this).attr('pa'); //以评估
+						//								rows[index]['SprayQuality'] = $(this).attr('pg'); //合格率
+						//								rows[index]['SprayArea'] = $(this).attr('sa'); //以作业
+						//								mui.openWindow({
+						//									url: './TaskExecute.html',
+						//									id: 'TaskExecute',
+						//									extras: {
+						//										TaskDistributionData: rows[index]
+						//									},
+						//								});
+						//								return false;
+						//							});
+						//						} else {
+						//							//查看任务执行轨迹
+						//							$html.on('tap', function() {
+						//								var index = $(this).attr('data-index');
+						//								console.log(index)
+						//								var Distribution = $(this).attr("text1");
+						//								mui.openWindow({
+						//									url: './TaskDetial.html',
+						//									id: 'TaskDetial',
+						//									extras: {
+						//										_selfData: rows[index]
+						//									},
+						//								})
+						//								return false;
+						//							});
+						//						}
+
+						TaskArea += row['Quantity'];
+					};
+
+					var TaskNO = parseInt(TaskLen) + 1;
+					var TotalSurplusArea = TaskArea - TaskEndNU;
+					var BLlen = $("#TaskingLen>span").text(); //获取本来长度
+					var BLTaskArea = $("#TaskEndNU>span").text(); //获取本来以作业面积；
+					var BLToatalTaskArea = $("#TaskSurplusNu>span").text(); //获取本来未作业亩数
+					//任务数量  ///总共的以作业亩数   ///总共的为作业亩数
+					setTimeout(function() {
+						$("#TaskingLen>span").text(rows.length + parseInt(BLlen));
+						$("#TaskEndNU>span").text((TaskEndNU + parseInt(BLTaskArea)).toFixed(2));
+						$("#TaskSurplusNu>span").text((TotalSurplusArea + parseInt(BLToatalTaskArea)).toFixed(2));
+					}, 500);
+
+				});
+			});
+		},
+
+		//获取我领取农民的任务
+		getAFarmerMassifTask: function() {
+			//获取任务列表 
+			UseIdGetList.GetTeamNum({
+				TeamId: "",
+				EmployerId: "",
+				UndertakerId: UserInfo.UserId,
+				TeamExamine: 1,
+				Examine: 1,
+				DeleteMark: 0,
+				StartTime: '1970-01-01',
+				EndTime: '2090-09-09',
+				OrganizeId: "",
+			}, function(cb) {
+				var rows = cb;
+				//console.log(JSON.stringify(cb))
+				var TaskLen = 0; //任务数量
+				var TaskEndNU = 0; //已作业亩数
+				var TaskArea = 0; //任务总作业量
+				if(cb.length >= 1) {
+					NoData.ClearImg('mui-content');
+					var rows = [];
+					for(var i = 0; i < cb.length; i++) {
+						if(JSON.stringify(rows).indexOf(cb[i]['TaskDistributionId']) == -1 && cb[i]['IMEI'] != null) {
+							rows.push(cb[i]);
+						};
+					};
+					for(var i = 0; i < rows.length; i++) {
+						var row = rows[i];
+						var ProjectName = ""; //判断是否有项目名称
+						var onlyTeaskArea = (row['SprayArea'] == null) ? 0 : row['SprayArea']; //单个任务的总作业量
+						TaskEndNU += onlyTeaskArea;
+						//判断当前任务执行者是否绑定设备
+						var IEMItext = "";
+						if(row['IMEI'] == null) {
+							IEMItext = "绑定设备";
+						} else {
+							IEMItext = "绑定成功";
+						};
+						//判断是否有项目名称
+						if(row['ProjectName'] == null) {
+							ProjectName = row['Description'];
+						} else {
+							ProjectName = row['ProjectName'] + '<span style="font-size:12px"> ' + row['TaskName'] + '</span>';
+						};
+						//单个任务的总作业量
+						var $html = $(
+							'<li class="mui-table-view-cell list mui-media" data-index=' + i + ' value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + '>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+							'<div class="mui-media-body font_14">' +
+							'' + ProjectName + '' +
+							//'<p class="mui-ellipsis font_size12">开始时间：<span>'+row['CreateDate']+'</span></p>'+&nbsp;&nbsp;&nbsp;&nbsp;单价：'+row['Price']+'
+							'<p class="mui-ellipsis font_12" >作物种类：<span>' + row['WorkDescription'] + '</span></p>' +
+							//'<p class="mui-ellipsis font_12">单价：<span>' + row['Price'] + '</span></p>' +
+							'</div>' +
+							'<span class="mui-badge mui-badge-primary selection   mui-badge-inverted"  deleteMark=' + row['DeleteMark'] + ' data=' + row['TaskDistributionId'] + '><button type="button" class="mui-btn mui-btn-blue">' + IEMItext + '</button></span>' +
+							'</a>' +
+							'</li>' +
+							'<div class="mui-row" data-index=' + i + '  value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + '>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已作业亩数: <span class="font_12">' + onlyTeaskArea + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已评估亩数: <span class="font_12">' + ((row['RealArea'] == null) ? 0 : row['RealArea']) + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">单价: <span class="font_12">' + row['Price'] + '</span></div>' +
+							'</div>'
+						);
+						$html.appendTo($("#taskList"));
+						TaskLen = i;
+						//						
+						//绑定设备开始作业
+						$html.find('.selection').on('tap', function() {
+							var ProjectId = $(this).attr('data');
+							getMyTask.setEquipment(ProjectId);
+							return false;
+						});
+						//查看任务执行者
+						$html.on('tap', function() {
+							var index = $(this).attr('data-index');
+							var Distribution = $(this).attr("text1");
+							rows[index]['RealArea'] = $(this).attr('pa'); //以评估
+							rows[index]['SprayQuality'] = $(this).attr('pg'); //合格率
+							rows[index]['SprayArea'] = $(this).attr('sa'); //以作业
+							mui.openWindow({
+								url: './TaskExecute.html',
+								id: 'TaskExecute',
+								extras: {
+									TaskDistributionData: rows[index]
+								},
+							});
+							return false;
+						});
+						TaskArea += row['Quantity'];
+					};
+				};
+				var TaskNO = parseInt(TaskLen) + 1;
+				var TotalSurplusArea = TaskArea - TaskEndNU;
+				var BLlen = $("#TaskingLen>span").text(); //获取本来长度
+				var BLTaskArea = $("#TaskEndNU>span").text(); //获取本来以作业面积；
+				var BLToatalTaskArea = $("#TaskSurplusNu>span").text(); //获取本来未作业亩数
+				//任务数量  ///总共的以作业亩数   ///总共的为作业亩数
+				setTimeout(function() {
+					$("#TaskingLen>span").text(rows.length + parseInt(BLlen));
+					$("#TaskEndNU>span").text((TaskEndNU + parseInt(BLTaskArea)).toFixed(2));
+					$("#TaskSurplusNu>span").text((TotalSurplusArea + parseInt(BLToatalTaskArea)).toFixed(2));
+				}, 500);
+
+			}); 
+		},
+		//获取历史任务
+		getHisTask: function(s, e) { 
+			var sendData = {
+				userId: UserInfo.UserId,
+				strTime: ((s) ? s : '1970-01-01'), 
+				endTime: ((e) ? e : '2099-09-09')
+			}; 
+			//console.log(JSON.stringify(sendData)) 
+			//获取任务列表 
+			UseIdGetList.GetFinshTask(sendData, function(cb) { 
+				console.log(JSON.stringify(cb))  
+				var rows = cb; 
+				var TaskLen = 0; //任务数量
+				var TaskEndNU = 0; //已作业亩数
+				var TaskArea = 0; //任务总作业量
+				if(cb != "") { 
+					NoData.ClearImg('mui-content');
+					var rows = [];
+					for(var i = 0; i < cb.length; i++) {
+						if(JSON.stringify(rows).indexOf(cb[i]['TaskDistributionId']) == -1) {
+							rows.push(cb[i]);
+						};
+					};
+					//console.log(JSON.stringify(rows))
+					for(var i = 0; i < rows.length; i++) {
+						var row = rows[i];
+						var ProjectName = ""; //判断是否有项目名称
+						var onlyTeaskArea = (row['new_work_area'] == null) ? 0 : row['new_work_area']/100; //单个任务的总作业量
+						TaskEndNU += ((row['RealArea'] == null) ? 0 : row['RealArea']);
+						//判断当前任务执行者是否绑定设备
+						var IEMItext = "";
+						if(row['IMEI'] == null) {
+							IEMItext = "绑定设备";
+						} else {
+							IEMItext = "绑定成功";
+						};
+						//单个任务的总作业量
+						var $html = $(
+							'<li class="mui-table-view-cell list mui-media" data-index=' + i + ' value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + '>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+							'<div class="mui-media-body font_14">' +
+							'<span style="font-size:12px"> ' + row['TaskName'] + '</span>'+
+							//'<p class="mui-ellipsis font_size12">开始时间：<span>'+row['CreateDate']+'</span></p>'+&nbsp;&nbsp;&nbsp;&nbsp;单价：'+row['Price']+'
+							'<p class="mui-ellipsis font_12" >作物种类：<span>' + row['WorkDescription'] + '</span></p>' +
+							//'<p class="mui-ellipsis font_12">单价：<span>' + row['Price'] + '</span></p>' +
+							'</div>' +
+							'<span class="mui-badge mui-badge-primary mui-badge-inverted" style="color:#777777">任务已结束</span>' +
+							'</a>' +
+							'</li>' +
+							'<div class="mui-row" data-index=' + i + '  value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + '>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已作业亩数: <span class="font_12">' + onlyTeaskArea + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">已评估亩数: <span class="font_12">' + ((row['EstimateArea'] == null) ? 0 : row['EstimateArea']/100) + '</span></div>' +
+							'<div class="mui-col-sm-4 mui-col-xs-4 font_12">单价: <span class="font_12">' + row['Price'] + '</span></div>' +
+							'</div>'
+						);
+						$html.appendTo($("#taskList"));
+						TaskLen = i;
+						//查看任务详情
+						$html.on('tap', function() {
+							var index = $(this).attr('data-index');
+							console.log(index)
+							mui.openWindow({
+								url: './CompletedTaskExecute.html', 
+								id: 'CompletedTaskExecute',    
+								extras: {   
+									TaskDistributionData: rows[index]
+								},
+							})
+						});
+						TaskArea += ((row['SprayQuality'] == null) ? 0 : row['SprayQuality']);
+					};
+
+					var TaskNO = parseInt(TaskLen) + 1;
+					var TotalSurplusArea = TaskArea;
+					var BLlen = $("#TaskingLen>span").text(); //获取本来长度
+					var BLTaskArea = $("#TaskEndNU>span").text(); //获取本来以作业面积；
+					var BLToatalTaskArea = $("#TaskSurplusNu>span").text(); //获取本来未作业亩数
+					//任务数量  ///总共的以作业亩数   ///总共的为作业亩数
+					$("#TaskingLen>span").text(rows.length + parseInt(BLlen));
+					$("#TaskEndNU>span").text(TaskEndNU.toFixed(2));
+					$("#TaskSurplusNu>span").text(TotalSurplusArea / rows.length + '%');
+				};
+			});
+		},
+		//1.获取设备列表，2.绑定设备
+		setEquipment: function(ProJectId) {
+			EquimpmentList.show(function(item) {
+				//2.获取任务执行者主键
+				var sendData = {
+					queryJson: JSON.stringify({
+						TaskDistributionId: ProJectId,
+						WorkUser: UserInfo.UserId
+					})
+				};
+				UseIdGetList.ListgetTaskExecute(sendData, function(cb) {
+					var TaskExeId = cb[0]['TaskExecuteId'];
+					getMyTask.BindEquipment(TaskExeId, item[0]['value'], ProJectId);
+				});
+			});
+		},
+		//4.绑定设备
+		BindEquipment: function(TaskExeId, Imei, ProJectId) {
+			//console.log(TaskExeId);
+			//console.log(Imei);
+			//console.log(ProJectId);
+			var type = 0;
+			$(".selection").each(function(i) {
+				if($(".selection").eq(i).attr("imei") != undefined) {
+					if($(".mui-table-view-cell").eq(i).attr('value') == ProJectId && $(".selection").eq(i).attr("imei") == Imei) {
+						app.toast('禁止重复绑定设备');
+						type = 1;
+					};
+				};
+			});
+			if(type == 1) {
+				return false;
+			};
+			TaskObj.BindXHX({
+				keyValue: TaskExeId,
+				imei: Imei
+			}, function(cb) {
+				//console.log(JSON.stringify(cb))
+				if(cb['type'] == "1") {
+					$(".selection").each(function(i) {
+						if($(".selection").eq(i).attr('data') == ProJectId) {
+							app.toast('绑定成功');
+							plus.nativeUI.closeWaiting();
+							getMyTask.GetUserEquipment(0);
+							$(".selection").eq(i).attr("imei", Imei); //.addClass('ImeiColor').css("border","none");
+						};
+					});
+					var TaskList = plus.webview.getWebviewById("TaskList");
+					TaskList.reload();
+				} else {
+					app.toast('绑定失败，当前设备已绑定其他任务');
+					plus.nativeUI.closeWaiting();
+				};
+			});
+		},
+		//获取当前任务绑定的设备
+		GetTaskEquipment: function(_teamId) {
+			UseIdGetList.getTaskExecute(_teamId, function(cb) {
+				setTimeout(function() {
+					$(".selection").each(function(j) {
+						for(var i in cb) {
+							var row = cb[i];
+							if($(".selection").eq(j).attr('data') == row['TaskDistributionId'] && row['IMEI'] != null && row['WorkUser'] == UserInfo.UserId) {
+								//console.log($(".selection").eq(j).attr('data')+'---------------------'+row['TaskDistributionId']+'---------------'+row['IMEI']+'----------'+row['WorkUser']+'----------'+UserInfo.UserId);
+
+								$(".selection").eq(j).attr("imei", row['IMEI']);
+							};
+						};
+					});
+					getMyTask.GetUserEquipment();
+				}, 500)
+			});
+		},
+		//获取当前任务绑定设备的型号和序列号
+		GetUserEquipment: function(check) {
+			//获取当前用户可以使用的设备
+			//获取所属的设备 
+			var sendData1 = {
+				queryJson: JSON.stringify({
+					WorkUser: UserInfo.UserId
+				})
+			};
+			UseIdGetList.getTheEquipment(sendData1, function(cb1) {
+
+				//判断为点击时启用
+				if(check == 0) {
+					$(".selection").each(function(i) {
+						if($(".selection").eq(i).attr("imei") != undefined) {
+							for(var j in EQ) {
+								if(EQ[j]) {
+									if(EQ[j]['EQU'] == $(".selection").eq(i).attr("imei")) {
+										$(".selection").eq(parseInt(EQ[j]['num'])).html('<button type="button" class="mui-btn mui-btn-blue">绑定设备</button>');
+										$(".selection").eq(parseInt(EQ[j]['num'])).removeAttr("imei");
+										EQ = []; //[j] = ""
+										//console.log($(".selection").eq(i).attr("imei")+'--------------------'+EQ['EQU']);
+									};
+								};
+							};
+							for(var c in cb1) {
+								var row = cb1[c];
+								if($(".selection").eq(i).attr("imei") == row['IMEI']) {
+									$(".selection").eq(i).text(row['CarrierSpecs'] + "(" + row['CarrierCord'] + ")").addClass('ImeiColor').css("border", "none");
+									EQ.push({
+										"num": i,
+										"EQU": $(".selection").eq(i).attr("imei")
+									});
+									//console.log($(".selection").eq(i).attr("imei")+'-------------'+row['IMEI']+'-----------'+i);
+								};
+							};
+							//console.log($(".selection").eq(i).attr("imei") + '-----------------' + i);
+						};
+
+					});
+					$(".selection").each(function(i) {
+						EQ.push({
+							"num": i,
+							"EQU": $(".selection").eq(i).attr("imei")
+						});
+						for(var j in cb1) {
+							var row = cb1[j];
+							if($(".selection").eq(i).attr("imei") == row['IMEI']) {
+								//console.log($(".selection").eq(i).attr("imei")+'-------------'+row['IMEI']);
+								$(".selection").eq(i).text(row['CarrierSpecs'] + "(" + row['CarrierCord'] + ")").addClass('ImeiColor').css("border", "none");
+							};
+						};
+					});
+				};
+			});
+		},
+	};
+
+	///刷新数据
+	window.addEventListener('pageflowrefresh', function(e) {
+		$(".mui-table-view").html('');
+		getMyTask.TaskDetail();
+	});
+</script>
+

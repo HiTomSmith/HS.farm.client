@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<link href="../../css/list.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-content {
+			padding-bottom: 140px !important;
+		}
+		
+		.tittle {
+			width: 70% !important;
+			min-width: 70% !important;
+		}
+		
+		.Surplus {
+			position: absolute;
+			right: 10px;
+			bottom: 35px;
+			background: white;
+		}
+		
+		.payment,
+		.received {
+			position: relative;
+		}
+		
+		.PaymentNum,
+		.ReceivedNum {
+			position: absolute;
+			width: 14px;
+			height: 14px;
+			background: red;
+			right: 18px;
+			top: 3px;
+			border-radius: 100%;
+			font-size: 8px;
+			text-align: center;
+			line-height: 15px;
+			color: white;
+			display: none;
+		}
+		
+		.ApplyUav {
+			background: white;
+		}
+		/*new*/
+		
+		.perListContent {
+			/*border:solid 1px red;*/
+			/*height: 170px;*/
+			background: #FFFFFF;
+			border-radius: 2px;
+			margin-top: 10px;
+			padding: 0 10px;
+			padding-top: 4px;
+		}
+		
+		.orderTitle {
+			/*border:1px solid orange;*/
+			height: 30px;
+		}
+		
+		.orderImg {
+			float: left;
+			width: 30%;
+			/*border: solid 1px blue;*/
+			height: 90px;
+		}
+		
+		.orderdes {
+			float: right;
+			width: 70%;
+			/*border: solid 1px green;*/
+			height: 90px;
+			padding-top: 4px;
+		}
+		
+		.btnList {
+			/*border: 1px solid black;*/
+			height: 32px;
+			margin-top: 4px;
+		}
+		
+		.btnLeft {
+			border: solid 1px #9B9B9B;
+			height: 30px;
+			border-radius: 13px;
+			text-align: center;
+			line-height: 15px;
+			font-size: 12px;
+		}
+		
+		.btnRight {
+			border: solid 1px #9B9B9B;
+			height: 30px;
+			border-radius: 13px;
+			color: #15AE3F;
+			margin-left: 8px;
+			text-align: center;
+			line-height: 15px;
+			font-size: 12px;
+		}
+		
+		.orderBtn {
+			height: 30px;
+			float: right;
+		}
+		
+		.liRightText {
+			color: #222222;
+			font-size: 14px;
+		}
+		
+		.liRightCenter {
+			font-size: 12px;
+		}
+		
+		.liRightRight {
+			color: #222222;
+			font-size: 12px;
+		}
+		
+		.orderDetails {
+			height: 90px;
+			border-bottom: #F4F4F4 solid 1px;
+		}
+		
+		.orderStatus {
+			color: #15AE3F;
+			font-size: 12px;
+		}
+		
+		.orderTime {
+			color: #777777;
+			font-size: 12px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a class="mui-pull-right" id="hisLease" style="color: white;margin-top: 11px;font-size: 17px;">电池分期</a>-->
+			<h1 class="mui-title ">我的租赁单</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row">
+				<div class="mui-col-sm-3 mui-col-xs-3 font_12">
+					<div class="tittle activeT">全部租赁单</div>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3 font_12">
+					<div class="tittle payment">待付款</div>
+					<div class="PaymentNum"></div>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3 font_12">
+					<div class="tittle received">待收货</div>
+					<div class="ReceivedNum"></div>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3 font_12">
+					<div class="tittle">已完成</div>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" style="width: 100%;">
+
+				<div class="perList" id="addList">
+
+					<!--<div class="perListContent">
+						<div class="orderTitle"><span class="orderStatus mui-pull-right">待付款</span><span class="orderTime">2018-10-22 15:12:54</span></div>
+						
+						<div class="orderDetails">
+							
+							<div class="orderImg">
+								<img src="../../img/1s.png" width="100%" height="100%"/>
+							</div>
+							
+							<div class="orderdes">
+								<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">MG-1P</span></p>
+						        <p class="liRightCenter">型号：<span class="mode">HS-1P-006</span></p>
+			                    <p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">9400</span></p>
+							</div>
+						</div>
+						
+						<div class="btnList">
+							<div class="orderBtn">
+								<button type="button" class="btnLeft mui-pull-left">取消付款</button>
+						        <button type="button" class="btnRight">立即付款</button>
+							</div>
+						</div>
+
+					</div>-->
+
+				</div>
+
+			</ul>
+
+			<!--<ul class="mui-table-view mui-scroll" id="getNoPayList">
+				<ul class="mui-table-view">
+				</ul>
+			</ul>-->
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo = "";
+	app.ready(function() {
+		var osaction = plus.webview.currentWebview().tap;
+		if(osaction == "osaction") {
+			mui.back = function() {
+				app.CustomClose(osaction);
+			}
+		} else {
+			//////////mui.back重置//////////////
+			mui.back = function() {
+				var ExpWindow = plus.webview.getWebviewById('ExpWindow');
+				var LeaseList = plus.webview.getWebviewById('LeaseList');
+				if(ExpWindow) {
+					plus.webview.close('ExpWindow');
+				} else {
+					plus.webview.close('LeaseList');
+				};
+			};
+		}
+
+		UserInfo = app.accountInfo('info');
+		btnClickEvents();
+		//getNoPayList();
+		//初始化租赁单状态
+		PlanPayLease(undefined, 0);
+		preload(); //预加载
+		NoData.bgImg('mui-content', '../../img/BGIMG.png');
+		LeaseTab(); ///租赁单种类切换
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	//预加载
+	function preload() {
+		//预加载历史租赁单
+		var HisLeaseList = mui.preload({
+			url: 'HisLeaseList.html',
+			id: 'HisLeaseList'
+		});
+	};
+	//租赁单种类切换
+	function LeaseTab() {
+		$(".mui-row>div").each(function(i) {
+			$(".mui-row>div").eq(i).on('tap', function() {
+				//判断如果重复点击当前已经选中的状态 activeT
+				if($(".mui-row>div>.tittle").eq(i).hasClass('activeT')) {
+					return false;
+				};
+				$("#getNoPayList").html('');
+				$(".mui-row>div>.tittle").removeClass('activeT');
+				$(".mui-row>div>.tittle").eq(i).addClass('activeT');
+
+				switch($(".mui-row>div>.tittle").eq(i).text()) {
+					case '全部租赁单':
+						plus.nativeUI.showWaiting();
+						PlanPayLease(undefined, 0);
+						app.DeleteSearch();
+						break;
+					case '待付款':
+						plus.nativeUI.showWaiting();
+						PlanPayLease(0, 0);
+						app.DeleteSearch();
+						break;
+					case '待收货':
+						plus.nativeUI.showWaiting();
+						PlanPayLease(2, 0);
+						app.DeleteSearch();
+
+						break;
+					case '已完成':
+						//						plus.nativeUI.showWaiting();
+						PlanPayLease(undefined, 1);
+						app.contentHTML("#addList");
+						//开始搜索查询
+						//开始查询并且返回查询结果
+						$("#search").on('tap', function() {
+							btnsShield(3, 'search');
+							var s = $("#SrarchStart").val();
+							var e = $("#SrarchEnd").val();
+							if(s == "" && e == "") {
+								app.toast('请选择时间')
+								return false;
+							};
+							PlanPayLease(undefined, 1, s, e);
+							plus.nativeUI.showWaiting();
+							$("#getNoPayList").html('');
+						});
+						break;
+				};
+			});
+		});
+	};
+	var status1 = [
+		'<span class="orderStatus mui-pull-right">待付款</span>',
+		'<span class="orderStatus mui-pull-right">已扣款</span>',
+		'<span class="orderStatus mui-pull-right">待收货</span>',
+		'<span class="font_12 UavStatus5">客户已收货</span>',
+		'<span class="orderStatus mui-pull-right">申请退租</span>',
+		'<span class="font_12 UavStatus7">客户已发货</span>',
+		'<span class="font_12 UavStatus8">商家已收货</span>',
+		'<span class="orderStatus mui-pull-right">维修</span>',
+		'<span class="orderStatus mui-pull-right">完成</span>',
+		'<span class="orderStatus mui-pull-right">已经失效</span>'
+//		'<span class="font_12 UavHS-1A-01">已经失效</span>',
+	];
+	status1[18] = '<span class="font_12 UavStatus">已激活</span>';
+	status1[19] = '<span class="orderStatus mui-pull-right">正常使用</span>';
+	//获取我未支付的租赁单 
+	function getNoPayList() {
+		var option = {
+			api: '/PlanManage/LeaseTable2/GetPageListJson',
+			data: {
+				"page": 1,
+				"rows": 100,
+				"sidx": "UserInfoId",
+				"sord": "asc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId
+				})
+			},
+			success: function(data) {
+				console.log(data);
+				var result = JSON.parse(data);
+				var rows = result['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					console.log("返回结果：" + row)
+					var $html = $(
+
+						'<div class="perListContent">' +
+						'<div class="orderTitle">' + status1[row['LeaseState']] + '<span class="orderTime">2018-10-22 15:12:54</span></div>' +
+
+						'<div class="orderDetails">' +
+
+						'<div class="orderImg">' +
+						'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+						'</div>' +
+
+						'<div class="orderdes">' +
+						'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">MG-1P</span></p>' +
+						'<p class="liRightCenter">型号：<span class="mode">HS-1P-006</span></p>' +
+						'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">9400</span></p>' +
+						'</div>' +
+
+						'</div>' +
+						'<div class="btnList">' +
+						'<div class="orderBtn">' +
+						'<button type="button" class="btnLeft mui-pull-left">取消付款</button>' +
+						'<button type="button" class="btnRight">立即付款</button>' +
+						'</div>' +
+						'</div>' +
+
+						'</div>'
+					);
+					$html.appendTo($("#addList"));
+				};
+			},
+			error: function(data) {
+
+			}
+		};
+		app.post3_4(option);
+	};
+
+	//获取打算支付的租赁单
+	function PlanPayLease(type, deleteMarker, s, e) {
+		var sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				UserInfoId: UserInfo.UserId,
+				DeleteMark: deleteMarker,
+				LeaseState: type,
+			})
+		};
+		if(s && e) {
+			sendData = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId,
+					DeleteMark: deleteMarker,
+					LeaseState: type,
+					StartTime: s,
+					EndTime: e,
+				})
+			}
+		};
+
+		var Lease = plus.webview.getWebviewById('Lease');
+
+		mui.fire(Lease, 'pageflowerfresh');
+		var option = {
+			api: '/PlanManage/LeaseTable/GetPageListJson',
+			data: sendData,
+			success: function(data) {
+				var result = JSON.parse(data);
+				console.log(data)
+				//两个参数，代付款，待收货
+				var waitPay = 0;
+				var waitExp = 0;
+				plus.nativeUI.closeWaiting();
+				if(result['rows'].length >= 1) {
+					NoData.ClearImg('mui-content');
+				};
+				var rows = result['rows'];
+				console.log("查询：" + JSON.stringify(rows))
+				$("#addList").html('');
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = "";
+					switch(row['LeaseState']) {
+						case 0: //未付款
+							waitPay++;
+							$html = $(
+
+								'<div style="padding-bottom: 4px;" class="perListContent" data-index=' + i + ' value=' + row['LeaseTableId'] + ' date=' + row['CreateDate'] + '   checkState=' + row['RentalOrderId'] + ' orderState=' + row['LeaseState'] + '>' +
+								'<div class="orderTitle">' + ((row['RentalOrderId'] == '已审核') ? '<span class="orderStatus mui-pull-right">已审核</span>' : '<span class="orderStatus mui-pull-right">待付款</span>') + '<span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+                                
+//                              '<div class="orderTitle">' +((status1[row['LeaseState']].indexOf('data="失效"') == -1) ? CalculationTime(row['CreateDate']) :(((row['RentalOrderId'] == '已审核') ? '<span class="orderStatus mui-pull-right">已审核</span>' : '<span class="orderStatus mui-pull-right">待付款</span>'))) + '<span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div style="height: 90px;">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+
+								((row['RentalOrderId'] == '已审核') ? '' : '<div class="btnList" style="border-top: 1px solid #F4F4F4;padding-top: 2px;"><div class="orderBtn"><button type="button" class="btnRight">删除订单</button></div></div>') +
+
+								'</div>'
+
+							)
+//							if(row['RentalOrderId'] != '已审核'){
+//								$html.appendTo($("#addList"));
+//							}
+							$html.appendTo($("#addList"));
+							$html.on('tap', function() {
+								var leaseid = $(this).attr('value');
+								var index = $(this).attr('data-index');
+								var date1 = $(this).attr('date');
+								var time = CalculationTime(rows[index]['CreateDate']);
+								var checkStatus = $(this).attr('checkState');
+								var orderState = $(this).attr('orderState');
+								console.log("订单状态：" + orderState)
+								console.log("当前时间：" + time)
+								console.log(time.indexOf('data="失效"') != -1)
+
+								//判断是否过期
+								if(orderState == 0 && checkStatus != '已审核') {
+									dialog.Dialogbox('提示', '确认是否删除？', function(cb) {
+										if(cb == 1) {
+											plus.nativeUI.showWaiting();
+											DeleteLease(leaseid);
+											var _page = plus.webview.getWebviewById('LeaseList');
+											_page.reload(true);
+										} else if(cb == 0) {
+											dialog.CloseLogBox();
+										} else {
+											app.toast('已取消');
+										};
+									});
+								} else {
+									mui.openWindow({
+										url: './LeasDetails-3.html',
+										id: 'LeasDetails_3',
+										extras: {
+											data: rows[index]
+										}
+									})
+
+								};
+							});
+							break;
+						case 1: //已付款
+							var $html = $(
+								'<div style="height: 123px;border-radius: 2px;margin-top: 10px;padding: 0 10px;background: #FFFFFF;padding-top: 4px;"  data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<div class="orderTitle">' + status1[row['LeaseState']] + '<span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div style="height:90px">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+
+								'</div>'
+
+							);
+							$html.appendTo($("#addList"));
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url: './LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							break;
+						case 2: //待收货
+							waitExp++;
+							$html = $(
+
+								'<div class="perListContent" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<div class="orderTitle">' + status1[row['LeaseState']] + '<span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div class="orderDetails">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.SN + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+								'<div class="btnList">' +
+								'<div class="orderBtn">' +
+								//								'<button type="button" class="btnLeft mui-pull-left">取消付款</button>' +
+								'<button type="button" class="btnRight" id="ConfirmReceipt" data-index=' + i + '>确认收货</button>' +
+								'</div>' +
+								'</div>' +
+
+								'</div>'
+
+							);
+							$html.appendTo($("#addList"));
+
+							//确认收货
+							$html.find("#ConfirmReceipt").on('tap', function() {
+								var index = $(this).attr('data-index');
+								console.log("下标：" + index)
+								mui.openWindow({
+									url: './ConfirmGoods.html',
+									id: 'ConfirmGoods',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							break;
+						case 3: //客户已收货
+							$html = $(
+								'<div class="perListContent" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<div class="orderTitle"><span class="orderStatus mui-pull-right"></span><span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div class="orderDetails">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.SN + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+								'<div class="btnList">' +
+								'<div class="orderBtn">' +
+								//								'<button type="button" class="btnLeft mui-pull-left">取消付款</button>' +
+								'<button type="button" class="btnRight">删除订单</button>' +
+								'</div>' +
+								'</div>' +
+
+								'</div>'
+
+							);
+							$html.appendTo($("#addList"));
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url: './LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							break;
+						case 4: //退租
+							$html = $(
+								'<div class="perListContent" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<div class="orderTitle">' + status1[row['LeaseState']] + '<span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div class="orderDetails">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.SN + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+								'<div class="btnList">' +
+								'<div class="orderBtn">' +
+								//								'<button type="button" class="btnLeft mui-pull-left">取消付款</button>' +
+								//								'<button type="button" class="btnRight">删除订单</button>' +
+								'</div>' +
+								'</div>' +
+
+								'</div>'
+
+							);
+							$html.appendTo($("#addList"));
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url: './LeasDetails-3.html',
+									id: 'LeasDetails-3.html',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							break;
+						case 5: //客户已发货
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + ' data-index=' + i + ' >' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>' + status1[row['LeaseState']] + '' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + ((row['ContractNo'] == null) ? '暂无' : row['ContractNo']) + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0, 10) + '</p>' +
+								'</div>' +
+								'<div class="ExpBtn">' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">' + row['PreTotal'] + '元</span>' +
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList"));
+							if(row['RepairState'] == 1) {
+								$html.find('a').append('<span class="mui-badge mui-badge ApplyUav">申请换机中</span>');
+							} else if(row['RepairState'] == 2) {
+								$html.find('a').append('<span class="mui-badge mui-badge ApplyUav">已同意换机</span>');
+							} else if(row['RepairState'] == 3) {
+								$html.find('a').append('<span class="mui-badge mui-badge ApplyUav">换机出库</span>');
+							};
+
+							//查看租赁单详情
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								console.log(index);
+								mui.openWindow({
+									url: '../Lease/LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: rows[index],
+										type: 'repair'
+									}
+								});
+								return false;
+							});
+							break;
+						case 6:
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>' + status1[row['LeaseState']] + '' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + ((row['ContractNo'] == null) ? '暂无' : row['ContractNo']) + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0, 10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">' + row['PreTotal'] + '元</span>' +
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList"));
+							break;
+						case 7: //维修
+
+							$html = $(
+								'<div class="perListContent" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<div class="orderTitle"><span class="orderStatus mui-pull-right"></span><span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div class="orderDetails">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.SN + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+								'<div class="btnList">' +
+								'<div class="orderBtn">' +
+								//								'<button type="button" class="btnLeft mui-pull-left">取消付款</button>' +
+								'<button type="button" class="btnRight">删除订单</button>' +
+								'</div>' +
+								'</div>' +
+
+								'</div>'
+
+							);
+							$html.appendTo($("#addList"));
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url: './LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: rows[index],
+										type: 'repair'
+									}
+								})
+							});
+							break;
+						case 8: //完成
+							var $html = $(
+								'<div style="height: 123px;border-radius: 2px;margin-top: 10px;padding: 0 10px;background: #FFFFFF;padding-top: 4px;"  data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<div class="orderTitle">' + status1[row['LeaseState']] + '<span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div style="height:90px">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.SN + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+
+								'</div>'
+
+							);
+							$html.appendTo($("#addList"));
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url: 'HisLeaseDetails.html',
+									id: 'HisLeaseDetails',
+									extras: {
+										data: rows[index],
+									}
+								});
+							});
+							break;
+						case 18:
+							$html = $(
+								'<div class="perListContent" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<div class="orderTitle"><span class="orderStatus mui-pull-right"></span><span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div class="orderDetails">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.SN + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+								'<div class="btnList">' +
+								'<div class="orderBtn">' +
+								//								'<button type="button" class="btnLeft mui-pull-left">取消付款</button>' +
+								'<button type="button" class="btnRight">删除订单</button>' +
+								'</div>' +
+								'</div>' +
+
+								'</div>'
+
+							);
+							$html.appendTo($("#addList"));
+							CalculationDays(row['LeaseBeginDate'], row['LeaseEndDate'], i);
+							//上传试飞照片
+							$html.find('.upFlyImg').on('tap', function(e) {
+								e.stopPropagation();
+								var index = $(this).attr('data-index');
+								console.log(index)
+								mui.openWindow({
+									url: './upTryImg.html',
+									id: 'upTryImg',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url: './LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							break;
+						case 19:
+							$html = $(
+								'<div style="height: 123px;border-radius: 2px;margin-top: 10px;padding: 0 10px;background: #FFFFFF;padding-top: 4px;" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<div class="orderTitle">' + status1[row['LeaseState']] + '<span class="orderTime">' + row['LeaseBeginDate'].substr(0, 10) + '</span></div>' +
+
+								'<div style="height: 90px;">' +
+
+								'<div class="orderImg">' +
+								'<img src="../../img/1s.png" width="100%" height="100%"/>' +
+								'</div>' +
+
+								'<div class="orderdes">' +
+								'<p class="liRightText">0押金租大疆<span class="mgMode" style="margin-left: 3px;">' + row.GoodsName + '</span></p>' +
+								'<p class="liRightCenter">型号：<span class="mode">' + row.SN + '</span></p>' +
+								'<p class="liRightRight"><span class="mui-pull-right">x1</span>￥<span class="mode">' + row.PreTotal + '</span></p>' +
+								'</div>' +
+
+								'</div>' +
+								'</div>'
+
+							);
+							$html.appendTo($("#addList"));
+							CalculationDays(row['LeaseBeginDate'], row['LeaseEndDate'], i);
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url: './LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							break;
+
+					};
+				};
+				if(type == undefined && deleteMarker == 0) {
+					//代付款数量，带收货数量
+					if(type == 0) {
+						(waitPay >= 1) ? $('.PaymentNum').text(waitPay).show(): $('.PaymentNum').hide();
+					} else if(type == 2) {
+						(waitExp >= 1) ? $('.ReceivedNum').text(waitExp).show(): $('.ReceivedNum').hide();
+					} else if(type == undefined) {
+						(waitPay >= 1) ? $('.PaymentNum').text(waitPay).show(): $('.PaymentNum').hide();
+						(waitExp >= 1) ? $('.ReceivedNum').text(waitExp).show(): $('.ReceivedNum').hide();
+					};
+				};
+			},
+			error: function(data) {
+				console.log(JSON.stringify("error:" + data))
+			}
+		};
+		app.post3_4(option);
+	};
+
+	///获取物流单主键
+	function getExpId(leaseId) {
+		var option = {
+			api: '/PlanManage/Express/GetPageListJson',
+			data: {
+				"page": 1,
+				"rows": 1,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					LeaseTableId: leaseId,
+				})
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				var rows = result['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var Compy = row['ExpressCompany'];
+					var Num = row['ExpressRealId'];
+					mui.openWindow({
+						url: "https://www.kuaidi100.com/chaxun?com=" + Compy + "&nu=" + Num + "",
+						id: 'ExpWindow',
+						styles: {
+							top: '44px'
+						}
+					});
+				};
+			},
+			error: function(data) {}
+		};
+		app.post3_4(option)
+	};
+	//计算租赁单剩余支付时间
+	function CalculationTime(stime, i) {
+		var createTime = Date.parse(stime); //创建时间
+		var enTime = createTime + 172800000; //结束时间
+		var newTime = new Date();
+		var newTimeMs = Date.parse(newTime); //当前时间戳
+		var ChaTimes = enTime - newTimeMs; //剩余毫秒
+		//剩余分钟
+		var SurplusTime = ChaTimes / (1000 * 60);
+		var SurplusTime1 = SurplusTime.toFixed(0);
+		if(SurplusTime1 <= 0) {
+			SurplusTime1 = 0;
+			return status1[9] + '<span class="mui-badge Surplus" id="state2" data="失效">' + SurplusTime1 + '分钟</span>';
+		} else {
+			return status1[0] + '<span class="mui-badge Surplus" id="state2">剩余:' + SurplusTime1 + '分钟</span>';
+		};
+	};
+
+	///计算剩余天数
+	function CalculationDays(start, end, i) {
+		var Days = ((Date.parse(end) - Date.parse(new Date())) / 86400000).toFixed(0);
+		if(Days <= 0) {
+			Days = 0;
+		};
+		$(".leaseList").eq(i).append('<span class="mui-badge">剩余' + Days + '天数</span>');
+	};
+
+	/////
+	function btnClickEvents() {
+		//历史租赁单
+		$('#hisLease').on('tap', function() {
+			mui.openWindow({
+				url: '../Battery/batteryOrder.html',
+				id: 'batteryOrder',
+			});
+		});
+	};
+
+	//删除过期租赁单
+	function DeleteLease(leaseid) {
+		console.log("1022:" + leaseid)
+		var option = {
+			api: '/PlanManage/LeaseTable/RemoveForm',
+			data: {
+				keyValue: leaseid
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				console.log("删除结果：" + result)
+				if(result['type'] == "1") {
+					app.toast('删除成功');
+				} else {
+					app.toast('删除失败');
+				};
+			},
+			error: function(data) {
+				console.log("错误：" + data)
+				plus.nativeUI.closeWaiting();
+				app.toast('删除失败');
+			}
+		};
+		app.post3_3(option)
+	};
+
+	////
+	window.addEventListener('pageflowerfresh', function() {
+		$("#getNoPayList").html('');
+		PlanPayLease(undefined, 0);
+		$(".mui-row>div>.tittle").each(function() {
+			$(".mui-row>div>.tittle").removeClass('activeT');
+		});
+		$(".mui-row>div>.tittle").eq(0).addClass('activeT');
+	});
+
+	window.addEventListener('pageflowerfresh1', function() {
+		location.reload();
+	});
+</script>

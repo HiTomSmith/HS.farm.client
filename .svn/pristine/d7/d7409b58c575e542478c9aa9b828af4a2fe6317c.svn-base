@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/dateRange.css" />
+		<link rel="stylesheet" href="../../css/teamRecord.css" />
+	</head>
+	<style>
+		
+		
+	</style>
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">战绩</h1>
+		</header>-->
+		<div class="mui-content mui-scroll-wrapper">   
+		    <ul class="mui-table-view" id="teamList">
+		    	<li class="mui-table-view-cell mui-media" id="TeamBoos">
+		            <!--<li class="mui-table-view-cell mui-media">
+		                    <a href="javascript:;">
+		                        <img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+		                        <div class="mui-media-body">
+		                            幸福
+		                            <p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+		                        </div>
+		                    </a> 
+		                </li>-->
+		        </li>
+		        <li class="date">
+		        	<span class="date_title dateController" id="date1"></span>
+		        	<span class="toda">时间段查询</span>
+		        </li>
+		        <li class="currentArea">
+		        	<span class="TotalMS font_12" >作业亩数：<span>0</span></span>
+		        	<!--<span class="Qualified font_12">合格率：<span>0%</span></span>--> 
+		        </li> 
+		    </ul>
+		    <ul class="mui-table-view-cell mui-media" id="TeamPreson">
+		    </ul>
+		</div>
+		<div class="mengbi"></div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/dateRange.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var _teamId = "";
+	var _teamName = "";
+	var NowTime = null;
+	var ETime = null;
+	var userInfo = "";
+	var todayTime = null;
+	var Status = true;
+	var Qualification = 0;
+	var TotalArea = 0;
+	var NO1Time = '2017-01-01';
+	var _self = null;
+	app.ready(function(){
+		userInfo = app.accountInfo('info'); 
+		_self = plus.webview.currentWebview();
+		console.log(JSON.stringify(_self))  
+		NowTime = new Date().format().substr(0,10);///默认结束时间
+		LTime = Date.parse(new Date()) - (86400000*30);
+		ETime = new Date(LTime).format().substr(0,10);////默认开始时间  
+		console.log(typeof(ETime)) 
+		todayTime = new Date(Date.parse(new Date()) + 86400000).format().substr(0,10);
+		dateController(NowTime,todayTime);
+		getUserTeamId(NowTime,NO1Time);
+	});
+	////日期控件
+	function dateController(NowTime,ETime){
+		//alert(NowTime+'++++++++++++++++++++++++++++++++'+ETime)
+		var dateRange1 = new pickerDateRange('date1', {
+			stopToday : false,
+			isTodayValid : true,
+			startDate: ETime,
+			endDate: NowTime,
+			needCompare : false,
+			defaultText : ' 至 ',
+			autoSubmit : false,
+			inputTrigger : 'input_trigger1',
+			theme : 'ta',
+			success : function(obj) {   
+				console.log(JSON.stringify(obj)); 
+				getTeamPreson(obj.endDate, obj.startDate,_teamId); 
+			}
+		});
+	}
+	
+	///获取当前用户的团队主键
+	function getUserTeamId(endtime,starttime){
+		var option = {
+			api:'/XhxManage/XHX_Team/GetPageListJson',
+			data:{
+				"page": 1,
+				"rows": 1,
+				"sidx": "UserId",
+				"sord": "asc",
+				"queryJson": JSON.stringify({
+					UserId: (_self)?_self.UserId:userInfo.UserId
+				})
+			},
+			success:function(data){
+				var result = eval("("+data+")");
+				var row = result['rows']; 
+				_teamId = row[0]['TeamId'];
+				_teamName = row[0]['TeamName']; 
+				
+				for(var i in row){
+					var res = row[i];
+					UseIdGetName.getUserName(res['UserId'],function(cb){
+						var HeadIcon ='../../img/my-fill-light.png';
+						var $html = $(
+							'<a href="javascript:;">'+
+					            '<img class="mui-media-object mui-pull-left" src='+HeadIcon+' >'+
+					            '<div class="mui-media-body font_14">'+
+					                ''+res['TeamName']+'<br/>'+
+					                '<span class="TeamBoos font_12">队长：'+  cb+'</span>'+
+					                '<span class="font_12">累计亩数：<span id="TotalArea" class="font_12">0</span></span>'+
+					            '</div>'+
+					        '</a>'
+						);
+						$html.appendTo($("#TeamBoos"));
+					});
+				};
+				
+				getTeamPreson(endtime,starttime,_teamId);//获取团队成员列表
+			},
+			error:function(data){
+			}
+		};
+		app.post3_2(option);
+	};
+	
+	////获取团队成员列表
+	function getTeamPreson(endtime,starttime){            
+		console.log(NowTime)
+		console.log(ETime)
+		var sendData = {
+			teamId: _teamId, 
+			strTime:starttime,
+			endTime:endtime
+		};
+		console.log(JSON.stringify(sendData))
+		UseIdGetList.GetTeamWork(sendData,function(cb){     
+			var row = cb
+			console.log(JSON.stringify(row))
+			$("#TeamPreson").html(""); 
+			
+			var temparea=0;
+			for(var i in cb){
+				var row = cb[i];
+				var $html = $(
+					'<li class="teamPreson Preson" data='+row['WorkUserId']+'>'+
+						'<span class="font_12">'+row['WorderName']+'</span>'+
+//						'<span class="font_12">合格率：<span class="rate">0</span></span>'+
+						'<span class="font_12">作业亩数：<span class="WorkArea">'+((row['new_work_area']==null)?0:row['new_work_area'])/100+'</span></span>'+
+					'</li>'
+				);
+				$html.appendTo($("#TeamPreson"));
+				
+				temparea +=((row['new_work_area']==null)?0:row['new_work_area'])/100;
+			}; 
+			
+			if(TotalArea==0){
+				TotalArea=temparea;
+			 $("#TotalArea").text(TotalArea.toFixed(2) + '亩');
+			}
+			$(".TotalMS>span").text(temparea.toFixed(2) + '亩');
+			
+		}); 
+	};
+	
+	
+	
+	
+	
+	
+	////累计获取战绩
+	function getTeamRecord(NowTime,ETime){  
+		var sendData = {queryJson:JSON.stringify({TeamId: _teamId,StartTime:NowTime,EndTime:ETime,WorkPersonId:""})};
+		UseIdGetList.GetRecord(sendData,function(cb){  
+			//累计作业亩数 
+			var TotalArea = 0;
+			//单人作业亩数合格率
+			$(".Preson").each(function(j){ 
+				//console.log(j) 
+				//console.log($(".Preson").eq(j).html())   
+				if(cb.length<1){
+					$(".rate").eq(j).text(0);
+					$(".WorkArea").eq(j).text(0); 
+				}; 
+				for(var i in cb){  	 
+					var row = cb[i];
+					//console.log($(".Preson").eq(j).attr('data')+'-----------------'+row['WorkPersonId']);
+					if($(".Preson").eq(j).attr('data')==row['WorkPersonId']){
+						//console.log(row['Area']+'-----------'+j);
+						$(".rate").eq(j).text(((row['SQ']==null)?0:row['SQ']));//
+						$(".WorkArea").eq(j).text(((row['Area']==null)?0:row['Area']));///
+					}
+//					else{
+//						$(".rate").eq(j).text(0);
+//						$(".WorkArea").eq(j).text(0);
+//					};
+				};
+			});
+			
+			for(var i in cb){
+				var row = cb[i];
+				TotalArea+=((row['Area']==null)?0:row['Area']);
+				Qualification+=((row['SQ']==null)?0:row['SQ']);
+			};
+			//console.log(Qualification+'-------------'+cb.length);
+			$(".TotalArea>span").text(TotalArea);  
+			if(Qualification!=0){
+				$(".Qualified>span").text((Qualification/cb.length).toFixed(1));
+			};
+			$("#TotalArea").text(TotalArea);//面积
+		});
+	};
+	
+	//累计亩数
+	function CumulativeArea(){
+		
+	};
+</script>

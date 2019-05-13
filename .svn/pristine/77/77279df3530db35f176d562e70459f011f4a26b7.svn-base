@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title>任务执行者</title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+	<style>
+		html,
+		body {
+			overflow: hidden;
+		}
+		
+		.mui-row {
+			border-top: 1px solid #efeff4;
+		}
+		
+		.mui-row>div {
+			text-align: center !important;
+			line-height: 40px;
+			font-size: 10px;
+		}
+		
+		.font_14,
+		.font_12 {
+			font-size: 14px !important;
+			color: #686666;
+		}
+		
+		.font_12 {
+			font-size: 12px !important;
+			color: #9D9D9D;
+		}
+		
+		.Executor {
+			background: #efeff4;
+			height: 40px;
+			line-height: 12px;
+		}
+		
+		.mui-badge {
+			background: white;
+			padding-top: 10px;
+		}
+		
+		.colorgagy {
+			color: #9D9D9D;
+		}
+		
+		.applyRecord {
+			color: #FB9543;
+			line-height: 24px;
+			font-size: 12px !important;
+		}
+		
+		.btns {
+			width: 100%;
+			margin: 0 auto;
+			text-align: center;
+			position: fixed;
+			bottom: 8px;
+			z-index: 9;
+		}
+		 
+		.btns>button {
+			width: 90%;
+			height: 44px;
+			font-size: 16px;
+			border-radius: 4px;
+			border: none;
+		}
+		.mui-table-view-cell:after {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 15px;
+			height: 0px;
+			content: '';
+			-webkit-transform: scaleY(.5);
+			transform: scaleY(.5);
+			background-color: rgba(200, 199, 204, 0.3);
+		}
+		
+		.implement {
+			padding: 6px 15px!important;
+			border-top: 1px solid #F5F5F5;
+			line-height: 30px;
+			position: relative;
+		}
+		
+		.WorkArea,
+		.WorkPGArea {
+			position: absolute;
+		}
+		
+		.WorkArea {
+			top: 14px !important;
+		}
+		
+		.WorkPGArea {
+			right: 20px;
+			bottom: 6px;
+		}
+		
+		#ReleaseTask {
+			height: 30px !important;
+			color: white;
+			padding: 0 !important;
+			padding: 0px 10px !important;
+		}
+		
+		.CheckGJ {
+			width: 90% !important;
+			background: #15AE3F !important;
+			border-radius: 46px;
+			height: 46px !important;
+		}
+		
+		#EndTask {
+			margin-left: 6px;
+		}
+		.flyerShow{
+			height:30px;
+			line-height:30px;
+			font-size: 13px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">任务执行者</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" style="margin-bottom:15%">
+			<ul class="mui-table-view mui-scroll">
+				<li class=" mui-table-view-cell Executor font_14">执行飞手</li>
+			</ul>
+		</div>
+		<div class="btns">
+			<button type="button" class="mui-btn mui-btn-blue" id="SeeTrajectory">查看轨迹</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条 
+	});
+	var _self = ""; //
+	var TaskDistributionData = ""; //分包数据
+	var TaskButionId = ""; //分包主键
+	var TaskDistributionState = "" //分包状态：0未发布1已发布
+	var UserInfo = "" //用户信息
+	var _teamId = ""; //团队主键
+	var fatherView = ""; //父级页面
+	app.ready(function() {
+		_self = plus.webview.currentWebview();
+		console.log(JSON.stringify(_self))   
+		TaskDistributionData = _self.TaskDistributionData; //分包数据 
+		console.log(TaskDistributionData)
+		TaskButionId = TaskDistributionData.TaskDistributionId; //分包主键
+		console.log(TaskButionId)
+		TaskDistributionState = TaskDistributionData.UndertakerId; //分包状态：0未发布1已发布
+		console.log(TaskDistributionState)
+		UserInfo = app.accountInfo('info'); //用户信息
+		_teamId = UserInfo.RoleId; //团队主键
+		fatherView = plus.webview.getWebviewById('TaskList');
+		//服务站任务申请记录
+		if(UserInfo.OpenId == 5) {
+			$("#SStask").show();
+			$("#SStask").on('tap', function() {
+				mui.openWindow({
+					url: '../Sstation/SStaskApply.html',
+					id: 'SStaskApply',
+					extras: {
+						'taskId': TaskButionId
+					},
+				});
+			});
+		};
+		//任务详情
+		Task.TaskDetail(TaskDistributionData);
+		//任务执行者 
+		Task.Executor(TaskButionId);
+		//功能按钮类
+		Operation.Btns();
+	});
+
+	//获取任务详情
+	var Task = {
+		TaskDetail: function(TaskDistributionData) {
+			var row = TaskDistributionData;
+			var TaskLen = 0; //任务数量
+			var TaskArea = 0; //任务总作业量
+			var onlyTeaskArea = (row['RegionArea'] == null) ? 0 : row['RegionArea']; //单个任务的总作业量
+			if(row['ProjectName'] == null) {
+				ProjectName = row['TaskName'];
+			} else {
+				if(row['ProjectName'] == null) {
+					row['ProjectName'] = "";
+				};
+				ProjectName = row['ProjectName'] + '<span style="font-size:12px"> ' + row['TaskName'] + '</span>';
+			};
+			console.log(row['EstimateArea']) 
+			var $html = $(
+				'<li class="mui-table-view-cell mui-media"  value=' + row['TaskDistributionId'] + ' id="lookTrack">' +
+				'<a href="javascript:;">' +
+				'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+				'<div class="mui-media-body font_14">' +
+				'' + ProjectName + '' +
+				'<p class="mui-ellipsis font_size12" >作物种类：<span>' + row['WorkDescription'] + '</span></p>' +
+				'<p class="mui-ellipsis font_size12">单价：<span>' + row['Price'] + '</span></p>' +
+				'</div>' +
+				'</a>' +
+				'</li>' +
+				'<div class="mui-row font_12 colorgagy"  value=' + row['TaskDistributionId'] + '>' +
+				'<div class="mui-col-sm-6 mui-col-xs-6 font_12">已作业: <span>' + ((row['new_work_area'] == null) ? 0 : row['new_work_area']/100) + '</span></div>' +
+				'<div class="mui-col-sm-6 mui-col-xs-6 font_12">已评估: <span>' + ((row['EstimateArea'] == null) ? 0 : row['EstimateArea']) + '</span></div>' +
+				'</div>'
+			);  
+			$('.Executor').before($html);
+			if((row.ManageId == UserInfo.UserId) || (row.EmployerId == UserInfo.UserId) || (row.UndertakerId == UserInfo.UserId)) {
+				$("#ReleaseTask").show();
+			}
+			//判断当前是否为任务创建者
+			if(row['EmployerId'] != UserInfo.UserId) {
+				$("#EndTask").remove();
+				$("#SeeTrajectory").addClass('CheckGJ');
+			}
+		},
+		//执行者  
+		Executor: function(TaskButionId) { 
+			//获取执行者列表    
+			UseIdGetList.GetTaskExecute({   
+				taskDistributionId: TaskButionId,  
+			}, function(data) { 
+				console.log(JSON.stringify(data))      
+				var rows = data;  
+				for(var i in rows) { 
+					var row = rows[i]; 
+					console.log(JSON.stringify(row))
+					var WorkArea = (row['new_work_area'] == null) ? "0" : (row['new_work_area'] / 100).toFixed(2); //已经作业
+					var WorkPGArea = (row['EstimateArea'] == null) ? "0" : (row['EstimateArea']).toFixed(2); //已经评估
+					var IMEI = (row['CarrierId'] == null || row['CarrierId'] == "") ? "暂未绑定设备" : row['CarrierId'];
+					var $html = $(
+						
+//						'<li class="mui-table-view-cell font_14  implement"  WorkUserId=' + row['WorkUserId'] + ' CarrierId=' + row['CarrierId'] + '>' +
+//						'<p class="flyerShow">'+
+//						'<span class="mui-inline mui-pull-left" style=" width:25%;">' + row['WorderName'] + '</span>'+
+//						'<span class="mui-inline colorgagy" style=" width:40%;">已作业:' + WorkArea + '</span>'+
+//						'<span class="mui-inline mui-pull-right colorgagy" style="width:auto">已评估:' + WorkPGArea + '</span>'+
+//						'</p>'+  
+//						'<p class="flyerShow" style="margin-top: 5px;">'+
+//						'<span class="mui-inline mui-pull-left mui-ellipsis SN" Imei=' + IMEI + '>设备号:' + ((row['CarrierCord'] == null || row['CarrierCord'] == "") ? "暂未绑定设备" : row['CarrierCord']) + '</span>'+
+//						'</p>'+
+//						'</li>'
+						
+						'<li class="mui-table-view-cell font_14  implement"  WorkUserId=' + row['WorkUserId'] + ' CarrierId=' + row['CarrierId'] + '>' +
+						'' + row['WorderName'] + '' +
+						'<p class="mui-ellipsis SN" Imei=' + IMEI + '>设备号:' + ((row['CarrierCord'] == null || row['CarrierCord'] == "") ? "暂未绑定设备" : row['CarrierCord']) + '</p>' +
+						'<span class="mui-badge colorgagy font_12 WorkArea">已作业:' + WorkArea + '</span>' +
+						'<span class="colorgagy font_12 WorkPGArea">已评估:' + WorkPGArea + '</span>' +
+						'</li>'
+					);
+					$('.Executor').after($html);
+					$html.find("#StartEvaluation").on('tap', function() {
+						var WorkUserId = $(this).attr("WorkUserId");
+						var CarrierId = $(this).attr("CarrierId");
+						console.log(WorkUserId)
+						mui.openWindow({ 
+							url: '../Massif/CreateAssessment.html',
+							id: 'CreateAssessment',
+							extras: { 
+								taskId: TaskButionId,
+								workUserId: WorkUserId,
+								carrierId: CarrierId,
+							}
+						});
+   
+					})
+				};
+			    
+			});	
+		} 
+	};
+	///去重
+	function _objIsInArray(obj, arr) {
+		var tmpStatus = false;
+		for(var j = 0; j < arr.length; j++) {
+			if(obj.Region == arr[j].Region && obj.WorkUser == arr[j].WorkUser) {
+				return j;
+				break;
+			} else { 
+				tmpStatus = false; 
+			}
+		}
+		if(!tmpStatus) {
+			return -1;
+		}
+	}
+
+	//操作类
+	var Operation = {
+		//、按钮
+		Btns: function() {
+			//发布按钮
+			$("#ReleaseTask").on('tap', function(e) {
+				e.stopPropagation();
+				Operation.ReleaseTask();
+			});
+			//查看轨迹
+			$("#SeeTrajectory").on('tap', function() {
+				Operation.SeeTaskTrajectory();
+			});
+		},
+		//发布任务
+		ReleaseTask: function() {
+			if(UserInfo.OpenId == 5) {
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: [{
+							title: '全体发布'
+						},
+						{
+							title: '指定队长'
+						},
+						{
+							title: '指定队员'
+						},
+					]
+				}, function(e) {
+					switch(e.index) {
+						case 1:
+							Operation.AllRelease();
+							break;
+						case 2:
+							Operation.CaptainRelease();
+							break;
+						case 3:
+							Operation.AppointRelease();
+							break;
+					};
+				})
+			} else {
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: [{
+						title: '指定队员'
+					}, ]
+				}, function(e) {
+					switch(e.index) {
+						//						case 1:
+						//							Operation.AllRelease();
+						//							break;
+						case 1:
+							Operation.AppointRelease();
+							break;
+					};
+				})
+			}
+
+		},
+		//全体发布
+		AllRelease: function() {
+			if(TaskDistributionState !=null) {
+				app.toast('这个任务已经发布,您可以指定飞手发布');
+			} else {
+				if(UserInfo.OpenId == 5) {
+					TaskObj.StationTask({
+						keyValue: TaskButionId,
+						IsBear: 0
+					}, function(cb) {
+						if(cb['type'] == "1") {
+							TaskDistributionState = 1;
+							app.toast('发布成功！！');
+							plus.nativeUI.closeWaiting();
+							//刷新一次上级页面 
+							var fatherView = plus.webview.getWebviewById("Task"); 
+							mui.fire(fatherView, 'pageflowrefresh');
+						};
+					});
+				} else {
+					TaskObj.ALLReleaseTask({
+						keyValue: TaskButionId,
+						TeamExamine: 1
+					}, function(cb) {
+						if(cb['type'] == "1") {
+							TaskDistributionState = 1;
+							app.toast('发布成功！！');
+							plus.nativeUI.closeWaiting();
+							//刷新一次上级页面
+							var fatherView = plus.webview.getWebviewById("Task"); 
+							mui.fire(fatherView, 'pageflowrefresh');
+						};
+					});
+				};
+			}
+		},
+		//队长发布
+		CaptainRelease: function() {
+			//获取当前用户团队下的所有队长
+			var sendData = {
+				Description: UserInfo.CompanyId,
+				Duties: "队长"
+			};
+			UseIdGetList.getUserTeamTeamPreson(sendData, function(cb) {
+				var TeamPreson = new mui.PopPicker();
+				var List = [];
+				for(var i in cb) {
+					var row = cb[i];
+					if(row['UserId'] != UserInfo.UserId) {
+						List.push({
+							text: row['UserName'],
+							value: row['UserId'],
+							value1: row['TeamId'],
+						})
+					};
+				};
+				TeamPreson.setData(List);
+				TeamPreson.show(function(item) {
+					var send = {
+						TaskDistributionId: TaskButionId,
+						WorkUser: item[0]['value'],
+						TeamId: _teamId,
+						Examine: 1,
+						IsApply: 1
+					};
+					TaskObj.StationTask({
+						keyValue: TaskButionId,
+						UndertakerId: item[0]['value'],
+						IsBear: 1
+					}, function(cb) {
+						//console.log(JSON.stringify(cb))
+						if(cb['type'] == 1) {
+							var TaskList = plus.webview.getWebviewById('TaskList');
+							mui.fire(TaskList, 'pageflowrefresh');
+						} else {
+							app.toast('指派失败！');
+						};
+					});
+					//选择一个队员指定发布给他
+					TaskObj.AppointReleaseTask(send, function(cb) {
+						if(cb['type'] == "1") {
+							if(UserInfo.OpenId == 5) {
+								$("#ReleaseTask").attr('disabled', 'disabled');
+								app.toast('指派' + item[0]['text'] + '成功');
+							} else {
+								app.toast('指派成功，' + item[0]['text'] + '可以开始任务');
+							};
+						} else if(cb['type'] == "3") {
+							app.toast('你已经向他指派过了');
+						};
+						plus.nativeUI.closeWaiting();
+					});
+				});
+			});
+		},
+		//指定飞手发布
+		AppointRelease: function() {
+			//获取当前用户团队下的所有成员
+			var sendData = {};
+			if(UserInfo.OpenId == 5) {
+				sendData.Description = UserInfo.CompanyId;
+			} else {
+				sendData.TeamId = _teamId;
+				sendData.IsAgree = 1;
+			};
+			UseIdGetList.getUserTeamTeamPreson(sendData, function(cb) {
+				console.log(JSON.stringify(cb))
+				var TeamPreson = new mui.PopPicker();
+				var List = [];
+				for(var i in cb) {
+					var row = cb[i];
+					console.log(JSON.stringify(row));
+					if(row['UserId'] != UserInfo.UserId) {
+						List.push({
+							text: row['UserName'],
+							value: row['UserId'],
+							value1: row['TeamId'],
+						})
+					};
+				};
+				TeamPreson.setData(List);
+				TeamPreson.show(function(item) {
+					var send = {};
+					if(UserInfo.OpenId == 5) {
+						send.TaskDistributionId = TaskButionId;
+						send.WorkUser = item[0]['value'];
+						send.TeamId = _teamId;
+						send.Examine = 1,
+							send.IsApply = 1;
+					} else {
+						send.TaskDistributionId = TaskButionId;
+						send.WorkUser = item[0]['value'];
+						send.TeamId = _teamId;
+						send.Examine = 1;
+						send.IsApply = 1;
+						send.IsBanding = "否";
+
+					};
+					console.log(JSON.stringify(send))
+					//选择一个队员指定发布给他
+					TaskObj.AppointReleaseTask(send, function(cb) {
+						if(cb['type'] == "1") {
+							if(UserInfo.OpenId == 5) {
+								$("#ReleaseTask").attr('disabled', 'disabled');
+								app.toast('指派' + item[0]['text'] + '成功');
+							} else {
+								app.toast('指派成功，' + item[0]['text'] + '可以开始任务');
+							};
+							var taskExecute = plus.webview.getWebviewById("TaskExecute");
+							taskExecute.reload();
+						} else if(cb['type'] == "3") {
+							app.toast('你已经向他指派过了');
+						};
+						plus.nativeUI.closeWaiting();
+					});
+				});
+			});
+		},
+		//查看任务轨迹
+		SeeTaskTrajectory: function() { 
+			mui.openWindow({
+				url: '../Task/TaskDetial.html',
+				id: 'TaskDetial',
+				extras: {
+					TaskDistributionId: TaskButionId
+				},
+			})
+		}
+	};
+
+	window.addEventListener('pageflowrefresh', function() {
+		$("#SStask").hide();
+		location.reload();
+	});
+</script>
+

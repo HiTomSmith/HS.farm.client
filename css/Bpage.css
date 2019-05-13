@@ -1,0 +1,119 @@
+.mengbi {
+			width: 100%;
+			height: 100%;
+			background: #747474;
+			position: fixed;
+			top: 0;
+			z-index: 10000;
+			display: none;
+			opacity: 0.8;
+		}
+		html,body,.mui-content{
+			width: 100%;
+			height:100%;
+		}
+		.mui-content{
+			border-top:1px solid #F5F5F5;
+		}
+		.banner{
+			width: 100%;
+			height:150px;
+			background-image: url(../img/BBimg.png);
+			background-repeat:no-repeat ;
+			background-size:100% 100%;
+		}
+		.mui-row{
+			height:90px;
+			margin-top:20px;
+		}
+		.mui-row>div{
+			padding-top:10px;
+			height:90px;
+			text-align: center;
+		}
+		.mui-row>div:active{
+			background: #F5F5F5;
+		}
+		.icon1{
+			margin:0 auto;
+			width:46px;
+			height:46px; 
+			border-radius: 100%;
+			line-height: 46px;
+			color: white;
+		}
+		.Lease>.icon1{
+			background: #F5645A;
+		}
+		.QA>.icon1{
+			background: #B57B66;
+		}
+		.Activation>.icon1{
+			background: #15BC83;
+		}
+		.Logistics>.icon1{
+			background: #EEC35C;
+		}
+		.Stock>.icon1{
+			background: #EEC35C;
+		}
+		.Examination>.icon1{
+			background: #6E8DF1;
+		}
+		.UAVPayment>.icon1{
+			background: #B94A48;
+		}
+		.Repair>.icon1{
+			background: #EC7E5E;
+		}
+		.Finance>.icon1{
+			background: #1E9FEF;
+		}
+		.Statistics>.icon1{
+			background: #1E9FEF;
+		}
+		.DrugOrder>.icon1{
+			background: #31C775;
+		}
+		.Reagents>.icon1{
+			background: #4789CD;
+		}
+		.UPament>.icon1{
+			background: #6641E2;
+		}
+		.Pjgl>.icon1{
+			background: #B57B66;
+		}
+		.Pjdd>.icon1{
+			background: #1E9FEF;
+		}
+		.cleartp>.icon1{
+			background: #EC7E5E;
+		}
+		.clearcj>.icon1{
+			background: #1E9FEF;
+		}
+		.partsPurchase>.icon1{
+			background: #747474;
+		}
+		.BillGoods>.icon1{
+			background: #E17736;
+		}
+		.batteryOrder>.icon1{
+			background: #F07C69;
+		}
+		.batteryPament>.icon1{
+			background: #FFA500;
+		}
+		.batteryDeliver>.icon1{
+			background: #FF3366;
+		}
+		.HistoryLease>.icon1{
+			background: #FFBB66;
+		}
+		.repairPament>.icon1{
+			background: #0078A8;
+		}
+		.text{
+			margin-top:10px;
+		}

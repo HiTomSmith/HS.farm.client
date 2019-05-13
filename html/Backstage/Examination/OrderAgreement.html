@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.mui-row>div {
+			text-align: left;
+		}
+		
+		.list {
+			position: relative;
+		}
+		
+		.mui-btn {
+			height: 30px;
+			margin-top: 50px;
+			padding: 0 10px;
+			font-size: 12px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon iconfont mui-pull-right" id="TwoCode">&#xe751;</a>
+			<h1 class="mui-title">货单相符</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="List">
+
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		Lease.List();
+		//Lease.getRenew();
+		Lease.Events();
+	});
+	var status1 = [
+		'<span class="font_12 UavStatus2">等待支付</span>',
+		'<span class="font_12 UavStatus3">已付款</span>',
+		'<span class="font_12 UavStatus4">商家已发货</span>',
+		'<span class="font_12 UavStatus5">客户已收货</span>',
+		'<span class="font_12 UavStatus6">申请退租</span>',
+		'<span class="font_12 UavStatus7">客户已发货</span>',
+		'<span class="font_12 UavStatus8">商家已收货</span>',
+		'<span class="font_12 UavStatus9">维修</span>',
+		'<span class="font_12 UavStatus10">完成</span>',
+		'<span class="font_12 UavStatus11">已经失效</span>',
+	];
+	status1[18] = '<span class="font_12 UavStatus">已激活</span>';
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	//获取申请租赁的无人机
+	var Lease = {
+		//获取所有租赁单
+		List: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 999,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					LeaseState: 0
+				})
+			};
+			getLeaseInterface.getLease(sendData, function(cb) {
+				$("#List").html('');
+				var rows = cb['rows'];
+				var WaitPay = 0,
+					WaitSign = 0 //待收货，待付款
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + ' date=' + row['CreateDate'] + '>' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_18">' + row['RealName'] + '</span><span class="CarrierSpecs ">(' + row['Model'] + ',' + row['SN'] + ')</span>' + status1[row['LeaseState']] +
+						'<span class="LeaseStatus"></span>' +
+						'</div>' +
+						'<div class="mui-media-body">' +
+						'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+						'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+						'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0, 10) + '</p>' +
+						'</div>' +
+						'<span class="mui-badge MoneyColor">' + row['PreTotal'] + '元</span>' +
+						'' + Lease.Backbtn(row, i) + '' +
+						' </li>'
+					);
+					$html.appendTo($("#List"));
+					//业务审核
+					$html.find("#Business").on('tap', function() {
+						var LeaseId = $(this).attr('value');
+						dialog.Dialogbox('审核', '确认审核当前订单？', function(cb) {
+							if(cb == 1) {
+								Lease.Business(LeaseId);
+							} else if(cb == 0) {
+								dialog.CloseLogBox();
+							} else {
+								app.toast('已取消');
+							};
+						});
+					});
+				};
+			});
+		},
+		//获取待激活的租赁单
+		getRenew: function() {
+			var send = {
+				"page": 1,
+				"rows": 10,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					LeaseState: 3,
+					RenewNumber: 0,
+				})
+			};
+			getLeaseInterface.getLease(send, function(cb) {
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + ' date=' + row['CreateDate'] + '>' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_18">' + row['RealName'] + '</span><span class="CarrierSpecs ">(' + row['Model'] + ',' + row['SN'] + ')</span>' + status1[row['LeaseState']] +
+						'<span class="LeaseStatus"></span>' +
+						'</div>' +
+						'<div class="mui-media-body">' +
+						'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+						'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+						'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0, 10) + '</p>' +
+						'</div>' +
+						'<span class="mui-badge MoneyColor">' + row['PreTotal'] + '元</span>' +
+						'<button type="button" class="mui-btn mui-btn-blue" id="Ren" index=' + i + '  value=' + row['LeaseTableId'] + '>审核续租</button>' +
+						' </li>'
+					);
+					$html.appendTo($("#List"));
+					//审核续租
+					$html.find('#Ren').on('tap', function() {
+						var LeaseId = $(this).attr('value');
+						var index = $(this).attr('index');
+						Lease.RenDetails(LeaseId, index);
+					});
+				};
+			});
+		},
+		//续租详情
+		RenDetails: function(LeaseId, i) {
+			//获取续租单列表
+			var send = {
+				keyValue: LeaseId
+			};
+
+			getLeaseInterface.getRenew(send, function(cb) {
+				var row = cb[0];
+				dialog.Dialogbox('审批', '确认审批续租？<br/>续租天数：' + row['RenewDay'] + '天', function(cb) {
+					if(cb == 1) {
+						LeaseInterface.RenewCheck({
+							keyValue: LeaseId
+						}, function(cb) {
+							if(cb['type'] == 1) {
+								app.toast('审批成功！');
+								$(".list").eq(i).remove();
+							} else {
+								app.toast('审批失败！');
+							};
+						});
+					} else if(cb == 0) {
+						dialog.CloseLogBox();
+					} else {
+						app.toast('已取消');
+					};
+				});
+			});
+		},
+		//		//返回按钮
+		//		Backbtn: function(row, i) {
+		//			var btn = "";
+		//			if(row['RentalOrderId'] == null) {
+		//				btn = '<button type="button" class="mui-btn mui-btn-blue" id="Business" value=' + row['LeaseTableId'] + '>业务审核</button>'
+		//			}
+		//			return btn;
+		//		},
+		//业务审核
+		Business: function(LeaseId) {
+			var sendData = {
+				'keyValue': LeaseId
+			};
+			LeaseInterface.BusinessAudit(sendData, function(cb) {
+				//				console.log(JSON.stringify(cb))
+				if(cb['type'] == 1) {
+					app.toast('审核成功！');
+					dialog.CloseLogBox();
+					Lease.List(sendData);
+				} else {
+					app.toast('审核失败！');
+				};
+			});
+		},
+		//点击
+		Events: function() {
+			//扫一扫
+			$("#TwoCode").on('tap', function() {
+				mui.openWindow({
+					url: '../../TwoCode/TwoCode.html',
+					id: 'TwoCode'
+				});
+			});
+		}
+	};
+</script>

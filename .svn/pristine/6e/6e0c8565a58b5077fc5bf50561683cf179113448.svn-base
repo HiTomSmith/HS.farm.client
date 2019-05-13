@@ -1,0 +1,58 @@
+html,body,.mui-content{
+	height:100%;
+	width:100%;
+	overflow: hidden;
+}
+header{
+	background: #4474F0 !important;
+	color:white;
+	border:none !important;
+	-webkit-box-shadow: 0px 0px 0px 0px !important;
+}
+header h1{
+	color:white !important;
+}
+.headIcon{
+	height:34%;
+	background: #4474F0;
+}
+.functionList{
+	height:70%;
+	background: white;
+}
+.headIcon>.mui-table-view>li{
+	text-align: center;
+	color:white; 
+	line-height: 6px;
+}
+.headIcon>.mui-table-view>li:nth-child(1){
+	width:80px;
+	height:80px;
+	margin: 0 auto;
+	border-radius: 100%;
+	border:1px solid red;
+}
+.functionList>.mui-table-view:nth-child(1){
+	height:40%;
+}
+.functionList>.mui-table-view:nth-child(1) li{
+	height:34%;
+}
+.functionList>.mui-table-view:last-child{
+	height:59%;
+}
+.functionList>.mui-table-view:last-child li{
+	height:18%;
+}
+.functionList>.mui-table-view>li{
+	border-bottom:1px solid  rgba(228,228,228,0.3);
+	line-height: 32px;
+	color:#717171; 
+	height:46px !important;
+}
+.Division{
+	width:100%;
+	height: 6px;
+	background: #EDEDED ;
+}
+

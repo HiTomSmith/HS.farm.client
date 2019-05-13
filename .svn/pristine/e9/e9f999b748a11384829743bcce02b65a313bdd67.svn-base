@@ -1,0 +1,107 @@
+html,
+		body,
+		.mui-content {
+			width: 100%;
+			height: 100%;
+			background: white;
+			color: #717171;
+			overflow: hidden;
+		}
+		
+		.name {
+			color: #717171;
+			font-size: 16px;
+		}
+		
+		.phone {
+			color: #9D9D9D;
+		}
+		
+		.mheadIcon {
+			width: 100%;
+			height: 36%;
+			border: 1px solid white;
+			text-align: center;
+		}
+		
+		.mheadIcon>img {
+			display: block;
+			margin: 0 auto;
+			margin-top: 40px;
+			width: 80px;
+			height: 80px;
+			border-radius: 100%;
+		}
+		
+		ul {
+			width: 90%;
+			margin: 0 auto;
+		}
+		
+		li a {
+			margin-top: -8px !important;
+		}
+		
+		li span {
+			height: 100%;
+			line-height: 30px;
+		}
+		
+		.mui-table-view-cell:after {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 15px;
+			height: 1px;
+			content: '';
+			-webkit-transform: scaleY(.5);
+			transform: scaleY(.5);
+			background-color: rgba(200, 199, 204, 0.1);
+		}
+		
+		.Arrow {
+			margin-top: 2px;
+			float: left;
+			font-size: 26px;
+		}
+		
+		.id {
+			font-size: 12px;
+			float: right;
+			margin-top: 10px;
+			color: #15AE3F;
+		}
+		
+		li>.text {
+			margin-left: 10px;
+		}
+		
+		form {
+			position: absolute !important;
+			width: 100%;
+			height: 80px;
+			top: 40px;
+			opacity: 0;
+		}
+		
+		#uploadFile {
+			height: 80px
+		}
+		
+		.mui-input-group {
+			margin-top: 0px;
+		}
+		
+		#wallet>.Arrow,
+		#address>.Arrow {
+			color: #1E9FEF;
+		}
+		
+		#Message>.Arrow,
+		#service>.Arrow {
+			color: #55D21E;
+		}
+		
+		#setting>.Arrow ,#Record>.Arrow{
+			color: #EDA111;
+		}

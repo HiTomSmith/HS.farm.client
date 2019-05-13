@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/reg.css" />
+	</head>
+	<style>
+		.update{
+			width:80%;
+			height:366px;
+			position: fixed;
+			top:100px;
+			left:10%;
+			background-image: url('./img/update.png');
+			background-repeat:no-repeat;
+			background-size: 100% 366px;
+			border-radius: 4px;
+			display: none;
+		}
+		.mengbi{
+			width:100%;
+			height:100%;
+			position: fixed;
+			background: #747474;
+			top:0;
+			opacity: 0.6;
+			display: none;
+		}
+		.Utitle,.New{
+			width:100%;
+			height:40px; 
+			text-align: center;
+		}
+		.Utitle{
+			color: white;
+			font-size: 20px;
+			margin-top:30px;
+		}
+		.New{
+			position: relative;
+		}
+		.New>span{
+			font-size: 12px;
+			padding:4px 8px;
+			background: white;
+			border-radius: 4px;
+			color: #1E9FEF;
+			position: relative;
+			z-index: 100;
+			border:2px solid  #1E9FEF;
+		}
+		
+		.New:after,.New:before{
+			content: "           ";
+			position: absolute;
+			height:1px;
+			top:8px; 
+			right:60px;
+			left:60px;
+		}
+		.New:after{
+			background: -webkit-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0)); /* Safari 5.1 - 6.0 */
+		    background: -o-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0)); /* Opera 11.1 - 12.0 */
+		    background: -moz-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0)); /* Firefox 3.6 - 15 */
+		    background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0)); /* 标准的语法（必须放在最后） */
+		}
+		.upContent{
+			padding-left:15px;
+			padding-top:28px;
+			height:70%;
+		}
+		.Progress{
+				position: relative;
+				width:66%;
+				height:20px;
+				bottom:-20px;
+				left:10%;
+			}
+			.Progress_bg{
+				width:100%;
+				height:8px;
+				background: #d8d8d8;
+				position: absolute;
+				bottom:0px;
+				border-radius: 3px;
+			}
+			.Progress_bar{ 
+				width:0%; 
+				height:8px;
+				background:  #15AE3F;
+				position: absolute;
+				bottom:0px;
+				left:0%;
+				border-radius: 3px;
+			}
+			.circular{
+				width:20px;
+				height:20px;
+				border:4px solid #4CC36B;
+				background: white;
+				border-radius: 100%;
+				position: absolute;
+				bottom:0px;
+				left:-4%;
+				top:30%; 
+			}
+			.Progress_text{
+				width:50px;
+				height:30px;
+				position: absolute;
+				text-align: center;
+				line-height: 30px;
+				right:-50px;
+				font-size:12px;
+				color:#666666;
+			}
+			#shureUpdate{
+				width:90% !important;
+				position: absolute;
+				bottom:-20px;
+				height:40px;
+			}
+			.AppName{
+				padding-top:12px;
+				display: inline-block;
+				width:100%;
+				text-align: center;
+				font-size:20px;
+			}
+	</style>
+	<body>
+		<div class="mui-content">
+
+			<div class="logo allwidth">
+				<img class="block allheight" src="img/logo.png">
+				<span class="AppName">嗨森农业</span>
+				
+			</div>
+			<form class="mui-input-group divcenter">
+			    <div class="mui-input-row">
+			        <label><img src="img/login-icon-user.png"/></label> <!--onkeyup="if(/\D/.test(this.value)){app.toast('只能输入数字');this.value='';}"-->
+			        <input type="text" class="mui-input-clear font_size12" placeholder="手机号码" id="username">
+			    </div>
+			    <div class="mui-input-row">
+			        <label><img src="img/login-icon-psd.png"/></label> 
+			        <input type="password" class="mui-input-clear font_size12" placeholder="密码" id="password" >
+			    </div> 
+			    <div class="mui-input-row">
+			        <input type="button" id="btn_login" value="登 录"> 
+			    </div>
+			    <div class="mui-input-row">
+			    	<br/>
+			        <a class="block text_center font_size12" id="VerCode">验证码登录</a>
+			    </div>
+			</form>
+			<div class="mengbi"></div>
+			<div class="update">
+				<div class="Utitle">发现新版本</div>
+				<div class="New"><span>NEW</span></div>
+				<div class="upContent">
+					<div class="versionNum">当前版本：V1.11</div>
+					<div class="versionNum">最新版本：11.22</div>
+					<br/>
+					<p>更新内容：</p>
+					<p class="problem">1.修复与H5的交互问题;</p>
+					<p class="problem">2.修复与H5的交互问题;</p>
+					<!--进度条-->
+					<div class="Progress">
+						<span class="Progress_bg"></span> 
+						<span class="Progress_bar"></span>
+						<span class="Progress_text">0%</span>
+					</div>
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="shureUpdate">立即更新</button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+
+<script src="js/mui.min.js"></script> 
+<script src="js/mui.enterfocus.js"></script>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/hx.functor.js"></script>
+<script src="js/app.js"></script>
+<script src="js/MD5.js"></script>
+<script src="js/getData.js"></script>
+<script src="js/setData.js"></script>
+<script>
+	mui.init({
+
+	});
+	
+	
+	(function(_, $) {
+		_.init({
+			statusBarBackground: '#1b1b1b'
+		});
+		$(document).ready(function() {
+			$('body').css({
+				'height': $(window).height()
+			})
+		});
+		var setting = {
+			autoLogin: false
+		}
+		app.ready(function() {
+			if($.isMobile()) {
+				plus.screen.lockOrientation("portrait-primary");
+				setTimeout(function() {
+					//关闭 splash
+					plus.navigator.closeSplashscreen();
+				}, 600);
+			};
+			var backButtonPress = 0;
+			_.back = function(event) {
+				backButtonPress++;
+				if(backButtonPress > 1) {
+					plus.runtime.quit();
+				} else {
+					plus.nativeUI.toast('再按一次退出应用');
+				}
+				setTimeout(function() {
+					backButtonPress = 0;
+				}, 1000);
+				return false;
+			};
+
+			//填入上次登录的用户名
+			var foo = app.storage('username');
+			$('#username').val(foo); 
+			$('#btn_login').click(function() {
+				//判断账号密码是否为空
+				if($("#password").val()==""||$("#username").val()==""){
+					app.toast('账号或密码不能为空');
+					return false;
+				};
+				plus.nativeUI.showWaiting('登录中...');
+				var bn = 3;
+				var sendData = {
+					username: $("#username").val(), 
+					password: $("#password").val(),
+					verifycode:'1', 
+					autologin:1, 
+					token:"12121313"
+				};
+				/*登录*/
+				Login.In(sendData,function(data){
+				console.log(JSON.stringify(data));
+					var result = data;
+						plus.nativeUI.closeWaiting(); 
+						if(result['type']=="1"){
+							var userInfo;
+							if(result.resultdata==null){
+								var message = result['message'];
+								var message1 = eval("("+message+")");
+								var message2 = eval("("+message1.message+")"); 
+								 userInfo = {
+								userid: message2.UserId,
+								token: message2.Token,
+								info: message2, 
+								}
+							} else{
+								userInfo = {
+								userid: result.resultdata.UserId,
+								token: result.resultdata.Token,
+								info: result.resultdata, 
+								}
+							}							
+					
+							app.storage('username', $('#username').val());
+							app.storage('psd', $('#password').val());
+							app.storage('login', userInfo);
+							app.storage("autoLogin","true");
+							
+							//个推上报
+							Login.CIDIn();
+							//Preloading.Start(); 
+							setTimeout(function(){
+								app.wndOpenNew("page","./html/page.html",{"phone":$("#username").val()})
+							},500);
+						}else{
+							app.toast('账号或密码不正确')
+						}
+				});
+				//按钮屏蔽，三秒内不可重新点击
+				$('#btn_login').attr("disabled", "disabled");
+				btnsShield(3, 'btn_login');
+			});
+			//自动更新1.获取当前本地版本号2.获取服务器版本号
+			plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+				var wgtVer = inf.version; //版本号 
+				localStorage.setItem('newVer', wgtVer);//版本号存到缓存
+				//2.获取服务器版本号
+				Edition.Update(function(cb){
+					var rows = JSON.parse(cb); 
+					var row = JSON.parse(JSON.parse(rows['message']).message);
+					var Num = row['NewVersion'].toString();//版本号 
+					var Url = row['Url'];//更新地址
+					var str = "";
+					for(var i = 0; i <= Num.length; i++) {
+						if(Num[i]){
+							str +=  Num[i]+'.';
+						}; 
+					};
+					var position = str.lastIndexOf('.');
+					var str1 = str.substring(0,position);//服务器版本号
+					$(".versionNum").eq(0).text('当前版本：V'+wgtVer);
+					$(".versionNum").eq(1).text('最新版本：V'+str1);//Description1
+					$(".problem").eq(0).text('1.'+row['Description1']);
+					$(".problem").eq(1).text('2.'+row['Description2']);
+					var loclVer = parseInt(wgtVer.replace(/\./g, ''));//本地版本号
+					//判断版本号
+					if(Num>loclVer){
+						$(".update,.mengbi").show();
+						//确认更新
+						$("#shureUpdate").on('tap',function(){
+							$("#shureUpdate").hide();
+							dBase(Url,str1);
+						});
+					};
+				});
+			});
+			
+		});
+	})(mui, jQuery);
+	///切换到验证码登录
+	$("#VerCode").on('tap',function(){
+		app.wndOpenNew('reg','reg.html')
+	});
+	
+	
+
+	
+	
+	//开始更新 url 版本号，带点的
+	function dBase(wgtUrl, str){
+		var pd1 = mui("#psb1");
+		var path = null;
+		//创建下载对象
+		var dtask = plus.downloader.createDownload(wgtUrl, {
+			filename: "_doc/update/"
+		}, function(d, status) {
+			path = d.filename;
+		});
+		var progressVal = 0;
+		var n = 0;
+		dtask.addEventListener("statechanged", function(task, status) {
+			switch(task.state) {
+				case 1: // 开始
+					mui.toast("开始下载...");
+					break;
+				case 2: // 已连接到服务器
+					mui.toast("链接到服务器...");
+					break;
+				case 3: // 已接收到数据
+					progressVal = (task.downloadedSize / task.totalSize) * 100;
+					n = Math.ceil(progressVal);
+					$('#bai').css('display','block');
+					break;
+				case 4: // 下载完成
+					break;
+			};
+			if(task.state == 4) {
+				$(".update,.mengbi").hide();
+				installWgt(path, str);
+				return false;
+			};
+		});
+		var run = setInterval(function(){
+			if(Math.ceil(progressVal)==100){
+				clearInterval(run);
+			};
+			$(".Progress_bar").css('width',Math.ceil(progressVal)+'%');
+			$(".Progress_text").html(Math.ceil(progressVal)+'%');
+		},500); 
+		dtask.start();
+	};
+	
+		// 这里是安装
+	function installWgt(path, newVer) {
+		mui.back=function(){
+			return false;
+		};
+		plus.nativeUI.closeWaiting();
+		plus.nativeUI.showWaiting("安装升级文件...");
+		// force:false进行版本号校验，如果将要安装应用的版本号不高于现有应用的版本号则终止安装，并返回安装失败  
+		plus.runtime.install(path, {
+			force: false
+		}, 
+		function() {
+			plus.nativeUI.closeWaiting();
+			mui.toast("安装成功！请登录");
+			localStorage.setItem('newVer', newVer);
+		}, 
+		function(e) {
+			plus.nativeUI.closeWaiting();
+			//alert("安装失败[" + e.code + "]：" + e.message);
+			plus.nativeUI.alert("安装升级文件失败");
+		});
+	}
+</script>

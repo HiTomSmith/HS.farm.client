@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.min.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		  
+		.mui-row>div {
+			text-align: center;
+		}
+		
+		.Status {
+			float: right;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">物流管理</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row">
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle activeT">物流单</div>
+					<div class="mentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle payment">待发货</div> 
+					<div class="PaymentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle payment">待收货</div>
+					<div class="ReceivedNum"></div>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="List">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, ExpStatus, s, e, mentNum, ReceivedNum, PaymentNum
+	app.ready(function() {
+		sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({})
+		};
+		ExpStatus = ['未发货', '已发货', '已签收'];
+		UserInfo = app.accountInfo('info');
+		Exp.sendTest();
+		Exp.Taps();
+		Exp.Num();
+		Exp.search();
+
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	var Exp = {
+		//查询
+		search: function() {
+			app.contentHTML("#List");
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				//开始判断当前选中的是那个状态
+				$(".mui-row>div").each(function(i) {
+					if($(".mui-row>div>.tittle").eq(i).hasClass('activeT')) {
+						switch($(".mui-row>div>.tittle").eq(i).text()) {
+							case '物流单':
+								plus.nativeUI.showWaiting();
+								sendData = {
+									"page": 1,
+									"rows": 100,
+									"sidx": "CreateDate",
+									"sord": "desc",
+									"queryJson": JSON.stringify({
+										StartTime: s,
+										EndTime: e,
+									})
+								};
+								Exp.sendTest();
+								Exp.Num();
+								break;
+							case '待发货':
+								plus.nativeUI.showWaiting();
+								sendData = {
+									"page": 1,
+									"rows": 100,
+									"sidx": "CreateDate",
+									"sord": "desc",
+									"queryJson": JSON.stringify({
+										StartTime: s,
+										EndTime: e,
+										ExpressState: 0
+									})
+								};
+								Exp.sendTest();
+								Exp.Num();
+								break;
+							case '待收货':
+								plus.nativeUI.showWaiting();
+								sendData = {
+									"page": 1,
+									"rows": 100,
+									"sidx": "CreateDate",
+									"sord": "desc",
+									"queryJson": JSON.stringify({
+										StartTime: s,
+										EndTime: e,
+										ExpressState: 1
+									})
+								};
+								Exp.sendTest();
+								Exp.Num();
+								break;
+						};
+					};
+				});
+			});
+		},
+		//租赁检验单
+		sendTest: function() {
+			getLeaseInterface.getExpress(sendData, function(cb) {
+				$("#List").html('');
+				var rows = cb['rows'];
+				console.log(rows.length)
+				for(var i in rows) {
+					var row = rows[i];
+					
+					if(row['AcceptanceState']=='发货未检查'){
+						continue;
+					}
+					
+					
+					var GoodsInfo = JSON.parse(row['GoodsInfo']);
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' leaseId=' + row['LeaseTableId'] + '  Mark=' + row['DeleteMark'] + ' CreateUserId=' + row['CreateUserId'] + ' AcceptanceState=' + row['AcceptanceState'] + '>' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_14">' + GoodsInfo['GoodsName'] + '</span><span class="CarrierSpecs font_12">(' + GoodsInfo['UavSN'] + ')</span><span class="font_12 Status">' + row['AcceptanceState'] + '(' + ExpStatus[row['ExpressState']] + ')</span>' +
+						'</div>' +
+						'<div class="mui-media-body">' +
+						'' + ((row['SendUserName'] == null) ? "" : '<p class="mui-ellipsis EquipmentLease">发货人：' + row['SendUserName'] + '</p>') + '' +
+						'' + ((row['RecvUserName'] == null) ? "" : '<p class="mui-ellipsis EquipmentLease">收货人：' + row['RecvUserName'] + '</p>') + '' +
+						'</div>' +
+						' </li>'
+					);
+					$html.appendTo($("#List"));
+					//查看检验详情
+					$html.on('tap', function() {
+						var Lid = $(this).attr('leaseId');
+						var Mark = $(this).attr('Mark');
+						var index = $(this).attr('data-index');
+						var CreateUserId = $(this).attr('CreateUserId');
+						var AcceptanceState = $(this).attr('AcceptanceState');
+						var index = $(this).attr('data-index');
+						mui.openWindow({
+							url: './ExpDetails.html',
+							id: 'ExpDetails',
+							extras: {
+								Exp: rows[index]
+							}
+						});
+					});
+				};
+			});
+		},
+		//Num
+		Num: function() {
+			getLeaseInterface.getExpress(sendData, function(cb) {
+				mentNum = 0; //全部
+				PaymentNum = 0; //待发
+				ReceivedNum = 0; //待收
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					
+					if(row['AcceptanceState']=='发货未检查'){
+						continue;
+					} 
+					mentNum++;
+					if(row['ExpressState'] == 0) {
+						PaymentNum++;
+					};
+					if(row['ExpressState'] == 1) {
+						ReceivedNum++;
+					};
+				};
+				//判断当前如果当前数量超过99，那么最多只显示99 、、
+				//全部订单数量
+				if(mentNum > 0) {
+//					if(mentNum > 99) {
+//						mentNum = 99;
+//					};
+					$('.mentNum').show().text(mentNum);
+				}else{
+					$('.mentNum').hide();
+				};
+				//发货待检验数量
+				if(PaymentNum > 0) {
+					if(PaymentNum > 99) {
+						PaymentNum = 99;
+					};
+					$('.PaymentNum').show().text(PaymentNum)
+				}else{
+					$('.PaymentNum').hide();
+				};
+				//收货待检验数量
+				if(ReceivedNum > 0) {
+					if(ReceivedNum > 99) {
+						ReceivedNum = 99;
+					};
+					$('.ReceivedNum').show().text(ReceivedNum)
+				}else{
+					$('.ReceivedNum').hide();
+				};
+			});
+		},
+		//时间查询
+
+		//事件
+		Taps: function() {
+			//顶部状态循环点击
+			$(".mui-row>div").each(function(i) {
+				$(".mui-row>div").eq(i).on('tap', function() {
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".mui-row>div>.tittle").eq(i).hasClass('activeT')) {
+						return false;
+					};
+					$("#List").html('');
+					$(".mui-row>div>.tittle").removeClass('activeT');
+					$(".mui-row>div>.tittle").eq(i).addClass('activeT');
+					switch($(".mui-row>div>.tittle").eq(i).text()) {
+						case '物流单':
+							plus.nativeUI.showWaiting();
+							sendData = {
+								"page": 1,
+								"rows": 100,
+								"sidx": "CreateDate",
+								"sord": "desc",
+								"queryJson": JSON.stringify({
+									StartTime: ((s) ? s : '1970-01-01'),
+									EndTime: ((e) ? e : '2099-09-09'),
+								})
+							};
+							Exp.sendTest();
+							break;
+						case '待发货':
+							sendData = {
+								"page": 1,
+								"rows": 100,
+								"sidx": "CreateDate",
+								"sord": "desc",
+								"queryJson": JSON.stringify({
+									ExpressState: 0,
+									StartTime: ((s) ? s : '1970-01-01'),
+									EndTime: ((e) ? e : '2099-09-09'),
+								})
+							};
+							Exp.sendTest();
+							break;
+						case '待收货':
+							sendData = {
+								"page": 1,
+								"rows": 100,
+								"sidx": "CreateDate",
+								"sord": "desc",
+								"queryJson": JSON.stringify({
+									ExpressState: 1,
+									StartTime: ((s) ? s : '1970-01-01'),
+									EndTime: ((e) ? e : '2099-09-09'),
+								})
+							};
+							Exp.sendTest();
+							break;
+					};
+				});
+			});
+		},
+	};
+
+	//会调刷新
+	window.addEventListener('pageflowerfresh', function() {
+		Exp.sendTest();
+		Exp.Num();
+	});
+</script>

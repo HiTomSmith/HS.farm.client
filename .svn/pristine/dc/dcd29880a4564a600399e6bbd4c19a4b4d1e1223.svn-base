@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.min.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.mui-row>div {
+			text-align: left;
+		}
+		
+		.topbar>div {
+			text-align: center;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon mui-pull-right iconfont" id="Recharge">&#xe781;</a>
+
+			<h1 class="mui-title">财务</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row topbar">
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle activeT">全部</div>
+					<div class="mentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle payment">收入</div>
+					<div class="PaymentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle payment">支出</div>
+					<div class="ReceivedNum"></div>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="List">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData ,s , e
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		Finance.search(); //搜索
+		Finance.List(0); //获取充值记录
+		Finance.Taps(); //账户充值
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	var Finance = {
+		//查询
+		search: function() {
+			app.contentHTML("#List");
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+
+				//开始判断当前选中的是那个状态
+				$(".topbar>div").each(function(i) {
+					if($(".topbar>div>.tittle").eq(i).hasClass('activeT')) {
+						switch($(".topbar>div>.tittle").eq(i).text()) {
+							case '全部':
+								plus.nativeUI.showWaiting();
+								Finance.List(0,s,e); //获取充值记录
+								break;
+							case '收入':
+								plus.nativeUI.showWaiting();
+								Finance.List(1,s,e); //获取充值记录
+								break;
+							case '支出':
+								plus.nativeUI.showWaiting();
+								Finance.List(2,s,e); //获取充值记录
+								break;
+						};
+					};
+				});
+			});
+		},
+		//获取充值记录
+		List: function(status,s,e) {
+			var sendData = {
+				"page": 1,
+				"rows": 20,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					StartTime: ((s) ? s : '1970-01-01'),
+					EndTime: ((e) ? e : '2099-09-09'),
+				})
+			};
+			Backstage.FinanceList(sendData, function(cb) {
+				$("#List").html('');
+				var cb = JSON.parse(cb)['rows'];
+				//生成HTML
+				for(var i in cb) {
+					var rows = cb[i];
+					var type = null;
+					var TMoney = null;
+					
+					//全部
+					if(status == 0) {
+						if(rows['PayMoney'] == null) {
+							type = rows['IncomeItem'];
+							TMoney = '+' + rows['IncomeMoney'];
+						} else {
+							type = rows['PayItem'];
+							TMoney = '-' + rows['PayMoney'];
+						};
+						//收入
+					} else if(status == 1) {
+						if(rows['IncomeMoney'] != null && rows['PayMoney'] == null) {
+							type = rows['IncomeItem'];
+							TMoney = '+' + rows['IncomeMoney'];
+						}
+						//支出
+					} else if(status == 2) { 
+						if(rows['PayMoney'] != null && rows['IncomeMoney'] == null) {
+							type = rows['PayItem'];
+							TMoney = '-' + rows['PayMoney'];
+						}
+					};
+					var $html = $(
+						'<li class="mui-table-view-cell list">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' +
+						'<span class="Name" value=' + rows['UserID'] + '></span><span class="Color717171 font_12">(' + type + ')</span>' +
+						'</div>' +
+						'<div class="mui-row">' +
+						'<div class="mui-col-sm-6 mui-col-xs-6 font_12">' +
+						'费用：<span class="Color717171">' + TMoney + '元</span>' +
+						'</div>' +
+						'<div class="mui-col-sm-6 mui-col-xs-6 font_12" style="text-align: right;">' +
+						'余额：<span class="Color717171">' + rows['AccountMoney'] + '</span>' +
+						'</div>' +
+						'</div>' +
+						'</li>'
+					);
+					//全部
+					if(status == 1) {
+						if(rows['IncomeMoney'] != null && rows['PayMoney'] == null) {
+							$html.appendTo($("#List"));
+						}
+						//支出
+					} else if(status == 2) { 
+						if(rows['PayMoney'] != null && rows['IncomeMoney'] == null) {
+							$html.appendTo($("#List"));
+						}
+					}else{
+						$html.appendTo($("#List"));
+					};
+				};
+				Finance.UserName();
+			});
+		},
+		//获取用户名称
+		UserName: function() {
+			$(".Name").each(function(i) {
+				var UserId = $(".Name").eq(i).attr('value');
+				UseIdGetName.getUserName(UserId, function(cb) {
+					$(".Name").eq(i).text(cb);
+				});
+			});
+		},
+		//点击
+		Taps: function() {
+			//充值
+			$("#Recharge").on('tap', function() {
+				mui.openWindow({
+					url: './Recharge.html',
+					id: 'Recharge',
+				});
+			});
+			//循环筛选
+
+			///顶部状态循环点击
+			$(".topbar>div").each(function(i) {
+				$(".topbar>div").eq(i).on('tap', function() {
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".topbar>div>.tittle").eq(i).hasClass('activeT')) {
+						return false;
+					};
+					$("#List").html('');
+					$(".topbar>div>.tittle").removeClass('activeT');
+					$(".topbar>div>.tittle").eq(i).addClass('activeT');
+					switch($(".topbar>div>.tittle").eq(i).text()) {
+						case '全部':
+							plus.nativeUI.showWaiting();
+							Finance.List(0,s,e); //获取充值记录
+							break;
+						case '收入':
+							plus.nativeUI.showWaiting();
+							Finance.List(1,s,e); //获取充值记录
+							break;
+						case '支出':
+							plus.nativeUI.showWaiting();
+							Finance.List(2,s,e); //获取充值记录
+							break;
+					};
+				});
+			});
+		}
+	};
+
+	//回调刷新
+	window.addEventListener('pageflowerfresh', function() {
+		Finance.List(0); //获取充值记录
+		$(".topbar>div").each(function(i) {
+			$(".topbar>div>.tittle").removeClass('activeT');
+			$(".topbar>div>.tittle").eq(0).addClass('activeT'); 
+		});
+	});
+</script>

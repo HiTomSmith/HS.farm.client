@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=2,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link rel="stylesheet" href="../../css/leaflet.css">
+		<link rel="stylesheet" href="../../css/leaflet.pm.css" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<!--<link rel="stylesheet" href="../../css/CreateAssessment.css" />-->
+	</head>
+	<style>
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			overflow: hidden;
+		}
+		
+		.mui-table-view-cell:after {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 15px;
+			height: 1px;
+			content: '';
+			-webkit-transform: scaleY(.5);
+			transform: scaleY(.5);
+			background-color: white;
+		}
+		
+		.Map {
+			width: 150%;
+			position: absolute;
+			left: -25%;
+			right: -25%;
+			top: -180px;
+			bottom: 0px;
+			z-index: 1;
+		}
+		
+		.wrapper>.mui-row {
+			position: fixed;
+			bottom: 102px;
+			z-index: 10000;
+			width: 100%;
+			text-align: center;
+			height: 80px;
+			font-size: 12px;
+			line-height: 30px;
+			background: white;
+			border-bottom: 4px solid #F5F5F5;
+			padding-bottom: 8px;
+			padding-top: 10px;
+		}
+		
+		.wrapper>.mui-row>div {
+			height: 100%;
+			border-left: 1px solid #FFFFFF;
+		}
+		
+		.wrapper>.mui-row>div {
+			height: 100%;
+			border-left: 1px solid #FFFFFF;
+		}
+		
+		.wrapper>.mui-row>div:nth-child(1) {
+			border: none;
+		}
+		
+		.footer {
+			width: 100%;
+			background: white;
+			position: fixed;
+			bottom: 0;
+			z-index: 10000;
+			height: 52px;
+		}
+		
+		.footer>button {
+			width: calc(100% - 16px);
+			height: 44px;
+			display: block;
+			float: left;
+			border-radius: 4px;
+			font-size: 20px;
+			background: #15AE3F;
+			text-align: center;
+			margin-left: 8px;
+			margin-bottom: 8px;
+		}
+		
+		.trajectory {
+			height: 200px;
+			width: 100%;
+			position: fixed;
+			z-index: 1000;
+			bottom: -98px;
+			background: white;
+			overflow: hidden;
+			text-align: center;
+		}
+		
+		.fontText {
+			color: #9D9D9D;
+			font-size: 12px;
+			text-align: left;
+		}
+		
+		.fontText1 {
+			color: #717171;
+			font-size: 12px;
+			text-align: left;
+		}
+		
+		.playController {
+			position: fixed;
+			bottom: 200px;
+			z-index: 10000;
+			width: 100%;
+			text-align: center;
+			height: 30px;
+			font-size: 12px;
+			line-height: 36px;
+			padding-bottom: 8px;
+		}
+		
+		.pro {
+			width: 60%;
+			height: 8px;
+			background: rgba(204, 204, 204, 0.7);
+			margin: 12px auto;
+			border-radius: 20px;
+			position: relative;
+			overflow: hidden;
+		}
+		
+		.progress {
+			position: absolute;
+			left: 0;
+			background: #00D1A4;
+			height: 100%;
+			border-radius: 20px;
+		}
+		
+		#startORend {
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			float: left;
+			border-radius: 100%;
+			border: none;
+			padding: 0;
+			margin-left: 14px;
+		}
+		
+		#Speed {
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			float: right;
+			border-radius: 50%;
+			border: none;
+			padding: 0;
+			margin-right: 14px;
+			color: #15AE3F;
+		}
+		
+		#start,
+		#end {
+			font-size: 20px;
+			color: #15AE3F;
+		}
+		
+		#Speed {
+			font-size: 15px;
+		}
+		
+		#TaskPreson,
+		#TaskArea,
+		#TaskDate {
+			color: #15AE3F;
+		}
+		
+		.zuoyemushu {
+			margin-left: 3%;
+		}
+		
+		.shijian {
+			margin-left: 15%;
+		}
+		
+		.zuoyemushu1 {
+			margin-left: 25%;
+		}
+		
+		.shijian1 {
+			margin-left: 20%;
+		}
+		
+		.bggray {
+			background: #f5f5f5;
+			color: #15AE3F;
+		}
+		
+		.bggray>span {
+			color: #15AE3F;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">轨迹</h1>
+		</header>
+		<div class="mui-content wrapper">
+			<div class="playController">
+				<div class="proController">
+					<button id="startORend">
+						<span class="iconfont" id="start">&#xe740;</span>
+						<span class="iconfont" id="end" style="display: none;">&#xe763;</span>
+					</button>
+					<button class="iconfont font_18" id="Speed">1X</button>
+				</div>
+				<div class="pro">
+					<div class="progress"></div>
+				</div>
+			</div>
+			<div class="mui-row">
+				<div class="mui-col-sm-4 mui-col-xs-4 font_14">
+					<span id="TaskPreson" class="font_16">无</span>
+					<br/> 作业人
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_14">
+					<span id="TaskArea" class="font_16">0</span>
+					<br/> 亩数(亩)
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_14">
+					<span id="TaskDate" class="font_16">0</span>
+					<br/> 喷幅宽度(米)
+				</div>
+			</div>
+			<div class="Map" id="example2"></div>
+			<div class="footer">
+				<button type="button" class="mui-btn mui-btn-blue" id="Measure">查看轨迹</button>
+			</div>
+			<div class="trajectory">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="SeeTrajectory">
+						选择轨迹
+					</li>
+					<li class="mui-table-view-cell">
+						<span style="float: left;">轨迹</span>
+						<span class="zuoyemushu">作业亩数</span>
+						<span class="shijian">时间</span>
+						<span style="float: right;">选中</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/leaflet.js"></script>
+<script src="../../js/leaflet.pm.min.js"></script>
+<script src="../../js/Leaflet.AccuratePosition.js"></script>
+<script src="../../js/GeometryUtil.js"></script>
+<script src="../../js/wgs84-to-gcj02.js"></script>
+<script src="../../js/xhx-map.js"></script>
+<script src="../../js/map.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({});
+	var gpsList = [];
+	var linarr = [];
+	var _self = "";
+	var Imei = "";
+	var Dji_RecodeIdResult = [];
+	//工作量区域数组
+	var worknumberList = [];
+	//飞行轨迹定义
+	var track = XHX_track.creatNew(map2, linarr, "track");
+	//飞机定义	
+
+	var flyMark = XHX_flymarker.creatNew(map2, WGS84_to_GCJ02.creatNew().transform(21.7614916, 111.5979116), "fly");
+
+	//定时器
+	var run = "";
+	//清楚所有数组
+	var send = [];
+	//绘制的对象
+	var DrawObj = "";
+	var regionDraw;
+	var runs = 0;
+	//计时器的速度
+	var ms = 100;
+	//计时器倍数
+	var Multiple = 4;
+	var TaskID = null;
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		TaskID = _self.TaskDistributionId
+		console.log(JSON.stringify(_self))
+		console.log(TaskID)
+		getWorkNumberNoEstimate(TaskID);//获取任务评估记录
+		//点击事件
+		btns();
+	});
+
+	function getWorkNumberNoEstimate(TaskID) {
+		var sendData = {
+			taskDistributionId: TaskID
+		};
+		console.log(JSON.stringify(sendData));
+		XHX_IMEI.GetTaskEstimateRecord(sendData, function(result) {
+			//console.log(JSON.stringify(result))
+			var t = 0;
+			for(var i in result) {
+				var row = result[i];
+				//console.log(JSON.stringify(row))
+
+				if(row['EstimateArea'] == 0 || row['EstimateArea'] == null) {
+					continue;
+				}
+
+				var $html = $(
+
+					'<li class="mui-table-view-cell fontText1 list" WorkEstimateId=' + row['WorkEstimateId'] + ' carrierCord= ' + row['CarrierCord'] + '  EstimateArea= ' + row['EstimateArea'] + ' data-index=' + t + ' IMEI=' + row['CarrierId'] + ' WorkUserId=' + row['WorkerId'] + ' EstimateObject=' + row['EstimateObject'] + ' WorderName=' + row['WorderName'] + ' >' +
+					'' + (t) + '<span class="mui-inline fontText zuoyemushu1" style="margin-left: 30px;">' + ((row['EstimateArea'] != null) ? row['EstimateArea'] : 0) + '</span><span class="fontText shijian1">' + row['WorkStartTime'] + '</span>' +
+					'<span style="float: right;" class="state12"><input EstimateObject=' + row['EstimateObject'] + ' EstimateArea=' + row['EstimateArea'] + ' type="checkbox" class="choosebtn" disabled="disabled"/></span>' +
+					'</li>'
+				);
+
+				$html.appendTo($(".trajectory>ul"));
+
+				$html.on('tap', function() {
+					var index = $(this).attr("data-index");
+					var WorkEstimateId = $(this).attr("WorkEstimateId");
+					var EstimateArea = $(this).attr("EstimateArea");
+					var WorderName = $(this).attr("WorderName")
+					if(!$(".choosebtn").eq(index).prop("checked")) {
+						$(".list").eq(index).addClass('bggray');
+						$(".choosebtn").eq(index).prop('checked', true);
+						//获取喷洒的轨迹
+						getWorkEstimate(WorkEstimateId);
+
+					} else {
+						$(".list").eq(index).removeClass('bggray');
+						$(".choosebtn").eq(index).prop('checked', false);
+						//移除区域
+						XHX_region.removeregion(map2, WorkEstimateId);
+					}
+					//console.log(Dji_RecodeIdResult)
+					$("#TaskPreson").text(WorderName);
+					$("#TaskArea").text(((EstimateArea != null) ? EstimateArea : 0))
+
+				});
+				t++;
+			};
+
+		});
+
+	}
+	
+	function getWorkEstimate(WorkEstimateId) {
+		console.log(WorkEstimateId)
+		var option = {
+			api: '/XhxManage/XHX_DJI_WorkEstimate/GetFormJson',
+			data: {
+				keyValue: WorkEstimateId
+			},
+			success: function(data) {
+				console.log(data)
+				var result = JSON.parse(data);
+				regionDraw = result;
+				
+				var trackData = JSON.parse(result['Region'])
+
+				var latlng = [];
+				for(var i in trackData) {
+					var row = trackData[i];
+					var temp = WGS84_to_GCJ02.creatNew().transform(row.Lat, row.Lng);
+					//console.log(temp)
+					var latlngs = {
+						lat: temp[0],
+						lng: temp[1]
+					}
+					//console.log(JSON.stringify(latlngs))
+					latlng.push(latlngs);
+				} 
+
+				var s = (L.GeometryUtil.geodesicArea(latlng) / 666.0).toFixed(2);
+				//			console.log(L.GeometryUtil.geodesicArea(latlng))
+				XHX_region.creatNew(map2, latlng, WorkEstimateId);
+				//设置飞机定位
+				if(trackData.length > 0) {
+					//$("#TaskDate").text(result[0]['farm_delta_y']);
+					var position1 = WGS84_to_GCJ02.creatNew().transform(parseFloat(trackData[0].Lat), parseFloat(trackData[0].Lng));
+					console.log(position1)
+					map2.setView(position1, 18);
+
+				}
+			}
+
+		}
+		app.post3_2(option);
+
+	}
+
+	//查看某个已评估对象的作业轨迹
+	function getWorkNumberTrack(taskIds) {
+		console.log(taskIds)
+		var option = {
+			api: '/XhxManage/XHX_Users/GetRegionTrack',
+			data: {
+				taskIds: taskIds
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				//				console.log(JSON.stringify(result[0]))
+				//DrawObj = result;
+				runs = 0;
+				Multiple = 4;
+				$("#Speed").text('1X');
+				//切换轨迹停止定时器
+				if(run != "") {
+					$("#start").show();
+					$("#end").hide();
+					$(".progress").css({
+						"width": 0
+					});
+					for(var i in send) {
+						clearInterval(send[i]);
+					};
+					run = "";
+				};
+				if(result.length > 0) {
+					$("#TaskDate").text(result[0]['farm_delta_y']);
+					var position = WGS84_to_GCJ02.creatNew().transform(parseFloat(result[0]['lati']), parseFloat(result[0]['longi']));
+					map2.setView(position, 19);
+				}
+
+				var track1 = XHX_track.creatNew(map2, linarr, taskIds);
+
+				for(var i in result) {
+
+					var row = result[i];
+					//坐标转换
+					var temp = WGS84_to_GCJ02.creatNew().transform(parseFloat(row.lati), parseFloat(row.longi));
+					//绘制轨迹
+					//flyLine.setPath(linarr);
+					track1 = track1.addLatLng(temp);
+				};
+
+				$("#startORend").off();
+				//轨迹回放 
+				$("#startORend").on('tap', function() {
+					backBool(result);
+					$("#startORend").off();
+				});
+				//回放
+				function backBool(DarwData) {
+					track = track.setLatLngs([]);
+					$("#start").hide();
+					$("#end").show();
+					StartDraw(DarwData);
+				};
+
+				//开始绘制
+				function StartDraw(DarwData) {
+					//console.log(DarwData[0])
+					DrawObj = XHX_track.getalltrack(map2);
+					//console.log(DrawObj)
+					//清除所选轨迹
+					XHX_track.removealltrack(map2);
+					
+					function timer() {
+						runs++;
+						//播放完成停止定时器
+//						console.log('rusn:'+runs)
+						if(runs >= DrawObj.length) {
+							//console.log(runs+'----------------------------'+DrawObj.length);
+							for(var i in send) {
+								clearInterval(send[i]);
+							};
+							$(".progress").css({
+								"width": "100%"
+							});
+							$("#start").show();
+							$("#end").hide();
+							$("#startORend").on('tap', function() {
+								$(".progress").css({
+									"width": 0
+								});
+								backBool(DarwData);
+								$("#startORend").off();
+							});
+							runs = 0;
+							$("#Speed").off();
+						} else {
+							//							console.log(runs)
+							var row = DrawObj[runs];
+							//							console.log(JSON.stringify(row))
+							//var temp = WGS84_to_GCJ02.creatNew().transform(parseFloat(row.lat), parseFloat(row.lng));
+
+							//console.log(JSON.stringify(temp))
+							track = track.addLatLng(row);
+							//飞机定义
+							//console.log(parseFloat(row.Lat)+'--------------'+parseFloat(row.Lng));
+							//flyMark = XHX_flymarker.creatNew(map2, [parseFloat(row.Lat),parseFloat(row.Lng)],"fly");
+							flyMark = flyMark.setLatLng(row);
+							var Prowidth = (runs / DrawObj.length) * 102;
+							$(".progress").css({
+								"width": Prowidth + '%'
+							});
+						};
+						//暂停定时器
+						function StopDraw() {
+							for(var i in send) {
+								clearInterval(send[i]);
+							};
+							//console.log(i+'暂停-------------');
+						};
+						//继续定时器
+						function StartDraws() {
+							clearInterval(run);
+							run = setInterval(timer, ms * Multiple);
+							send.push(run);
+							//console.log(i+'继续-------------');
+						};
+						//暂停 、
+						$("#end").on('tap', function() {
+							$("#start").show();
+							$("#end").hide();
+							StopDraw();
+						});
+						//、 继续
+						$("#start").on('tap', function() {
+							$("#start").hide();
+							$("#end").show();
+							StartDraws();
+						});
+					};
+					Multiple = 4;
+					run = setInterval(timer, ms * Multiple);
+					send.push(run);
+
+					//加速播放
+					function Multiples() {
+						if(Multiple != 0) {
+							Multiple--;
+							if(Multiple < 1) {
+								Multiple = 4;
+							};
+						};
+						//						console.log(Multiple);
+						switch(Multiple) {
+							case 4:
+								$("#Speed").text('1X');
+								break;
+							case 3:
+								$("#Speed").text('2X');
+								break;
+							case 2:
+								$("#Speed").text('3X');
+								break;
+							case 1:
+								$("#Speed").text('4X');
+								break;
+						};
+						//判断 轨迹是否运行完成
+						if(runs >= DrawObj.length) {
+							for(var i in send) {
+								clearInterval(send[i]);
+							};
+							Multiple = 4;
+						} else {
+							for(var i in send) {
+								clearInterval(send[i]);
+							};
+							run = setInterval(timer, ms * Multiple);
+							send.push(run);
+						};
+					};
+					$("#Speed").off();
+					//修改倍速
+					$("#Speed").on('tap', function() {
+						//console.log($(".pro").width()+'-------------------'+$(".progress").width());
+						if($(".pro").width() >= $(".progress").width()) {
+							Multiples();
+						};
+					});
+				};
+			},
+			error: function() {
+				//console.log("接口失败");
+			},
+		};
+		app.post3_2(option);
+	}
+
+	function btns() {
+		///查看作业轨迹
+		$("#SeeTrajectory").on('tap', function() {
+			if($(".trajectory").css('bottom') == "-98px") {
+				$(".trajectory").animate({
+					'bottom': '52px'
+				}).css('overflow-y', 'scroll');
+				$(".mui-row").animate({
+					'bottom': '242px'
+				});
+				$(".playController").animate({
+					'bottom': '332px'
+				});
+			} else {
+				$(".trajectory").animate({
+					'bottom': '-98px'
+				}).css('overflow', 'hidden');
+				$(".mui-row").animate({
+					'bottom': '102px'
+				});
+				$(".playController").animate({
+					'bottom': '192px'
+				});
+			};
+		});
+
+		//查看轨迹
+		$("#Measure").on('tap', function() {
+			//map2.pm.Draw.Poly.toggle();
+//			$("#Measure").attr('disabled', 'disabled');
+			getWorkNumberTrack(regionDraw.EstimateObject);
+		});
+	};
+
+	function Area() {
+		$("#Measure").removeAttr('disabled');
+	};
+</script>

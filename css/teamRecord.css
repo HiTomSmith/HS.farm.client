@@ -1,0 +1,88 @@
+.mui-content{
+			min-height:100%;
+			height:auto;
+			background: white;
+		}
+		.mui-content>.mui-table-view:first-child {
+		    margin:0;
+		}
+		#TeamPreson{
+			padding:0;
+		}
+		#TeamPreson>li{
+			padding:15px 15px;
+		}
+		img{
+			width:60px;
+			height:60px;
+			border-radius: 100%;
+		}
+		.mui-media{
+			line-height: 30px;
+		}
+		.mui-media span:nth-child(3){
+			margin-left:15px;
+		}
+		.currentArea,.teamPreson{
+			height:40px;
+			line-height: 40px;
+			font-size: 12px;
+			border-bottom: 1px solid #F5F5F5;
+		}
+		.teamPreson{
+			height:50px;
+			line-height: 20px;
+		}
+		.teamPreson>span:nth-child(3),.teamPreson>span:nth-child(2){
+			margin-left:40px;
+			float: right;
+		}
+		.date{
+			height:40px;
+			line-height: 40px;
+			font-size: 12px;
+			position:relative;
+			width:100%;
+			text-align: right;
+			padding-right:15px;
+			color: #15AE3F;
+		}
+		.currentArea{
+			width:100%;
+			margin: 0 auto;
+			background: #EBF7FF ;
+			padding:0 80px;
+		}
+		.toda{
+			position: absolute;
+			top:0;
+			left:15px;
+		}
+		.currentArea>span:nth-child(2){
+			float: right;
+		}
+		.mengbi{
+			position: fixed;
+			top:0;
+			z-index:1000;
+			width:100%;
+			height:100%;
+			background: #ccc;
+			opacity: 0.3;
+			display: none;
+		}
+		#date1{
+			display: inline-block;
+			width:100%;
+			padding-left: 15px;
+		}
+		#TeamBoos,.date{
+			border-bottom:1px solid #F5F5F5;
+		}
+		.currentArea>span>span,.teamPreson>span:first-child,.toda{
+			color:#717171 !important;
+		}
+		.currentArea{
+			display: none;
+		}
+		

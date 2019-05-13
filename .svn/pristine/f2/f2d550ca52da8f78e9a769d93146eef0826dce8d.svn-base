@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/Bcurrency.css" />
+	</head>
+	<style>
+		* {
+			color: #666666;
+		}
+		
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			width: 100%;
+		}
+		
+		.bar>div>span {
+			display: inline-block;
+		}
+		.bar>div>span:nth-child(2) {
+			display: none;
+		}
+		.Uav-time,
+		.Order span:nth-child(2) {
+			float: right;
+		}
+		
+		.mentNum,
+		.PaymentNum,
+		.ReceivedNum {
+			right: 10px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">药剂订单</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row bar App-Tittle">
+				<div class="mui-col-sm-3 mui-col-xs-3 ">
+					<span class="tittle activeT ">进行中</span>
+					<span class="mentNum"></span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3">
+					<span class="tittle">待确认</span>
+					<span class="PaymentNum"></span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3">
+					<span class="tittle">待签收</span>
+					<span class="ReceivedNum"></span>
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3">
+					<span class="tittle">已完成</span>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="List">
+
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, localOrders;
+	app.ready(function() {
+		localOrders = [];
+		UserInfo = app.accountInfo('info');
+
+		sendData = {
+			AuditStatus: 0,
+			CustomerId: UserInfo.UserId
+
+		};
+
+		console.log(JSON.stringify(sendData));
+		//默认显示除已完成的所有订单
+		Order.List(sendData);
+		Order.tap();
+		Order.getTap();
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	//订单状态
+	var OrderStatus = [{
+			name: "下单",
+			key: 1,
+			label: "待审核"
+		},
+		{
+			name: "审核",
+			key: 2,
+			label: "待添加明细"
+		},
+		{
+			name: "上架",
+			key: 3,
+			label: "待确认"
+		},
+		{
+			name: "用户确认",
+			key: 4,
+			//label11: "待调价"
+			label: "待扣款"
+		},
+		{
+			name: "调价",
+			key: 5,
+			label: "待扣款"
+		},
+		{
+			name: "扣款",
+			key: 7,
+			label: "待付款"
+		},
+		{
+			name: "付款",
+			key: 8,
+			label: "待发货"
+		},
+		{
+			name: "厂家确认发货",
+			key: 9,
+			label: "待签收"
+		},
+		{
+			name: "用户签收",
+			key: 10,
+			label: "已完成"
+		}
+	];
+
+	//订单提交对象
+	var Order = {
+		//时间筛选
+		search: function() {
+
+			app.contentHTML("#List");
+			//开始查询并且返回查询结果
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				var qr_orders = [];
+				for(var j = 0; j < localOrders.length; j++) {
+					if(localOrders[j].AuditStatus == 10) {
+						if(localOrders[j].CreateDate >= s && localOrders[j].CreateDate <= e) {
+							console.log(222)
+							qr_orders.push(localOrders[j]);
+						}
+
+					}
+				}
+				Order.showList(qr_orders);
+			});
+		},
+		//数量
+		Num: function() {
+			mentNum = 0;
+			PaymentNum = 0;
+			ReceivedNum = 0;
+			var rows = localOrders
+			for(var i in rows) {
+				var row = rows[i];
+				//进行中数量
+				if(row.AuditStatus > 0 && row.AuditStatus < 10) {
+					mentNum++;
+				}
+				//待确认数量
+				if(row.AuditStatus == 3) {
+					PaymentNum++;
+				}
+				//待签收数量
+				if(row.AuditStatus == 9) {
+					ReceivedNum++;
+				}
+			}
+			//判断当前如果当前数量超过99，那么最多只显示99 、、
+			//进行中订单数量
+			if(mentNum > 0) {
+				if(mentNum > 99) {
+					mentNum = 99;
+				};
+				$('.mentNum').show().text(mentNum);
+			} else {
+				$('.mentNum').hide();
+			};
+			//待确认数量
+			if(PaymentNum > 0) {
+				if(PaymentNum > 99) {
+					PaymentNum = 99;
+				};
+				$('.PaymentNum').show().text(PaymentNum)
+			} else {
+				$('.PaymentNum').hide();
+			};
+			//待签收数量
+			if(ReceivedNum > 0) {
+				if(ReceivedNum > 99) {
+					ReceivedNum = 99;
+				};
+				$('.ReceivedNum').show().text(ReceivedNum)
+			} else {
+				$('.ReceivedNum').hide();
+			};
+		},
+		//获取订单列表
+		List: function(sendData) {
+			Orders.GetOrders(sendData, function(cb) {
+				localOrders = cb; //获取的结果赋值给全局变量localOrders
+				Order.Num();
+				console.log(JSON.stringify(cb))
+				var data = [];
+				for(var i in localOrders) {
+					var row = localOrders[i];
+					//console.log(JSON.stringify(localOrders[i]))
+					if(row.AuditStatus > 0 && row.AuditStatus < 10) {
+						data.push(localOrders[i]);
+					}
+
+				}
+
+				Order.showList(data);
+			});
+		},
+		//展示列表
+		showList: function(orders) {
+			$('#List').html('');
+			var rows = orders;
+			for(var i in rows) {
+				var row = rows[i];
+				var $html = $(
+					'<li class="mui-table-view-cell list lists font_14" data-index=' + i + ' GoodsId=' + row['GoodsBrandId'] + ' >' +
+					'<a href="javascript:;">' +
+					'<div class="Uav">' +
+					'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+					'<span>订单号：' + row['OrderNumber'] + '</span>' +
+					'<span class="Uav-time">' + (row['CreateDate'].substr(0, 10)) + '</span>' +
+					'</div>' +
+					'<div class="mui-media-body Order">' +
+					'<p class="mui-ellipsis Order-Information font_14">' +
+					'<span class="GoodsName font_14">品牌:</span>' +
+					'<span class="font_12" style="color:#15AE3F;">' + row['PayMoney'] + '元</span>' +
+					//					'<span id="openTap">'+Order.getStrute(row['AuditStatus'])+'</span>'+
+					Order.getStrute(row['AuditStatus']) +
+					'</p>' +
+					'</div>' +
+					'</a>' +
+					'</li>'
+				);
+
+				$html.appendTo($('#List'));
+
+				//查看明细
+				$html.on('tap', function() {
+					var index = $(this).attr('data-index');
+					mui.openWindow({
+						url: './OrderDetails.html',
+						id: 'OrderDetails',
+						extras: {
+							data: rows[index]
+						}
+					});
+				});
+
+			};
+			Order.GoodsNames();
+		},
+
+		//获取状态
+		getStrute: function(AuditStatus) {
+			for(var j = 0; j < OrderStatus.length; j++) {
+				var key = OrderStatus[j].key;
+				if(key == AuditStatus) {
+
+					if(key == 3) {
+						return '<span class="font_12" style="color:#fff;display: inline-block;width:25%;height:25px;margin: 0 10%;line-height:25px;text-align:center;background: #1E9FEF;border-radius: 4px 4px;">' + OrderStatus[j].label + '</span>';
+						break;
+					} else if(key == 9) {
+						return '<span class="font_12" style="color:#fff;display: inline-block;width:25%;height:25px;margin: 0 10%;line-height:25px;text-align:center;background: #1E9FEF;border-radius: 4px 4px;">' + OrderStatus[j].label + '</span>';
+						break;
+					} else {
+						return '<span class="font_12" style="color:#3388FF;display: inline-block;margin-left: 20%;">' + OrderStatus[j].label + '</span>';
+						break;
+					}
+				}
+			}
+		},
+
+		getTap: function() {
+			console.log(1)
+			$("#openTap").on('tap', function(event) {
+				event.stopPropagation()
+				alert(1)
+			})
+		},
+
+		//获取厂家品牌名称
+		GoodsNames: function() {
+			//获取厂家品牌名称
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+
+				})
+			};
+			Orders.OrdersBrand(send, function(cb1) {
+				var rows = cb1['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					$(".lists").each(function(j) {
+						if($(".lists").eq(j).attr('GoodsId') == row['GoodsBrandId']) {
+							$(".GoodsName").eq(j).text('品牌：' + row['GoodsBrandName']);
+						};
+					});
+				};
+			});
+		},
+		tap: function() {
+			//bar的循环点击筛选
+			$(".App-Tittle>div").each(function(i) {
+				$(".App-Tittle>div").eq(i).on('tap', function() {
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".App-Tittle>div>.tittle").eq(i).hasClass('activeT')) {
+						return false;
+					};
+					$("#List").html('');
+					$(".App-Tittle>div>.tittle").removeClass('activeT');
+					$(".App-Tittle>div>.tittle").eq(i).addClass('activeT');
+					console.log($(".App-Tittle>div>.tittle").eq(i).text())
+					switch($(".App-Tittle>div>.tittle").eq(i).text()) {
+						case '进行中':
+							sendData = {
+								AuditStatus: 0,
+								CustomerId: UserInfo.UserId
+
+							};
+							Order.List(sendData);
+							app.DeleteSearch();
+							break;
+						case '待确认':
+							var qr_orders = [];
+							for(var j = 0; j < localOrders.length; j++) {
+								if(localOrders[j].AuditStatus == 3) {
+									qr_orders.push(localOrders[j]);
+								}
+							}
+							Order.showList(qr_orders);
+							app.DeleteSearch();
+							break;
+						case '待签收':
+							var qr_orders = [];
+							for(var j = 0; j < localOrders.length; j++) {
+								if(localOrders[j].AuditStatus == 9) {
+									qr_orders.push(localOrders[j]);
+								}
+							}
+							Order.showList(qr_orders);
+							app.DeleteSearch();
+							break;
+						case '已完成':
+							var qr_orders = [];
+							for(var j = 0; j < localOrders.length; j++) {
+								if(localOrders[j].AuditStatus == 10) {
+									qr_orders.push(localOrders[j]);
+								}
+							}
+							Order.showList(qr_orders);
+							Order.search();
+							break;
+					};
+				})
+			});
+		}
+
+	};
+	//回调刷新
+	window.addEventListener('fresh', function() {
+		var obj = plus.webview.getWebviewById('Order');
+		obj.reload(true)
+		Order.List(sendData);
+	});
+</script>

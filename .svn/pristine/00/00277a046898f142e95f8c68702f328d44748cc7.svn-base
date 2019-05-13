@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.picker.css" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+	</head>
+	<style>
+		.iconfont{
+			position: absolute;
+			top:12px;
+			z-index: 100;
+			right:15px;
+			color:  #15AE3F;
+		}
+		
+		.corptype{
+			top:18px;
+			font-size: 12px;
+			color:#E4E4E4;
+		}
+		
+		
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">添加设备</h1>
+		</header>
+		<div class="mui-content">
+		    <form class="mui-input-group">
+		        <div class="mui-input-row">
+		            <label class="Required">厂家</label>
+		            <input type="text"  placeholder="请选择厂家" id="CarrierCompanyName" name="CarrierCompanyName" readonly="readonly">
+		            <span class="mui-icon iconfont corptype">&#xe741;</span> 
+		            <input type="text"  placeholder="请选择厂家" id="CarrierCompanyId" name="CarrierCompanyId" readonly="readonly" style="display: none;">
+		        </div>
+		        <div class="mui-input-row">
+		            <label class="Required">型号</label> 
+		            <input type="text" class="mui-input-clear" placeholder="请选择型号" id="CarrierSpecs" name="CarrierSpecs" readonly="readonly">
+		            <span class="mui-icon iconfont corptype">&#xe741;</span> 
+		            <input type="text"  placeholder="请选择型号" id="CarrierSpecsId" name="CarrierSpecsId" readonly="readonly" style="display: none;">
+		        </div>
+		        <div class="mui-input-row">
+		            <label class="Required">喷幅</label>
+		            <input type="text"  placeholder="请输入喷幅" id="Extent" name="Extent"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">
+		        </div>
+		        <div class="mui-input-row">
+		            <label class="Required">数量</label>
+		            <input type="text"  placeholder="请输入数量" id="ExtentNumber" name="ExtentNumber" readonly="readonly" value="1" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">
+		        </div>
+		        <div class="mui-input-row" style="position: relative;">
+		            <label class="Required">设备码</label>
+		            <input type="text" placeholder="请扫描二维码" id="IMEI" name="IMEI" readonly="readonly">
+		            <span class="mui-icon iconfont mui-pull-right" id="prcode">&#xe751;</span>
+		        </div>
+		        <div class="mui-input-row">
+		            <label class="Required">序列号</label> 
+		            <input type="text" placeholder="请输入序列号" id="CarrierCord" name="CarrierCord"  >
+		        </div>
+		            <input type="text" class="mui-input-clear" placeholder="请输入序列号" id="Unit" name="Unit" style="display: none">
+		            <input type="text" class="mui-input-clear" placeholder="请输入序列号" id="EquipmentId" name="EquipmentId" style="display: none">
+		            
+		    </form>
+		   	<button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles BtnStyles" id="Add">添加</button>
+		</div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	}); 
+	app.ready(function(){
+		userInfo = app.accountInfo('info');
+		BtnEvents();
+		//判断是否为编辑
+		var _self = plus.webview.currentWebview(); 
+	});
+	
+	
+	function BtnEvents(){
+		//扫描获取IMEI
+		$("#IMEI,#prcode").on('tap',function(){
+			mui.openWindow({
+				url:'../TwoCode/TwoCode.html',
+				id:'TwoCode',
+				extras:{
+					"status":"1"
+				}
+			})
+		})
+		
+		
+		//选择厂家
+		$("#CarrierCompanyName").on('tap',function(){
+			var option = {
+				api:'/XhxManage/XHX_CarrierCompany/GetListJson',
+				success:function(data){
+					var CompanyList = new mui.PopPicker();
+					var company = [];
+					var result =  eval("("+data+")");
+					for(var i in result){
+						var row = result[i];
+						company.push({text:row['Name'],value:row['CarrierCompanyId']});
+					};
+					CompanyList.setData(company);
+					CompanyList.show(function(rs) {
+						$("#CarrierCompanyName").val(rs[0]['text']);
+						$("#CarrierCompanyId").val(rs[0]['value']);
+					});
+				},
+				error:function(data){
+					app.toast('获取厂家列表失败')
+				},
+			};
+			app.post3_2(option)
+		});
+		
+		
+		//选择型号
+		$('#CarrierSpecs').on('tap',function(){
+			var option = {
+				api:'/XhxManage/XHX_CarrierSpecs/GetListJson',
+				data:{
+					"queryJson":JSON.stringify({"CarrierCompanyId":$("#CarrierCompanyId").val()})
+				},
+				success:function(data){
+					var result = eval("("+data+")");
+					var CarrierSpecs = [];
+					var CarrierSpecsList = new mui.PopPicker();
+					for(var i in result){
+						var row = result[i];
+						CarrierSpecs.push({text:row['CarrierSpecs'],value:row['Extent'],value2:row['ExtentNumber'],value3:row['CarrierSpecsId'],value4:row['Unit']});
+					};
+					CarrierSpecsList.setData(CarrierSpecs);
+					CarrierSpecsList.show(function(rs) {
+						$("#CarrierSpecs").val(rs[0]['text']);
+						$("#Extent").val(rs[0]['value']);
+						$("#ExtentNumber").val(rs[0]['value2']);
+						$("#CarrierSpecsId").val(rs[0]['value3']);
+						$("#Unit").val(rs[0]['value4'])
+					});
+				},
+				error:function(data){
+				}
+			};
+			if($("#CarrierCompanyId").val()==""){
+				app.toast('请先选择厂家');
+				return false;
+			}
+			app.post3_2(option)
+		});
+		
+		
+		//新增设备
+		$("#Add").on('tap',function(){
+			if($("#IMEI").val()==""){
+				app.toast('请扫描设备二维码');
+				return false;
+			};
+			btnsShield(3,"Add");
+			plus.nativeUI.showWaiting();
+			//嗨森添加设备 
+			if(userInfo.OpenId==4){
+				HsAddEquipment();
+			}else{
+				//普通用户添加设备
+				UserAddEquipment();
+			}; 
+		});
+	}
+	
+	//嗨森添加设备
+	function HsAddEquipment(){
+		var XHX_Owner = {
+			UserId:userInfo.UserId,
+			IMEI:$("#IMEI").val(),
+			Ownership:4,
+			OrganizeId:userInfo.CompanyId,
+		};
+		var XHX_Carrier = {
+			IMEI:$("#IMEI").val(),
+			CarrierSpecsId:$("#CarrierSpecsId").val(),
+			CarrierCord:$("#CarrierCord").val(),
+			Extent:$("#Extent").val(),
+			ExtentNumber:$("#ExtentNumber").val(),
+			Unit:$("#Unit").val(),
+		};
+		var XHX_CarrierSpecs = {
+			CarrierSpecs:$("#CarrierSpecs").val(),
+			Extent:$("#Extent").val(),
+			ExtentNumber:$("#ExtentNumber").val(),
+			Unit:$("#Unit").val(),
+		};
+		var sendData = {
+			oe:XHX_Owner, //所属者
+			ce:XHX_Carrier,//载体
+			cse:XHX_CarrierSpecs,//载体类型
+		};
+		hs.AddEq(sendData,function(cb){
+			
+			if(cb['type']==1){
+				app.toast('操作成功！');
+				var EquipmentList = plus.webview.getWebviewById("EquipmentList");
+				mui.fire(EquipmentList,"pageflowrefresh");
+				mui.back();
+			}else{
+				app.toast('操作失败！');
+			};
+			plus.nativeUI.closeWaiting();
+		});
+	};
+	
+	
+	
+	///正常用户添加设备
+	function UserAddEquipment(){
+			var XHX_CarrierEntity = $("form").serializeJSON();
+			var sendData = ""; 
+			if($("#EquipmentId").val()==""){
+				sendData = XHX_CarrierEntity
+			}else{
+				sendData = {
+					keyValue:$("#EquipmentId").val(),
+					entity:XHX_CarrierEntity
+				}
+			};
+			var option = { 
+				api:'/XhxManage/XHX_Carrier/SaveOwnerUser',
+				data:sendData,
+				success:function(data){
+					var result = eval("("+data+")");
+					if(result['type']=="1"){
+						app.toast('添加成功');
+						plus.nativeUI.closeWaiting();
+						var EquipmentList = plus.webview.getWebviewById("EquipmentList");
+						mui.fire(EquipmentList,"pageflowrefresh");
+						mui.back();
+					}else if(result['type']=="3"){
+						app.toast('当前设备已经存在，禁止重复添加！');
+						plus.nativeUI.closeWaiting();
+					}else{
+						plus.nativeUI.closeWaiting();
+						app.toast('添加失败')
+					}
+				},
+				error:function(data){
+					app.toast('添加失败')
+				}
+			};
+			$("input[type='text']").each(function(i){
+				if($("input[type='text']").eq(i).val()==""){
+					var label = $("label").eq(i).text();
+					app.toast(label+'不能为空');
+					plus.nativeUI.closeWaiting();
+					return false;
+				}else{
+					app.post3_1(option);
+					return false;
+				}
+			});
+		};
+	
+	
+	
+	
+	/////////添加设备使用者///////////////
+//	function Owner(){
+//		var XHX_OwnerEntity = {
+//			"UserId":userInfo.UserId,
+//			"IMEI":$("#IMEI").val(),
+//			"Ownership":"1"
+//		};
+//		var option = {
+//			api:'/XhxManage/XHX_Owner/SaveForm',
+//			data:XHX_OwnerEntity,
+//			success:function(data){
+//				plus.nativeUI.closeWaiting();
+//				var EquipmentList = plus.webview.getWebviewById("EquipmentList");
+//				mui.fire(EquipmentList,"pageflowrefresh")
+//				mui.back();
+//			},
+//			error:function(){
+//				plus.nativeUI.closeWaiting();
+//			}
+//		};
+//		app.post3_1(option)
+//	};
+	//IMEI
+	
+	window.addEventListener('IMEI',function(event){
+		var IMEI = event.detail.IMEI;
+		$("#IMEI").val(IMEI);
+	});
+	
+</script>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		.welfares {
+			background: #F5F5F5;
+		}
+		
+		.partList-li {
+			background-color: white;
+			float: left;
+		}
+		
+		.btns {
+			position: fixed;
+			bottom: 10px;
+			z-index: 999;
+			width: calc(100% - 16px);
+			height: 44px;
+			margin-left: 8px;
+			border-radius: 4px;
+		}
+		
+		.btns>div {
+			height: 44px;
+		}
+		
+		.btns>div>button {
+			height: 44px;
+			margin: 0 auto;
+			border-radius: 0;
+		}
+		
+		.Purchase-Details-Title {
+			border-bottom: 1px solid #eee;
+		}
+		
+		.li-address {
+			float: left;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">配件订单详情</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media list">
+						<a href="javascript:;">
+							<div class="Uav">
+								<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">
+								<span class="OrderNumber">订单号：15616516156</span>
+								<span class="mui-pull-right OrderState" style="color: #1E9FEF;font-size: 12px;">状态：下单</span>
+							</div>
+							<div class="mui-media-body ">
+								<p class="mui-ellipsis Order-Information font_12">
+									<span class="time">日期:2018-01-01</span>
+									<span style="padding-left: 50px;">
+									订单金额:
+								</span>
+									<span class="money" style="color: deepskyblue">
+									100元
+								</span>
+								</p>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell list">
+						<div style="border-bottom: 1px solid #eee;">
+							<span>采购信息</span>
+						</div>
+						<div class="mui-media-body" style="font-size: 13px;height: 70px;">
+							<p class="mui-ellipsis" style="color: #717171">采购人：<span class="address-name"></span></p>
+							<p class="mui-ellipsis" style="color: #717171">联系方式：<span class="address-Moblie"></span></p>
+						</div>
+					</li>
+					<!--地址-->
+					<li class="mui-table-view-cell list ChoiceAddClick">
+						<div style="border-bottom: 1px solid #eee;">
+							<span>收货地址</span>
+						</div>
+						<p style="color: #717171"><span class="ChoiceAdd">请选择</span></p>
+					</li>
+					<!--采购详情-->
+					<li class="mui-table-view-cell list Purchase">
+						<div class="Purchase-Details-Title">
+							采购详情
+						</div>
+						<div style="padding-top: 15px;">
+							<table style="border-collapse:separate; border-spacing:8px;color:#595959;table-layout: fixed;" border="0" cellspacing="0" cellpadding="0" width="100%">
+								<thead>
+									<tr>
+										<th>名称</th>
+										<th>数量</th>
+										<th>价格</th>
+										<th>总额</th>
+									</tr>
+								</thead>
+								<tbody class="partList">
+								</tbody>
+							</table>
+						</div>
+						<!--<ul class="mui-table-view partList">
+					</ul>-->
+					</li>
+
+				</ul>
+
+			</div>
+			<div class="mui-row btns">
+				<div class="mui-col-sm-6 mui-col-xs-6"><button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="edit">编辑订单</button></div>
+				<div class="mui-col-sm-6 mui-col-xs-6"><button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="save">立即提交</button></div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, UserAdd, UserAdds, OrderTypeId, PartOrder
+	var OrderDetail = [];
+	mui('.mui-scroll-wrapper').scroll({
+		deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+		scrollY: true, //是否竖向滚动
+		scrollX: false, //是否横向滚动
+	});
+	app.ready(function() {
+		UserAdd = [];
+		var PartOrderStr = localStorage.getItem('PartOrderEntityStorage');
+		PartOrder = JSON.parse(PartOrderStr);
+		var OrderListStr = localStorage.getItem('PartOrderDetailStorage');
+		OrderDetail = JSON.parse(OrderListStr);
+		UserAdds = new mui.PopPicker();
+		UserInfo = app.accountInfo('info');
+		Order.PurchaseList(); //获取品牌列表
+		Order.UserAddress(); //地址			
+		Order.Otype(); //订单类型
+		BindPartsInfoToView();
+		BindShops();
+	});
+
+	function BindPartsInfoToView() {
+		var OrderNumber = PartOrder.OrderNumber;
+		var CreateDate = PartOrder.CreateDate;
+		var PayMoney = PartOrder.PayMoney;
+		var CreateUserName = PartOrder.CreateUserName;
+		var ReceivingTele = PartOrder.ReceivingTele;
+		$(".OrderNumber").text('订单号:' + OrderNumber)
+		$(".time").text('日期:' + CreateDate)
+		$(".money").text(PayMoney + '元')
+		$(".address-name").text(CreateUserName)
+		$(".address-Moblie").text(ReceivingTele)
+	}
+	//订单提交对象
+	var Order = {
+		//获取订单类型\n
+		Otype: function() {
+			var send = {
+				queryJson: JSON.stringify({})
+			};
+			Orders.OrderType(send, function(cb) {
+				OrderTypeId = cb[1]['OrderTypeId']
+			});
+		},
+		//获取品牌列表
+		PurchaseList: function() {
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+
+				})
+			};
+			Orders.OrdersBrand(send, function(cb) {
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<span class="brand-items">' +
+						'<span class="font_14" id=' + row['GoodsBrandId'] + ' Manufactor=' + row['GoodsManufactorId'] + '>' + row['GoodsBrandName'] + '</span>' +
+						'</span>'
+					);
+					$html.appendTo($(".brand"));
+				};
+				Order.tap();
+			});
+		},
+		//获取当前用户的收货地址
+		UserAddress: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId
+				})
+			};
+			UseIdGetList.GetAddress(sendData, function(cb) {
+				var row = cb['rows'];
+				for(var i in row) {
+					var res = row[i];
+					UserAdd.push({
+						text: res['Address'],
+						value: res['UserAddressAdminId'],
+						RealName: res['RealName'],
+						Phone: res['Phone'],
+					});
+					//默认收获地址
+					if(res['WhereAddress'] == 1) {
+						$(".ChoiceAdd").html(res['Address']).attr('AddressId', res['UserAddressAdminId']);
+					} else {
+						$(".ChoiceAdd").html(row[0]['Address']).attr('AddressId', res['UserAddressAdminId']);
+					};
+				};
+				UserAdds.setData(UserAdd);
+			});
+
+		},
+		save: function() {
+			dialog.Dialogbox('提示', '确认提交购买？', function(cbs) {
+				if(cbs == 1) {
+					PartOrder.ReceivingAddress = $(".ChoiceAdd").text();
+					PartOrder.AuditStatus = 0;
+					var sendData = {
+						keyValue: '',
+						entity: PartOrder,
+						strChildEntitys: JSON.stringify(OrderDetail)
+					};
+					console.log(JSON.stringify(sendData))
+					PartsManageBySet.SavePartsTable(sendData, function(cb) {
+						if(cb["type"] == 1) {
+							app.toast('采购成功！');
+							//清理缓存
+							clearStorage();
+							var index = plus.webview.getWebviewById('PurchaseDetail');
+							var FatherView = plus.webview.getWebviewById('PartsPurchase');
+							setTimeout(function() {
+								index.close();
+								FatherView.close();
+							}, 500)
+						} else {
+							app.toast('采购失败！');
+						}
+					})
+				} else if(cbs == 0) {
+					dialog.CloseLogBox();
+				} else {
+					app.toast('已取消');
+				};
+			})
+		},
+		edit: function() {
+			mui.openWindow({
+				url: "./PartsPurchase.html",
+				id: 'PartsPurchase'
+			})
+		},
+		tap: function() {
+			//bar 循环点击
+			$(".brand-items").each(function(i) {
+				$(this).on('tap', function() { //brand-items-active
+					$(".brand-items>span").removeClass('brand-items-active');
+					$(".brand-items>span").eq(i).addClass('brand-items-active');
+				});
+			});
+			//展开所有品牌
+			$(".showBrand").on('tap', function() {
+				console.log($(this).hasClass('brand-active'));
+				if($(".brand").hasClass('brand-active')) {
+					$(".brand").removeClass('brand-active');
+				} else {
+					$(".brand").addClass('brand-active');
+				};
+			});
+			//重新选择收货地址
+			$(".ChoiceAddClick").on('tap', function() {
+				UserAdds.show(function(items) {
+					$(".ChoiceAdd").html(items[0].text).attr('AddressId', items[0].value);
+				});
+			});
+			//提交订单
+			$("#save").on('tap', function() {
+				Order.save();
+			});
+			$("#edit").on('tap', function() {
+				Order.edit();
+			});
+		}
+	};
+
+	function BindShops() {
+		$(".partList").html('');
+		OrderDetail.forEach(function(value, index, array) {
+			var row = value;
+			var $html = $(
+				'<tr>' +
+				'<td style="width:10px">' + limitStr(row['ShortName']) + '</td>' +
+				'<td>' + row['Inventory'] + '</td>' +
+				'<td>' + row['Price'] + '</td>' +
+				'<td>' + Number(row['Price']) * Number(row['Inventory']) + '</td>' +
+				'</tr>'
+			);
+			$html.appendTo($(".partList"));
+		});
+	}
+
+	function clearStorage() {
+		localStorage.removeItem('PartOrderEntityStorage');
+		localStorage.removeItem('PartOrderDetailStorage');
+		for(var key in localStorage) {
+			if(key.indexOf('storage_partsId') != -1) {
+				localStorage.removeItem(key);
+			}
+		};
+	}
+
+	function limitStr(ojbString) {
+		if(ojbString.length > 18) {
+			return ojbString.substring(0, 18) + "..."
+		}
+		return ojbString
+	}
+	//回调刷新
+	window.addEventListener('refresh', function(e) {
+		location.reload();
+	});
+</script>

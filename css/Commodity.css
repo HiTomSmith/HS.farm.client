@@ -1,0 +1,432 @@
+* {
+	color: #666666;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+
+/*册页宽度*/
+
+.mui-off-canvas-left,
+.mui-off-canvas-right {
+	width: 80%;
+}
+
+.mui-off-canvas-wrap.mui-right .mui-inner-wrap {
+	-webkit-transform: translate3d(80%, 0, 0);
+	transform: translate3d(80%, 0, 0);
+}
+
+
+/*搜索*/
+
+.search {
+	height: 40px;
+}
+
+.search>input {
+	width: 75% !important;
+	height: 30px !important;
+}
+
+#search {
+	width: 20%;
+}
+
+.bar {
+	width: calc(100% - 16px);
+	border-radius: 4px;
+	margin: 0 auto;
+	border-top: 1px solid #F5F5F5;
+}
+
+.bar div {
+	text-align: center;
+}
+
+.mui-icon-extra {
+	font-size: 14px;
+	display: block;
+	height: 100%;
+	line-height: 40px;
+}
+
+
+/*切换类*/
+
+.active {
+	color: #1E9FEF;
+	border-bottom: 1px solid #1E9FEF;
+	display: inline-block;
+	width: 50%;
+}
+
+
+/*商品列表*/
+
+.boxList {
+	height: calc(100% - 156px);
+	width: 100%;
+	padding-bottom: 46px;
+}
+
+.content {
+	width: calc(100% - 16px);
+	margin: 0px 8px 0 8px;
+	overflow: hidden;
+}
+
+.content>.mui-row {
+	background: #F5F5F5;
+}
+
+.content .content-items {
+	height: 80px;
+	width:100%;
+	margin-top: 5px;
+	background: white;
+	position: relative;
+}
+
+.content-items>img {
+	width: 115px;
+	height:100px;
+	display: block;
+	float: left;
+}
+
+.content-items>.title {
+	height: 100%;
+	float: left;
+	margin-left: 14px;
+}
+.byline{
+	margin-top:10px;
+	height: calc( 100% - 36px);
+}
+.byline>div{
+	text-align: left;
+	line-height: 24px;
+}
+.byline>div:nth-child(1){
+	font-size: 16px;
+	color: #4D4D4D;
+}
+.byline>div:nth-child(3){
+	font-size: 16px;
+}
+.iconfont {
+	color: #1E9FEF;
+	font-size: 18px;
+	margin-right: 6px;
+}
+
+.buy {
+	width:120px;
+	height:24px;
+	position: absolute;
+	right:0;
+	top:50px;
+	line-height: 24px;
+}
+
+
+/*加减*/
+
+.reduce {
+	background-image: url('../img/reduce.png');
+}
+
+.plus {
+	background-image: url('../img/plus.png');
+}
+
+.reduce,
+.plus {
+	background-size: 24px 24px;
+	background-repeat: no-repeat;
+	background-position: center;
+	padding: 0;
+	width: 24px;
+	height: 24px;
+}
+
+.buy>.imgs>img {
+	width: 14px;
+	height: 14px;
+	vertical-align: text-bottom;
+}
+
+.buy>.num {
+	width:42px;
+	height:24px;
+	font-size: 16px;
+	color: #4D4D4D;
+	display: inline-block;
+	line-height: 24px;
+}
+.buy>.num12 {
+	width:42px;
+	height:24px;
+	font-size: 16px;
+	color: #4D4D4D;
+	display: inline-block;
+	line-height: 24px;
+}
+
+.money {
+	color: #189DEF;
+}
+
+
+
+/*底部*/
+
+.footer {
+	position: absolute;
+	height: 46px;
+	width: 100%;
+	bottom: 0;
+	z-index: 1;
+	background: #595959;
+}
+
+.ShoopCar {
+	width: 100%;
+	height: 400px;
+	position: fixed;
+	bottom: -446px;
+	background: white;
+	z-index: 10;
+}
+
+.shop-car {
+	height: 48px;
+	width: 48px;
+	background: #6A6A6A;
+	position: absolute;
+	border-radius: 100%;
+	bottom: 8px;
+	left: 10px;
+}
+
+.shop-car>img {
+	width: 22px;
+	height: 22px;
+	margin: 12px 12px;
+}
+
+.footer>.title {
+	color: white;
+	line-height: 46px;
+	margin-left: 78px;
+	z-index: 99;
+}
+
+.footer>.purchase {
+	width: 102px;
+	height: 100%;
+	color: #FFFFFF;
+	position: absolute;
+	right: 0;
+	top: 0;
+	background: #6A6A6A;
+	text-align: center;
+	line-height: 46px;
+}
+
+
+/*购物车*/
+
+.CarShow {
+	animation: mymove 0.5s infinite;
+	-webkit-animation: mymove 0.5s infinite;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
+
+.CarHide {
+	animation: move 0.5s infinite;
+	-webkit-animation: move 0.5s infinite;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
+
+@keyframes mymove {
+	100% {
+		bottom: 0
+	}
+}
+
+@keyframes move {
+	0% {
+		bottom: 0;
+	}
+	100% {
+		bottom: -446px;
+	}
+}
+
+
+/*购物车抬头*/
+
+.ShoopCat-list>ul {
+	background: white;
+}
+
+/*购物车列表*/
+.ShoopCat-Calculation{
+	float: right;
+}
+.ShoopCat-money {
+	width: 180px;
+	float: right;
+}
+.ShoopCat-list>ul>li {
+	border-bottom: 1px solid #F5F5F5;
+	padding: 15px 4px;
+}
+
+.ShoopCar-title {
+	height: 32px;
+	width: 100%;
+	background: #E0E0E0;
+}
+
+.ShoopCar-title>span {
+	display: inline-block;
+	line-height: 32px;
+	padding: 0 12px;
+}
+
+.ShoopCar-title>span:nth-child(1) {
+	float: left;
+}
+
+.ShoopCar-title>span:nth-child(2) {
+	float: right;
+}
+
+.ShoopCat-product-name {
+	float: left;
+	height: 100%;
+	line-height: 28px;
+	
+}
+
+
+
+.ShoopCat-pirce {
+	float: left;
+	line-height: 28px;
+	color: #189DEF;
+}
+
+.ShoopCat-Calculation {
+	height: 28px;
+	padding-left: 30px;
+}
+
+.ShoopCat-Calculation>span{
+	display: inline-block;
+	width: 42px;
+	font-size: 16px;
+	height:100%;
+	color: #4D4D4D;
+	text-align: center;
+	line-height: 28px;
+}
+.ShoopCat-Calculation>.plus,
+.ShoopCat-Calculation>.reduce {
+	height: 100%;
+}
+
+
+/*侧页分类*/
+
+.screen {
+	padding-left: 12px;
+	height: 100%;
+}
+
+.screen-name {
+	float: left;
+	color: #171717;
+	margin-top: 18px;
+}
+
+.screen-show {
+	float: right;
+	padding-right: 10px;
+	margin-top: 18px;
+}
+
+.screen-show>span {
+	font-size: 12px;
+	color: #E4E4E4;
+}
+
+.screen-class {
+	width: calc(100% - 12px);
+	height: 20px;
+	margin-top: 6px;
+}
+
+.screen-items {
+	height: 26px;
+	margin-top: 0px;
+}
+
+.screen-items>span {
+	padding: 6px 20px;
+	border-radius: 4px;
+	background: #EFF3F6;
+	font-size: 12px;
+}
+
+.screen-items>.checkClass {
+	background: #1E9FEF;
+	color: white;
+}
+
+
+/*菜单栏底部按钮*/
+
+.screen-footer {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 48px;
+	z-index: 99;
+	background: white;
+}
+
+.screen-footer>button {
+	margin: 0;
+	width: 50%;
+	height: 100%;
+	float: left;
+	border-radius: 0;
+	border: none;
+}
+
+.screen-footer>button:nth-child(1) {
+	background: white;
+	color: #2E2E2E;
+	border-top: 1px solid #F5F5F5;
+}
+
+
+/*遮罩板*/
+
+.Mask {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: 1000;
+	display: none;
+}

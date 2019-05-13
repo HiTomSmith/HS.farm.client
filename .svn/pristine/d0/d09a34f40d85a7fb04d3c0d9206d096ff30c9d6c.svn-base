@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/AfterService.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<style>
+			.mui-row>div {
+				height: 70px;
+				border-bottom: 1px solid #EEEEEE;
+				display: flex;
+				/*justify-content: center;*/
+				align-items: center;
+			}
+			
+			.imgPosition {
+				background-repeat: no-repeat;
+				background-size: 45% 35%;
+				background-position: center;
+			}
+			
+			.repairImg {
+				background-image: url(../../img/weixiu.png);
+			}
+			
+			.renewImg {
+				background-image: url(../../img/xuzu1.png);
+			}
+			
+			.tuizuiImg {
+				background-image: url(../../img/tuzu1.png);
+			}
+			
+			.kefuImg {
+				background-image: url(../../img/kefu.png);
+			}
+			
+			#repair {
+				line-height: 70px;
+			}
+			
+			.mui-row>div:nth-child(2) {
+				text-align: left;
+			}
+			
+			.mui-row>div:nth-child(3) {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding-left: 15px;
+			}
+			
+			.color {
+				color: #BEBEBE;
+			}
+			/*.tai{
+				color: #8a8a8a;
+			}*/
+		</style>
+	</head>
+
+	<body style="height: 100%;">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title ">售后服务</h1>
+		</header>
+		<div class="mui-content" style="height: 100%;margin: 0 10px;">
+			<div class="mui-row" id="repair">
+				<div class="mui-col-sm-2 mui-col-xs-2 imgPosition repairImg"></div>
+				<div class="mui-col-sm-8 mui-col-xs-8"><span class="tai">我要维修</span></div>
+				<div class="mui-col-sm-2 mui-col-xs-2"><span class="iconfont color">&#xe662;</span></div>
+			</div>
+			<div class="mui-row" id="renewa">
+				<div class="mui-col-sm-2 mui-col-xs-2 imgPosition renewImg"><span></span></div>
+				<div class="mui-col-sm-8 mui-col-xs-8"><span class="tai">我要续租</span></div>
+				<div class="mui-col-sm-2 mui-col-xs-2"><span class="iconfont color">&#xe662;</span></div>
+			</div>
+			<div class="mui-row" id="throwLease">
+				<div class="mui-col-sm-2 mui-col-xs-2 imgPosition tuizuiImg"><span></span></div>
+				<div class="mui-col-sm-8 mui-col-xs-8"><span class="tai">我要退租</span></div>
+				<div class="mui-col-sm-2 mui-col-xs-2"><span class="iconfont color">&#xe662;</span></div>
+			</div>
+			<!--<div class="mui-row" id="onlineService">
+				<div class="mui-col-sm-2 mui-col-xs-2 imgPosition kefuImg"><span></span></div>
+				<div class="mui-col-sm-8 mui-col-xs-8"><span class="tai">在线客服</span></div>
+				<div class="mui-col-sm-2 mui-col-xs-2"><span class="iconfont color">&#xe662;</span></div>
+			</div>-->
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	app.ready(function() {
+		var osaction = plus.webview.currentWebview().tap;
+		if(osaction == "osaction") {
+			mui.back = function() {
+				app.CustomClose(osaction);
+			}
+		}
+		
+		service.tap();
+	});
+
+	var service = {
+
+		tap: function() {
+			/*维修*/
+			$("#repair").on('tap', function() {
+				mui.openWindow({
+					url: '../Lease/reportList.html',
+					id: 'reportList'
+				})
+			});
+			/*续租*/
+			$("#renewa").on('tap', function() {
+						mui.openWindow({
+							url: '../Lease/RenewalList.html',
+							id: 'RenewalList'
+						})
+			});
+			/*退租*/
+			$("#throwLease").on('tap', function() {
+				mui.openWindow({
+					url: '../Lease/ReturnLeaseList.html',
+					id: 'ReturnLeaseList'
+				})
+			});
+			/*在线客服*/
+			$("#onlineService").on('tap', function() {
+				//		mui.openWindow({
+				//			url: '../Lease/AfterService.html',
+				//			id: 'AfterService'
+				//		})
+			});
+		}
+	}
+</script>

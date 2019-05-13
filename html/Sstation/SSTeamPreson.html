@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
+		<link href="../../css/list.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-plus .plus {
+			display: inline;
+		}
+		
+		.plus {
+			display: none;
+		}
+		
+		#topPopover {
+			position: fixed;
+			top: 16px;
+			right: 6px;
+			width: 140px;
+			min-height: 240px;
+			height: auto;
+		}
+		
+		#topPopover .mui-popover-arrow {
+			left: auto;
+			right: 6px;
+		}
+		
+		p {
+			text-indent: 22px;
+		}
+		
+		span.mui-icon {
+			font-size: 14px;
+			color: #15AE3F;
+			margin-left: -15px;
+			padding-right: 10px;
+		}
+		
+		.mui-popover {
+			height: 300px;
+		}
+		
+		.headIcoN {
+			margin-top: 10px;
+			border-radius: 100%;
+			width: 60px;
+		}
+		
+		.phone1 {
+			margin-top: 10px;
+			height: 30px;
+			line-height: 30px;
+		}
+		
+		#Preson {
+			height: 44px;
+			line-height: 44px;
+		}
+		
+		#topPopover {
+			position: fixed;
+			top: 16px;
+			right: 6px;
+		}
+		
+		#topPopover .mui-popover-arrow {
+			left: auto;
+			right: 6px;
+		}
+		
+		.Delivery {
+			margin-top: -2px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a class="mui-pull-right iconfont" id="Preson">&#xe6fd;</a>-->
+			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#topPopover"></a>
+			<h1 class="mui-title">成员</h1>
+		</header>
+		<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" id="AddPreson">
+							<a href="#">添加队员</a>
+						</li>
+						<li class="mui-table-view-cell" id="Captain">
+							<a href="#">重新指派队长</a>
+						</li>
+						<li class="mui-table-view-cell" id="deletePreson">
+							<a href="#">移除队员</a>
+						</li>
+						<li class="mui-table-view-cell" id="Dissolution">
+							<a href="#">解散团队</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="teamList">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	//	mui('.mui-scroll-wrapper').scroll({
+	//		indicators: false //不显示滚动条
+	//	});
+	var userInfo, _self, _teamId, UserList
+	var TeamPresonList = [];
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		console.log(JSON.stringify(_self))
+		UserList = _self.List;
+		TeamPreson.list(); //列表
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	//成员
+	var TeamPreson = {
+		list: function() {
+			var data = _self.data;
+			//获取当前团队成员列表
+			var sendData = {
+				TeamId: data,
+				IsAgree: 1
+			};
+			UseIdGetList.getUserTeamTeamPreson(sendData, function(cb) {
+				TeamPresonList = [];
+				_teamId = cb[0]['TeamId'];
+				for(var i in cb) {
+					var row = cb[i];  
+					console.log(row['HeadIcon'])  
+					var HeadIcon = row['HeadIcon'] == null ? '../../img/my-fill-light.png' : app.req_host + row['HeadIcon'];
+					if(row['Duties'] == "队长") {  
+						var $html = $( 
+							'<li class="mui-table-view-cell mui-media list team list_active" data-index=' + i + ' userid=' + row['UserId'] + ' value=' + row['TeamId'] + ' name=' + row['TeamName'] + '>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left headIcoN" src="' + HeadIcon + '">' +
+							'<div class="mui-media-body">' +
+							'<span class="teamName font_14" id="onTeamName">名称：<span class="Tname">' + row['UserName'] + '</span></span><br/>' +
+							'<div class="phone1 font_12">职位：' + row['Duties'] + ' &nbsp;&nbsp;电话:' + row['Mobile'] + ' </div>' +
+							'<p class="mui-ellipsis temId" style="display: none;" >' + row['TeamId'] + '</p>' +
+							'</div>' +
+							'</a>' +
+							'</li>'
+						);
+						$html.prependTo($("#teamList"));
+					} else {
+						var status = [
+							'<span class="mui-badge Delivery" id="Delivery" data-index=' + i + ' value=' + row['UserId'] + ' team=' + row['TeamId'] + '>派机</span>',
+							'<span class="mui-badge Delivery" data-index=' + i + ' value=' + row['UserId'] + ' team=' + row['TeamId'] + ' style="background:#ccc">已派机</span>',
+							'<span class="mui-badge Delivery" data-index=' + i + ' style="color: #15AE3F;background:white">使用中</span>'
+						];
+						var $html = $(
+							'<li class="mui-table-view-cell mui-media list team list_active" data-index=' + i + '  status=' + row['status'] + ' userid=' + row['UserId'] + ' value=' + row['TeamId'] + ' name=' + row['TeamName'] + '>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left headIcoN" src="' + HeadIcon + '">' +
+							'<div class="mui-media-body">' +
+							'<span class="teamName font_14" id="onTeamName">名称：<span class="Tname">' + row['UserName'] + '</span></span><br/>' +
+							'<div class="phone1 font_12">职位：' + row['Duties'] + ' &nbsp;&nbsp;电话:' + row['Mobile'] + ' </div>' +
+							'<p class="mui-ellipsis temId" style="display: none;" >' + row['TeamId'] + '</p>' +
+							'</div>' +
+							'</a>'+ 
+							//status[row['IsSendMachine']] + '' +
+							'</li>'
+						);
+						$html.appendTo($("#teamList"));
+
+						//派机
+						$html.find('#Delivery').on('tap', function(event) {
+							var index = $(this).attr('data-index');
+							var userid = $(this).attr('value');
+							var team = $(this).attr('team');
+							TeamPreson.SendUav(userid, team);
+							return false;
+						});
+					};
+					//
+					TeamPresonList.push({
+						text: row['UserName'],
+						value: row['UserId'],
+						_TeamId: row['TeamId'],
+						type: row['Duties'],
+						PresonId: row['TeamPersonId']
+					});
+				};
+				TeamPreson.Events(); //事件
+			});
+		},
+		//派机
+		SendUav: function(userid, team) {
+			var option = {
+				api: '/XhxManage/XHX_Users/View_User_Equipment',
+				data: {
+					"queryJson": JSON.stringify({
+						UserId: userInfo.UserId
+					})
+				},
+				success: function(data) {
+					var EquimentList = new mui.PopPicker();
+					var Equiment = [];
+					var Equiment1 = [];
+					var result = eval("(" + data + ")");
+					///去重
+					for(var i = 0; i < result.length; i++) {
+						for(var j = i + 1; j < result.length; j++) {
+							if(result[i]['IMEI'] == result[j]['IMEI']) {
+								j = ++i;
+							};
+						};
+						//console.log(result[i]['WorkUser']+'-------------------------'+userInfo.UserId);
+						if(result[i]['WorkUser'] == userInfo.UserId) {
+							Equiment1.push(result[i]);
+						};
+					};
+					for(var i in Equiment1) {
+						var row = Equiment1[i];
+						Equiment.push({
+							text: row['CarrierSpecs'] + "(" + row['CarrierCord'] + ")",
+							value: row['IMEI']
+						}) 
+					}
+					EquimentList.setData(Equiment); 
+					EquimentList.show(function(item) {
+						console.log(item[0]['value']);
+						plus.nativeUI.showWaiting();
+						sendEquipment(item[0]['value'], userid, team);
+					});
+				}, 
+				error: function(data) {}
+			};
+			app.post3_2(option)
+
+		},
+		//解散团队
+		removeTeam: function() {
+			var sendData = {
+				keyValue: _teamId,
+			};
+			TaskObj.RemoveTeam(sendData, function(cb) {
+				if(cb['type'] == 1) {
+					app.toast('删除成功！');
+					var SsTeamList = plus.webview.getWebviewById('SsTeamList');
+					mui.fire(SsTeamList, 'pageflowerfresh');
+					mui.back();
+				} else {
+					app.toast('删除失败！');
+					dialog.CloseLogBox(); 
+				};
+				plus.nativeUI.closeWaiting();
+			});
+		},
+		Events: function() {
+			//邀请队员
+			$("#AddPreson").off();
+			$("#AddPreson").on('tap', function() {
+				var UserList = [];
+				$(".list").each(function(i) {
+					UserList.push($(".list").eq(i).attr('userid'));
+				});
+				mui.openWindow({
+					url: 'SSmember.html',
+					id: 'SSmember',
+					extras: {
+						list: UserList,
+						type: 'ss',
+						Team: _teamId
+					}
+				});
+			});
+
+			//重新选择队长
+			$("#Captain").off();
+			$("#Captain").on('tap', function() {
+				mui('.mui-popover').popover('toggle');
+				var teamCaptain = new mui.PopPicker();
+				teamCaptain.setData(TeamPresonList);
+				teamCaptain.hide();
+				teamCaptain.show(function(item) {
+					if(item[0]['type'] == "队长") {
+						app.toast(item[0]['text'] + '已经是队长了！');
+						return false;
+					} else {
+						var sendData = {
+							keyValue: item[0]['_TeamId'],
+							userId: item[0]['value'],
+						};
+						TaskObj.SetCaptain(sendData, function(cb) {
+							if(cb['type'] == 1) {
+								app.toast('操作成功！');
+								location.reload();
+								var SsTeamList = plus.webview.getWebviewById('SsTeamList');
+								mui.fire(SsTeamList, 'pageflowerfresh');
+							} else {
+								app.taost('操作失败！');
+							}
+						});
+					};
+				});
+			});
+
+			//删除队员
+			$("#deletePreson").off();
+			$("#deletePreson").on('tap', function() {
+				var status = null;
+				mui('.mui-popover').popover('toggle');
+				var teamCaptain = new mui.PopPicker();
+				teamCaptain.setData(TeamPresonList);
+				teamCaptain.hide();
+				teamCaptain.show(function(item) {
+					if(status==2){
+						app.toast('请先收回设备！');
+						return false;
+					};
+					if(item[0]['type'] == "队长") {
+						app.toast('不能直接移除队长！');
+						return false;
+					} else {
+						var sendData = {
+							keyValue: _teamId,
+							UserId: item[0]['value']
+						};
+						TaskObj.RemoveTeamPreson(sendData, function(cb) {
+							if(cb['type'] == 1) {
+								plus.webview.close('SSmember');
+								$('.list').each(function(i) {
+									if($('.list').eq(i).attr('userid') == item[0]['value']) {
+										$('.list').eq(i).remove();
+										status = $('.list').eq(i).attr('status')
+									};
+								});
+								app.toast('删除成功！');
+								var SsTeamList = plus.webview.getWebviewById('SsTeamList');
+								mui.fire(SsTeamList, 'pageflowerfresh');
+								mui.back();
+							} else {
+								app.toast('删除失败！请先收回设备！');
+								dialog.CloseLogBox();
+							};
+							plus.nativeUI.closeWaiting();
+						});
+					};
+				});
+			});
+
+			//直接删除团队
+			$("#Dissolution").off();
+			$("#Dissolution").on('tap', function() {
+				mui('.mui-popover').popover('toggle');
+				dialog.Dialogbox('提示', '确认要删除团队？', function(cb) {
+					if(cb == 1) {
+						TeamPreson.removeTeam();
+					} else if(cb == 0) {
+						dialog.CloseLogBox();
+					} else {
+						dialog.CloseLogBox();
+					};
+				});
+			});
+		}
+	};
+
+	window.addEventListener('pageflowerfresh', function() {
+		$("#teamList").html('');
+		TeamPreson.list(); //列表
+		var SsTeamList = plus.webview.getWebviewById('SsTeamList');
+		mui.fire(SsTeamList, 'pageflowerfresh');
+		mui('.mui-popover').popover('hide');
+		plus.webview.close('SSmember');
+	});
+</script>

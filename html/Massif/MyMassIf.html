@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/TaskList.css" />
+	</head>
+	<style>
+		html,body,.mui-content{
+			width:100%;
+			height:100%;
+			overflow: hidden;
+		}
+		.font_14>p{
+			padding-top:20px; 
+		}
+		li{
+			border-top:1px solid #F5F5F5;
+			padding:10px 15px !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的地块</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" >
+		    <ul class="mui-table-view">
+		    </ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		MassIf.MassIfList();//获取地块列表
+		NoData.bgImg('mui-content','../../img/BGIMG.png');
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	
+	//地块对象
+	var MassIf = {
+		MassIfList:function(){
+			var send = {
+				queryJson:JSON.stringify({Landlord:UserInfo.UserId})
+			};
+			UseIdGetList.GetMassif(send,function(cb){
+				if(cb[0]){
+					NoData.ClearImg('mui-content');
+				};
+				for(var i in cb){
+					var row = cb[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media"  data='+row['FieldId']+'  index='+i+' >'+
+						'<div class="mui-slider-right mui-disabled">'+
+							//'<a class="mui-btn mui-btn-yellow mui-icon mui-icon-compose" id="edit" data='+row['FieldId']+' index='+i+'></a>'+
+							'<a class="mui-btn mui-btn-red mui-icon mui-icon-trash" id="delete" data='+row['FieldId']+' index='+i+'></a>'+
+						'</div>'+
+			    	        '<div class="mui-slider-handle"><a href="javascript:;">'+
+			    	            '<img class="mui-media-object mui-pull-left" src="../../img/rw.png">'+
+			    	            '<div class="mui-media-body font_14">'+
+			    	                '地块名称：'+row['FieldName']+''+
+			    	                '<p class="mui-ellipsis">面积:'+row['FieldArea']+'亩&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建时间：'+row['CreateDate'].substr(0,10)+'</p>'+
+			    	            '</div>'+
+			    	        '</a></div>'+
+			    	    '</li>'
+					);
+					$html.appendTo($('.mui-table-view'));
+					
+					//编辑地块
+					$html.on('tap',function(){
+						var MassIfId = $(this).attr('data');
+						var  index = $(this).attr('index');
+						mui.openWindow({
+							url:'EditMassif.html',
+							id:'EditMassif',
+							extras:{
+								Region:cb[index]
+							},
+						});
+					});
+					//删除地块
+					$html.find('#delete').on('tap',function(){
+						var MassIfId = $(this).attr('data');
+						var  index = $(this).attr('index');
+						dialog.Dialogbox('提示','确认删除？',function(cb){
+							if(cb==1){
+								MassIf.DeleteMassIf(MassIfId,index);
+							}else if(cb==0){
+								app.toast('已取消')
+								dialog.CloseLogBox();
+							}else{
+								app.toast('已取消')
+								dialog.CloseLogBox();
+							};
+						});
+						return false;
+					});
+				};
+			});
+		},
+		//删除地块
+		DeleteMassIf:function(MassIfId,index){
+			var sendData = {keyValue:MassIfId};
+			TaskObj.RemoveMassif(sendData,function(cb){
+				if(cb['type']=="1"){
+					app.toast('删除成功');
+					$(".mui-table-view-cell").each(function(i){
+						if($(".mui-table-view-cell").eq(i).attr('data')==MassIfId){
+							$(".mui-table-view-cell").eq(i).remove();
+						};
+					});
+				}else{
+					app.toast('删除失败');
+				};
+				plus.nativeUI.closeWaiting();
+				dialog.CloseLogBox();
+			});
+		},
+	};
+	
+	///刷新数据
+	window.addEventListener('pageflowrefresh',function(e){
+		$(".mui-table-view").html('');
+		MassIf.MassIfList();//获取地块列表
+	});
+</script>
+
+
+							
+						

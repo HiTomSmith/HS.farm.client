@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>嗨森农业</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/FarmPurchase.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!--<a class="mui-icon iconfont  mui-pull-left" style="color: green;">&#xe71c;</a>
+		<a class="mui-icon iconfont  mui-pull-left" style="color: green;">&#xe6b2;</a>-->
+		<header class="mui-bar mui-bar-nav header" style="box-shadow: none;border-bottom: 1px solid #FFFFFF;"> 
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">嗨森农业</h1>	
+			<div id="expressStore" style="position: relative;top: 41px;left: 2px;">
+				<div id="expressDelivery" class="expressDelivery active" style="font-size: 14px;">
+					<span class="iconfont" style="margin-right: 5px;">&#xe6b2;</span>门店自提<!--&#xe71c;-->
+				</div>
+			</div>
+		</header>
+		
+		<div class="mui-content  mui-scroll-wrapper">
+			
+			<!--<div class="">-->
+			
+			<!--<div id="expressStore" style="background:#15AE3F;height: 40px;">
+				<div id="expressDelivery" class="expressDelivery active" style="font-size: 14px;margin-left: 10px;">
+					<span class="iconfont" style="margin-right: 5px;">&#xe6b2;</span>门店自提
+				</div>
+			</div>-->
+			<div class="content">
+			    <div class="fillAdress">	
+				    <div class="mui-row fillAdressFirst">  	
+						<div class="mui-col-sm-6 mui-col-xs-6"><span class="phoneDoor"></span></div>   		
+						<div class="mui-col-sm-6 mui-col-xs-6 fillAdressExpress"><span class="express">门店自提</span></div>  		
+					</div>
+					<div class="mui-row">
+						<div class="mui-col-sm-12 mui-col-xs-12"><span class="nameDoor"></span></div> 
+					</div>
+					<div class="mui-row fillAdressSecond">   	
+					<div class="mui-col-sm-10 mui-col-xs-10"><span class="adressDetails addressDoor"></span></div>
+					</div>
+			    </div>
+			    <!--渐变条-->
+			    <div class="changeBar">
+			  	  	<img src="../../img/change Bar.png" width="100%"/>
+			  	</div>
+			    <div class="goodDetais mui-row">
+			    	<div class="mui-col-sm-3 mui-col-xs-3">
+			    		<div class="logoCenter" style="background-color: #FFFFFF;width: 70px;height: 70px;">
+			    			<img src="../../img/leaseUav.png" width="50" height="50"/>
+			    		</div>
+			    	</div>
+			    	<div class="mui-col-sm-9 mui-col-xs-9">
+			    		<p>0押金租大疆<span id="model">MG-1P</span></p>
+			    		<p>租机时间：<span id="start" style="margin-right: 5px;">2018.06.28</span>—<span id="end" style="margin-left: 5px;">2018.06.28</span></p>
+			    	</div>
+			    </div>
+			    <div class="remarks mui-row">
+			    	<div class="mui-col-sm-2 mui-col-xs-2"><span>订单备注:</span></div>
+			    	<div class="mui-col-sm-10 mui-col-xs-10"><textarea name="" rows="1" cols="1" placeholder="给商家留言..." id="description"></textarea></div>
+			    </div>
+			    <div class="feeList">
+			    	<div class="mui-row">
+			    		<div class="mui-col-sm-2 mui-col-xs-2">租金</div>
+			    		<div class="mui-col-sm-8 mui-col-xs-8 taiMiddle"><span class="tai">*1/台</span></div>
+			    		<div class="mui-col-sm-2 mui-col-xs-2 moneyRight">￥<span id="rent">6000</span></div>
+			    	</div>
+			    	<div class="mui-row">
+			    		<div class="mui-col-sm-2 mui-col-xs-2">保障计划</div>
+			    		<div class="mui-col-sm-8 mui-col-xs-8 taiMiddle"><span class="tai">*1/台</span></div>
+			    		<div class="mui-col-sm-2 mui-col-xs-2 moneyRight">￥<span id="insurance">3400</span></div>
+			    	</div>
+			    	<!--<div class="mui-row cleanUnderline">
+			    		<div class="mui-col-sm-2 mui-col-xs-2">清洗费用</div>
+			    		<div class="mui-col-sm-8 mui-col-xs-8 taiMiddle"><span class="tai">*1/台</span></div>
+			    		<div class="mui-col-sm-2 mui-col-xs-2 moneyRight">￥<span id="clean">300</span></div>
+			    	</div>-->
+			    	<!--<div class="mui-row coupon">
+			    		<div class="mui-col-sm-4 mui-col-xs-4">优惠礼券</div>
+			    		<div class="mui-col-sm-8 mui-col-xs-8">优惠券立减:<span>20元</span></div>
+			    	</div>-->
+			    	<div class="mui-row total" style="height: 50px;display: flex;justify-content: center;align-items: center;">
+			    		<div class="mui-col-sm-4 mui-col-xs-4">合计价格</div>
+			    		<div class="mui-col-sm-8 mui-col-xs-8">￥<span id="totalMoney">9700</span></div>
+			    	</div>
+			    </div>
+			    <div class="mui-row" style="margin-bottom: 30px;">
+			    	<div class="mui-col-sm-12 mui-col-xs-12">
+			    		<div id="leaseConstract" style="color:#15AE3F;margin-top: 10px;display: flex;align-items: center;height: 30px;">
+			    			<input id="leaseInput" type="checkbox" name=""  value=""/><label style="margin-top: 2px;" for="leaseConstract" >《嗨森农业县域服务平台共享植保无人机租赁协议》</label>
+			    		</div>
+			    		
+			    		<div id="flyConstract" style="color:#15AE3F;margin-top: 10px;display: flex;align-items: center;height: 30px;">
+			    			<input id="flyInput" type="checkbox" name=""  value="3" /><label style="margin-top: 2px;" for="flyConstract">《植保机安全飞行责任协议》</label>
+			    		</div>
+			    		<div id="guaranteeConstract" style="color:#15AE3F;margin-top: 10px;display: flex;align-items: center;height: 30px;">
+			    			<input id="guaranteeInput" type="checkbox" name=""  value="3" /><label style="margin-top: 2px;" for="guaranteeConstract">《保障计划》</label>
+			    		</div>
+			    	</div>
+			    </div>
+			    <div style="height: 60px;"></div>
+			</div>
+		  <!--</div>-->
+		   	 <footer class="footer">
+			  <!--<button type="button" id="othersPayment">找人代付</button>-->
+			  <button type="button" id="nowPayment">立即付款</button>
+		     </footer>
+		  
+		</div>
+		
+	</body>
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	var webData;
+    var leasePay;
+    var Organize = []; //销售公司 
+    var UserAdd = [];
+    var addressData = [];
+    var sortData = [];
+    var OrganizeList,UserAddress,dataResult,sort,organizeAddress;
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		console.log("用户："+JSON.stringify(UserInfo)) 
+		webData = plus.webview.currentWebview();
+		console.log(JSON.stringify("webData:"+JSON.stringify(webData)))
+		dataResult = webData.data;
+		console.log("data:"+JSON.stringify(dataResult))
+		OrganizeList = new mui.PopPicker();
+		UserAddress = new mui.PopPicker();
+		farm.getOrganizeAddress();
+		farm.bindData();
+//		farm._DeliverAddress(); //服务站
+//		farm._UserAddess(); //收货地址
+		farm.tap();
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var farm = {
+		
+		//用 OrganizeId获取地址
+		getOrganizeAddress:function(){
+			var sendData = {
+				keyValue:UserInfo.OrganizeId
+			}
+			getLeaseInterface.getEnterprise(sendData,function(result){
+				console.log("结果："+JSON.stringify(result)) 
+				//organizeAddress = result;
+				    console.log("名称："+result.FullName)
+					$(".nameDoor").text(result.FullName);
+					$(".phoneDoor").text(result.OuterPhone);
+					$(".addressDoor").text(result.Address);
+			});
+		},
+		
+		/*绑定数据*/
+		bindData:function(){
+			console.log("开始日期："+webData.endDate)
+			$("#model").text(webData.model);
+			$("#start").text(webData.startDate);
+			$("#end").text(webData.endDate.substr(0,10));
+			console.log(rent)
+			$("#rent").text(webData.rent);
+			$("#insurance").text(webData.insurance);
+			$("#clean").text(webData.clean);
+			$("#totalMoney").text(webData.totalMoney);
+		},
+		
+		/*显示添加地址按钮*/
+		addressButton:function(){
+			var $html = $(
+				'<div class="addAdress">'+
+			  	'<div class="addAdresschoose" id="chooseAddress">'+
+			  	'<span style="margin-right: 10px; font-size: 14px;">+</span><span>选择收货地址</span>'+
+			  	'</div>'+
+			    '</div>'
+			   );
+			  $html.appendTo($(".fillAdress"));
+		},
+		/*显示快递配送地址信息*/
+		showAddress:function(distributionMode){
+			
+			console.log(distributionMode)
+			var $html = $(
+				'<div class="mui-row fillAdressFirst">'+   	
+				'<div class="mui-col-sm-3 mui-col-xs-3"><span class="name"></span></div>'+  		
+				'<div class="mui-col-sm-2 mui-col-xs-2"><span class="phone"></span></div>'+   		
+				'<div class="mui-col-sm-7 mui-col-xs-7 fillAdressExpress"><span class="express">'+distributionMode+'</span></div>'+    		
+				'</div>'+    	
+				'<div class="mui-row fillAdressSecond">'+    	
+				'<div class="mui-col-sm-10 mui-col-xs-10"><span class="adressDetails"></span></div>'+
+				'<div class="mui-col-sm-2 mui-col-xs-2" style="color: #15AE3F;text-align: right;"><span id="Address">切换地址</span></div>'+
+				'</div>'   	
+			   );
+			   
+			$html.appendTo($(".fillAdress"));
+		},
+		/*显示门店自提地址信息*/
+		showZitiAddress:function(distributionMode){
+			
+			console.log(distributionMode)
+			var $html = $(
+				'<div class="mui-row fillAdressFirst">'+   	
+				'<div class="mui-col-sm-2 mui-col-xs-2"><span class="nameDoor"></span></div>'+  		
+				'<div class="mui-col-sm-2 mui-col-xs-2"><span class="phoneDoor"></span></div>'+   		
+				'<div class="mui-col-sm-8 mui-col-xs-8 fillAdressExpress"><span class="express">'+distributionMode+'</span></div>'+    		
+				'</div>'+    	
+				'<div class="mui-row fillAdressSecond">'+    	
+				'<div class="mui-col-sm-10 mui-col-xs-10"><span class="adressDetails addressDoor"></span></div>'+
+				'</div>'   	
+			   );
+			   
+			$html.appendTo($(".fillAdress"));
+		},
+		
+		
+		
+		//发货地址
+		_DeliverAddress: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 99,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({})
+			};
+			getLeaseInterface.getOrganize(sendData, function(cb) {
+				var rows = cb['rows'];
+				console.log("销售公司："+JSON.stringify(rows)) 
+				for(var i in rows) {
+					var row = rows[i];
+					Organize.push({
+						text: row['FullName'],
+						value: row['OrganizeId']
+					});
+				};
+				OrganizeList.setData(Organize);
+				//默认销售公司
+				$(".OgIdAddress").text(rows[rows.length - 1]['FullName']).attr('value', rows[rows.length - 1]['OrganizeId']);
+				$("#OrganizeId").val(UserInfo.CompanyId);
+			});
+		},
+		//收货地址列表
+		_UserAddess: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId
+				})
+			};
+			UseIdGetList.GetAddress(sendData, function(cb) {
+				var row = cb['rows'];
+				console.log("237:"+JSON.stringify(row))
+				sortData = cb['rows'];
+				for(var i in row) {
+					var res = row[i];
+					console.log("收货地址："+JSON.stringify(res)) 
+					UserAdd.push({
+						text: res['Address'],
+						value: res['UserAddressAdminId'],
+						RealName: res['RealName'],
+						Phone: res['Phone'],
+						UserAddressAdminId:res['UserAddressAdminId']
+					});
+					//默认收获地址
+					console.log("默认地址:"+res['WhereAddress'])
+					sort = res['WhereAddress'];
+					if(res['WhereAddress'] == 1) {/*默认加载显示地址数据*/
+						farm.showAddress("快递配送");
+						$(".adressDetails").text(res['Address']);
+						console.log("姓名："+res['RealName'])
+						$(".name").text(res['RealName']);
+						$(".phone").text(res['Phone']);
+						$(".adressDetails").attr('adreid', res['UserAddressAdminId']);
+						farm.tapAddress();
+					};
+				};
+				addressData = UserAdd;/*赋值地址数据*/
+				UserAddress.setData(UserAdd);
+				if(UserAdd.length<1){/*用户没有默认地址时显示添加地址按钮*/
+					farm.addressButton();
+					farm.tap();
+				}
+				
+			});
+		},
+		
+		/*保存数据到LeaseTable2*/
+		saveData:function(){
+//			dataResult.entity.UserAddressAdminId=$(".adressDetails").attr('adreid');/*切换城市用户地址id*/
+            dataResult.entity.UserAddressAdminId=0;/*门店地址*/
+			dataResult.entity.Description=$("#description").val();/*订单备注*/
+			console.log("数据结果："+JSON.stringify(dataResult));
+			LeaseInterface.SaveLeaseTable(dataResult, function(cb) {
+				console.log(JSON.stringify(cb))
+				if(cb.type==1){
+					mui.openWindow({
+				        url: '../Lease/FarmPay.html',
+				        id: 'FarmPay',
+				        extras:{
+				        	total:$("#totalMoney").text()
+				        }
+			        });
+				}
+				console.log(JSON.stringify("cb:"+JSON.stringify(cb)))
+				plus.nativeUI.closeWaiting();
+			});
+		},
+		
+		/*选择收货地址*/
+		tapAddress:function(){ 
+			$("#Address").on('tap', function() {
+				UserAddress.show(function(item) {
+					console.log(JSON.stringify(item))
+					$(".adressDetails").text(item[0]['text']);
+					$(".name").text(item[0]['RealName']);
+					$(".phone").text(item[0]['Phone']);
+					$(".adressDetails").attr('adreid', item[0]['UserAddressAdminId']);
+				});
+			});
+		},
+		tap:function(){
+			
+			/*查看租赁协议*/
+//			$('#leaseConstract').on('tap',function () {  
+//		        window.open('pdf/web/viewer.html?file=lease.pdf');  
+//		    });
+            $('#leaseConstract').on('tap',function () {  
+		        mui.openWindow({
+		        	url:'../Lease/leaseXY.html',
+		        	id:'leaseXY'
+		        })
+		    });
+		    /*查看飞行协议*/
+			$('#flyConstract').on('tap',function () {  
+				mui.openWindow({
+		        	url:'../Lease/flyXY.html',
+		        	id:'flyXY'
+		       })
+		    });
+		     /*保障计划*/
+			$('#guaranteeConstract').on('tap',function () {  
+				mui.openWindow({
+		        	url:'../Lease/guaranteeXY.html',
+		        	id:'guaranteeXY'
+		       })
+		    });
+		    /*立即支付*/
+		   $("#nowPayment").on('tap',function(){
+		   	  var leaseInput = $("#leaseInput").is(':checked')
+		   	  var flyInput = $("#flyInput").is(':checked')
+		   	  var guaranteeInput = $("#guaranteeInput").is(':checked')
+		   	  if(leaseInput==false){
+		   	  	app.toast("请您阅读租赁协议")
+		   	  	return;
+		   	  }
+		   	  if(flyInput==false){
+		   	  	app.toast("请您阅读飞行协议")
+		   	  	return;
+		   	  }
+		   	  if(guaranteeInput==false){
+		   	  	app.toast("请您阅读保障计划")
+		   	  	return;
+		   	  }
+		   	  
+		   	  farm.saveData();
+		   })
+			
+			
+			
+			
+			
+//			/*添加收货地址*/
+//			$("#chooseAddress").on('tap',function(){
+//				dialog.Dialogbox('提示', '当前尚未添加收货地址', function(cb) {
+//					if(cb == 1) {
+//						mui.openWindow({
+//							url: '../Menu/AddressList.html',
+//							id: 'AddressList'
+//						})
+//					} else if(cb == 0) {
+//						app.toast('已取消');
+//						dialog.CloseLogBox();
+//					} else {
+//						app.toast('已取消');
+//					};
+//				});
+//			});
+//			/*切换配送方式*/
+//			$("#expressStore>div").each(function(i){
+//				$("#expressStore>div").eq(i).on('tap',function(){
+//					$("#expressStore>div").removeClass('active');
+//					$("#expressStore>div").eq(i).addClass('active');
+//					$(".addAdress").hide();
+//					$(".fillAdress").html('');
+//					if(i==0){
+//						if(UserAdd.length<1){/*用户没有地址的时候*/
+//							farm.addressButton();
+//							farm.tap();
+//							return false;
+//						}
+//						farm.showAddress("快递配送");
+//						for(var m in sortData){
+//							var row = sortData[m]
+//							if(row.WhereAddress==1){
+//								$(".adressDetails").text(row['Address']);
+//								$(".name").text(row['RealName']);
+//								$(".phone").text(row['Phone']);
+//								$(".adressDetails").attr('adreid', row['UserAddressAdminId']);
+//								
+//							}
+//						}
+//						farm.tapAddress();
+//					}else{
+//						farm.showZitiAddress("门店自提");
+//						$(".nameDoor").text(organizeAddress.FullName);
+//						$(".phoneDoor").text(organizeAddress.OuterPhone);
+//						$(".addressDoor").text(organizeAddress.Address);
+//					}
+//				    
+//				})
+//			})
+			
+		}
+	}
+</script>

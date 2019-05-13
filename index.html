@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+		
+		html,body,img{
+			width:100%;
+			height:100%;
+			margin: 0;
+			padding: 0;
+		}
+		html,body{
+			overflow: hidden;
+		}
+	</style>
+	<body>
+		<img src="img/splash.png"  />
+	</body>
+
+</html>
+
+<script src="js/mui.min.js"></script>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/hx.functor.js"></script>
+<script src="js/app.js"></script>
+<script src="js/MD5.js"></script>
+<script src="js/setData.js"></script>
+<script>
+	mui.init();
+	app.ready(function() {
+		launchScreen();
+	})
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: false, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是 true
+	});
+	
+	function launchScreen() {
+		//plus.storage.clear();
+		//读取本地存储，检查是否为首次启动
+		var showGuide = plus.storage.getItem("lauchFlag");
+		if(showGuide) {
+			//有值，说明已经显示过了，无需显示；
+			//关闭splash页面；
+			plus.navigator.closeSplashscreen();
+			plus.navigator.setFullscreen(false);
+			login();
+		} else {
+			//显示启动导航
+			mui.openWindow({
+				id: 'startUpCarousel',
+				url: 'startUpCarousel.html',
+				show: {
+					aniShow: 'none'
+				},
+				waiting: {
+					autoShow: false
+				}
+			});
+		}
+	}
+
+	function login() {
+		var setting = app.storage('username');
+		var psd = app.storage('psd');
+		if(!psd) {
+			location.href = 'login.html';
+			return false;
+		};
+		var sendData = {
+			username: setting,
+			password: $.md5(psd),
+			verifycode: '1',
+			autologin: 1,
+			token: "12121313"
+		};
+
+		/*登录*/
+		Login.In(sendData, function(data) {
+			var result = data;
+			plus.nativeUI.closeWaiting();
+			if(result['type'] == "1") {
+						var userInfo;
+							if(result.resultdata==null){
+								var message = result['message'];
+								var message1 = eval("("+message+")");
+								var message2 = eval("("+message1.message+")"); 
+								 userInfo = {
+								userid: message2.UserId,
+								token: message2.Token,
+								info: message2, 
+								}
+							} else{
+								userInfo = {
+								userid: result.resultdata.UserId,
+								token: result.resultdata.Token,
+								info: result.resultdata, 
+								}
+							}
+							
+				app.storage('login', userInfo);
+				autoLogin = app.storage("autoLogin");
+				//个推上报
+				//Login.CIDIn();
+				if(autoLogin == "true") {
+					setTimeout(function() {
+						app.wndOpenNew("page", "./html/page.html", {
+							"phone": $("#username").val()
+						})
+					}, 500)
+				} else {
+					location.href = 'login.html';
+				};
+
+			} else {
+				location.href = 'login.html';
+			};
+		});
+	};
+</script>

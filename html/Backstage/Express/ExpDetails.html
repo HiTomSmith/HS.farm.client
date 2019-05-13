@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.mui-row>div {
+			text-align: center;
+		}
+		
+		.money {
+			float: right;
+		}
+		
+		.Unfilled {
+			margin: 0 !important;
+			padding: 0 !important;
+			height: 26px !important;
+			width: 70% !important;
+			border: none !important;
+		}
+		
+		.mui-active {
+			background: white !important;
+		}
+		
+		#prcode {
+			margin-top: 4px;
+		}
+		
+		.Arrow {
+			margin-top: 6px;
+			margin-right: 4px;
+			font-size: 12px;
+			transform: rotate(90deg);
+		}
+		
+		#Send,
+		#GReceipt {
+			display: none;
+			border-radius: 4px;
+		}
+		
+		#CheckExpress {
+			height: 44px;
+			line-height: 44px;
+			font-size: 12px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-pull-right" id="CheckExpress">查看物流</a>
+			<h1 class="mui-title">物流管理</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="List">
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">
+							<span class="Name font_14 CreateUserName">租赁人：</span>
+						</div>
+						<!--<div class="mui-media-body">
+							<div class="mui-row">
+							    <div class="mui-col-sm-4 mui-col-xs-4">Item 1</div>
+							    <div class="mui-col-sm-4 mui-col-xs-4">Item 2</div>
+							    <div class="mui-col-sm-4 mui-col-xs-4">Item 2</div>
+							</div>
+						</div>-->
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media list">
+					<div class="font_16 ttle">订单信息</div>
+					<input type="text" class="ExpressId" style="display: none;" />
+					<p class="mui-ellipsis EquipmentLease">序列号：<input class="Unfilled font_12 SN" type="text" /></p>
+					<p class="mui-ellipsis EquipmentLease">物流单号：<input class="Unfilled font_12 ExpressRealId" type="text" /><span class="mui-icon iconfont mui-pull-right" id="prcode">&#xe751;</span></p>
+					<p class="mui-ellipsis EquipmentLease">物流公司：<input class="Unfilled font_12 ExpressCompany" type="text" readonly="readonly"/><span class="mui-icon iconfont mui-pull-right Arrow">&#xe741;</span></p>
+					<p class="mui-ellipsis EquipmentLease">发货人：<input class="Unfilled font_12 SendUserName" type="text" /></p>
+					<p class="mui-ellipsis EquipmentLease">发货人电话：<input class="Unfilled font_12 SendMobile" type="text" maxlength="11" onkeyup="if(/\D/.test(this.value)){app.toast('只能输入数字');this.value='';}"></p>
+					<p class="mui-ellipsis EquipmentLease">物流状态：<input class="Unfilled font_12 ExpressState" type="text" /></p>
+					<p class="mui-ellipsis EquipmentLease">检验状态：<input class="Unfilled font_12 AcceptanceState" type="text" /></p>
+					<p class="mui-ellipsis EquipmentLease">发货地址：<input class="Unfilled font_12 FromAddress" type="text" /></p>
+				</li>
+				<li class="mui-table-view-cell mui-media list">
+					<!--<p id="person" class="mui-ellipsis EquipmentLease">收货人：<input class="Unfilled font_12 RecvUserName" type="text" /></p>-->
+					<p class="mui-ellipsis EquipmentLease">收货人信息：<input class="Unfilled font_12 ToAddress" type="text" /></p>
+					<!--<p id="tel" class="mui-ellipsis EquipmentLease">收货人电话：<input class="Unfilled font_12 RecvMobile" type="text" maxlength="11" onkeyup="if(/\D/.test(this.value)){app.toast('只能输入数字');this.value='';}" /></p>-->
+				</li>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="Send">发货</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="GReceipt">收货</button>
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, ExpStatus, _self, ExpressCompany, ExpressCompanyList
+
+	app.ready(function() {
+		sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({})
+		};
+		ExpressCompany = [];
+		ExpressCompanyList = new mui.PopPicker();
+		ExpStatus = ['未发货', '已发货', '已签收'];
+		UserInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		ExpDetails.Fill();
+		ExpDetails.Logistics();
+		ExpDetails.Collect();
+
+		//判断已发货的不可修改
+		if(_self['Exp']['ExpressState'] != 1) {
+			ExpDetails.Taps();
+		};
+		//判断当前为收货
+		if(_self['Exp']['ExpressState'] == 1 && _self['Exp']['AcceptanceState'] == "收货已检查") {
+			$("#GReceipt").show();
+		};
+		
+		mui.back = function(){
+			var ExpWindow = plus.webview.getWebviewById('ExpWindow');
+			var index = plus.webview.currentWebview();
+			if(ExpWindow){
+				ExpWindow.close();
+			}else{
+				index.close();
+			};
+		};
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	var ExpDetails = {
+		//填充物流单
+		Fill: function() {
+			var row = _self.Exp;
+			console.log(JSON.stringify(row))
+			var GoodsInfo = JSON.parse(row['GoodsInfo']); 
+			$(".CreateUserName").text('租赁人：' + row['RealName']); //租赁人
+			$(".ExpressId").val(row['ExpressId']); //物流单主键
+			GoodsInfo['UavSN'] == null ? "" : $(".SN").val(GoodsInfo['UavSN']).attr('readonly', 'readonly'); //序列号
+			row['ExpressRealId'] == null ? "" : $(".ExpressRealId").val(row['ExpressRealId']).attr('readonly', 'readonly'); //单号
+			row['ExpressCompany'] == null ? "" : $(".ExpressCompany").val(row['ExpressCompany']).attr('readonly', 'readonly'); //物流公司
+			row['ExpressState'] == null ? "" : $(".ExpressState").val(ExpStatus[row['ExpressState']]).attr('readonly', 'readonly'); //物流状态
+			row['AcceptanceState'] == null ? "" : $(".AcceptanceState").val(row['AcceptanceState']).attr('readonly', 'readonly'); //检验状态
+			row['SendUserName'] == null ? $(".SendUserName").val(UserInfo.UserName) : $(".SendUserName").val(row['SendUserName']).attr('readonly', 'readonly'); //发货人
+			row['FromAddress'] == null ? "" : $(".FromAddress").val(row['FromAddress']).attr('readonly', 'readonly'); //发货地址
+			row['SendMobile'] == null ? $(".SendMobile").val(UserInfo.Mobile) : $(".SendMobile").val(row['SendMobile']).attr('readonly', 'readonly'); //发货人电话
+
+			row['RecvUserName'] == null ? "" : $(".RecvUserName").val(row['RecvUserName']).attr('readonly', 'readonly'); //收货人
+			row['RecvMobile'] == null ? "" : $(".RecvMobile").val(row['RecvMobile']).attr('readonly', 'readonly'); //收货人电话
+			row['ToAddress'] == null ? "" : $(".ToAddress").val(row['ToAddress']).attr('readonly', 'readonly'); //收货地址
+			//判断物流单状态为0是未发货
+			if(row['ExpressState'] == 0) {
+				$("#Send").show();
+			};
+			//判断物流单号不为空的时候隐藏扫描，停止修改物流公司
+			if($(".ExpressRealId").val()!=""){
+				$("#prcode").hide();
+				$(".ExpressCompany").off();
+			};
+		},
+		//获取物流公司列表
+		Logistics: function() {
+			var option = {
+				api: '/SystemManage/DataItemDetail/GetDataItemListJson',
+				data: {
+					EnCode: "ExpressCompany"
+				},
+				success: function(data) {
+					var result = JSON.parse(data);
+					for(var i in result) {
+						var rows = result[i];
+						ExpressCompany.push({
+							text: rows['ItemName']
+						});
+					};
+					ExpressCompanyList.setData(ExpressCompany);
+				},
+				error: function(data) {
+					app.toast('获取物流公司信息失败')
+				}
+			};
+			app.post3_4(option)
+		},
+		
+		//发货
+		Deliver: function() {
+			////判断不为空
+			if($(".ExpressRealId").val() == "") {
+				app.toast('物流单号不能为空');
+				return false;
+			};
+			if($(".ExpressCompany").val() == "") {
+				app.toast('物流公司不能为空');
+				return false;
+			};
+			var sendData = {
+				keyValue: $(".ExpressId").val(),
+				ExpressRealId: $(".ExpressRealId").val(),
+				ExpressCompany: $(".ExpressCompany").val(),
+				SendUserId: UserInfo.UserId,
+				SendUserName: UserInfo.UserName,
+				SendUserName: UserInfo.UserName,
+				SendMobile: $(".SendMobile").val(),
+			};
+			LeaseInterface.CreateExp(sendData, function(cb) {
+				if(cb['type'] == 1) {
+					app.toast('发货成功！');
+					ExpDetails.send();
+				} else {
+					app.toast('发货失败！');
+				};
+			});
+		},
+		//开始调用发货接口
+		send: function() {
+			var send = {
+				keyValue: $(".ExpressId").val(),
+			};
+			console.log(JSON.stringify(send))
+			LeaseInterface.SendExp(send, function(cb) {
+				console.log(JSON.stringify(cb))
+				if(cb['type'] == 1) {
+					app.toast('发货成功！');
+					var ExpAdmin = plus.webview.getWebviewById('ExpAdmin');
+					mui.fire(ExpAdmin, 'pageflowerfresh');
+					mui.back();
+				} else {
+					app.toast('发货失败！');
+				};
+			});
+		},
+		//收货
+		Collect: function() {
+			//收货
+			$('#GReceipt').on('tap', function() {
+				btnsShield(2, 'GReceipt');
+				var send = {
+					keyValue: $(".ExpressId").val(),
+				};
+				LeaseInterface.ToExp(send, function(cb) {
+					if(cb['type'] == 1) {
+						app.toast('收货成功！');
+						var ExpAdmin = plus.webview.getWebviewById('ExpAdmin');
+						mui.fire(ExpAdmin, 'pageflowerfresh');
+						mui.back();
+					} else {
+						app.toast('收货失败！');
+					};
+				});
+			});
+		},
+		//事件
+		Taps: function() {
+			//扫码物流单号
+			$("#prcode").on('tap', function() {
+				mui.openWindow({
+					url: '../../TwoCode/TwoCode.html',
+					id: 'TwoCode',
+					extras: {
+						status: "6"
+					},
+				});
+			});
+			//选择物流公司
+			$(".ExpressCompany").on('tap', function() {
+				ExpressCompanyList.show(function(item) {
+					$(".ExpressCompany").val(item[0]['text']);
+				});
+			});
+			//开始发货
+			$("#Send").on('tap', function() {
+				btnsShield(2, 'Send');
+				ExpDetails.Deliver();
+			});
+		},
+	};
+	//查看物流
+	$("#CheckExpress").on('tap', function() {
+		var ExpressCompany = $(".ExpressCompany").val();
+		var ExpressRealId = $(".ExpressRealId").val();
+		mui.openWindow({
+			url: "https://www.kuaidi100.com/chaxun?com=" + ExpressCompany + "&nu=" + ExpressRealId + "",
+			id: 'ExpWindow',
+			styles: {
+				top: '44px'
+			}
+		});
+	});
+	//监听返回的物流单号
+	window.addEventListener('sendData', function(e) {
+		var ExpressRealId = event.detail.ExpressRealId;
+		$(".ExpressRealId").val(ExpressRealId);
+	});
+</script>

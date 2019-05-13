@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/repair.css" />
+		<link rel="stylesheet" href="../../css/list.css" />
+		<style>
+			html,body,.mui-content{
+				height:100%;
+			}
+			.list{
+				padding-bottom: 0px;
+			}
+			.repair_top{
+				margin-top:6px !important;
+			}
+			.Uav>.LeaseName,.Uav>img,.Uav>.SN{
+				display: block;
+				width:auto;
+				height:100%;
+				float: left;
+			}
+			.Uav>.LeaseName,.Uav>.LeaseName{
+				padding-left: 10px;
+				color: #444444 !important;
+			}
+			.Uav>.SN{
+				float: right;
+			}
+			.Days,.Repair,.RepairPeop{
+				color: #717171;
+			}
+			.toatlMony,.queding{
+				line-height: 54px;
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body style="background-color: #F0F0F0;">
+		<header class="mui-bar mui-bar-nav" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" ></a>
+			<h1 id="title" class="mui-title" >维修单</h1>
+		</header>
+		
+		<div class="mui-content" style="background-color: #F0F0F0;">
+			<ul class="mui-table-view">				
+			    <li class="mui-table-view-cell mui-media list">
+			    	<div class="Uav">
+			    		<img id="uav_img" src="../../img/OnlinUav.png">
+			    		<span class="font_14 LeaseName">租赁人:<span>321312</span></span>
+			    		<span class="font_14 SN"></span>
+			    	</div>
+			    	<div class="mui-row">
+			    		<div class="mui-col-sm-4 mui-col-xs-4 font_12 Days">
+			    			租赁天数：<span class="font_12"></span>
+			    		</div>
+			    		<div class="mui-col-sm-4 mui-col-xs-4 font_12 Repair">
+			    			维修公司：<span class="font_12"></span>
+			    		</div>
+			    		<div class="mui-col-sm-4 mui-col-xs-4 font_12 RepairPeop">
+			    			维修人：<span class="font_12"></span>
+			    		</div>
+			    	</div>
+			    </li>
+			</ul>
+				
+			<ul class="mui-table-view repair_Detailed_bottom">
+				<!--<li class="repair_Detailed">维修明细</li>		-->		
+				<li class="mui-table-view-cell" style="padding:10px;background: white;"> 
+					<table class="repair_Detailed_table" border="1" bgcolor="red">
+						<tr>
+							<td align="center" class="itemCol">名称</td>
+							<!--<td align="center" class="itemCol">类型</td>-->
+							<td align="center" class="itemCol">数量</td>
+							<td align="center" class="itemCol">单价</td>
+						</tr>
+					</table>
+				</li>
+
+			</ul>
+			<li class="mui-table-view-cell toatlMony" style=""><p class="falsePosition">总计：<span class="falseCol">0</span>元</p></li>
+			<li class="mui-table-view-cell queding">确定</li>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script>
+	//读取前一个页面传过来的租赁单ID和状态
+	function getHisList(){
+		var self = plus.webview.currentWebview().data;
+ 		getRepairList(self.LeaseTableId);
+ 		UserInfo = app.accountInfo('info');
+ 		$(".LeaseName>span").text(UserInfo.UserName);
+ 		$(".Days>span").text(CalculationDays(self));
+	};
+	
+	//租赁天数
+	function CalculationDays(self){
+		var start = self['LeaseBeginDate'];
+		var end = self['LeaseEndDate'];
+		return parseInt((Date.parse(end) - Date.parse(start)) / 86400000) +'天';
+	};
+	
+	//根据租赁单去读取维修状态，如果有维修单，拿状态
+	function getRepairList(lease){
+		var option = {
+			api:'/TaskManage/Repair/GetPageListJson',
+			data:{
+					"page": 1,
+					"rows": 100, 
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({ 
+						LeaseTableId:lease,//$("#leaseTableId").val(),
+					})
+			},
+			success:function(data){ //uav_name  uav_sn  uav_model  uav_company  uav_people  uav_status
+				console.log(data);
+				var result = JSON.parse(data);
+				var rows = result['rows'];
+				for(var i  in rows){
+					var row = rows[i]; 
+					var status = ['受理中','正在维修','维修完成'];
+					$('.SN').html(row['GoodsName']+"( "+ row['UavSN']+" )");
+					$('.RepairPeop>span').html(row['RepairUserName']);
+					$('.uav_status').html(status[row['Status']]); 
+					getRepairDetials(row['RepairId']);//获取维修单从表信息
+					
+				};
+				//维修机构名称
+				getOrganizeName(rows[0]['OrganizeId']);
+			},
+			error:function(){},
+		};
+		app.post3_4(option);
+	};
+	
+	//用 OrganizeId 获取name
+	function getOrganizeName(id){
+		var option = {
+			api:'/BaseManage/Organize/GetFormJson',
+			data:{
+				keyValue:id
+			},
+			success:function(data){
+				var result = JSON.parse(data);
+				$(".Repair>span").text(result['FullName']);
+			},
+			error:function(){},
+		};
+		app.post3_4(option)
+	};
+	
+	//获取维修单从表信息getRepairDetials()
+	function  getRepairDetials(id){
+		var option = {
+			api:'/TaskManage/Repair/GetDetailsJson',
+			data:{
+				keyValue:id
+			},
+			success:function(data){
+				console.log(JSON.stringify(data))
+				var money = 0;
+				var result = JSON.parse(data);
+				for(var i in result){
+					var row = result[i];
+					money+=(row['Price']*row['UsedAmount']);
+					var $html =$(
+						'<tr>'+
+								'<td align="center" class="itemFont">'+row['GoodsName']  +'</td>'+
+//								'<td align="center" class="itemFont">'+ row['RepairType'] +'</td>'+
+								'<td align="center" class="itemFont">'+ row['UsedAmount'] +'</td>'+
+								'<td align="center" class="itemFont">￥'+ row['Price']  +'</td>'+
+						'</tr>'
+					);
+					if(row['UsedAmount']!=null){
+						$html.appendTo($('.repair_Detailed_table'));
+					}
+//					$html.appendTo($('.repair_Detailed_table'));
+				};
+				//总计
+				$(".falseCol").html(money);
+			},
+			error:function(){},
+		};
+		app.post3_4(option)
+	};
+	
+ 	app.ready(function(){
+ 		getHisList();
+ 	});
+	$(".queding").on('tap',function(){
+		mui.back();
+	})
+</script>

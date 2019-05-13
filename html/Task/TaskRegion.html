@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=2,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link rel="stylesheet" href="../../css/leaflet.css">
+		<link rel="stylesheet" href="../../css/leaflet.pm.css" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+		html,body,.mui-content{
+			height:100%; 
+			overflow: hidden;
+		}
+		.Map{
+			width:100%;
+			height:100%;
+		}
+		.footer {
+			width: 100%;
+			background: white;
+			position: fixed;
+			bottom:0;
+			z-index: 10000;
+			height: 70px;
+			border-top:1px solid #F5F5F5;
+		}
+		.footer>span{
+			width:70%;
+			height:100%;
+			display: block;
+			float: left;
+			text-align: center;
+			line-height:70px;
+			color: #9D9D9D;
+		}
+		.footer>button{
+			width:30%;
+			height:70px;
+			display: block;
+			float: left;
+			border-radius: 0;
+			font-size:24px;
+			background: #15AE3F ;
+			margin-top: -1px;
+			position: relative;
+		}
+		.trajectory{
+			height:200px;
+			width:100%;
+			position: fixed;
+			z-index: 1000;
+			bottom:-80px;
+			background: white;
+			overflow: hidden;
+			text-align: center;
+		}
+		.fontText{
+			color:#9D9D9D;
+			font-size:12px;
+			text-align: left;
+		}
+		.fontText1{
+			color:#717171;
+			font-size:12px;
+			text-align: left;
+		}
+		
+		#Rest{
+			position: absolute;
+			right: 0;
+			display: none;
+			background: #f3522f;
+			border: 1px solid #f3522f;
+			z-index: -1;
+		}
+	</style>
+
+	<body> 
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">绘制区域</h1>
+		</header>
+		<div class="mui-content wrapper">
+			<div class="Map" id="example2"></div>
+			<div class="footer">
+				<span>点击开始测量已作业面积</span>
+				<button type="button" class="mui-btn mui-btn-blue" id="Measure">绘制</button>
+				<button type="button" class="mui-btn mui-btn-blue" id="Rest">重绘</button>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/leaflet.js"></script>
+<script src="../../js/leaflet.pm.min.js"></script>
+<script src="../../js/Leaflet.AccuratePosition.js"></script>
+<script src="../../js/GeometryUtil.js"></script>
+<script src="../../js/wgs84-to-gcj02.js"></script>
+<script src="../../js/xhx-map.js"></script>
+<script src="../../js/map.js"></script>
+<script>
+	mui.init({});
+	var linarr = [];
+	//飞行轨迹定义
+	var track = XHX_track.creatNew(map2, linarr, "track");
+	app.ready(function(){
+		
+	});
+	
+	
+	
+	//测量
+	$("#Measure").on('tap',function(){
+		drawRegion();
+		$("#Measure").attr('disabled','disabled');
+	});
+	
+	
+	
+	
+	//返回绘制的区域
+	function Area(area,region){
+		$("#Measure").removeAttr('disabled');
+//		$("#Rest").animate({
+//			'right':'30%'
+//		}).css('z-index','0').show();
+		var sendData = [];
+		var CreatTask = plus.webview.getWebviewById('CreatTask');
+		var Region = JSON.stringify(region[0]);
+		var Region1 = JSON.parse(Region);
+		for(var i in Region1){
+			var row = Region1[i]; 
+			sendData.push({lat:row['lat'],lng:row['lng']});
+		};
+		var send = JSON.stringify(sendData);
+		mui.fire(CreatTask,'SetRegion',{data:send,Area:area});
+		$("#Measure").off().text('完成');
+		//完成
+		$("#Measure").on('tap',function(){
+			mui.back();
+		});
+		//重绘
+//		$("#Rest").on('tap',function(){
+//			map2.removeLayer();
+//		});
+	};
+</script>

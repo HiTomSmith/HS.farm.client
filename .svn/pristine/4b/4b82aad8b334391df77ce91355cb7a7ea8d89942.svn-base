@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<link href="../../css/AfterService.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				height: 100%;
+			}
+			
+			.marginTop {
+				margin-top: 20px;
+			}
+			
+			.margin {
+				margin-top: 20px;
+				/*height: 30px;*/
+				/*border: 1px solid green;*/
+			}
+			
+			.left,
+			.right {
+				height: 30px;
+				line-height: 30px;
+			}
+			
+			.center>input {
+				height: 30px;
+				border: none;
+				/*border:1px solid red;*/
+				font-size: 14px;
+			}
+			
+			.mui-row>div:nth-child(2) {
+				text-align: left;
+			}
+			
+			.mui-row>div:nth-child(3) {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding-left: 20%;
+				/*border: 1px solid red;*/
+			}
+			
+			.fontLeft {
+				font-size: 14px;
+				color: #3C3C3C;
+				;
+			}
+			
+			.fontCenter {
+				font-size: 14px;
+				color: #3C3C3C;
+			}
+			
+			.btn {
+				width: 100%;
+				/*border: 1px solid red;*/
+				position: fixed;
+				bottom: 10px;
+				right: 0;
+				z-index: 22;
+			}
+			
+			#situation {
+				height: 30px;
+				line-height: 15px;
+				/*border: 1px solid red;*/
+				border: none;
+				padding-left: 0;
+			}
+			
+			.btn>button {
+				height: 40px;
+				width: 70%;
+				background: #15AE3F;
+				border-radius: 20px;
+				border: none;
+				font-size: 14px;
+				color: #FFFFFF;
+				margin: 0 15%;
+			}
+			.inColor{
+				color: #9B9B9B;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">报案</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll" style="padding: 0 10px">
+				<div class="mui-row marginTop">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">事故时间</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="nowTime" value="" placeholder="2018.12.29-11:28:00" disabled="" />
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3 right" id="happenTime">
+						<span class="iconfont color fontRight">&#xe662;</span>
+					</div>
+				</div>
+
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">事故地址</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="" value="" placeholder="江苏省苏州市科灵路78号"/>
+					</div>
+					<!--<div class="mui-col-sm-3 mui-col-xs-3 right">
+						<span class="iconfont color fontRight">&#xe662;</span>
+					</div>-->
+				</div>
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">出厂编号</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="" value="" placeholder="135788" />
+						<!--<span class="fontCenter">135788</span>-->
+					</div>
+					<!--<div class="mui-col-sm-3 mui-col-xs-3 right">
+					<span class="iconfont color fontRight">&#xe662;</span>
+				</div>-->
+				</div>
+
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">作物种类</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="cropSspecies" value="" placeholder="大麦" disabled/>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3 right">
+						<span class="iconfont color fontRight" id="WorkDescription" >&#xe662;</span>
+					</div>
+				</div>
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">天气状况</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="inWeather" value="" placeholder="晴" disabled=""/>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3 right" id="Weather">
+						<span class="iconfont color fontRight">&#xe662;</span>
+					</div>
+				</div>
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">飞行模式</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="inplanMode" value="" placeholder="手动模式" disabled="" />
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3 right" id="planMode">
+						<span class="iconfont color fontRight">&#xe662;</span>
+					</div>
+				</div>
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">飞行姿态</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="inplanAttitude" value="" placeholder="直接坠落"  disabled/>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3 right" id="planAttitude">
+						<span class="iconfont color fontRight">&#xe662;</span>
+					</div>
+				</div>
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">落地姿态</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="indropAttitude" value="" placeholder="底部朝下" disabled/>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3 right" id="dropAttitude" >
+						<span class="iconfont color fontRight">&#xe662;</span>
+					</div>
+				</div>
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">飞机高度</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="" value="" placeholder="5米" />
+					</div>
+					<!--<div class="mui-col-sm-3 mui-col-xs-3 right">
+					<span class="iconfont color fontRight">&#xe662;</span>
+				</div>-->
+				</div>
+
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">飞行距离</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input  class="inColor" type="" name="" id="" value="" placeholder="100米" />
+					</div>
+					<!--<div class="mui-col-sm-3 mui-col-xs-3 right">
+					<span class="iconfont color fontRight">&#xe662;</span>
+				</div>-->
+				</div>
+				<div class="mui-row margin">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">飞行时间</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 center">
+						<input class="inColor" type="" name="" id="" value="" placeholder="3分钟" />
+					</div>
+					<!--<div class="mui-col-sm-3 mui-col-xs-3 right">
+					<span class="iconfont color fontRight">&#xe662;</span>
+				</div>-->
+				</div>
+
+				<div class="mui-row margin" style="margin-bottom: 75px;">
+					<div class="mui-col-sm-3 mui-col-xs-3 left">
+						<span class="fontLeft">事故情况</span>
+					</div>
+					<div class="mui-col-sm-9 mui-col-xs-9" style="height: 30px;">
+						<textarea style="font-size: 14px;" class="inColor" id="situation" name="" placeholder="简要说明事故是如何发生的"></textarea>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<div class="btn">
+			<button type="button" class="mui-btn" id="next">确定，下一步</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var UserInfo = "";
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		report.tap();
+	});
+	var report = {
+		tap: function() {
+			/*事故时间*/
+			$("#happenTime").on('tap', function() {
+				var epicker = new mui.DtPicker({
+					type: "min",
+					beginDate: new Date(2018, 00, 01),
+					endDate: new Date(2100, 11, 30)
+				});
+				epicker.show(function(item) {
+					console.log("时间："+item['text'])
+					$('#nowTime').val(item['text']);
+				});
+			})
+			/*作物种类*/
+			$("#WorkDescription").on('tap', function() {
+				MedicamentCrops.Crop(function(cb) {
+					var result = cb;
+					var Crop = [];
+					var CropList = new mui.PopPicker();
+					for(var i in result) {
+						var row = result[i];
+						Crop.push({
+							text: row['ItemName'],
+							value: row['ItemValue']
+						});
+					};
+					CropList.setData(Crop);
+					CropList.show(function(item) {
+						$("#cropSspecies").val(item[0]['text']);
+
+					})
+				});
+			});
+			/*天气状况*/
+			$("#Weather").on('tap', function() {
+				MedicamentCrops.getWeather(function(cb) {
+					console.log("天气："+JSON.stringify(cb))
+					var result = cb;
+					var Crop = [];
+					var CropList = new mui.PopPicker();
+					for(var i in result) {
+						var row = result[i];
+						Crop.push({
+							text: row['ItemName'],
+							value: row['ItemValue']
+						});
+					};
+					CropList.setData(Crop);
+					CropList.show(function(item) {
+						$("#inWeather").val(item[0]['text']);
+
+					})
+				});
+			});
+			
+			/*飞行模式*/
+			$("#planMode").on('tap', function() {
+				MedicamentCrops.getPlanMode(function(cb) {
+					console.log("天气："+JSON.stringify(cb))
+					var result = cb;
+					var Crop = [];
+					var CropList = new mui.PopPicker();
+					for(var i in result) {
+						var row = result[i];
+						Crop.push({
+							text: row['ItemName'],
+							value: row['ItemValue']
+						});
+					};
+					CropList.setData(Crop);
+					CropList.show(function(item) {
+						$("#inplanMode").val(item[0]['text']);
+
+					})
+				});
+			});
+			
+			/*飞行姿态*/
+			$("#planAttitude").on('tap', function() {
+				MedicamentCrops.getPlanAttitude(function(cb) {
+					console.log("天气："+JSON.stringify(cb))
+					var result = cb;
+					var Crop = [];
+					var CropList = new mui.PopPicker();
+					for(var i in result) {
+						var row = result[i];
+						Crop.push({
+							text: row['ItemName'],
+							value: row['ItemValue']
+						});
+					};
+					CropList.setData(Crop);
+					CropList.show(function(item) {
+						$("#inplanAttitude").val(item[0]['text']);
+
+					})
+				});
+			});
+			
+			/*落地姿态*/
+			$("#dropAttitude").on('tap', function() {
+				MedicamentCrops.getDropAttitude(function(cb) {
+					console.log("天气："+JSON.stringify(cb))
+					var result = cb;
+					var Crop = [];
+					var CropList = new mui.PopPicker();
+					for(var i in result) {
+						var row = result[i];
+						Crop.push({
+							text: row['ItemName'],
+							value: row['ItemValue']
+						});
+					};
+					CropList.setData(Crop);
+					CropList.show(function(item) {
+						$("#indropAttitude").val(item[0]['text']);
+
+					})
+				});
+			});
+			
+			
+			$("#next").on('tap', function() {
+				mui.openWindow({
+					url: '../Lease/reportFinish.html',
+					id: 'reportFinish'
+				})
+			})
+		}
+	}
+</script>

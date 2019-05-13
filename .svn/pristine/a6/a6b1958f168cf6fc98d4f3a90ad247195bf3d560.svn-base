@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../css/mui.picker.css" />
+	</head>
+	<style>
+		*{
+			color:#717171;
+		}
+		.fontc{
+			color:#717171 !important;
+		}
+		
+		.mui-row{
+			height:40px;
+			font-size:12px;
+			text-align: center;
+			line-height: 34px;
+			border-bottom:6px solid #f5f5f5;
+		}
+		.mui-row>div{
+			height:20px;
+		}
+		.headIcoN{
+			width: 52px !important;
+			height:52px !important;
+			border-radius: 100%;
+		}
+		
+		.iconfont{
+			color:#C0C0C0 ;
+		}
+		
+		
+			.mengbi{
+				width:100%;
+				height:100%;
+				background: #747474;
+				position: fixed;
+				z-index: 10000;
+				opacity: 0.8;
+				display: none;
+				top:0;
+			}
+			#mangerName{
+				width:90%;
+				margin-left: 5%;
+				margin-top:5%;
+			}
+			#setTwoCode{
+				font-size: 12px;
+				margin-top:6px;
+				color: #FEA356;
+			}
+			
+			button[type="button"]{
+				background: #DD524D;
+				color:white;
+				border:none;
+				display: none;
+			}
+			.Delivery{
+				position: absolute;
+				right:0px;
+				top:10px;
+				width:60px;
+				height:30px;
+				border-radius: 4px;
+				text-align: center;
+				line-height: 24px;
+				color:white;
+				background:  #15AE3F;
+			}
+			.mui-table-view-cell:after{
+				position: absolute;
+			    right: 0;
+			    bottom: 0;
+			    left: 15px;
+			    height: 1px;
+			    content: '';
+			    -webkit-transform: scaleY(.5);
+			    transform: scaleY(.5);
+			    background-color: white;
+			}
+			#ResetTeamName{
+				margin-top:0px;
+				padding-left:20px;
+				display: inline-block;
+			}
+			.teamName{
+				margin-top:2px;
+				display: inline-block;
+				margin-bottom: 10px;
+				float: left;
+			}
+			.phone1{
+				clear: both;
+			}
+			.teamArea{
+				line-height: 34px;
+			}
+			.teamArea>div{
+				text-align: center;
+			}
+			.mui-table-view>li{
+				border:none;
+				border-bottom: 1px solid #F5F5F5;
+			}
+			li{
+				border-radius: 4px;
+			}
+			.borderR{
+				border-right:2px solid  #15AE3F !important;
+			}
+			.mui-bar-nav~.mui-content{
+				padding-top:0px;
+			}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">团队管理</h1>   
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+		    <ul class="mui-table-view" id="teamList">
+		    	 <!--<li class="mui-table-view-cell mui-media">
+		    	        <a href="javascript:;">
+		    	            <img class="mui-media-object mui-pull-left headIcoN" src="http://placehold.it/40x30">
+		    	            <div class="mui-media-body">
+		    	                幸福
+		    	                <p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+		    	            </div>
+		    	        </a>
+		    	    </li>-->
+		    </ul>
+		    <button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="dissolution">解散团队</button> 
+		    <button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="removeBack">删除并退出团队</button>
+		    <div class="mengbi"></div>
+			<!--<div class="content"> 
+				<div class="top">团队名称</div>
+				<input type="text" maxlength="10" id="mangerName" placeholder="请输入新的团队名称"/>
+				<button class="save" id="save">确认</button>
+				<button class="close">取消</button>
+			</div>-->
+		</div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	}); 
+	var _teamId = "";
+	var _teamName = "";
+	var userInfo = "";
+	app.ready(function(){
+		var osaction = plus.webview.currentWebview().tap;
+		if(osaction == "osaction") {
+			mui.back = function() {
+				app.CustomClose(osaction);
+			}
+		}
+		userInfo = app.accountInfo('info');
+		var _self = plus.webview.currentWebview();
+		console.log(_self._teamId) 
+		if(_self._teamId==undefined){
+			_teamId = _self._teamId;
+			_teamName = _self._teamName; 
+			getTeamPresonList(_teamId,_teamName); 
+			$(".mui-content").css('margin-top','15px') 
+		}else{
+			var $html = $(
+				'<header class="mui-bar mui-bar-nav">'+
+				    '<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>'+
+				    '<a class="mui-icon iconfont  mui-pull-right" id="setTwoCode">邀请码</a>'+
+				    '<h1 class="mui-title">团队</h1>'+
+				'</header>'
+			);
+			$html.appendTo($("body"));
+			$(".mui-content").css('margin-top','36px');
+			getUserTeamId();
+		}
+		BtnEvents();
+	});
+	//获取当前用户的团队
+	function getUserTeamId(){
+		var option = {
+			api:'/XhxManage/XHX_Team/GetPageListJson',
+			data:{
+				"page": 1,
+				"rows": 1,
+				"sidx": "UserId",
+				"sord": "asc",
+				"queryJson": JSON.stringify({
+					UserId: userInfo.UserId
+				})
+			},
+			success:function(data){  
+				console.log("teamData:"+JSON.stringify(data))  
+				var result = eval("("+data+")");
+				var row = result['rows']; 
+				_teamId = row[0]['TeamId'];
+				_teamName = row[0]['TeamName'];
+				getTeamPresonList(_teamId,_teamName);
+				//生成二维码
+				var TeamCode = JSON.stringify({"_teamId":_teamId,"status":"2"});
+				//分享二维码
+				$("#setTwoCode").on('tap',function(){
+					mui.openWindow({
+						url:'../TwoCode/ShareCode.html',
+						id:'ShareCode',
+						extras:{
+							data:TeamCode
+						}
+					})
+				});
+			},
+			error:function(data){
+				
+			}
+		};
+		app.post3_2(option)
+	}
+	
+	//获取当前用户的团队成员列表
+	function getTeamPresonList(_teamId){
+		var option = {
+			api:'/XhxManage/XHX_Users/TeamUserMobileService',
+			data:{
+				"page": 1,
+				"rows": 100,
+				"sidx": "TeamId",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					TeamId:_teamId,
+					IsAgree:1
+				})
+			},
+			success:function(data){
+//				console.log(data)
+				var result = eval("("+data+")");
+				var row = result;
+				for(var i in row){ 
+					var $html = "";
+					var rowi = row[i];
+					var HeadIcon ='../../img/my-fill-light.png';
+					//判断头像是否为空
+					if(rowi['HeadIcon']!=null){
+						HeadIcon = app.req_host+rowi['HeadIcon'];
+					};
+					//判断是否为队长
+					if(rowi['Duties']=="队长"){
+						$html = $(
+							'<li class="mui-table-view-cell mui-media" data-index='+i+' value='+rowi['TeamId']+' name='+rowi['TeamName']+'>'+
+					            '<a href="javascript:;">'+
+					                '<img class="mui-media-object mui-pull-left headIcoN" src='+HeadIcon+'>'+
+					                '<div class="mui-media-body">'+
+					                    '<span class="teamName" id="onTeamName">'+_teamName+'</span>'+
+					                    '<p class="mui-ellipsis phone1">队长:'+rowi['UserName']+'</p>'+
+					                    '<p class="mui-ellipsis temId" style="display: none;" >'+rowi['TeamId']+'</p>'+
+					                '</div>'+
+					            '</a>'+
+					        '</li>'
+						);
+						if(rowi['UserId']==userInfo.UserId){
+							$html.find(".teamName").after('<span class="iconfont" id="ResetTeamName">&#xe706;</span>');
+							$("#dissolution").show();
+						}
+						$html.prependTo($("#teamList"));
+					}else if(rowi['Duties']=="队员"&&userInfo.UserId!=rowi['TeamUserId']){
+						$html = $(
+							'<li class="mui-table-view-cell mui-media" data-index='+i+' value='+rowi['TeamId']+' name='+rowi['TeamName']+'>'+
+					            '<a href="javascript:;">'+
+					                '<img class="mui-media-object mui-pull-left headIcoN" src='+HeadIcon+'>'+
+					                '<div class="mui-media-body">'+
+					                    '<span class="teamName fontc" style="color:black">飞手姓名:'+rowi['UserName']+'</span>'+
+					                    '<p class="mui-ellipsis phone1">电话:'+rowi['Account']+'</p>'+
+					                    '<p class="mui-ellipsis temId" style="display: none;" >'+rowi['TeamId']+'</p>'+
+					                '</div>'+
+					            '</a>'+
+					        '</li>'
+						);
+						$html.appendTo($("#teamList"));
+						$("#removeBack").css("display","block");
+						$("#teamList").css("margin-top","36px");
+						
+					}else if(rowi['Duties']=="队员"&&userInfo.UserId==rowi['TeamUserId']){
+						var status = [
+							'<span class="mui-badge Delivery" id="Delivery" data-index='+i+' value='+rowi['UserId']+' team='+rowi['TeamId']+'>派机</span>',
+							'<span class="mui-badge Delivery" data-index='+i+' value='+rowi['UserId']+' team='+rowi['TeamId']+' style="background:#ccc">已派机</span>',
+							'<span class="mui-badge Delivery" data-index='+i+' style="color: #15AE3F;background:white">使用中</span>'
+						];
+						$html = $(
+							'<li class="mui-table-view-cell mui-media" data-index='+i+' value='+rowi['TeamId']+' name='+rowi['TeamName']+' useid='+rowi['UserId']+'>'+
+								'<div class="mui-slider-right mui-disabled">'+
+									'<a class="mui-btn mui-btn-red mui-icon mui-icon-closeempty" id="delete" teid='+rowi['TeamId']+' useid='+rowi['UserId']+' data-index='+i+' ></a>'+
+								'</div>'+
+								'<div class="mui-slider-handle" style="position: relative;">'+
+					            '<a href="javascript:;">'+
+					                '<img class="mui-media-object mui-pull-left headIcoN" src='+HeadIcon+'>'+
+					                '<div class="mui-media-body">'+
+					                    '<span class="teamName fontc" style="color:black">飞手姓名:'+rowi['UserName']+'</span>'+
+					                    '<p class="mui-ellipsis phone1">电话:'+rowi['Account']+'</p>'+
+					                    '<p class="mui-ellipsis temId" style="display: none;" style="none">'+rowi['TeamId']+'</p>'+
+					                '</div>'+
+					            '</a></div>'+
+					        '</li>'
+						);
+						if(rowi['IsSendMachine']==2){
+							$html.addClass('borderR');
+						};
+						//滑动删除队员
+						$html.find('#delete').on('tap', function(event) {
+							
+							var index = $(this).attr('data-index');
+							
+							var teid = $(this).attr('teid');
+							var useid = $(this).attr('useid');
+							if($(".Delivery").eq(index).text()=="使用中"){
+								app.toast('请先收回无人机');
+								return false;
+								
+								
+							};
+							dialog.Dialogbox('团队信息','确认要请离队员？',function(data){
+								if(data==1){
+									SignOut(teid,useid);
+								}else if(data==0){
+									dialog.CloseLogBox();
+									app.toast('已取消')
+								}else{
+									app.toast('已取消')
+								};
+							});
+						});
+						//派机
+						$html.find('#Delivery').on('tap', function(event) {
+							var index = $(this).attr('data-index');
+							var userid = $(this).attr('value');
+							var team = $(this).attr('team');
+							getUserEquipment(userid,team);
+						});
+						
+						$html.appendTo($("#teamList"));
+					}
+				};	
+					BtnEvents(_teamId);
+					getTeamTotalArea();
+					TodayTeamTotalArea();
+			},
+			error:function(){
+				app.toast('获取团队信息失败')
+			},
+		};  
+		app.post3_2(option);
+	}
+	
+	
+	
+	//获取团队累计作业亩数
+	function getTeamTotalArea(){
+		var option = {
+			api:'/XhxManage/XHX_Team/GetWorkNumber_Team',
+			data:{
+				queryJson:JSON.stringify({
+					TeamId:_teamId//"b7f62786-21e4-4a3e-8ff4-cdb2e29637ed",
+				})
+			},
+			success:function(data){
+				//console.log(data);
+				var result = eval("("+data +")");
+				var TotalArea = 0;////团队累计作业亩数
+				for(var i in result){
+					var row = result[i];
+					if(row['Area']!=null){
+						row['Area']+=TotalArea;
+					};
+				};
+				$(".TotalArea>span").text(TotalArea);
+			},
+			error:function(data){
+				
+			}
+		};
+		app.post3_2(option)
+	
+	};
+	
+	
+	//获取当天团队亩数集合l
+	function TodayTeamTotalArea(){
+		var option = {
+			api:'/XhxManage/XHX_WorkNumber/GetTeamRegionArea',
+			data:{
+				TeamId:_teamId//"b7f62786-21e4-4a3e-8ff4-cdb2e29637ed",//_teamId
+			},
+			success:function(data){
+				var result = JSON.parse(data);
+				var TotalArea = result['day'];
+				$(".TodayArea>span").text(TotalArea);
+			},
+			error:function(data){
+				
+			}
+		};
+		app.post3_2(option)
+	};
+	
+	
+	///////点击事件集合
+	function BtnEvents(_teamId){
+		///修改团队名称 mengbi content
+		$("#ResetTeamName").on('tap',function(){
+			dialog.Dialogbox('提示','<input type="text" id="mangerName" placeholder="请输入新的团队名称"  style="border-radius:4px;margin-top:6px;height:40px">',function(cb){
+				if(cb==1){
+					var keyValue =  _teamId;
+					if($("#mangerName").val()!=""){
+					var XHX_TeamEntity = {
+						"TeamName":$("#mangerName").val(),
+						"TeamId":_teamId, 
+					};
+					plus.nativeUI.showWaiting();
+					var option = {
+						api:'/XhxManage/XHX_Team/SaveForm?keyValue=' + keyValue,
+						data:XHX_TeamEntity,
+						success:function(data){
+							var result = eval("("+data+")");
+							if(result['type']=="1"){
+								app.toast("修改成功");
+								$("#onTeamName").text($("#mangerName").val());
+								plus.nativeUI.closeWaiting();
+								dialog.CloseLogBox();
+							}else{
+								app.toast('修改失败')
+								plus.nativeUI.closeWaiting();
+							};
+						},
+						error:function(){
+							app.toast('修改失败')
+							plus.nativeUI.closeWaiting();
+						},
+					}
+					app.post3_1(option);
+				}else{
+					app.toast('团队名称不能为空')
+				}
+				}else if(cb==0){
+					dialog.CloseLogBox();
+				}else{
+					dialog.CloseLogBox();
+				};
+			});
+			//确认修改
+//			$('.save').on('tap',function(){
+//				var keyValue =  _teamId;
+//				//按钮屏蔽
+//				btnsShield(3,"save");
+				
+//			});
+	});
+	};
+	
+	$("#removeBack").on('tap',function(){
+		dialog.Dialogbox('提示','确认要退出团队？',function(cb){
+		if(cb==1){
+				removeBack();
+			}else if(cb==0){
+				dialog.CloseLogBox();
+			}else{
+				dialog.CloseLogBox();
+			};
+		});
+	});
+	
+	///删除并退出团队
+	function removeBack(){
+		plus.nativeUI.showWaiting();
+		var option = {
+			api:'/XhxManage/XHX_Team/SignOut',
+			data:{
+				keyValue:_teamId,
+				UserId:userInfo.UserId,
+			},
+			success:function(data){
+				var result = eval("("+data+")");
+				if(result['type']=="1"){
+					app.toast('退出成功');
+					var Task = plus.webview.getWebviewById('Task');
+					var ParticTeam = plus.webview.getWebviewById('ParticTeam');
+					var TeamList = plus.webview.getWebviewById('TeamList');
+					mui.fire(Task,'pageflowrefresh');
+					TeamList.close();
+					ParticTeam.close();
+					plus.nativeUI.closeWaiting();
+					dialog.CloseLogBox();
+				}else if(result['type']=="3"){
+					app.toast(result['message']);
+					plus.nativeUI.closeWaiting();
+					dialog.CloseLogBox();
+				};
+			},
+			error:function(data){
+				plus.nativeUI.closeWaiting();
+				dialog.CloseLogBox();
+			}
+		};
+		app.post3_1(option)
+	};
+	
+	
+	//解散团队
+	$("#dissolution").on('tap',function(){
+		var tid = userInfo.RoleId;
+		var option = {
+			api:'/XhxManage/XHX_Team/SignOuts',
+			data:{
+				keyValue:tid,
+			},
+			success:function(data){
+				var result = eval("("+data+")");
+				if(result['type']=="1"){
+					app.toast('操作成功');//useid
+					dialog.CloseLogBox();
+					mui.back();
+					$("#teamList>li").each(function(i){
+						$("#teamList>li").eq(i).remove();
+					})
+				}else if(result['type']=="3"){
+					dialog.CloseLogBox();
+					app.toast(result['message']);
+				};
+			},
+			error:function(data){
+			}
+		};
+		dialog.Dialogbox('提示','确认要解散团队？',function(cb){
+			if(cb==1){
+				app.post3_1(option);
+			}else if(cb==0){
+				dialog.CloseLogBox();
+			}else{
+				dialog.CloseLogBox();
+			};
+		});
+	});
+	
+	///请离队员
+	function SignOut(tid,uid){
+		var option = {
+			api:'/XhxManage/XHX_Team/SignOut',
+			data:{
+				keyValue:tid,
+				UserId:uid,
+			},
+			success:function(data){
+				var result = eval("("+data+")");
+				if(result['type']=="1"){
+					app.toast('操作成功');//useid
+					dialog.CloseLogBox();
+					$("#teamList>li").each(function(i){
+						if($("#teamList>li").eq(i).attr('useid')==uid){
+							$("#teamList>li").eq(i).remove();
+							return;
+						};
+					})
+				}else{
+					app.toast(result['message']); 
+				};
+			},
+			error:function(data){
+				
+			}
+		};
+		app.post3_1(option)
+	};
+	
+	
+	
+	//派机获取当前用户的设备列表
+	function getUserEquipment(userid,team){
+		var option = {
+			api:'/XhxManage/XHX_Users/View_User_Equipment',
+			data:{
+				"queryJson": JSON.stringify({
+					WorkUser: userInfo.UserId,
+					IsWordOk:2
+				})
+			},
+			success:function(data){
+				console.log(data)
+				var EquimentList = new mui.PopPicker();
+				var Equiment = [];
+				var Equiment1 = [];
+				var result = eval("("+data+")");
+				///去重
+				for(var i=0;i<result.length;i++){
+					for(var j=i+1;j<result.length;j++){
+						if(result[i]['IMEI']==result[j]['IMEI']){
+							j = ++i;
+						};
+					};
+					//console.log(result[i]['WorkUser']+'-------------------------'+userInfo.UserId);
+					if(result[i]['WorkUser']==userInfo.UserId){
+						Equiment1.push(result[i]);
+					};
+				};
+				for(var i in Equiment1){
+					var row = Equiment1[i];
+					Equiment.push({text:row['CarrierSpecs']+"("+ row['CarrierCord']+")",value:row['CarrierId']})
+				}
+				EquimentList.setData(Equiment);
+				EquimentList.show(function(item){
+					console.log(item[0]['value']);
+					plus.nativeUI.showWaiting();
+					sendEquipment(item[0]['value'],userid,team);
+				});
+			},
+			error:function(data){
+			}
+		};
+		app.post3_2(option)
+	};
+//	
+	//调用派发接口
+	function sendEquipment(CarrierId,userid,team){
+		console.log(CarrierId);
+		console.log(userid);
+		console.log(team);
+		var option = {
+			api:'/XhxManage/XHX_Carrier/DistributeXHX',
+			data:{
+				UserId:'', 
+				WorkUsersId:userid,
+				IMEI:CarrierId,
+				TeamId:team
+			},
+			success:function(data){
+				console.log(data)
+				var result = eval("("+data+")");
+				if(result['type']=="1"){
+					$("#teamList").html('');
+					getUserTeamId();
+					app.toast('派送成功，请等待领取');
+					//刷新设备列表
+					var EquipmentList = plus.webview.getWebviewById('EquipmentList');
+					mui.fire(EquipmentList,'pageflowrefresh');
+					plus.nativeUI.closeWaiting();
+				}
+			},
+			error:function(data){
+			}
+		};
+		app.post3_1(option)
+	};
+	
+	//生成二维码
+	//生成二维码
+	$("#setTwoCode").on('tap',function(){
+		$("#qrcode").slideToggle("slow"); 
+		$(".mengbi").fadeToggle("slow");
+	});
+	
+//	//修改团队名称后重新输入
+//	window.addEventListener('freshTeamName',function(e){
+//		$(".temId").each(function(i){
+//			if($(".temId").eq(i).text()==_teamId){
+//				$(".teamName").eq(i).text(e.detail.Name);
+//			}
+//		});
+//	})
+
+		
+	
+	///退出团队刷新
+	window.addEventListener('pageflowrefresh',function(){
+		$("#teamList").html('');
+		getTeamList();
+	})
+</script>

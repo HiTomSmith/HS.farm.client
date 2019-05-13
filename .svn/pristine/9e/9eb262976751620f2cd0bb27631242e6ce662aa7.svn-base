@@ -1,0 +1,176 @@
+html {
+	height: 100%;
+}
+
+body,
+.mui-content {
+	height: 100%;
+	overflow: hidden;
+	background: white;
+	color: #666666;
+}
+
+.mui-table-view-cell:after {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 15px;
+	height: 0px;
+	content: '';
+	-webkit-transform: scaleY(.5);
+	transform: scaleY(.5);
+	background-color: rgba(200, 199, 204, 0.3);
+}
+
+.title {
+	border-top: 5px solid #F5F5F5;
+	color: #444444 !important;
+}
+
+li {
+	color: #9D9D9D !important;
+}
+
+li span {
+	color: #666666;
+}
+
+.top {
+	width: 100%;
+	background: white;
+}
+
+.bottom {
+	width: 100%;
+	display: block;
+	border-top: 1px solid #F5F5F5;
+	background: white;
+	overflow: hidden;
+}
+
+#slider {
+	height: 150px;
+}
+
+#slider img {
+	width: 100%;
+}
+
+.mui-row>div {
+	padding: 6px 0px;
+}
+
+.mui-row>div>div {
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	margin: 10px auto;
+	color: white;
+}
+
+.mui-icon {
+	font-size: 26px;
+}
+
+.Four_1 {
+	background: #FF6666;
+}
+
+.Four_2 {
+	background: #58C3F1;
+}
+
+.Four_3 {
+	background: #00D1A4;
+}
+
+.Four_4 {
+	background: #FEA356;
+}
+.Four_5 {
+	background:  #58C3F1;
+}
+.Four_6 {
+	background: #FF6666;
+}
+.mui-row>div>.text {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+}
+
+.mui-icon {
+	margin: 0 auto;
+	display: block;
+	text-align: center;
+	padding-top: 10px;
+}
+
+.title {
+	display: inline-block;
+	font-size: 14px;
+	width: 100%;
+	padding-left: 14px;
+	height: 44px;
+	line-height: 40px;
+}
+
+.title>span {
+	width: 3px;
+	height: 10px !important;
+	border: 1px solid #15AE3F;
+	background: #15AE3F;
+	display: block;
+	float: left;
+	margin-top: 14px !important;
+}
+
+.mui-table-view img {
+	display: block;
+	width: 60px;
+	height: 60px;
+}
+
+.message_href {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	color: #879BC9;
+	margin-top: 6px;
+}
+
+.state1 {
+	background: white;
+}
+
+#getNoPayList>li {
+	margin-top: 2px;
+}
+
+#state18 {
+	color: #78cd6a;
+	margin-top: -20px;
+}
+
+.Surplus {
+	margin-top: -20px;
+	background: white;
+	color: #717171;
+}
+
+.leaseLog {
+	width: 46px;
+	height: 46px;
+	float: left;
+	background: #58C3F1;
+	border-radius: 100%;
+	color: white;
+	margin: 11px 11px 11px 0;
+}
+
+.mui-table-view>li {
+	padding-top: 11px;
+	height: 90px;
+	border-top: 1px solid #F5F5F5;
+}
+

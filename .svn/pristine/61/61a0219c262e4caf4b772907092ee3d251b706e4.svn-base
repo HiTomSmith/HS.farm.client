@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link href="../../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../../css/mui.poppicker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.PaymentNum,
+		.ReceivedNum {
+			position: absolute;
+			width: 14px;
+			height: 14px;
+			background: red;
+			right: 22px;
+			top: 6px;
+			border-radius: 100%;
+			font-size: 8px;
+			text-align: center;
+			line-height: 15px;
+			color: white;
+			display: none;
+		}
+		
+		* {
+			color: #666666;
+		}
+		
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			width: 100%;
+		}
+		
+		.bar>div>span {
+			display: inline-block;
+		}
+		
+		.bar>div>span:nth-child(2) {
+			display: none;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">维修单</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row bar App-Tittle">
+				<div class="mui-col-sm-4 mui-col-xs-4">
+					<span class="tittle activeT">待核价</span>
+					<span class="PaymentNum"></span>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4">
+					<span class="tittle">待完成</span>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4">
+					<span class="tittle">已完成</span>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="List">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, StartTimes, EndTimes, Statuss
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		var nowTime = Date.parse(new Date());
+		Statuss = ['', '受理中', '正在维修', '待完成', '已完成']
+		StartTimes = new Date(nowTime).format();
+		EndTimes = new Date(nowTime - 2592000000).format();
+		sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				Status: 1
+			})
+		};
+		Repair.List();
+		Repair.Taps();
+
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var Repair = {
+
+		//时间筛选
+		search: function() {
+			app.contentHTML("#List");
+			//开始查询并且返回查询结果
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				sendData = {
+					"page": 1,
+					"rows": 100,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						StartTime: s,
+						EndTime: e,
+						DeleteMark: 1
+					})
+				};
+				Repair.List(sendData);
+			});
+		},
+
+		//获取维修单主表
+		List: function() {
+			getLeaseInterface.getRepairMain(sendData, function(cb) {
+				$("#List").html('');
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' >' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_14">' + row['CreateUserName'] + '</span><span class="CarrierSpecs font_12">(序列号：' + row['UavSN'] + ')</span><span class="font_12 mui-pull-right">状态：' + Statuss[row['Status']] + '</span>' +
+						'<span class="LeaseStatus"></span>' +
+						'</div>' +
+						'<div class="mui-media-body">' +
+						'<p class="mui-ellipsis EquipmentLease">报修时间：' + row['CreateDate'].substr(0, 10) + '</p>' +
+						'</div>' +
+						' </li>'
+					);
+					$html.appendTo($("#List"));
+					$html.on('tap', function() {
+						var index = $(this).attr('data-index');
+						mui.openWindow({
+							url: 'RepairDetails.html',
+							id: 'RepairDetails',
+							extras: {
+								Data: rows[index]
+							}
+						});
+					});
+				};
+			});
+		},
+		//点击事件
+		Taps: function() {
+			//bar的循环点击筛选
+			$(".App-Tittle>div").each(function(i) {
+				$(".App-Tittle>div").eq(i).on('tap', function() {
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".App-Tittle>div>.tittle").eq(i).hasClass('activeT')) {
+						return false;
+					};
+					$("#List").html('');
+					$(".App-Tittle>div>.tittle").removeClass('activeT');
+					$(".App-Tittle>div>.tittle").eq(i).addClass('activeT');
+					console.log($(".App-Tittle>div>.tittle").eq(i).text())
+					switch($(".App-Tittle>div>.tittle").eq(i).text()) {
+						case '待核价':
+							sendData = {
+								"page": 1,
+								"rows": 100,
+								"sidx": "CreateDate",
+								"sord": "desc",
+								"queryJson": JSON.stringify({
+									Status: 1
+								})
+							};
+							Repair.List(sendData);
+							app.DeleteSearch();
+							break;
+						case '待完成':
+							sendData = {
+								"page": 1,
+								"rows": 100,
+								"sidx": "CreateDate",
+								"sord": "desc",
+								"queryJson": JSON.stringify({
+									Status: 3
+								})
+							};
+							Repair.List(sendData);
+							app.DeleteSearch();
+							break;
+						case '已完成':
+							sendData = {
+								"page": 1,
+								"rows": 100,
+								"sidx": "CreateDate",
+								"sord": "desc",
+								"queryJson": JSON.stringify({
+									Status: 4
+								})
+							};
+							Repair.List(sendData);
+							Repair.search();
+							break;
+					};
+				})
+			});
+		},
+	};
+
+	window.addEventListener('pageflowerfresh', function() {
+		Repair.List();
+	});
+</script>

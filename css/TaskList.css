@@ -1,0 +1,87 @@
+html,
+body,
+.mui-content {
+	height: 100%;
+}
+
+.mui-content {
+	padding-bottom: 100px;
+}
+
+.mui-table-view {
+	background: #EDEDED;
+}
+
+.mui-content>.mui-table-view:first-child {
+	margin-top: 0px;
+}
+.head{
+	margin: 0px 0px 6px 0px;
+	height: 50px !important;
+	line-height: 38px;
+	font-size: 12px;
+}
+.mui-row {
+	margin: 0px 0px 6px 0px;
+	height: 36px;
+	line-height: 38px;
+	font-size: 12px;
+	border-top:1px solid #F5F5F5;
+}
+
+.mui-row,
+li {
+	background: white;
+	border-radius: 4px;
+}
+
+.mui-row>div {
+	text-align: center;
+}
+.head{
+	line-height: 18px !important;
+	padding-top: 8px;
+}
+.head>div{
+	height:36px;
+	padding:0;
+}
+
+.head>div:nth-child(2) {
+	border-left: 1px solid #EDEDED;
+	border-right: 1px solid #EDEDED;
+} 
+
+.gray {
+	display: inline-block;
+	height: 6px;
+	width: 100%;
+	background: #efeff4;
+}
+
+
+.font_size12 {
+	font-size: 12px;
+}
+
+.mui-media-object {
+	border-radius: 4px;
+	width: 60px;
+}
+
+header>a:nth-child(2) {
+	color: #FB9543;
+	font-size: 12px !important;
+	margin-top: 5px;
+}
+
+.mui-table-view-cell>a:not(.mui-btn) {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	margin: -22px -15px;
+	padding: inherit;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: inherit
+}

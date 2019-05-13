@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-bar{
+			background: white;
+		}
+		*{
+			color:#848484;
+			background: white;
+		}
+		h1{
+			color:#444444 !important;
+		}
+		.mui-content{
+			background: white;
+			margin-top:44px !important;
+		}
+		.logo{
+			width:170px;
+			margin:80px auto;
+			text-align: center;
+		}
+		.logo img{
+			width:76px;
+			height:76px;
+			display: block;
+			margin:0 auto;
+		}
+		span{
+			display: inline-block;
+			width:100%;
+			
+			
+		}
+		.fotter{
+			width:100%;
+			position: fixed;
+			bottom:40px;
+			font-size:12px;
+			text-align: center;
+			color:#717171;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">版本说明</h1>
+		</header>
+		<div class="mui-content">
+			<div class="logo">
+				<img src="../../img/logo.png" alt="" />
+				<br/>
+				<span style=" text-align: center;font-size:20px;">嗨森农业</span>
+				<span class="BB">V &nbsp;2. 0</span>
+			</div>
+			<div class="fotter">
+				©2018 苏州大域无疆航空科技有限公司
+			</div>
+		</div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script>
+	mui.init();
+	app.ready(function(){
+		//获取本地版本号
+		plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+			$(".BB").text('V '+inf['version']);
+		});
+	});
+</script>

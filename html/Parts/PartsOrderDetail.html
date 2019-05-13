@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	    <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+		
+	</head>
+	<style>
+		.welfares {
+			background: #F5F5F5;
+		}
+		
+		.partList-li {
+			background-color: white;
+			float: left;
+		}
+		.foot-button{
+			margin:0 2.3%;
+		}
+		#express{
+			display: none;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">配件订单详情</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll">
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">
+							<span class="OrderNumber">订单号：15616516156</span>
+							<span class="mui-pull-right OrderState" style="color: #1E9FEF;font-size: 12px;">状态：下单</span>
+						</div>
+						<div class="mui-media-body ">
+							<p class="mui-ellipsis Order-Information font_12">
+								<span class="time">日期:2018-01-01</span>
+								<span style="padding-left: 50px;">
+									订单金额:
+								</span>	
+								<span class="money" style="color: deepskyblue">
+									100元
+								</span>	
+							</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media list" id="express">
+					<div class="font_16 ttle" style="font-size: 14px;color: #717171;border-bottom:1px solid #eee;">填写物流</div>
+					<div class="mui-input-row" style="margin-left: -10px;">
+						<label class="font_12" style="font-size: 12px;"style="border:1px solid red">物流单号</label>
+						<input  type="text" class="mui-input-clear font_12" style="font-size: 12px;" placeholder="请输入物流单号"  id="ExpressRealId">
+						<span class="mui-icon iconfont mui-pull-right" style="font-size: 18px;margin-top: 8px;margin-right: 5px;" id="prcode" >&#xe751;</span>
+					</div>
+					<div class="mui-input-row" style="margin-left: -10px;">
+						<label class="font_12" style="font-size: 12px;">物流公司</label>
+						<input type="text" class="mui-input-clear font_12" style="font-size: 12px;" placeholder="请选择物流公司"  id="ExpressCompany">
+						<span class="mui-icon iconfont Arrow" style="font-size: 18px;margin-top: 8px;margin-right: 5px;">&#xe741;</span>
+					</div>
+				
+				</li>
+				
+				<li class="mui-table-view-cell list">
+					<div style="border-bottom: 1px solid #eee;">
+						<span>采购信息</span>
+					</div>
+					<div class="mui-media-body" style="font-size: 13px;height: 70px;">
+						<p class="mui-ellipsis" style="color: #717171">采购人：<span class="address-name"></span></p>
+						<p class="mui-ellipsis" style="color: #717171">联系方式：<span class="address-Moblie"></span></p>
+					</div>
+				</li>
+				
+				<!--地址-->
+				<li class="mui-table-view-cell list">
+					<div style="border-bottom: 1px solid #eee;">
+						<span>收货地址</span>
+					</div>
+					<p style="color: #717171"><span class="ChoiceAdd">请选择</span></p>
+				</li>
+				<!--采购详情-->
+				<li class="mui-table-view-cell list Purchase">
+					<div class="Purchase-Details-Title">
+						采购详情
+					</div>
+					<div style="padding-top: 15px;">
+						<table style="border-collapse:separate; border-spacing:8px;color:#595959;table-layout: fixed;" border="0" cellspacing="0" cellpadding="0" width="100%">
+							<thead>
+								<tr>
+									<th>名称</th>
+									<th>数量</th>
+									<th>单价</th>
+									<th>总额</th>
+								</tr>
+							</thead>
+							<tbody class="partList">
+							</tbody>
+						</table>
+					</div>
+				</li>
+				<div class="mui-row welfares">
+				</div>
+				
+			</ul>
+			<div class="foot-button">
+					
+		    </div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	
+	var UserInfo, OrderTypeId, PartOrder;
+	var ExpressCompany = [];
+	var ExpressCompanyList = new mui.PopPicker();
+	app.ready(function() {
+		_self = plus.webview.currentWebview(); 
+		UserInfo = app.accountInfo('info');
+		if(_self.PartOrder.AuditStatus==2&&UserInfo.OpenId==12){
+			$("#express").show();
+		}
+		if(_self.PartOrder.AuditStatus>=3){
+			$("#express").show();
+			$("#prcode").hide();
+			$("#ExpressRealId").attr('readonly','readonly');
+			$("#ExpressRealId").attr('disabled','disabled');
+			$(".Arrow").hide();
+			$("#ExpressCompany").attr('disabled','disabled');
+		}
+		console.log(JSON.stringify(_self))
+		PartOrder = _self.PartOrder;
+		
+		Order.GetDetail();
+		BindPartsInfoToView();
+		Order.InitButton();
+		Order.tap();
+		getLogisticsCompany();
+		
+	});
+	
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	
+	function BindPartsInfoToView() {
+		var OrderNumber = PartOrder.OrderNumber;
+		var CreateDate = PartOrder.CreateDate;
+		var PayMoney = PartOrder.PayMoney;
+		var CreateUserName = PartOrder.CreateUserName;
+		var ReceivingTele = PartOrder.ReceivingTele;
+		$(".OrderNumber").text('订单号:' + OrderNumber)
+		$(".time").text('日期:' + CreateDate)
+		$(".money").text(PayMoney + '元')
+		$(".address-name").text(CreateUserName)
+		$(".address-Moblie").text(ReceivingTele)
+		$(".OrderState").text(Order.GetStatu(PartOrder.AuditStatus))
+		$(".ChoiceAdd").text(PartOrder.ReceivingAddress)
+	}
+	//订单状态
+	var OrderStatus = [{
+			name: "下单",
+			key: 0,
+			label: "待审核"
+		},
+		{
+			name: "审核",
+			key: 1,
+			label: "待付款"
+		},
+		{
+			name: "付款",
+			key: 2,
+			label: "待发货"
+		},
+		{
+			name: "发货",
+			key: 3,
+			label: "待签收"
+		},
+		{
+			name: "签收",
+			key: 4,
+			label: "完成"
+		}
+	];
+
+	//订单提交对象
+	var Order = {
+		//初始化功能按钮
+		InitButton: function() {
+			switch(_self.OpenId) {
+				case 10: //调度-审核-更新成1
+					if(PartOrder.AuditStatus == 0) {
+						var result = '<button type="button" class="mui-btn mui-btn-blue mui-btn-block save" id="valid">审核</button>'
+						$(".foot-button").html(result)
+					}
+					break;
+				case 13: //财务-收款-更新成2				
+					if(PartOrder.AuditStatus == 1) {
+						var result = '<button type="button" class="mui-btn mui-btn-blue mui-btn-block save" id="getMoney">扣款</button>'
+						$(".foot-button").html(result)
+					}
+					break;
+				case 12: //仓管-发货-更新成3
+					if(PartOrder.AuditStatus == 2) {
+						var result = '<button type="button" class="mui-btn mui-btn-blue mui-btn-block save" id="sendGood">发货</button>'
+						$(".foot-button").html(result)
+					}
+					break;
+				case 5: //技术站-签收-更新成4
+					if(PartOrder.AuditStatus == 3) {
+						var result = '<button type="button" class="mui-btn mui-btn-blue mui-btn-block save" id="over">签收</button>'
+						$(".foot-button").html(result)
+					}else if (PartOrder.AuditStatus == 0){
+						
+						var result = '<button type="button" class="mui-btn mui-btn-blue mui-btn-block save" id="delete">删除</button>'
+						$(".foot-button").html(result)
+					}
+					break;
+				case 15: //技术站-签收-更新成4
+					if(PartOrder.AuditStatus == 3) {
+						var result = '<button type="button" class="mui-btn mui-btn-blue mui-btn-block save" id="over">签收</button>'
+						$(".foot-button").html(result)
+					}else if (PartOrder.AuditStatus == 0){
+						
+						var result = '<button type="button" class="mui-btn mui-btn-blue mui-btn-block save" id="delete">删除</button>'
+						$(".foot-button").html(result)
+					}
+					break;
+				default:
+					break;
+			}
+		},
+		//获取详情 
+		GetDetail: function() {
+			var sendData = {
+				"keyValue": PartOrder.PartsOrderId
+			};
+			PartsManageByGet.getPartsOrderDetailList(sendData, function(cb) {
+				var result = cb["entity"];
+				console.log(JSON.stringify(result)) 
+				if(_self.PartOrder.AuditStatus>=3){
+					$("#ExpressRealId").val(result.ExpressRealId==null?'暂无':result.ExpressRealId);
+                    $("#ExpressCompany").val(result.ExpressCompany==null?'暂无':result.ExpressCompany); 
+				}
+				
+				console.log(JSON.stringify(result))
+				if(cb["entity"] != null) {
+					BindShops(cb['childEntity']);
+				} else {
+
+				}
+			})
+		},
+		//获取状态
+		GetStatu: function(AuditStatus) {
+			for(var j = 0; j < OrderStatus.length; j++) {
+				var key = OrderStatus[j].key;
+				if(key == AuditStatus) {
+					return '状态:' + OrderStatus[j].label;
+					break;
+				}
+			}
+		},
+		tap: function() {
+			
+			//选择物流公司
+			$("#ExpressCompany").on('tap', function() {
+//				console.log(JSON.stringify(ExpressCompanyList))
+				ExpressCompanyList.show(function(item) {
+					$("#ExpressCompany").val(item[0]['text']);
+				});
+			});
+
+			//扫码物流单号
+			$("#prcode").on('tap', function() {
+				mui.openWindow({
+					url: '../TwoCode/TwoCode.html',
+					id: 'TwoCode',
+					extras: {
+						status: "6"
+					},
+				});
+			});
+			
+			//审核
+			$("#valid").on('tap', function() {
+				var sendData = {
+					"keyValue": PartOrder.PartsOrderId,
+					"status": 1
+				};
+				PartsManageBySet.UpdateOrderStatus(sendData, function(cb) {
+					dialog.Dialogbox('提示', '确认审核？', function(cbs) {
+						if(cbs == 1) {
+							if(cb == 1) {
+								app.toast('操作成功！');
+								var FatherView = plus.webview.getWebviewById('PartsOrder');
+								mui.fire(FatherView, 'fresh');
+								mui.back();
+							} else {
+								app.toast('操作失败！');
+							}
+						} else if(cbs == 0) {
+							dialog.CloseLogBox();
+						} else {
+							app.toast('已取消');
+						};
+					})
+				})
+			});
+			//收款
+			$("#getMoney").on('tap', function() {
+				var sendData = {
+					"keyValue": PartOrder.PartsOrderId,
+					"status": 2
+				};
+				PartsManageBySet.UpdateOrderStatus(sendData, function(cb) {
+					dialog.Dialogbox('提示', '确认扣款？', function(cbs) {
+						if(cbs == 1) {
+							if(cb == 1) {
+								app.toast('扣款成功！');
+								var FatherView = plus.webview.getWebviewById('PartsOrder');
+								mui.fire(FatherView, 'fresh');
+								mui.back();
+							} else {
+								app.toast('扣款失败！');
+							}
+						} else if(cbs == 0) {
+							dialog.CloseLogBox();
+						} else {
+							app.toast('已取消');
+						};
+					})
+				})
+			});
+			//发货
+			$("#sendGood").on('tap', function() {
+				if($("#ExpressRealId").val()==''){
+					app.toast('请输入物流单号');
+					return false;
+				}
+				if($("#ExpressCompany").val()==''){
+					app.toast('请输入物流公司');
+					return false;
+				}
+				
+				
+				var sendData = {
+					"keyValue": PartOrder.PartsOrderId,
+					"status": 3,
+					"expressRealId":$("#ExpressRealId").val(),
+					"expressCompany":$("#ExpressCompany").val(),
+				};
+				PartsManageBySet.UpdateOrderExpress(sendData, function(cb) { 
+					console.log(JSON.stringify(cb))
+					dialog.Dialogbox('提示', '确认发货？', function(cbs) {
+						if(cbs == 1) {
+							if(cb == 1) {
+								app.toast('操作成功！');
+								var FatherView = plus.webview.getWebviewById('PartsOrder');
+								mui.fire(FatherView, 'fresh');
+								mui.back();
+							} else {
+								app.toast('操作失败！');
+							}
+						} else if(cbs == 0) {
+							dialog.CloseLogBox();
+						} else {
+							app.toast('已取消');
+						};
+					})
+				})
+			});
+			//签收
+			$("#over").on('tap', function() {
+				var sendData = {
+					"keyValue": PartOrder.PartsOrderId,
+					"status": 4
+				};
+				PartsManageBySet.UpdateOrderStatus(sendData, function(cb) {
+					dialog.Dialogbox('提示', '确认签收？', function(cbs) {
+						if(cbs == 1) {
+							if(cb == 1) {
+								app.toast('操作成功！');
+								var FatherView = plus.webview.getWebviewById('PartsOrder');
+								mui.fire(FatherView, 'fresh');
+								mui.back();
+							} else {
+								app.toast('操作失败！');
+							}
+						} else if(cbs == 0) {
+							dialog.CloseLogBox();
+						} else {
+							app.toast('已取消');
+						};
+					})
+				})
+			});
+			
+				//删除订单
+			$("#delete").on('tap', function() {
+				var sendData = {
+					"keyValue": PartOrder.PartsOrderId
+									};
+				PartsManageBySet.DeletePartsOrder(sendData, function(cb) {
+					dialog.Dialogbox('提示', '确认删除吗？', function(cbs) {
+						
+					   console.log(JSON.stringify(cb))
+						if(cbs == 1) {
+							if(cb.type == 1) {
+								app.toast('操作成功！');
+								var FatherView = plus.webview.getWebviewById('PartsOrder');
+								mui.fire(FatherView, 'fresh');
+								mui.back();
+							} else {
+								app.toast('操作失败！');
+							}
+						} else if(cbs == 0) {
+							dialog.CloseLogBox();
+						} else {
+							app.toast('已取消');
+						};
+					})
+				})
+			});
+		}
+		
+	};
+
+	function BindShops(orderDetail) {
+		console.log(JSON.stringify(orderDetail)) 
+		$(".partList").html('');
+		orderDetail.forEach(function(value, index, array) {
+			var row = value;
+			var $html = $(
+				'<tr>' +
+				'<td>' + row['ShortName'] + '</td>' +
+				'<td>' + row['Inventory'] + '</td>' +
+				'<td>' + row['Price'] + '</td>' +
+				'<td>' + Number(row['Price'])*Number(row['Inventory']) + '</td>' +
+				'</tr>'
+			);
+			$html.appendTo($(".partList"));
+		});
+	}
+	
+	//获取物流公司
+	function getLogisticsCompany() {
+		var option = {
+			api: '/SystemManage/DataItemDetail/GetDataItemListJson',
+			data: {
+				EnCode: "ExpressCompany"
+			},
+			success: function(data) {
+				console.log(data)
+				var result = JSON.parse(data);
+				for(var i in result) {
+					var rows = result[i];
+					ExpressCompany.push({
+						text: rows['ItemName']
+					});
+				};
+				ExpressCompanyList.setData(ExpressCompany);
+			},
+			error: function(data) {
+				app.toast('获取物流公司信息失败')
+			}
+		};
+		app.post3_4(option)
+
+	};
+	
+	
+	//回调刷新
+	window.addEventListener('refresh', function(e) {
+		//location.reload();
+	});
+</script>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-content {
+			padding-bottom: 100px;
+		}
+		
+		.mui-content>.mui-table-view:first-child {
+			margin-top: 0px;
+		}
+		
+		li {
+			border-bottom: 1px solid #F5F5F5;
+			padding-left: 15px !important;
+		}
+		
+		.mui-table-view-cell {
+			padding: 10px 10px;
+		}
+		
+		.mui-badge {
+			background: white;
+			margin-top: -22px;
+		}
+		
+		.controler1 {
+			float: left;
+		}
+		
+		.controler2,
+		.controler3 {
+			float: right;
+			margin-left: 10px;
+		}
+		
+		.controler2>.mui-icon,
+		.controler3>.mui-icon {
+			color: #717171;
+			font-size: 18px;
+		}
+		
+		.mui-ellipsis {
+			padding-top: 20px;
+		}
+		
+		.cicle {
+			width: 14px;
+			height: 14px;
+			border: 1px solid #444444;
+			float: left;
+			border-radius: 100%;
+			margin-right: 6px;
+			margin-top: 3px;
+		}
+		
+		.Selected {
+			background: #15AE3F;
+			border: 1px solid #15AE3F;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">收货地址</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="list">
+				<!--<li class="mui-table-view-cell mui-media">
+				        <a href="javascript:;">
+				            <img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+				            <div class="mui-media-body">
+				                幸福
+				                <p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+				            </div>
+				        </a>
+				    </li>-->
+			</ul>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="address">添加收货地址</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var UserInfo = "";
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		NoData.bgImg('mui-content', '../../img/BGIMG.png');
+		//未实名认证不加载
+		if(UserInfo['UserName'] != null) {
+			Address.List(); //收货地址列表
+			Address.btns();
+			preload();
+		};
+	});
+
+	function preload() {
+		//预加载添加新地址
+		//		var Address =  mui.preload({
+		//			url:"Address.html",
+		//			id:'Address'
+		//		});
+	};
+	//获取收货地址列表
+	var Address = {
+		btns: function() {
+			//新增地址
+			$('#address').on('tap', function() {
+				mui.openWindow({
+					url: "Address.html",
+					id: "Address",
+				});
+			});
+		},
+		List: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "asc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId
+				})
+			};
+			UseIdGetList.GetAddress(sendData, function(cb) {
+				if(cb['rows'] != "") {
+					NoData.ClearImg('mui-content');
+				};
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media cont1" data-index=' + i + ' value=' + row['UserAddressAdminId'] + '>' +
+						'<a href="javascript:;">' +
+						' <div class="mui-media-body">' +
+						'' + row['RealName'] + '' +
+						'<p class="mui-ellipsis">' + row['Address'] + '</p>' +
+						'</div>' +
+						'<span class="mui-badge font_12">' + row['Phone'] + '</span>' +
+						'</a>' +
+						'</li>' +
+						'<li class="mui-table-view-cell mui-media cont" value=' + row['UserAddressAdminId'] + '>' +
+						'<div class="controler1" data-index=' + i + ' value=' + row['UserAddressAdminId'] + '><div class="cicle" status=' + row['WhereAddress'] + '></div><span class="font_12">设为默认</span></div>' +
+						'<div class="controler3" data-index=' + i + ' value=' + row['UserAddressAdminId'] + '><span class="mui-icon mui-icon-trash"></span><span class="font_12">删除</span></div>' +
+						'<div class="controler2" data-index=' + i + ' value=' + row['UserAddressAdminId'] + '><span class="mui-icon mui-icon-compose"></span><span class="font_12">编辑</span></div>' +
+						'</li>'
+					);
+					$html.appendTo($("#list"));
+					//设置为默认地址  
+					$html.find('.controler1').on('tap', function() {
+						var key = $(this).attr('value');
+						var index = $(this).attr('data-index');
+						Address.Setdefault(key, index);
+						return;
+					});
+					//编辑收货地址
+					$html.find('.controler2').on('tap', function() {
+						var key = $(this).attr('value');
+						var index = $(this).attr('data-index');
+						mui.openWindow({
+							url: './Address.html',
+							id: 'Address',
+							extras: {
+								resultData: rows[index]
+							},
+						})
+						return;
+					});
+
+					//删除地址
+					$html.find('.controler3').on('tap', function() {
+						var key = $(this).attr('value');
+						var index = $(this).attr('data-index');
+						dialog.Dialogbox('提示', '确认要删除当前地址？', function(cb) {
+							if(cb == 1) {
+								Address.Delete(key);
+							} else if(cb == 0) {
+								app.toast('已取消');
+								dialog.CloseLogBox();
+							} else {
+								app.toast('已取消');
+							};
+						});
+						return;
+					});
+				};
+				//判断当前那个为默认地址
+				$(".cicle").each(function(i) {
+					if($(".cicle").eq(i).attr('status') == 1) {
+						$(".cicle").eq(i).addClass('Selected');
+					};
+				});
+			});
+		},
+		//设为默认
+		Setdefault: function(key, index) {
+			var sendData = {
+				UserAddressAdminId: key
+			};
+			TaskObj.SaveAddress(sendData, function(cb) {
+				if(cb['type'] == "1") {
+					$(".cicle").removeClass('Selected');
+					$(".cicle").eq(index).addClass('Selected');
+				} else {
+					app.toast('失败');
+				};
+			}, key)
+		},
+		//删除
+		Delete: function(key, index) {
+			var sendData = {
+				keyValue: key
+			};
+			TaskObj.DeleteAddress(sendData, function(cb) {
+				if(cb['type'] == "1") {
+					app.toast('删除成功');
+					var NewLease = plus.webview.getWebviewById('NewLease');
+					mui.fire(NewLease, 'pageflowerfresh');
+					$(".cont1").each(function(i) {
+						if($(".cont1").eq(i).attr('value') == key) {
+							console.log(i);
+							$(".cont1").eq(i).remove();
+							$(".cont").eq(i).remove();
+						};
+					});
+					dialog.CloseLogBox();
+				} else {
+					app.toast('失败');
+				};
+			});
+		}
+	};
+
+	//刷新
+	window.addEventListener('pageflowerfresh', function() {
+		$("ul").html('');
+		Address.List(); //收货地址列表
+		Address.btns();
+	});
+</script>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+	</body>
+
+</html>
+<script src="js/mui.min.js"></script>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/hx.functor.js"></script>
+<script src="js/app.js"></script>
+<script src="js/getData.js"></script>
+
+<script>
+	mui.init();
+	app.ready(function() {
+		//获取数据
+
+		var brigde_str = plus.runtime.arguments;
+		var osction ="osaction";
+//			var brigde_str = "{\"userid\":\"c6cb1308-7f76-43fa-b3db-2346eea8636b\",\"token\":\"b6ea52d9-f6ad-43e8-b818-b3f07685336d\",\"info\":{\"enabled\": true,\"type\": null,\"createTime\": null,\"updateTime\": null,\"userid\": \"c6cb1308-7f76-43fa-b3db-2346eea8636b\",\"encode\": null,\"username\": \"a15190080419\",\"password\": \"$2a$10$3uOoX1ps14CxuotogUoDreW8zXJOZB9XeGdrC/xDV36hhaE8Rn9HO\",\"secretkey\": null,\"realname\": \"张朋\",\"nickname\": \"zp\",\"headicon\": \"xxxx\",\"quickquery\": null,\"simplespelling\": null,\"gender\": 1,\"birthday\": \"1989-11-17T16:00:00.000+0000\",\"mobile\": \"15190080419\",\"telephone\": null,\"email\": null,\"oicq\": null,\"wechat\": null,\"msn\": null,\"managerid\": null,\"manager\": null,\"organizeid\": \"f4fe1a73-e00f-4cdd-ad8e-6a72f3892281\",\"departmentid\": null,\"roleid\": null,\"dutyid\": null,\"dutyname\": null,\"postid\": null,\"postname\": null,\"workgroupid\": null,\"securitylevel\": null,\"useronline\": null,\"openid\": 5,\"question\": null,\"answerquestion\": null,\"checkonline\": null,\"allowstarttime\": null,\"allowendtime\": null,\"lockstartdate\": null,\"lockenddate\": null,\"firstvisit\": null,\"previousvisit\": null,\"lastvisit\": null,\"logoncount\": null,\"sortcode\": null,\"deletemark\": null,\"enabledmark\": 0,\"description\": null,\"createdate\": null,\"createuserid\": null,\"createusername\": null,\"modifydate\": \"2018-12-19T11:41:04.000+0000\",\"modifyuserid\": \"System\",\"modifyusername\": \"System\",\"idcard\": \"\",\"idcarda\": \"jgjtext\",\"idcardb\": \"ggg\",\"idcardaddress\": \"372922198911186512\",\"idauth\": 0,\"isartificialauth\": 0,\"sysRoles\": [],\"permissions\": null,\"accountNonExpired\": true,\"accountNonLocked\": true,\"credentialsNonExpired\": true    }, \"tap\":\"LeaseIndex\"}";
+		//		var brigdeObj = JSON.parse(brigde_str);
+		var brigdeObj = JSON.parse(brigde_str);
+		var info = {
+			UserId: brigdeObj.info.userid,
+			UserName: brigdeObj.info.username,
+			Account: brigdeObj.info.username,
+			LogTime: brigdeObj.info.logtime,
+			Gender: brigdeObj.info.gender,
+			CompanyId: brigdeObj.info.organizeid,
+			DepartmentId: brigdeObj.info.departmentid,
+			IPAddressName: brigdeObj.info.ipaddressname,
+			HeadIcon: brigdeObj.info.headicon,
+			Birthday: brigdeObj.info.birthday,
+			PostId: brigdeObj.info.postid,
+
+			RealName: brigdeObj.info.realname,
+			NickName: brigdeObj.info.nickname,
+			OrganizeId: brigdeObj.info.organizeid,
+			WorkGroupId: brigdeObj.info.workgroupid,
+			Mobile: brigdeObj.info.mobile,
+			RoleId: brigdeObj.info.roleid,
+			IsSystem: brigdeObj.info.issystem,
+			OpenId: brigdeObj.info.openid
+
+		}
+		var userInfo = {
+			userid: brigdeObj.userid,
+			token: brigdeObj.token,
+			info: info
+		}
+
+		app.storage('login', userInfo);
+		
+		console.log(osction)
+		switch(brigdeObj.tap) {
+			case "LeaseIndex": //租赁主页
+				mui.openWindow({
+					id: 'HomeServer',
+					url: './html/PageChildren/HomeSever2.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "NewLease": //飞机租赁
+				mui.openWindow({
+					id: 'NewLease',
+					url: './html/Lease/FarmLease.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "EquipmentList": //我的设备
+				mui.openWindow({
+					id: 'EquipmentList',
+					url: './html/Equipment/EquipmentList.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "TaskList": //任务管理
+				mui.openWindow({
+					id: 'TaskList',
+					url: './html/Task/TaskList.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+
+			case "TeamList": //团队管理
+				mui.openWindow({
+					id: 'TeamList',
+					url: './html/Sstation/TeamList.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "TwoCode": //扫码
+				mui.openWindow({
+					id: 'TwoCode',
+					url: './html/TwoCode/TwoCode.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "SSAllRecord": //团队战绩
+				mui.openWindow({
+					id: 'SSAllRecord',
+					url: './html/Sstation/Record.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "LeaseSpot": //售后网点
+				mui.openWindow({
+					id: 'LeaseSpot',
+					url: './html/Lease/LeaseSpot.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "Battery": //电池分期
+				mui.openWindow({
+					id: 'battery',
+					url: './html/Battery/battery.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "LeaseList": //租赁单
+				mui.openWindow({
+					id: 'LeaseList',
+					url: './html/Lease/LeaseList.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "CreatTask": //新建任务
+				mui.openWindow({
+					id: 'CreatTask',
+					url: './html/Task/CreatTask.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "RentZHBPlan": //租赁植保机
+				mui.openWindow({
+					id: 'FarmLease',
+					url: './html/Lease/FarmLease.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "TTeamList": //邀请好友
+				mui.openWindow({
+					id: 'TeamList',
+					url: './html/Team/TeamList.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+			case "AfterService": //售后服务
+				mui.openWindow({
+					id: 'AfterService',
+					url: './html/Lease/AfterService.html',
+					extras: {
+						tap: osction
+					}
+				})
+				break;
+		}
+
+	})
+</script>

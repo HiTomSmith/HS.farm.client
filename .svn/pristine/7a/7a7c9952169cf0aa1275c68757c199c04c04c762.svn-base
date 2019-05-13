@@ -1,0 +1,383 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/myStyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/batteryOrder.css" />
+		<style type="text/css">
+			.iconfont {
+				font-size: 12px;
+				color: #717171;
+				position: absolute;
+				top: 12px;
+				right: 5px;
+				text-align: right;
+			}
+			/*button{
+				
+			}*/
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">分期明细</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" style="position: relative;">
+			<ul class="mui-table-view">
+				<!--<li class="mui-table-view-cell list">
+				<div class="Address">
+					<p style="margin-bottom: 7px;">
+						<span class="black-color font-14">收货地址</span>
+						<span class="mui-icon mui-ellipsis iconfont  address font-14">请选择&#xe741;</span>
+					</p>
+					<p>
+						<span class="gray-color Moblie font-14">17631802351</span>
+						<span class="mui-pull-right gray-color name font-14" style="text-align: right;">王欣梅&nbsp;&nbsp;&nbsp;</span>
+					</p>
+				</div>
+			</li>-->
+				<li class="mui-table-view-cell list">
+					<div class="orderNum">
+						<div class="orderNum_number underline gray-color">
+							<img class="mui-media-object mui-pull-left Icon" src="../../img/battey.png">
+							<span class="font-16 orderNumber">订单号：2018040401</span>
+							<span class="mui-pull-right font-14  time">04-06</span>
+						</div>
+						<div class="orderNum_pay">
+							<span class="gray-color font-14">分期付款</span>
+							<span class="mui-pull-right blue-color priceto">20700&nbsp;元</span>
+						</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell list">
+					<div class="purchase gray-color" style="height: auto;">
+						<div class="purchase-o font-16 underline" style="height: 60px; line-height: 60px;">采购详情</div>
+						<div class="purchase-o font-14 underline">收货人：<span class="name font-14">暂无</span></div>
+						<div class="purchase-o font-14 underline">联系方式：<span class="Moblie font-14">暂无</span></div>
+						<div class="purchase-o font-14 underline">收货地址：<span class="address font-14">暂无</span></div>
+						<!--<div class="purchase-t">
+						<span class="font-14 ">植保机电池*6块+充电器</span>
+						<span class="mui-pull-right font-14 blue-color">x1&nbsp;&nbsp;&nbsp;&nbsp;20700</span>
+				    </div>-->
+					</div>
+				</li>
+				<li class="mui-table-view-cell list gray-color" id="DividedMX">
+					<div class="underline font-16" style="height: 40px; line-height: 40px;">分期明细</div>
+					<div id="fenqi1">
+					<div class="bottom underline">
+						<p style="margin:7px 0px;">
+							<span class="font-14">1/2期</span>
+							<span class="mui-pull-right blue-color font-14 priceto2">¥&nbsp;&nbsp;11700</span>
+						</p>
+						<p>
+							<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14 pay1" style="font-weight: normal;">20180109</b></span>
+							<span class="mui-pull-right font-14 state1">未付款</span>
+						</p>
+					</div>
+					<div class="bottom gray-color underline">
+						<p style="margin:7px 0px;">
+							<span class="font-14">2/2期</span>
+							<span class="mui-pull-right blue-color font-14 priceto3">¥&nbsp;&nbsp;6700</span>
+						</p>
+						<p>
+							<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14 pay2" style="font-weight: normal;">20190109</b></span>
+							<span class="mui-pull-right font-14 state2">未付款</span>
+						</p>
+					</div>
+					<!--<div class="bottom gray-color underline">
+						<p style="margin:7px 0px;">
+							<span class="font-14">3/3期</span>
+							<span class="mui-pull-right blue-color font-14 priceto4">¥&nbsp;&nbsp;1700</span>
+						</p>
+						<p>
+							<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14 pay3" style="font-weight: normal;">20200109</b></span>
+							<span class="mui-pull-right font-14 save state3">未付款</span>
+						</p>
+					</div>-->
+					</div>
+					<div class="bottom gray-color">
+						<p style="margin:7px 0px;">
+							<span></span>
+							<span class="mui-pull-right blue-color"></span>
+						</p>
+						<p>
+							<span></span>
+							<span class="mui-pull-right"></span>
+						</p>
+					</div>
+					<div class="bottom gray-color">
+						<p style="margin:7px 0px;">
+							<span></span>
+							<span class="mui-pull-right blue-color"></span>
+						</p>
+						<p>
+							<span></span>
+							<span class="mui-pull-right"></span>
+						</p>
+					</div>
+					<div class="bottom gray-color">
+						<p style="margin:7px 0px;">
+							<span></span>
+							<span class="mui-pull-right blue-color"></span>
+						</p>
+						<p>
+							<span></span>
+							<span class="mui-pull-right"></span>
+						</p>
+					</div>
+				</li>
+			</ul>
+			<button class="mui-btn mui-btn-blue mui-btn-block btn" id="delete" style="letter-spacing:10px;display: none;">删除</button>
+			<button class="mui-btn mui-btn-blue mui-btn-block btn" id="singn" style="letter-spacing:10px;display: none;">签收</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script type="text/javascript">
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var _self, time1, time2, time3;
+	app.ready(function() {
+		_self = plus.webview.currentWebview();
+		getOrderDeductions();
+		//setDividedMX();
+		fill();
+		deleteOder();
+		SignIn();
+		if(_self['data']['AuditStatus'] == 1) {
+			$("#delete").show()
+		};
+		if(_self['data']['AuditStatus'] == 4) {
+			$("#singn").show()
+		};
+//		priceToFull();
+	});
+	//获取扣费列表
+	function getOrderDeductions() {
+		var sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				//				UserInfoId: UserInfo.UserId
+			})
+		};
+		Orders.OrderDetail(sendData, function(cb) {
+			var payTime1, payTime2;
+			var rows = cb.rows;
+			for(var i in rows) {
+				var row = rows[i];
+				if(_self.data.GoodOrder == row.GoodsOrderId) {
+					if(row.Description == "3期(1/3)") {
+						payTime1 = row.WithholdTime.substr(0, 10);
+						$(".state1").text("已付款");
+						$(".pay1").text(payTime1);
+					} else if(row.Description == "3期(2/3)") {
+						payTime2 = row.WithholdTime.substr(0, 10);
+						$(".state1").text("已付款");
+						$(".state2").text("已付款");
+						$(".pay1").text(payTime1);
+						$(".pay2").text(payTime2);
+					} else if(row.Description == "3期(3/3)") {
+						$(".state1").text("已付款");
+						$(".state2").text("已付款");
+						$(".state3").text("已付款");
+						$(".pay1").text(payTime1);
+						$(".pay2").text(payTime2);
+						$(".pay3").text(row.WithholdTime.substr(0, 10));
+					} else {
+
+					}
+				}
+			}
+		});
+	}
+
+	function fill() {
+		var data = _self.data;
+		if(data.AuditStatus > 2 && data.AuditStatus < 6) {
+
+			$(".state1").text("已付款")
+			$(".state2").text("未付款")
+			$(".state3").text("未付款")
+		} else if(data.AuditStatus == 6) {
+
+			$(".state1").text("已付款")
+			$(".state2").text("已付款")
+			$(".state3").text("未付款")
+		} else if(data.AuditStatus == 7) {
+
+			$(".state1").text("已付款")
+			$(".state2").text("已付款")
+			$(".state3").text("已付款")
+		} else if(data.AuditStatus > 0 && data.AuditStatus < 3) {
+
+			$(".state1").text("未付款")
+			$(".state2").text("未付款")
+			$(".state3").text("未付款")
+		}
+
+		$(".orderNumber").text(data['OrderNumber']); //订单号
+		$(".time").text(data['CreateDate'].substr(0, 10)); //订单日期
+		$(".name").text(data['ReceivingMan']); //采购人
+		$(".Moblie").text(data['ReceivingTele']); //手机号
+		$(".address").text(data['ReceivingAddress']); //地址
+		$(".priceto").text(data['PayMoney']);
+		
+		var sendData={
+				keyValue:_self.data.GoodOrder
+			}
+			 
+//			console.log(JSON.stringify(_self.data));
+			
+			Orders.GetOrderDetails(sendData,function(cb){
+//				console.log(JSON.stringify(cb));
+				resultdata1=cb[0]['Number'];
+				var priceto1 = data['PayMoney'];
+		//		var priceNum =data['strChildEntity']['Number'];
+		//		console.log(JSON.stringify(data));
+		//		alert(priceNum);
+//				var allprice1 = Math.round((priceto1-5000*resultdata1)/3);
+				$('.priceto2').text('￥' + priceto1/2);
+				$('.priceto3').text('￥' + priceto1/2);
+//				$('.priceto4').text('￥' + allprice1);
+						
+			})
+		
+
+		$(".pay1").text(data['CreateDate'].substr(0, 10));
+		$(".pay2").text(new String(parseInt(data['CreateDate'].substr(0, 4)) + 1) + data['CreateDate'].substr(4, 7));
+		$(".pay3").text(new String(parseInt(data['CreateDate'].substr(0, 4)) + 2) + data['CreateDate'].substr(4, 7));
+	}
+	
+//	function priceToFull(){
+//		var sendData={
+//			queryJson:JSON.stringify({GoodsOrderId:_self.data.GoodOrder})
+//		}
+//		Orders.OrderDetailList(sendData,function(cb){
+//			console.log(cb);
+//			for(var i=cb.length;i>0;i--){
+//				var row = cb[i-1];
+//				var $html=$(
+//					'<div class="bottom underline">'+
+//						'<p style="margin:7px 0px;">'+
+//							'<span class="font-14">'+row.Description+'</span>'+
+//							'<span class="mui-pull-right blue-color font-14 priceto2">¥&nbsp;&nbsp;'+ row.Quota+'</span>'+
+//						'</p>'+
+//						'<p>'+
+//							'<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14 pay1" style="font-weight: normal;">'+row.WithholdTime.substr(0,10)+'</b></span>'+
+//							'<span class="mui-pull-right font-14 state1">'+ (row.IsPay?'已付款':"未付款") +'</span>'+
+//						'</p>'+
+//					'</div>'
+//				)
+//				$html.appendTo($('#fenqi1'));
+//			}
+//		})
+//	}
+
+	function setDividedMX() {
+		var $html = "";
+		var $html = $(
+			'<div class="underline font-16" style="height: 40px; line-height: 40px;">分期明细</div>' +
+			'<div class="bottom underline">' +
+			'<p style="margin:7px 0px;">' +
+			'<span class="font-14">1/3期</span>' +
+			'<span class="mui-pull-right blue-color font-14 priceto2">¥&nbsp;&nbsp;11700</span>' +
+			'</p>' +
+			'<p>' +
+			'<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14 pay1" style="font-weight: normal;">20180109</b></span>' +
+			'<span class="mui-pull-right font-14 state1">未付款</span>' +
+			'</p>' +
+			'</div>' +
+			'<div class="bottom gray-color underline">' +
+			'<p style="margin:7px 0px;">' +
+			'<span class="font-14">2/3期</span>' +
+			'<span class="mui-pull-right blue-color font-14 priceto3">¥&nbsp;&nbsp;6700</span>' +
+			'</p>' +
+			'<p>' +
+			'<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14 pay2" style="font-weight: normal;">20190109</b></span>' +
+			'<span class="mui-pull-right font-14 state2">未付款</span>' +
+			'</p>' +
+			'</div>' +
+			'<div class="bottom gray-color underline">' +
+			'<p style="margin:7px 0px;">' +
+			'<span class="font-14">3/3期</span>' +
+			'<span class="mui-pull-right blue-color font-14 priceto4">¥&nbsp;&nbsp;1700</span>' +
+			'</p>' +
+			'<p>' +
+			'<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14 pay3" style="font-weight: normal;">20200109</b></span>' +
+			'<span class="mui-pull-right font-14 state3">未付款</span>' +
+			'</p>' +
+			'</div>'
+
+		);
+		$html.appendTo($("#DividedMX"))
+	}
+	//删除
+	function deleteOder() {
+		if(_self.data.AuditStatus == 0) {
+			$("#delete").attr("style", "display: normal;")
+		}
+		$("#delete").on('tap', function() {
+			var send = {
+				keyValue: _self.data.GoodOrder
+			};
+			Medicament.DeleteOder(send, function(cb) {
+				if(cb.type == 1) {
+					mui.toast("删除成功！")
+					var FatherView = plus.webview.getWebviewById("batteryOrder");
+					mui.fire(FatherView, 'fresh');
+					mui.back();
+				} else {
+					mui.toast("删除失败！")
+				}
+			});
+
+		});
+	}
+	//签收
+	function SignIn() {
+		$("#singn").on('tap', function() {
+			var send = {
+				orderId: _self.data.GoodOrder
+			};
+//			console.log(JSON.stringify(send))
+			Medicament.SingnOder(send, function(cb) {
+//				console.log(JSON.stringify(cb))
+				if(cb.type == 1) {
+					mui.toast("签收成功！")
+					var FatherView = plus.webview.getWebviewById("batteryOrder");
+					mui.fire(FatherView, 'fresh');
+					mui.back();
+				} else {
+					mui.toast("操作失败！")
+				}
+			});
+
+		});
+	}
+</script>

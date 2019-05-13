@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../css/telete.css">
+		<link rel="stylesheet" href="../../css/mui.css">
+		<link rel="stylesheet" href="../../css/style.css">
+		<style>
+			.mui-bar-nav~.mui-content {
+				margin-top: 0px !important;
+			}
+			
+			.num_name>span {
+				font-size: 12px;
+				padding-left: 20px;
+			}
+			
+			.btn_add {
+				position: absolute;
+				top: 10px;
+				right: 20px;
+				background: #4CC36B;
+				color: white;
+				border: none
+			}
+			
+			.num_logo {
+				text-align: center;
+				line-height: 50px;
+				font-size: 12px;
+				color: white;
+				background: #4CC36B;
+				margin-top: 5px;
+			}
+			
+			.mui-content {
+				background: white;
+			}
+			
+			body {
+				background: white;
+			}
+			
+			.num_logo {
+				border-radius: 50%;
+			}
+			
+			.modile {
+				position: absolute;
+				top: 30px;
+				left: 60px;
+			}
+			
+			.sort_box {
+				height: auto;
+				margin-top: 40px;
+				border-top: 11px solid #efeff4;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">通讯录</h1>
+		</header>
+
+		<div id="letter"></div>
+		<div class="sort_box mui-content">
+		</div>
+		<div class="initials">
+			<ul>
+				<li><img src="../../img/068.png"></li> 
+			</ul>
+		</div>
+
+		<script type="text/javascript" src="../../js/jquery-2.1.4.min.js"></script>
+		<script src="../../js/hx.functor.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+	</body>
+
+</html>
+<script>
+	//-------------MUI 初始化 开始---------------------------
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //是否显示滚动条
+	});
+
+	//获取当前用户通讯录
+	function getPhoneMail() {
+		plus.nativeUI.showWaiting('导入中...');
+		plus.contacts.getAddressBook(plus.contacts.ADDRESSBOOK_PHONE, function(addressbook) {
+			// 可通过addressbook进行通讯录操作
+			addressbook.find(["displayName", "phoneNumbers"], function(contacts) {
+				find(contacts); //获取通讯录列表
+			}, function() {
+				app.toast("error");
+			}, {
+				multiple: true
+			});
+		}, function(e) {
+			app.toast("Get address book failed: " + e.message);
+		})
+	};
+
+	//获取通讯录列表
+	function find(contacts) {
+		for(var i in contacts) {
+			var result = contacts[i];
+			var TelPhoe = "";
+			var TelName = "";
+			if(result['phoneNumbers'] != "") {
+				TelPhoe = result['phoneNumbers'][0]['value'];
+				if(result['displayName'] != null) {
+					TelName = result['displayName'];
+				};
+			};
+			if(result['displayName'] != null && result['displayName'] != "") {
+				if(TelName.length >= 5) {
+					TelName = TelName.substr(0, 5);
+				} else {
+					TelName = TelName;
+				};
+			};
+			var $html = $(
+				'<div class="sort_list" style="height:70px;" data-index=' + i + '>' +
+				'<div class="num_logo" style="border-radius:50%;background:#4da9eb;">' + TelName + '</div>' +
+				'<div class="num_name">' + TelName + '<span class="modile">' + TelPhoe + '</span></div>' +
+				'</div>'
+			);
+			var PhoneName = makePy(TelName.charAt(0))[0].toUpperCase();
+			switch(PhoneName) {
+				case "A":
+					$html.appendTo('.sort_box');
+					break;
+				case "B":
+					$html.appendTo('.sort_box');
+					break;
+				case "C":
+					$html.appendTo('.sort_box');
+					break;
+				case "D":
+					$html.appendTo('.sort_box');
+					break;
+				case "E":
+					$html.appendTo('.sort_box');
+					break;
+				case "F":
+					$html.appendTo('.sort_box');
+					break;
+				case "G":
+					$html.appendTo('.sort_box');
+					break;
+				case "H":
+					$html.appendTo('.sort_box');
+					break;
+				case "I":
+					$html.appendTo('.sort_box');
+					break;
+				case "J":
+					$html.appendTo('.sort_box');
+					break;
+				case "K":
+					$html.appendTo('.sort_box');
+					break;
+				case "L":
+					$html.appendTo('.sort_box');
+					break;
+				case "M":
+					$html.appendTo('.sort_box');
+					break;
+				case "O":
+					$html.appendTo('.sort_box');
+					break;
+				case "P":
+					$html.appendTo('.sort_box');
+					break;
+				case "Q":
+					$html.appendTo('.sort_box');
+					break;
+				case "R":
+					$html.appendTo('.sort_box');
+					break;
+				case "S":
+					$html.appendTo('.sort_box');
+					break;
+				case "T":
+					$html.appendTo('.sort_box');
+					break;
+				case "U":
+					$html.appendTo('.sort_box');
+					break;
+				case "V":
+					$html.appendTo('.sort_box');
+					break;
+				case "W":
+					$html.appendTo('.sort_box');
+					break;
+				case "X":
+					$html.appendTo('.sort_box');
+					break;
+				case "Y":
+					$html.appendTo('.sort_box');
+					break;
+				case "Z":
+					$html.appendTo('.sort_box');
+					break;
+				default:
+					$html.appendTo('#default'); //$('#default').after(SortList.eq(i));
+					break;
+			};
+		};
+
+		leftAZ();
+
+		$(".sort_list").each(function(j) {
+			$(".sort_list").eq(j).on('tap', function() {
+				$(".sort_list").css("background", "white");
+				$(".sort_list").eq(j).css("background", "#CCCCCC");
+				var Tele = {};
+				var Telete = [];
+				Tele.realName = $('.num_logo').eq(j).html();
+				Tele.phone = $('.modile').eq(j).html().replace(/\s/g, "");
+				Telete.push(Tele);
+				var telete = JSON.stringify(Telete);
+				var CreatTask = plus.webview.getWebviewById('CreatTask');
+				mui.fire(CreatTask, 'SetCustomer', {
+					'SetCustomer': telete
+				});
+				mui.back();
+			});
+		});
+	};
+
+	app.ready(function() {
+		getPhoneMail();
+	}); //-------------页面加载完成调用 结束---------------------------
+</script>
+<script type="text/javascript" src="../../js/jquery.charfirst.pinyin.js"></script>
+<script type="text/javascript" src="../../js/sort.js"></script>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">站点任务</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="taskList">
+			</ul>
+		</div>
+
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo
+	app.ready(function() {
+		UserInfo =  app.accountInfo('info');
+		Task.list();//获取站点任务
+	});
+
+	//获取站点任务
+	var Task = {
+		list: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 10,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					IsBear: 0,
+					Examine: 1,
+					OrganizeId:UserInfo.CompanyId,
+				})
+			};
+			UseIdGetName.getTaskDistributionTask(sendData, function(cb) {
+				var rows = cb['rows'];
+				if(cb['rows'][0]) {
+					NoData.ClearImg('bottom');
+				};
+				var sort = [];
+				for(var i in rows) {
+					var row = rows[i];
+					sort.push(i);
+					if(sort.length < 5) {
+						var $hmtl = $(
+							'<li class="mui-table-view-cell mui-media TaskId positionRelative" data-index=' + i + ' Undertaker=' + row['Undertaker'] + ' TaskBtrid=' + row['TaskDistributionId'] + '>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+							'<div class="mui-media-body font_14">' +
+							'任务：' + row['Description'] + '' +
+							'<p class="mui-ellipsis">作业描述:' + row['WorkDescription'] + '</p>' +
+							//'<p class="mui-ellipsis">任务量：' + row['Quantity'] + '亩 &nbsp; &nbsp;单价：' + row['Price'] + '元</p>' +
+							'<p class="mui-ellipsis">发布时间:' + row['CreateDate'].substr(0, 20) + '</p>' +
+							'</div>' +
+							'<div class="type"></div>' +
+							'</a>' +
+							'</li>'
+						);
+						$hmtl.appendTo($('#taskList'));
+						//查看任务详情
+						$hmtl.on('tap', function() {
+							var index = $(this).attr('data-index');
+							mui.openWindow({
+								url: '../Task/TaskPositionDetials.html',
+								id: 'TaskPositionDetials',
+								extras: {
+									data: rows[index],
+									type: 'WebTask'
+								}
+							});
+						});
+					};
+				};
+
+			});
+
+		},
+	};
+</script>

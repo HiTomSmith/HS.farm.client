@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=2,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link rel="stylesheet" href="../../css/leaflet.css">
+		<link rel="stylesheet" href="../../css/leaflet.pm.css" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+	</head>
+	<style>
+		html,
+		body,
+		.mui-content {
+			width: 100%;
+			height: 100%;
+			padding: 0;
+		}
+		
+		.list {
+			padding-bottom: 0px;
+		}
+		
+		.Map {
+			width: 100%;
+			height: 100%;
+		}
+		
+		.mui-table-view {
+			width: 100%;
+			padding-left: 7px;
+			padding-right: 7px;
+			position: fixed !important;
+			height: 50%;
+			background: #F5F5F5;
+			bottom: 0;
+			z-index: 9999;
+			overflow-y: scroll;
+			padding-bottom: 20px;
+		}
+		
+		.Uav {
+			margin-bottom: 1px;
+		}
+		
+		#ApplyTask {
+			width: 100%;
+			margin: 15px 0px;
+			height: 44px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">任务</h1>
+		</header>
+		<div class="mui-content wrapper">
+			<div class="Map" id="example2"></div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav font_16">
+							<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png"> 任务：
+							<span id="TaskNmae"></span>
+							<span class="font_14 UavStatus1">未承接</span>
+						</div>
+						<div class="mui-media-body">
+						</div>
+					</a>
+				</li>
+				<div class="mui-row">
+					<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+						<div class="">联系人:<span class="CallName"></span></div>
+					</div>
+					<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+						<div class="">单价:<span class="Price"></span></div>
+					</div>
+					<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+						<p class="mui-ellipsis">任务量：<span class="vale Amount"></span> </p>
+					</div>
+				</div>
+				<li class="mui-table-view-cell mui-media list">
+					<div class="font_16 ttle">订单信息</div>
+					<p class="mui-ellipsis">作物种类：<span class="vale CropType"></span> </p>
+					<p class="mui-ellipsis">药剂种类：<span class="vale MMType"></span> </p>
+					<p class="mui-ellipsis">联络方式:<span class="Moblie"></span></p>
+					<p class="mui-ellipsis">作业地址：<span class="vale Address"></span> </p>
+				</li>
+				<button type="button" class="mui-btn mui-btn-blue" id="ApplyTask">申请任务</button>
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/leaflet.js"></script>
+<script src="../../js/leaflet.pm.min.js"></script>
+<script src="../../js/Leaflet.AccuratePosition.js"></script>
+<script src="../../js/GeometryUtil.js"></script>
+<script src="../../js/wgs84-to-gcj02.js"></script>
+<script src="../../js/xhx-map.js"></script>
+<script src="../../js/map.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	/*初始化*/
+	mui.init();
+	var UserInfo = "";
+	/*MUI准备完毕*/
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		TaskDetail._Draw(); ///*绘制任务区域，显示任务信息，*/
+		TaskDetail._Events(); ///上托，下拉，*/
+		TaskDetail._ApplyTask();//申请任务
+		TaskDetail._IsTask()//检测是否申请过任务
+	});
+
+	/*操作对象*/
+	var TaskDetail = {
+		/*接收传输数据*/
+		_self: function() {
+			return plus.webview.currentWebview().data;
+		},
+		/*绘制任务区域，显示任务信息，*/
+		_Draw: function() {
+			var TaskDetail1 = TaskDetail._self();
+			
+			
+			console.log(JSON.stringify(TaskDetail1))
+				 
+			
+			var Region = JSON.parse(JSON.parse(TaskDetail1.Region));
+			var latlng = [];
+			for(var i in Region) {
+				var row = Region[i];
+				latlng.push([row.lat, row.lng]);
+			};
+			
+			//填充数据
+			$("#TaskNmae").text(TaskDetail1['Description']);
+			$(".Moblie").text(TaskDetail1['LiaisonType']);
+			$(".CallName").text(TaskDetail1['Liaison']);
+			$(".Price").text(TaskDetail1['Price'] + ' 元');
+			$(".CropType").text(TaskDetail1['WorkDescription']);
+			$(".MMType").text((TaskDetail1['MedicamenType']==""||TaskDetail1['MedicamenType']==null)?'暂无':TaskDetail1['MedicamenType']);
+			$(".Amount").text(TaskDetail1['Quantity']);
+			$(".Address").text(TaskDetail1['Geocoding']);
+			//、判断地块是否为空如果不为空则取调用地块任务区域
+			/*绘制轨迹*/
+			if(TaskDetail1['FieldId'] != null) {
+				TaskDetail._filed(TaskDetail1['FieldId']);
+			} else {
+				var temp = XHX_region.creatNew(map2, latlng, TaskDetail.TaskDistributionId);
+				/*创建MARKER点*/
+				//var position = WGS84_to_GCJ02.creatNew().transform(Region[0]['lat'], Region[0]['lng']);
+				var position = [Region[0]['lat'], Region[0]['lng']];
+				var Marker = L.marker(position) /// 
+					//.bindPopup('<p>任务名称:'+TaskDetail1['Description']+'</p><p>任务量:'+TaskDetail1['Quantity']+'亩</p><p>作业地址：'+TaskDetail1['Geocoding']+'，'+TaskDetail1['Address']+'</p><p>联络人:'+TaskDetail1['Liaison']+'</p><p>联络方式:'+TaskDetail1['LiaisonType']+'</p><p>作物种类:'+TaskDetail1['WorkDescription']+'</p><p>药剂种类:'+TaskDetail1['MedicamenType']+'</p><p>每亩单价:'+TaskDetail1['Price']+'元</p>')
+					.addTo(map2)
+				//.openPopup(); 
+			};
+		},
+		//获取地块区域
+		_filed: function(MassIfId) {
+			var send = {
+				queryJson: JSON.stringify({
+					FieldId: MassIfId
+				})
+			};
+			UseIdGetList.GetMassif(send, function(cb) {
+				var Region = JSON.parse(cb[0]['FieldRegion']);
+				var latlng = [];
+				for(var i in Region[0]) {
+					var row = Region[0][i];
+					latlng.push([row.lat, row.lng]);
+				};
+				var temp = XHX_region.creatNew(map2, latlng, MassIfId);
+				/*创建MARKER点*/
+				var position = WGS84_to_GCJ02.creatNew().transform(Region[0][0]['lat'], Region[0][0]['lng']);
+				var Marker = L.marker(position) /// 
+					//.bindPopup('<p>任务名称:'+TaskDetail1['Description']+'</p><p>任务量:'+TaskDetail1['Quantity']+'亩</p><p>作业地址：'+TaskDetail1['Geocoding']+'，'+TaskDetail1['Address']+'</p><p>联络人:'+TaskDetail1['Liaison']+'</p><p>联络方式:'+TaskDetail1['LiaisonType']+'</p><p>作物种类:'+TaskDetail1['WorkDescription']+'</p><p>药剂种类:'+TaskDetail1['MedicamenType']+'</p><p>每亩单价:'+TaskDetail1['Price']+'元</p>')
+					.addTo(map2)
+				//.openPopup(); 
+			});
+		},
+		//上托下拉
+		_Events: function() {
+			//上托
+			//			$(".mui-table-view").on('swipeup',function(){
+			//				$(".mui-table-view").animate({
+			//					'bottom':'-50%',
+			//				});
+			//			}); 
+			//			//下拉
+			//			$(".mui-table-view").on('swipedown',function(){
+			//				$(".mui-table-view").animate({
+			//					'bottom':'50%',
+			//				});
+			//			});
+		},
+		//申请任务
+		_ApplyTask: function() {
+			//判断任务类型
+			var _self = plus.webview.currentWebview().type;
+			//申请项目任务
+			$("#ApplyTask").on('tap', function() {
+				plus.nativeUI.showWaiting();
+				if(_self == "WebTask") {
+					//判断是否为服务站队长申请任务
+					TaskDetail._ApplyWebTask();
+				} else if(_self == "TeamTask") {
+					TaskDetail._ApplyTeamTask();
+				};
+			});
+		},
+		//申请项目任务
+		_ApplyWebTask: function() {
+			var sendData = {
+				TaskDistributionId: TaskDetail._self().TaskDistributionId,
+				UserId: UserInfo.UserId,
+				Description: UserInfo.RoleId,
+				OrganizeId:UserInfo.CompanyId,
+			};
+			//创建申请记录
+			TaskObj.ApplyProJect(sendData, function(cb) {
+				if(cb['type'] == "1") {
+					app.toast('申请成功');
+					$("#ApplyTask").attr('disabled', 'disabled').text('等待审批');
+				} else {
+					app.toast('申请失败');
+				};
+				plus.nativeUI.closeWaiting();
+			});
+		},
+		//申请团队任务
+		_ApplyTeamTask: function() {
+			var Entity = {};
+			Entity.TaskDistributionId = TaskDetail._self().TaskDistributionId;
+			Entity.WorkUser = UserInfo.UserId;
+			Entity.TeamId = plus.webview.currentWebview().data.TeamId;
+			Entity.Examine = 0;
+			Entity.IsApply = 0;
+			var sendData = {
+				keyValue: "",
+				entity:Entity
+			};
+			TaskObj.AppointReleaseTask(sendData,function(cb){
+				if(cb['type'] == "1") {
+					app.toast('申请成功');
+					$("#ApplyTask").attr('disabled', 'disabled').text('等待审批');
+				} else {
+					app.toast('申请失败');
+				};
+				plus.nativeUI.closeWaiting();
+			});
+		},
+		//检测是否申请过项目任务
+		_IsTask:function(){
+			var _self = plus.webview.currentWebview().type; 
+			//判断类型检测是否申请过
+			if(_self == "WebTask") {
+				UseIdGetList.GetTaskSeeRecord({queryJson:JSON.stringify({TaskDistributionId:TaskDetail._self().TaskDistributionId,UserId:UserInfo.UserId})},function(cb){
+					if(cb.length>=1){
+						$("#ApplyTask").attr('disabled', 'disabled').text('等待审批');
+					};
+				});
+			} else if(_self == "TeamTask") {
+				var _self = plus.webview.currentWebview();
+				var sendData = {
+					queryJson:JSON.stringify({
+						TeamId:_self.data.TeamId,
+						TaskDistributionId:_self.data.TaskDistributionId,
+						WorkUser:UserInfo.UserId 
+					})
+				};
+				UseIdGetList.ListgetTaskExecute(sendData,function(cb){
+					if(cb.length>=1){
+						$("#ApplyTask").attr('disabled', 'disabled').text('等待审批');
+					};
+				});
+			};
+		},
+	};
+</script>

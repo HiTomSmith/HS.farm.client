@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>嗨森农业</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/FarmLease.css" rel="stylesheet" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">嗨森农业</h1>
+		</header>
+		<div class="mui-content">
+		
+			<div class="main">
+				<!--植保机型号-->
+				<div class="machineModel UavTypes">
+					<!--<ul id="toggleButton">
+						<li class="active">MG-1P</li>
+						<li>MG-1S<span>ADVANCED</span></li>
+						<li>MG-1S</li>
+					</ul>-->
+				</div>
+				<!--植保机图片-->
+				<div class="machineImg">
+					<img  class="mgp mp" src="../../img/1p.png" height="130" width="90%"/>
+					<img  class="mga ma" src="../../img/1a.png" height="130" width="90%"/>
+				</div>
+				<div class="leaseRule">
+					<p>0押金租大疆<span id="model"></span></p>
+					<p>租期：<span>6个月</span><span class="days" style="display: none;">tian</span></p>
+				</div>
+				<div class="machineCost">
+					<div class="cost_lease">
+						<p class="fisrt" id="rent">6000</p>
+						<p class="second">租金(元)</p>
+					</div>
+					<div class="cost_insurance">
+						<p class="fisrt" id="insuranceFee">3400</p>
+						<p class="second">意外保险(元)</p>
+					</div>
+					<div class="cost_clean">
+						<p class="fisrt" id="cleanFee">300</p>
+						<p class="second">清洗费用(元)</p>
+					</div>
+					<div class="cost_total">
+						<p class="total" id="totalSum">9700</p>
+						<p class="second" >总金额(元)</p>
+					</div>
+				</div>
+				<div class="leaseMonth">
+					<p>租赁月份</p>
+					<div class="monthButton">
+						<button type="button" class="mui-btn mui-btn-success" id="leaseButton">选择租赁月份</button><span id="nowTime">2018-12-10</span>
+					</div>
+				</div>
+				<div class="addedService">
+					<p>增值服务</p>
+					<div class="mui-row service">
+						<div class="mui-col-sm-3 mui-col-xs-3" >
+						   <input type="checkbox" name="insurance" id="insurance" checked="checked" disabled/>
+						   <label for="insurance">
+						  	 意外保险
+						  </label>
+					    </div>
+					    <div class="mui-col-sm-4 mui-col-xs-4">
+						<span id="insuranceCost">3400.00</span>元<span class="need">(必选)</span>
+					    </div>
+					    <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: right;">
+					      <a>查看服务协议></a>
+						</div>
+					</div>
+					<div class="mui-row service">
+						<div class="mui-col-sm-3 mui-col-xs-3" >
+						  <input type="checkbox" name="clean" id="clean" checked="checked" disabled/>
+						   <label for="clean">  
+						  	清洗费用
+						  </label>
+					    </div>
+					    <div class="mui-col-sm-4 mui-col-xs-4">
+						<span id="cleanCost">300.00</span>元<span class="need">(必选)</span>
+					    </div>
+					    <div class="mui-col-sm-5 mui-col-xs-5" style="text-align: right;">
+						  <a href="">查看费用详情></a>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<form id="GroupId">
+				<input style="width:60%;display: none;" type="text" id="CreateUserName" name="CreateUserName"/>
+				<input style="width:60%;display: none;" type="text" id="GroupName" name="GroupName" />
+				<input style="width:60%;display: none;" type="text" id="OrganizeId" name="OrganizeId" />
+				<input style="width:60%;display: none;" type="text" id="StockId" name="StockId" />
+				<input style="width:60%;display: none;" type="text" id="UserInfoId" name="UserInfoId" />
+				<input style="width:60%;display: none;" type="text" id="RealName" name="RealName" />
+				<input style="width:60%;display: none;" type="text" id="CreateUserId" name="CreateUserId" />
+				<input style="width:60%;display: none;" type="text" id="SN" name="SN" />
+				<input style="width:60%;display: none;" type="text" id="Brand" name="Brand" />
+				<input style="width:60%;display: none;" type="text" id="Model" name="Model" />
+				<input style="width:60%;display: none;" type="text" id="Unit" name="Unit" />
+				<input style="width:60%;display: none;" type="text" id="UavOwnerId" name="UavOwnerId" />
+				<input style="width:60%;display: none;" type="text" id="GoodsId" name="GoodsId" />
+				<input style="width:60%;display: none;" type="text" id="GoodsName" name="GoodsName" />
+				<input style="width:60%;display: none;" type="text" id="PreLoss" name="PreLoss" />
+				<input style="width:60%;display: none;" type="text" id="PreRent" name="PreRent" />
+
+			</form>
+			<footer class="footer">
+			  <button type="button" class="mui-btn" id="next">确定，下一步</button>
+		    </footer>
+		</div>
+		
+		
+	</body>
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo = {};
+	var _MainGroup = []; //套餐主表信息
+	var _FromGroup = []; //套餐从表信息
+	var LeaseDetails = []; //提交的套餐详情
+	var _UavType = []; //飞机型号
+	var ETime,userAddress;
+	app.ready(function() {
+		
+		UserInfo = app.accountInfo("info");
+		console.log("UserInfo"+JSON.stringify(UserInfo)) 
+		Lease.MainGroup(); //获取套餐主表 
+		Lease._UserAddess(); //收货地址
+		Lease.nowTime();
+	});
+	
+	var Lease = {
+		
+		//获取无人机库存
+		_UavStock: function(model) {
+			var sendData = {
+				"page": 1,
+				"rows": 999,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					Status: "空闲",
+//					Model: model ? model : "MG-1P"
+					Model: model
+				})
+			};
+			console.log("sendData:"+JSON.stringify(sendData))
+			getLeaseInterface.getUavStock(sendData, function(cb) {
+				var rows = cb['rows'];
+				console.log("rows:"+JSON.stringify(rows))
+				////随机数
+				console.log(JSON.stringify(rows)); 
+//				function random() {
+//					var random = Math.random().toFixed(2) * 100;
+//					if(random < rows.length) {
+//						random = random;
+//					} else {
+//						random = 0;
+//					};
+//					return random;
+//				}; 
+				var subscript = 0; 
+				$(".Stock").text(rows.length + '架');
+				$('#SN').val(rows[subscript]['SN']); //序列号 
+				$('#CreateUserName').val(UserInfo.UserName); //创建人姓名
+				$('#GoodsName').val(rows[subscript]['GoodsName']); //型号
+				$('#OrganizeName').val(rows[subscript]['OrganizeName']); //机构名称
+				$('#StockId').val(rows[subscript]['StockId']); //库存ID  
+				$('#UserInfoId').val(UserInfo.UserId); //租赁用户ID
+				$('#RealName').val(UserInfo.UserName); //租赁用户姓名CreateUserId
+				$('#CreateUserId').val(UserInfo.UserId); //租赁用户姓名 CreateUserId
+				$('#Unit').val(rows[subscript]['Unit']); //租赁用户姓名 CreateUserId
+				$('#Model').val(rows[subscript]['Model']); //租赁用户姓名 CreateUserId
+				$('#Brand').val(rows[subscript]['Brand']); //租赁用户姓名 CreateUserId
+				$('#UavOwnerId').val(rows[subscript]['UavOwnerId']); //租赁用户姓名 CreateUserId
+				$('#GoodsId').val(rows[subscript]['GoodsId']); //租赁用户姓名 CreateUserId
+			});
+		},
+		//获取套餐主表
+		MainGroup: function() {
+			var option = {
+				api: '/BillingManage/Billing_PriceList/spliList',
+				success: function(data) {
+					var result = JSON.parse(data); 
+					console.log("返回结果："+data) 
+//					console.log(JSON.string(result))
+					console.log("UserInfo"+UserInfo.OpenId)
+					for(var i in result) {
+						var row = result[i];
+						
+						if(row.UserType.indexOf(',' + UserInfo.OpenId + ',')>-1){
+							_MainGroup.push({ 
+								value: row['GroupID'], 
+								text: row['GroupName'],
+								UavType: row['EquipmentType'],
+								OrganizationID: row['OrganizationID'], 
+								UserType:row['UserType'],
+								children: []
+						    });
+						}
+						
+						//循环输出所有飞机型号
+						if(_UavType.indexOf(row['EquipmentType']) == -1) {
+							_UavType.push(row['EquipmentType']); 
+						};
+					};
+					//获取型号数量，给类toggleButton长度
+					var len = 0;
+					var w_width= 100/_UavType.length;
+					//循环输出飞机型号
+					for(var i in _UavType) {
+						var $html = $( 
+							'<div class="' + _UavType[i] + '  toggleButton" value=' + _UavType[i] + ' style="width:'+ w_width +'%;" >'+
+						    '<div class="toggleButton_width">'+_UavType[i]+'</div>'+
+					        '</div>'
+						); 
+						console.log(_UavType[i]);
+						$html.appendTo($(".UavTypes"));
+						len++;
+						if(_UavType[i]=="MG-1P"){//默认选择第一个添加颜色
+						  $(".toggleButton>div").addClass('toggleButton_Color');
+						  Lease._UavStock(_UavType[i]);
+					    }
+					};
+					var widths = 0;
+					if(len <= 4) {
+						widths = 100 + '%';
+					} else {
+						widths = (100 * len) + 'px'; 
+					};
+					
+					$(".UavTypes").css('width', widths);
+					
+					console.log(JSON.stringify(_MainGroup))
+					
+					Lease.tap();//点击
+					
+					Lease._FromGroup(); //从表
+					
+					
+				},
+				error: function(data) {
+					app.toast('获取套餐信息失败') 
+				},
+			};
+			app.post3_4(option); 
+		},
+		//获取套餐从表
+		_FromGroup: function() {
+			getLeaseInterface.getLeaseChild(function(cb) { 
+				console.log("从表："+JSON.stringify(cb)) 
+				for(var j in _MainGroup) { 
+					for(var i in cb) {
+						var row = cb[i];
+						if(row['GroupID'] == _MainGroup[j].value) {
+							_MainGroup[j]['children'].push(row);
+						};
+					};
+					
+				};	
+				console.log(JSON.stringify(_MainGroup))
+				Lease.fillData(_MainGroup[0]);//默认触发填充数据
+			 
+				
+			});
+		},
+		//收货地址列表
+		_UserAddess: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId
+				})
+			};
+			UseIdGetList.GetAddress(sendData, function(cb) {
+				var row = cb['rows'];
+				for(var i in row) {
+					var res = row[i];
+					userAddress = res['UserAddressAdminId'];
+					
+				};
+			});
+		},
+		
+		
+		//获取当前时间
+		nowTime: function() {
+			NowTime = new Date().format().substr(0, 10);
+			$("#nowTime").text(NowTime);
+		},
+		
+		/*填充数据*/
+		fillData:function(dataInfo){
+			var LeaseMoney = 0;;
+			console.log("dataInfo:"+JSON.stringify(dataInfo));
+			var rows = dataInfo.children; 
+			var groupName = dataInfo.text;
+			console.log(JSON.stringify(rows))
+			
+			LeaseDetails = [];
+			var LeaseDetail = {};
+			
+			$("#model").text(dataInfo.UavType);
+			$(".days").attr('day', dataInfo['OrganizationID']);
+			for(var m in rows){
+				var row = rows[m];
+				console.log(JSON.stringify("row:"+row))
+				LeaseDetail.ChargingItem = row['ChargingItem']; //费用项目
+				LeaseDetail.ChargingItemCode = row['ChargingItemCode']; //费用项目编号
+				LeaseDetail.ChargingType = row['ChargingType']; //费用项目编号
+				LeaseDetail.amountUnit = row['AmountUnit']; //计量单位
+				LeaseDetail.UsageUnit = row['UsageUnit']; //单位
+				LeaseDetail.Money = row['Money']; //单价 
+				LeaseDetail.Usage = 1; //数量 Usage
+				
+				
+				switch(row.ChargingItemCode){
+					/*押金*/
+					case '0':
+					    LeaseDetail.Usage = 1; //数量 Usage
+					    LeaseDetail.TotalMoney = (row['Money'] * 1);
+					    deposit = (row['Money'] * 1);
+					    LeaseDetails.push(JSON.stringify(LeaseDetail))
+					    break;
+					
+					case '2000'://租金
+					    
+					    LeaseDetail.Usage = 1; //数量 Usage 
+					    LeaseMoney += row['Money'] * 1;
+					    LeaseDetail.TotalMoney = row['Money'] * 1;
+					    LeaseDetails.push(JSON.stringify(LeaseDetail))
+					    
+					    $("#rent").text(row.Money);
+					    $("#PreRent").val(row.Money);
+					    break;
+					case '3000'://意外保险
+					    LeaseDetail.Usage = 1; //数量 Usage 
+					    LeaseMoney += row['Money'] * 1;
+					    LeaseDetail.TotalMoney = row['Money'] * 1;
+					    LeaseDetails.push(JSON.stringify(LeaseDetail));
+					    
+					    $("#insuranceFee").text(row.Money);
+					    $("#insuranceCost").text(row.Money);
+					    $("#PreLoss").val(row.Money);
+					    break;
+					case '4000'://清洗费用
+					    LeaseDetail.Usage = 1; //数量 Usage 
+					    LeaseMoney += row['Money'] * 1;
+					    LeaseDetail.TotalMoney = row['Money'] * 1;
+					    LeaseDetails.push(JSON.stringify(LeaseDetail));
+					    
+					    cleanFee = $("#cleanFee").text(row.Money);
+					    $("#cleanCost").text(row.Money);
+					    break;
+				}
+			}
+			var TotalMoney = deposit + LeaseMoney;
+			console.log("TotalMoney:"+TotalMoney)
+			$("#totalSum").text(TotalMoney);
+			var Days = $(".days").attr('day') * 86400000;
+			console.log(Days)
+			ETime = new Date(Date.parse($("#nowTime").text()) + Days).format();
+			$("#GroupName").val(groupName)
+			
+			
+		},
+		//点击
+		tap: function() {
+			/*切换飞机型号*/
+			console.log(JSON.stringify(_MainGroup))
+			$(".mp").removeClass('mgp');
+			$(".toggleButton").each(function(i){ 
+				console.log(i)
+				$(".toggleButton").eq(i).on('tap',function(){ 
+					console.log(i)
+					var UavType = $('.toggleButton').eq(i).attr('value'); 
+					/*切换无人机型号图片*/
+					switch(UavType){
+						case 'MG-1P':
+						   $(".ma").addClass('mga');
+						   $(".mp").removeClass('mgp');
+						   break;
+					    case 'MG-1SA':
+					       $(".mp").addClass('mgp');
+						   $(".ma").removeClass('mga');
+						   break;
+					}
+					for(var j in _MainGroup){ 
+						var row = _MainGroup[j];
+						if(UavType==row['UavType']){
+							console.log(row['UavType'])
+							Lease.fillData(_MainGroup[j]);
+						} 
+					}
+					Lease._UavStock(UavType); //获取无人机库存
+					$('.toggleButton>div').removeClass('toggleButton_Color');
+					$('.toggleButton>div').eq(i).addClass('toggleButton_Color');
+				})
+			})
+			
+			/*选择开始租赁日期*/
+			$("#leaseButton").on('tap',function(){
+				var epicker = new mui.DtPicker({
+					type: "date",
+                    beginDate: new Date(2018, 00, 01),
+					endDate: new Date(2100, 11, 30)
+				});
+				epicker.show(function(item) {
+					$('#nowTime').text(item['text']);
+					var Days = $(".days").attr('day') * 86400000;
+					ETime = new Date(Date.parse(item['text']) + Days).format();
+				});
+			})
+			
+			/*下一步*/
+			$("#next").on('tap', function() {
+//				if(!$("#insurance").is(':checked')){
+//					app.toast("请选择保险");
+//					return false;
+//				}
+//				if(!$("#clean").is(':checked')){
+//					app.toast("请选择清洗费");
+//					return false;
+//					
+//				}
+				
+				var LIst = "[" + LeaseDetails + "]";
+			    var PDR = JSON.parse(LIst);
+			    console.log("LIst:"+LIst)
+			    var LeaseTable2Entity1 = $("#GroupId").serializeJSON();
+				console.log("LeaseTable2Entity1:"+JSON.stringify(LeaseTable2Entity1))
+				LeaseTable2Entity1['OrganizeName'] = $(".OgIdAddress").text(); //销售公司
+				LeaseTable2Entity1['OrganizeId'] = UserInfo.CompanyId; //销售公司
+				LeaseTable2Entity1['LeaseBeginDate'] = $("#nowTime").text(); //租赁开始时间
+				LeaseTable2Entity1['LeaseEndDate'] = ETime; //租赁结束时间 
+				LeaseTable2Entity1['ActualLeaseDay'] = $(".days").attr('day'); //租赁天数 
+				LeaseTable2Entity1['UavNumber'] = 1; //租赁无人机数量
+				LeaseTable2Entity1['PreTotal'] = $("#totalSum").text(); //预收合计
+//				LeaseTable2Entity1['UserAddressAdminId'] = userAddress; //用户收货地址主键
+				LeaseTable2Entity1['RepairState'] = 0;
+				LeaseTable2Entity1['LeaseState'] = 0;
+				
+				//判断金额类型 
+				var PreRent = 0;
+				for(var i in PDR) {
+					var row = PDR[i];
+					if(row['ChargingItemCode'] == "0") {
+						LeaseTable2Entity1['PreDeposit'] = row['TotalMoney']; //预交押金
+					} else if(row['ChargingItemCode'] == "2000"){
+						PreRent += row['TotalMoney']; //预交租金
+					};
+				};
+				LeaseTable2Entity1['PreRent'] = PreRent; //预交租金
+				var sendData = {
+					"entity": LeaseTable2Entity1,
+					"strChildEntitys": LIst
+				}; 
+			    console.log("sendData:"+JSON.stringify(sendData))
+			    mui.openWindow({
+			        url: '../Lease/FarmPurchase.html',
+			        id: 'FarmPurchase',
+			        extras:{
+			        	startDate:$("#nowTime").text(),
+			        	endDate:ETime,
+			        	model:$("#Model").val(),
+			        	rent: $("#rent").text(),
+			        	insurance: $("#insuranceFee").text(),
+			        	clean:$("#cleanFee").text(),
+			        	totalMoney:$("#totalSum").text(),
+			        	data:sendData
+			        }
+				});
+		    });
+		}
+	}
+	window.addEventListener('pageflowerfresh',function(){
+		location.reload();
+	})
+</script>

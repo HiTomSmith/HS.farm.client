@@ -1,0 +1,277 @@
+.area { 
+				margin: 20px auto 0px auto;  
+			}
+			  
+			.mui-input-group {
+				margin-top: 10px; 
+			}
+			
+			.mui-input-group:first-child {
+				margin-top: 0px;
+			} 
+			
+			.mui-input-group label {
+				width: 22%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			.mui-input-row{
+				border:none !important;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			/*.loginbg{
+				width:100%;
+				height: 100%;
+				background-image: url(images/loginbg.png);
+				background-size: 100% 100%;
+				background-position: 0 0;
+			}*/
+			
+			.loginyh {
+				margin-top: 0px;
+				width: 18px;
+				height: 20px;
+			}
+			
+			.logo {
+				width: 30.4%;
+				height: ;
+			}
+			
+			.logo img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.phone{
+				width: 85%;
+				margin-left: 7.5%;
+				font-size: 12px;
+				text-align: right;
+				color: #E17736;
+				background-color:#1B1B1B;
+				border: none;
+			}
+
+			#login-form {
+				width: 100%;
+				margin:40px auto 0px;			
+			}
+
+			h1 {
+				font-family: "微软雅黑";
+			}
+			.mui-input-group .mui-input-row:after {
+			    position: absolute;
+			    right: 0;
+			    bottom: 0;
+			    left: 15px;
+			    /* height: 1px; */
+			    content: '';
+			    -webkit-transform: scaleY(.5);
+			    transform: scaleY(.5);
+			    background-color: transparent;
+			}
+			#borc{
+				border: none;
+				background-color: #303030;
+				border-radius: 3px;
+				width: 85%;
+				margin-left: 7.5%;
+			}
+			#borcc{
+				border: none;
+				background-color: #303030;
+				border-radius: 3px;
+				width: 85%;
+				margin-left: 7.5%;
+				margin-top: 24px;
+				
+			}
+			#remMM{
+				color: gray;
+				margin-left: 5px;
+				margin-top: -10px;
+				position: absolute;
+				top: 10px;
+				font-family: "微软雅黑";
+			}
+			/*顶部导航*/
+			.mui-bar-nav {
+			    top: 0;
+			    -webkit-box-shadow: 0 0px 0px transparent;
+			    box-shadow: 0 0px 0px transparent;
+			}
+			.mui-bar {
+			    position: fixed;
+			    z-index: 10;
+			    right: 0;
+			    left: 0;
+			    height: 44px;
+			    padding-right: 10px;
+			    padding-left: 10px;
+			    border-bottom: 0;
+			    background-color: transparent;
+			    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+			    box-shadow: 0 0 0px rgba(0, 0, 0, .85);
+			    -webkit-backface-visibility: hidden;
+			    backface-visibility: hidden;
+			}
+			/*bg*/
+			.mui-content{
+				background: #1B1B1B;
+			}
+			/*placeholder*/
+			input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+		　　		color: #b1b1b1;
+				font-size: 14px;
+		　　}
+		　　input:-moz-placeholder, textarea:-moz-placeholder {
+		　　		color:#b1b1b1;
+				font-size: 14px;
+		　　}
+		　　input::-moz-placeholder, textarea::-moz-placeholder {
+		　　		color:#b1b1b1;
+				font-size: 14px;
+		　　}
+		　　input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+		　　		color:#b1b1b1;
+				font-size: 14px;
+		　　}
+		#autoLogin{
+			width: 16px;
+			height: 16px;
+			margin-top: 3px;
+			margin-left: 2px;
+		}
+		body{
+			background-color: #1B1B1B;
+		}
+		
+		
+		/*遮罩层*/
+			#mask{
+				width:100%;
+				height:100%;
+				background: #5C5C5C;
+				position: absolute;
+				top:0px;
+				opacity: 0.4;
+				z-index: 10000;
+				display: none;
+			}
+			#bai{ 
+				width:90%;
+				height:44%;
+				position: absolute;
+				top:20%;
+				left:5%;
+				z-index: 100001;
+				display: none;
+				
+			}
+			#bai>img{
+				width:100%;
+				height:auto;
+			}
+			#bai>.bai_text{
+				background: white;
+				margin-top:-6px;
+				width:100%;
+				height:80%;
+				padding-top:10px;
+				border-radius: 0 0 10px 10px;
+				
+			}
+			.bai_text li{
+				font-size:14px;
+				color:#5C5C5C;
+				padding-left: 0%;
+				padding-right: 5%;
+			}
+			#bai>.resevet{
+				width:80%;
+				height:35px;
+				position: absolute;
+				bottom: -55px;
+				left:10%;
+				background: #4cc36b;
+				border:none;
+				color:white;
+				text-align: center;
+				/*line-height: 40px;*/
+			}
+			/*Progress_bg Progress_bar circular*/
+			.Progress{
+				position: relative;
+				width:60%;
+				height:20px;
+				bottom:70px;
+				left:10%;
+				display: none;
+			}
+			.Progress_bg{
+				width:100%;
+				height:8px;
+				background: #d8d8d8;
+				position: absolute;
+				bottom:0px;
+				border-radius: 3px;
+			}
+			.Progress_bar{ 
+				width:0%;
+				height:8px;
+				background: #4CC36B;
+				position: absolute;
+				bottom:0px;
+				left:0%;
+				border-radius: 3px;
+			}
+			.circular{
+				width:20px;
+				height:20px;
+				border:4px solid #4CC36B;
+				background: white;
+				border-radius: 100%;
+				position: absolute;
+				bottom:0px;
+				left:-4%;
+				top:30%; 
+			}
+			.Progress_text{
+				width:50px;
+				height:30px;
+				background: #f08a1c;
+				position: absolute;
+				text-align: center;
+				line-height: 30px;
+				right:-60px;
+				font-size:12px;
+				color:white;
+				border-radius: 3px;
+			}
+			.Progress_text_bottom{
+				font-size:12px;
+				position: absolute;
+				bottom: -36px;
+				color: #5C5C5C;
+				padding-left: 30px;
+			}
+			li{list-style: none;}
+			.fl{display: inline-block;width: 5px;height: 5px;border-radius: 50%;background: darkgray;position: relative;top:-1px;left: -10px;}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+
+	</head>
+	<style>
+		.list {
+			padding-top: 0px !important;
+		}
+		
+		.mui-active {
+			background: white !important;
+		}
+		
+		.iconfont {
+			font-size: 24px;
+			color: #717171;
+			opacity: 0.8;
+			display: block;
+			line-height: 50px;
+			padding-right: 14px;
+		}
+		
+		.CreateTeam {
+			padding: 0;
+		}
+		
+		label {
+			width: 26% !important;
+		}
+		
+		input {
+			width: 50% !important;
+		}
+		
+		.mui-input-row {
+			border-top: 1px solid #F5F5F5;
+		}
+		
+		.footer {
+			height: 44px;
+			position: fixed;
+			width: 100%;
+			bottom: 10px;
+			text-align: center;
+		}
+		
+		.Save {
+			height: 44px;
+			width: 95%;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">创建团队</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll">
+				<li class="mui-table-view-cell mui-media list CreateTeam">
+					<div class="mui-input-row">
+						<label class="">团队名称</label>
+						<input type="text" id="TeamName" placeholder="请选择" id="WorkDescription" name="WorkDescription" maxlength="9">
+					</div>
+					<div class="mui-input-row">
+						<label class="">负责人</label>
+						<input type="text" id="UserName" placeholder="请选择" id="WorkDescription" name="WorkDescription">
+						<span class="mui-icon iconfont corptype mui-pull-right" id="check">&#xe6fd;</span>
+					</div>
+					<div class="mui-input-row">
+						<label class="">手机号</label>
+						<input type="text" id="Mbile" placeholder="请输入" id="WorkDescription" name="WorkDescription" maxlength="11">
+					</div>
+				</li>
+			</ul>
+			<div class="footer">
+				<button type="button" class="mui-btn mui-btn-blue Save" id="Save">保存</button>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var UserInfo = "";
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		CteateTeam.Check(); //从服务站选择成员添加
+		CteateTeam.Btns(); //添加团队
+	});
+
+	//团队
+	var CteateTeam = {
+		//保存
+		Save: function() {
+			plus.nativeUI.showWaiting();
+			var ChildEntitys = [];
+			ChildEntitys.push({
+				"UserId":$("#TeamName").attr('UserId'),
+				"UserName": $("#UserName").val(),
+			});
+			var XHX_TeamEntity = {
+				"UserId": $("#TeamName").attr('UserId'),
+				"TeamName":$("#TeamName").val(),
+				"TeamType": "0",
+				"Description":UserInfo.CompanyId,
+				"strChildEntitys": JSON.stringify(ChildEntitys)
+			};
+			var option = {
+				api: '/XhxManage/XHX_Team/SaveForm',
+				data: XHX_TeamEntity,
+				success: function(data) {
+					plus.nativeUI.closeWaiting();
+					var result = JSON.parse(data);
+					if(result['type']==1){
+						app.toast('创建成功!');
+						var SsTeamList = plus.webview.getWebviewById('SsTeamList');
+						mui.fire(SsTeamList,'pageflowerfresh');
+						mui.back();
+					}else{
+						app.toast('创建失败!');
+					};
+				},
+				error: function(data) {
+					plus.nativeUI.closeWaiting();
+					app.toast('创建失败!');
+				},
+			};
+			app.post3_1(option)
+
+		},
+		//从服务站选择成员添加
+		Check: function() {
+			$("#check").on('tap', function() {
+				mui.openWindow({
+					url: 'SSmember.html',
+					id: 'SSmember',
+				});
+			});
+		},
+		//
+		Btns:function(){
+			//保存
+			$("#Save").on('tap',function(){
+				btnsShield(3, "Save");
+				if($("#TeamName").val()==""){
+					app.toast('团队名称不能为空');
+					return false;
+				};
+				if($("#UserName").val()==""){
+					app.toast('负责人不能为空');
+					return false;
+				};
+				if($("#Mbile").val()==""){
+					app.toast('负责人手机号不能为空');
+					return false;
+				};
+				CteateTeam.Save();
+			});
+		},
+	};
+
+	///数据传输
+	window.addEventListener('pageflowerfresh', function(e) {
+		var text = event.detail.text;
+		var name = text.substr(0, text.indexOf("Tel"));
+		var Tel = text.substr(text.indexOf("：") + 1, text.length);
+		$("#UserName").val(name);
+		$("#Mbile").val(Tel);
+		$("#TeamName").attr('UserId',event.detail.UserId);
+	});
+</script>

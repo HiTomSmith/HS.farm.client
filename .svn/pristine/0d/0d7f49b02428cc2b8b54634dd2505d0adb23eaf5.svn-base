@@ -1,0 +1,58 @@
+
+html,body,.mui-content{
+	background: white;
+}
+#More{
+	position: relative;
+}
+#More>img{
+	position: absolute;
+	width:50px;
+	height:40px;
+	top:-20px;
+	left:12px;
+	z-index: 10000000;
+	background: white;
+}
+#More>.Mouse{
+	position: absolute;
+	top:28px;
+	left:22px;
+}
+ /** 这个是底部选项卡的center*/
+.circular{
+	border:1px solid #929292;
+	position: absolute;
+	top:-26px;
+	width:60px; 
+	left:8px;
+	height:60px;
+	border-radius: 100%;
+	border-bottom:none;
+	background: #F9F9F9;
+	z-index:-100
+}
+.circular>.mui-icon{
+	width:38px !important;
+	height:38px !important; 
+	display: block;
+	margin: 9px auto; 
+	border-radius: 50%;
+	background:#FB9543;
+	color:white;
+	font-size:36px;
+	line-height: 39px;
+}
+#nav{
+	background: white;
+} 
+#Lease,#Task{
+	overflow: hidden;
+	background: white;
+}
+
+.circular>.mui-tab-label{
+	position: absolute;
+	top:53px;
+	left:17px;
+}

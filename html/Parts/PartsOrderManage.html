@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+		<link href="../../css/Commodity.css" rel="stylesheet" />
+		<style type="text/css">
+			.btns {
+				width: 100%;
+				margin: 0 auto;
+				text-align: center;
+				position: fixed;
+				bottom: 8px;
+				z-index: 9;
+			}
+			
+			.btns>button {
+				width: 90%;
+				height: 44px;
+				font-size: 16px;
+				border-radius: 4px;
+				border: none;
+			}
+			
+			.mui-scroll-wrapper {
+				top: 50px;
+			}
+			
+			.mui-table-view .mui-table-view-cell .mui-media-body {
+				height: 100px;
+				margin: 5px;
+			}
+			
+			.mui-table-view .mui-table-view-cell img {
+				border: 2px solid #DEEEFE;
+				border-radius: 2px;
+				height: 100px;
+				width: 100px;
+			}
+			
+			.mui-table-view .mui-table-view-cell .mui-media-body {
+				height: 100px;
+				/*border: 1px solid red;*/
+				font-size: 16px;
+				line-height: 30px;
+				width: 40%;
+				padding-left: 30px;
+			}
+			
+			.font_10 {
+				font-size: 14px;
+			}
+			
+			.mui-table-view .mui-btn .mui-btn-red a {
+				margin-bottom: 5px;
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">配件管理</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view CommodityLists" id="OA_task_2">
+						
+					</ul>
+				</div>
+			</div>
+			<div class="btns">
+				<button type="button" class="mui-btn mui-btn-blue" id="AddParts">添加商品</button>				
+			</div>
+		</div>
+
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script type="text/javascript">
+	var medicamlist = null;
+	app.ready(function() {		
+		drug.CommodityList();		
+	});
+
+	var drug = {		
+		//商品列表
+		CommodityList: function() {			
+			var send = {
+				"page": 1,
+				"rows": 999,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": ''
+			};
+			PartsManageByGet.getPartsListJson(send, function(cb) {
+				$('.CommodityLists').html('');
+				var rows = cb['rows'];
+				medicamlist = rows;
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media  CommodityList list" CommId=' + i + '>' +
+						'<div class="mui-slider-right mui-disabled">' +
+						'<a class="mui-btn mui-btn-red delete " id=' + row['PartsListId'] + '  CommId=' + i + '>删除</a>' +
+						'</div>' +
+						'<div class="mui-slider-handle">' +
+						'<img class="mui-media-object mui-pull-left" src=' + (app.his_host + row['ThumbImage']) + ' alt="暂无图片" />' +
+						'<div class="mui-media-body">' +
+						'<div class="title-name">' +
+						'' + row['ShortName'] + '' +
+						'</div>' +
+						'<div class="Specifications font_10">' +
+						'规格：' + row['Constituents'] + '' +
+						'</div>' +
+						'<div class="money">' +
+						'￥' + row['Price'] + '.00' +
+						'</div>' +
+						'</div>' +
+						'</div>' +
+						'</li>'
+					);
+					$html.appendTo($('.CommodityLists'));
+					$html.on('tap', function() {
+						var index = $(this).attr('CommId');
+						mui.openWindow({
+							url: "./PartsDetail.html",
+							id: 'PartsDetails',
+							extras: {
+								Parts: medicamlist[index],
+								//为0是不隐藏功能按钮
+								PartsType:0
+							}
+						})
+
+					});
+					//删除商品
+					$html.find('.delete').on('tap', function(event) {
+						event.stopPropagation();
+						var id = $(this).attr('id');
+						var index = $(this).attr('CommId');
+						var sendData = {
+							keyValue: id
+						};
+						dialog.Dialogbox('提示', '确认删除当前配件？', function(cbs) {
+							if(cbs == 1) {
+								PartsManageBySet.DeletePartsById(sendData, function(cb) {
+									if(cb['type'] == 1) {
+										app.toast('删除成功!');
+										$("#CommodityList").eq(index).remove();
+										var objView = plus.webview.getWebviewById("PartList");
+										objView.reload(true);
+
+									} else {
+										app.toast('删除失败');
+									}
+									dialog.CloseLogBox();
+								});
+
+							} else if(cbs == 0) {
+								dialog.CloseLogBox();
+							} else {
+								app.toast('已取消');
+							};
+						});
+					});
+				};
+				drug.tap();
+			});
+		},
+		tap: function() {
+			$("#AddParts").on('tap', function() {				
+				mui.openWindow({
+					url: './AddParts.html',
+					id: 'AddParts'
+				})
+			});
+		}
+	};
+	//回调刷新
+	window.addEventListener('fresh', function() {
+		var objView = plus.webview.getWebviewById("PartList");
+		objView.reload(true);		
+		drug.CommodityList();
+	});
+</script>

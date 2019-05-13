@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/Homep.css" />
+
+	</head>
+	<style>
+		.mengbi {
+			width: 100%;
+			height: 100%;
+			background: #747474;
+			position: fixed;
+			top: 0;
+			z-index: 10000;
+			display: none;
+			opacity: 0.8;
+		}
+		
+		.mui-table-view>li {
+			height: auto;
+		}
+		
+		.leaseList>a>img {
+			width: 60px !important;
+			height: 62px !important; 
+		}
+		
+		.bottom {
+			height: 300px;
+			position: relative;
+			z-index: 999;
+		}
+		
+		.ApplyUav {
+			background: white;
+			color: black;
+		}
+		
+		.mui-table-view {
+			width: calc(100% - 16px);
+			margin: 0 auto;
+			background: #F5F5F5;
+		}
+		
+		.list {
+			padding-top: 6px !important;
+			height: auto;
+			margin-top: 6px;
+			background: white;
+			box-shadow: 1px 1px 3px 1px #efecec;
+			border-radius: 4px;
+			padding-bottom: 10px;
+		}
+		/*图片大小*/
+		
+		.Uav {
+			height: 54px;
+			line-height: 54px;
+			margin-left: -10px;
+			border-bottom: 1px solid #F5F5F5;
+			margin-bottom: 1px;
+		}
+		
+		.Uav>img {
+			width: 24px;
+			height: 24px !important;
+			margin-top: calc((54px - 24px)/2);
+		}
+		
+		.UavStatus,
+		.UavStatus1,
+		.UavStatus2,
+		.UavStatus3,
+		.UavStatus4,
+		.UavStatus5,
+		.UavStatus6,
+		.UavStatus7,
+		.UavStatus8,
+		.UavStatus9,
+		.UavStatus10,
+		.UavStatus11 {
+			float: right;
+			position: relative;
+		}
+		
+		.UavStatus:before,
+		.UavStatus2:before,
+		.UavStatus3:before,
+		.UavStatus4:before,
+		.UavStatus5:before,
+		.UavStatus6:before,
+		.UavStatus7:before,
+		.UavStatus8:before,
+		.UavStatus9:before,
+		.UavStatus10:before,
+		.UavStatus11:before {
+			display: block;
+			width: 6px;
+			height: 6px;
+			content: '';
+			position: absolute;
+			border-radius: 100%;
+			top: 24px;
+			left: -10px;
+		}
+		
+		.UavStatus:before {
+			background: red;
+		}
+		
+		.UavStatus2:before {
+			background: #3995ec;
+		}
+		
+		.UavStatus3:before {
+			background: #10b165;
+		}
+		
+		.UavStatus4:before {
+			background: #16bfb9;
+		}
+		
+		.UavStatus5:before {
+			background: #ff5050;
+		}
+		
+		.UavStatus6:before {
+			background: #fd9826;
+		}
+		
+		.UavStatus7:before {
+			background: #16bfb9;
+		}
+		
+		.UavStatus8:before {
+			background: #ff5050;
+		}
+		
+		.UavStatus9:before {
+			background: #ff744f;
+		}
+		
+		.UavStatus10:before {
+			background: #16bfb9;
+		}
+		
+		.UavStatus11:before {
+			background: #a7a7a7;
+		}
+		
+		.UavStatus1:before {
+			display: block;
+			width: 6px;
+			height: 6px;
+			content: '';
+			background:  #15AE3F;
+			position: absolute;
+			border-radius: 100%;
+			top: 24px;
+			left: -10px;
+		}
+		/*所属人，租赁人，使用人,收回按钮*/
+		
+		.mui-media-body {
+			padding-top: 10px;
+		}
+		
+		.mui-media-body>p {
+			padding: 6px 0px;
+		}
+		
+		.Delivery {
+			margin-top: 20px;
+			width: 54px;
+			height: 24px;
+			text-align: center;
+			line-height: 24px;
+			padding: 0 !important;
+			border-radius: 4px;
+			background:  #15AE3F;
+			color: white;
+		}
+		
+		button {
+			border: none;
+		}
+		
+		.mui-content {
+			padding-bottom: 60px;
+		}
+		/* 租赁样式*/
+		/*收货按钮*/
+		
+		.ExpBtn {
+			position: absolute;
+			right: 6px;
+			bottom: 30px;
+			height: 60px;
+		}
+		
+		.ExpBtn>button {
+			float: left;
+			border-radius: 4px;
+			font-size: 12px;
+			width: 70px;
+			height: 28px;
+			padding: 0 !important;
+			padding: 10px 15px;
+			margin-right: 4px;
+		}
+		
+		.MoneyColor {
+			color: #15AE3F;
+			background: white;
+			margin-right: -5px;
+			font-size: 12px;
+		}
+		
+		.Color717171 {
+			color: #717171 !important;
+		}
+		.Surplus{
+			position: absolute;
+			right:10px;
+			bottom:35px;
+			background: white;
+		}
+		.payment,.received{
+			position: relative;
+		}
+		.PaymentNum,.ReceivedNum{
+			position: absolute;
+			width:14px;
+			height:14px;
+			background:red;
+			right:18px;
+			top:3px;
+			border-radius: 100%;
+			font-size: 8px;
+			text-align: center;
+			line-height: 15px;
+			color: white;
+			display: none;
+		}
+	</style>
+
+	<body>
+		<!--
+        	作者：1223998825@qq.com
+        	时间：2017-11-10
+        	描述：主体body
+       -->
+		<div class="mui-content">
+			<div class="top">
+				<!--
+	            	作者：1223998825@qq.com
+	            	时间：2017-11-10
+	            	描述：可拖动轮播图
+	            -->
+				<div id="slider" class="mui-slider">
+					<img src="../../img/leaseB.jpg" alt="" />
+				</div>
+				<!--
+	            	作者：1223998825@qq.com
+	            	时间：2017-11-10
+	            	描述：四大天王
+	           -->
+				<div class="mui-row">
+					<div class="mui-col-sm-3 mui-col-xs-3" id="NewLease">
+						<div class="Four_1">
+							<span class="mui-icon iconfont">&#xe756;</span>
+						</div>
+						<span class="text font_14">新机租赁</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="LeaseList">
+						<div class="Four_2">
+							<span class="mui-icon iconfont">&#xe6de;</span>
+						</div>
+						<span class="text font_14">我的租赁单</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="ShoopCar">
+						<div class="Four_4">
+							<span class="mui-icon iconfont">&#xe77f;</span>
+						</div>
+						<span class="text font_14">预租赁</span>
+					</div>
+					<div class="mui-col-sm-3 mui-col-xs-3" id="LeaseSpot">
+						<div class="Four_3">
+							<span class="mui-icon iconfont">&#xe753;</span>
+
+						</div>
+						<span class="text font_14">服务中心</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="bottom mui-scroll-wrapper">
+				<div class="title"><span></span> &nbsp;&nbsp;我的租赁单</div>
+				<ul class="mui-table-view mui-scroll" id="getNoPayList">
+				</ul>
+				<br/>
+				<!--<div class="message_href font_14">查看更多租赁单</div>-->
+			</div>
+			<div class="mengbi"></div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({});
+	var status = "close";
+	
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	app.ready(function() {
+
+		var _self, _next, _index, timer, _prve
+		_self = plus.webview.currentWebview();
+		_next = plus.webview.getWebviewById("Task");
+		_prve = plus.webview.getWebviewById("Homep"); //
+		index = plus.webview.getWebviewById("page");
+		UserInfo = app.accountInfo('info');
+		//		var Slide = function(){
+		//					//左滑
+		//				_self.drag({
+		//					direction:"left",
+		//					moveMode:"followFinger"
+		//				},
+		//				{
+		//					view:_next,
+		//					moveMode:"follow"
+		//				},function(){
+		//					if(timer!=null){clearTimeout(timer)}
+		//					timer  = setTimeout(function(){
+		//						index.evalJS("$('#nav').find('a').removeClass('mui-active');$('#Task').addClass('mui-active');$('header>h1').text('任务')")
+		//					},500)
+		//				}
+		//				)
+		//				//右滑
+		//				_self.drag({
+		//					direction:"right",
+		//					moveMode:"followFinger"
+		//				},
+		//				{
+		//					view:_prve,
+		//					moveMode:"follow"
+		//				},function(){
+		//					if(timer!=null){clearTimeout(timer)}
+		//					timer  = setTimeout(function(){
+		//						index.evalJS("$('#nav').find('a').removeClass('mui-active');$('#Homep').addClass('mui-active');$('header>h1').text('首页')")
+		//					},500)
+		//				}
+		//				)
+		//		};
+		//		$("body").on('swipeleft swiperight',function(){
+		//			if(status=="close"){
+		//				Slide();
+		//			};
+		//		});
+
+		LocationHref();
+		getUserLease();
+		//未实名认证不加载
+		if(UserInfo['UserName']!=null){
+			preload();
+		};
+		NoData.bgImg('bottom', '../../img/BGIMG.png');
+	});
+	//预加载
+	function preload() {
+		//预加载新机租赁
+//		var NewLease = mui.preload({
+//			url: '../Lease/NewLease.html',
+//			id: 'NewLease'
+//		});
+		//预加载我的租赁单
+		var LeaseList = mui.preload({
+			url: '../Lease/LeaseList.html',
+			id: 'LeaseList'
+		});
+		//预加载维修点
+		var LeaseSpot = mui.preload({
+			url: '../Lease/LeaseSpot.html',
+			id: 'LeaseSpot'
+		});
+	};
+
+	//跳转事件集合
+	function LocationHref() {
+		var menuType = true;
+		//新机租赁
+		$("#NewLease").on('tap', function() {
+			mui.openWindow({
+				url: '../Lease/FarmLease.html',
+				id: 'FarmLease'
+			})
+		});
+
+		//我的租赁单
+		$("#LeaseList,.message_href").on('tap', function() {
+			mui.openWindow({
+				url: '../Lease/LeaseList.html',
+				id: 'LeaseList'
+			})
+		});
+
+		//关闭册页
+		$('.mengbi').on('tap', function() {
+			clearTimeout(run);
+			if(menuType) {
+				closeOrOpenWindow(index);
+				menuType = false;
+			};
+			var run = setTimeout(function() {
+				menuType = true;
+			}, 2000)
+		});
+		//LeaseSpot RepairSpot 维修点
+		$("#LeaseSpot").on('tap', function() {
+			mui.openWindow({
+				url: '../Lease/LeaseSpot.html',
+				id: 'LeaseSpot'
+			})
+		});
+
+		//购物车
+		$("#ShoopCar").on('tap', function() {
+			mui.openWindow({
+				url: '../Lease/ShoppingCart.html',
+				id: 'ShoppingCart'
+			})
+		});
+
+		//点击参与团队动画
+		$(".title").on('swipeup', function() {
+			var off = $(".bottom").offset().top;
+			var len = $("#getNoPayList>li").length;
+			if(off>100&&len>0) {
+				$(".bottom").animate({
+					top: -(off + 6) + 'px',
+					height: "800px",
+				}).css({
+					'background-position': 'center 30%',
+				});
+			};
+		});
+		$(".title").on('swipedown ', function() {
+			$(".bottom").animate({
+				top: "0px",
+				height: "300px"
+			}).css({
+				'background-position': 'center 30%',
+			});
+		})
+
+	};
+
+	var status1 = [
+		'<span class="font_12 UavStatus2">等待支付</span>',
+		'<span class="font_12 UavStatus3">已付款</span>',
+		'<span class="font_12 UavStatus4">商家已发货</span>',
+		'<span class="font_12 UavStatus5">客户已收货</span>',
+		'<span class="font_12 UavStatus6">申请退租</span>',
+		'<span class="font_12 UavStatus7">客户已发货</span>',
+		'<span class="font_12 UavStatus8">商家已收货</span>',
+		'<span class="font_12 UavStatus9">维修</span>',
+		'<span class="font_12 UavStatus10">完成</span>',
+		'<span class="font_12 UavStatus11">已经失效</span>',
+	];
+	status1[18]='<span class="font_12 UavStatus">已激活</span>';
+	status1[19] = '<span class="font_12 UavStatus">正常使用</span>';
+	/////获取当前用户的租赁单
+	function getUserLease() {
+		$("#getNoPayList").html('');
+		var option = {
+			api: '/PlanManage/LeaseTable/GetPageListJson',
+			data: {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId
+				})
+			},
+			success: function(data) {
+				$("#getNoPayList").html('');
+				var result = JSON.parse(data);
+				if(result['rows'].length >= 1) {
+					NoData.ClearImg('bottom');
+					$(".bottom").css({
+						'padding-bottom':'400px'
+					});
+				} else {
+					return false;
+				};
+				var rows = result['rows'];
+				for(var i = 0; i < 6; i++) {
+					var row = rows[i];
+					var $html = "";
+					switch(row['LeaseState']) {
+						case 0: //未付款
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + ' date='+row['CreateDate']+'>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +//（' + row['SN'] + '）
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14"></span>'+((status1[row['LeaseState']].indexOf("0分钟")==-1)?CalculationTime(row['CreateDate'],i):status1[row['LeaseState']])+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + ((row['ContractNo']==null)?'暂无':row['ContractNo']) + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList"));//data="失效"
+							$html.on('tap', function() {
+								var page = plus.webview.getWebviewById('page');
+								var leaseid = $(this).attr('value');
+								var index = $(this).attr('data-index');
+								var date1 = $(this).attr('date');
+								var time = CalculationTime(rows[index]['CreateDate']);
+								//判断是否过期
+								if(time.indexOf('data="失效"')!=-1){
+									page.evalJS("$('.btnsShield').show()");
+									dialog.Dialogbox('提示','确认是否删除？',function(cb){
+										if(cb==1){
+											plus.nativeUI.showWaiting();
+											DeleteLease(leaseid);
+										}else if(cb==0){
+											dialog.CloseLogBox();
+											page.evalJS("$('.btnsShield').hide()");
+										}else{
+											app.toast('已取消');
+											page.evalJS("$('.btnsShield').hide()");
+										};
+									}); 
+								}else{
+									mui.openWindow({
+										url:'../Lease/LeasDetails-3.html',
+										id:'LeasDetails_3',
+										extras:{
+											data:rows[index]
+										}
+									})
+									
+								};
+							});
+							break;
+						case 1: //已付款
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>'+status1[row['LeaseState']]+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList"));
+							break;
+						case 2: //待收货
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>'+status1[row['LeaseState']]+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<div class="ExpBtn">'+
+									'<button type="button" class="mui-btn mui-btn-blue mui-btn-block mrbtn" id="SeeLogistics" leaseId='+row['LeaseTableId']+'>查看物流</button>'+
+									'<button type="button" class="mui-btn mui-btn-blue mui-btn-block mrbtn" id="ConfirmReceipt" data-index='+i+'>确认收货</button>'+
+								'</div>'+
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								' </li>'
+							)
+							$html.appendTo($("#getNoPayList"));
+							//查看物流
+							$html.find("#SeeLogistics").on('tap',function(){
+								var leaseId = $(this).attr('leaseId');
+								console.log(leaseId)
+								///物流查询
+								getExpId(leaseId);
+							});
+							//确认收货
+							$html.find("#ConfirmReceipt").on('tap',function(){
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url:'../Lease/LeaseDetails.html',
+									id:'LeaseDetails',
+									extras:{
+										data:rows[index]
+									}
+								})
+							});
+							break;
+						case 3: //客户已收货
+							
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>'+status1[row['LeaseState']]+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList"));
+							$html.on('tap',function(){
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url:'../Lease/LeasDetails-3.html',
+									id:'LeasDetails_3',
+									extras:{
+										data:rows[index]
+									}
+								})
+							});
+							break;
+						case 4://退租
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>'+status1[row['LeaseState']]+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList"));
+							//$html.on('tap',function(){});
+						break;
+						case 5: //客户已发货
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + ' data-index=' + i + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>'+status1[row['LeaseState']]+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<div class="ExpBtn">'+
+									'<button type="button" class="mui-btn mui-btn-blue mui-btn-block mrbtn" id="SeeLogistics" repair='+row['RepairState']+' leaseId='+row['LeaseTableId']+'>查看物流</button>'+
+								'</div>'+
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList"));
+							if(row['RepairState']==1){
+								$html.find('a').append('<span class="mui-badge mui-badge-green ApplyUav">申请换机中</span>');
+							}else if(row['RepairState']==2){
+								$html.find('a').append('<span class="mui-badge mui-badge ApplyUav">已同意换机</span>');
+							}else if(row['RepairState']==3){
+								$html.find('a').append('<span class="mui-badge mui-badge ApplyUav">换机出库</span>');
+								$html.find("#SeeLogistics").text('');
+							};
+							//查看租赁单详情
+							$html.on('tap',function(){
+								var index = $(this).attr('data-index');
+								mui.openWindow({ 
+									url:'../Lease/LeasDetails-3.html',
+									id:'LeasDetails_3',
+									extras:{
+										data:rows[index],
+										type:'repair'
+									}
+								});
+								return false;
+							});
+							//查看物流
+							$html.find("#SeeLogistics").on('tap',function(){
+								var leaseId = $(this).attr('leaseId');
+								var repair = $(this).attr('repair');
+								///物流查询
+								getExpId(leaseId);
+								return false;
+							});
+							break;
+						case 6:
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>'+status1[row['LeaseState']]+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList")); 
+							break;
+						case 7:
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>'+status1[row['LeaseState']]+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList")); 
+							$html.on('tap',function(){
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url:'../Lease/LeasDetails-3.html',
+									id:'LeasDetails_3',
+									extras:{
+										data:rows[index],
+										type:'repair'
+									}
+								})
+							});
+							break;
+						case 18:
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>'+status1[row['LeaseState']]+'' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0,10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">'+row['PreTotal']+'元</span>'+
+								'<button type="button" data-index=' + i + ' style="margin-top: 55px;width: 95px;height:30px;font-size: 12px;line-height: 17px;text-align: center;" class="mui-btn mui-btn-blue upFlyImg"  leaseId=' + row['LeaseTableId'] + '>上传试飞照片</button>' +
+								
+								' </li>'
+							);
+							$html.appendTo($("#getNoPayList")); 
+							CalculationDays(row['LeaseBeginDate'],row['LeaseEndDate'],i);
+							
+							//上传试飞照片
+							$html.find('.upFlyImg').on('tap',function(e){
+								e.stopPropagation();
+								var index = $(this).attr('data-index');
+								console.log(index)
+								mui.openWindow({
+									url: '../Lease/upTryImg.html',
+									id: 'upTryImg',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							
+							
+							$html.on('tap',function(){
+								var index = $(this).attr('data-index');
+								mui.openWindow({ 
+									url:'../Lease/LeasDetails-3.html',
+									id:'LeasDetails_3',
+									extras:{
+										data:rows[index]
+									}
+								})
+							});
+							break;
+							
+						case 19:
+							$html = $(
+								'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + '>' +
+								'<a href="javascript:;">' +
+								'<div class="Uav">' +
+								'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+								'<span class="CarrierSpecs font_18">' + row['Model'] + '</span><span class="IMEI font_14">（' + row['SN'] + '）</span>' + status1[row['LeaseState']] + '' +
+								'</div>' +
+								'<div class="mui-media-body">' +
+								'<p class="mui-ellipsis EquipmentLease">租赁单号:' + ((row['ContractNo'] == null) ? '暂无' : row['ContractNo']) + '</p>' +
+								'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+								'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0, 10) + '</p>' +
+								'</div>' +
+								'<span class="mui-badge MoneyColor">' + row['PreTotal'] + '元</span>' +
+				      			'</li>'
+							);
+							$html.appendTo($("#getNoPayList"));
+							CalculationDays(row['LeaseBeginDate'], row['LeaseEndDate'], i);
+							$html.on('tap', function() {
+								var index = $(this).attr('data-index');
+								mui.openWindow({
+									url: '../Lease/LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: rows[index]
+									}
+								})
+							});
+							break;		
+							
+							
+							
+					};
+				};
+			},
+			error: function(data) {
+			}
+		};
+		//未实名认证不加载
+		if(UserInfo['UserName']!=null){
+			app.post3_4(option);
+		};
+	};
+	
+	
+		
+	//删除过期租赁单
+	function DeleteLease(leaseid){
+		var page = plus.webview.getWebviewById('page');
+		var option = {
+			api:'/PlanManage/LeaseTable/RemoveForm',
+			data:{
+				keyValue:leaseid
+			},
+			success:function(data){
+				page.evalJS("$('.btnsShield').hide()");
+				plus.nativeUI.closeWaiting();
+				var result = JSON.parse(data);
+				//getNoPayList
+				if(result['type']=="1"){
+					dialog.CloseLogBox();
+					$('.list').each(function(i){
+						var lease = $('.list').eq(i).attr('value');
+						if(lease==leaseid){
+							$('.list').eq(i).remove();
+						};
+					});
+					app.toast('删除成功');
+				}else{
+					app.toast('删除失败');
+				};
+			},
+			error:function(data){
+				page.evalJS("$('.btnsShield').hide()");
+				plus.nativeUI.closeWaiting();
+				app.toast('删除失败');
+			}
+		};
+		app.post3_3(option)
+	};
+	//	
+	///获取物流单主键
+	function getExpId(leaseId){
+		var option = {
+			api:'/PlanManage/Express/GetPageListJson',
+			data:{
+				"page": 1,
+				"rows": 1,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					LeaseTableId:leaseId ,
+				})
+			},
+			success:function(data){
+				var result = JSON.parse(data);
+				var rows = result['rows'];
+				for(var i in rows){
+					var row = rows[i];
+					var Compy = row['ExpressCompany'];
+					var Num = row['ExpressRealId'];
+					mui.openWindow({
+						url:"../Lease/OutExpress.html",
+						id:"OutExpress",
+						extras:{
+							href:"https://www.kuaidi100.com/chaxun?com=" + Compy + "&nu=" + Num + "",
+						}
+					});
+				};
+			},
+			error:function(data){
+			}
+		};
+		app.post3_4(option)
+	};
+	//计算租赁单剩余支付时间
+	function CalculationTime(stime, i) {
+		var createTime = Date.parse(stime); //创建时间
+		var enTime = createTime + 7200000; //结束时间
+		var newTime = new Date();
+		var newTimeMs = Date.parse(newTime); //当前时间戳
+		var ChaTimes = enTime - newTimeMs; //剩余毫秒
+		//剩余分钟 
+		var SurplusTime = ChaTimes / (1000 * 60);
+		var SurplusTime1 = SurplusTime.toFixed(0);
+		if(SurplusTime1 <= 0) {
+			SurplusTime1 = 0;
+			return status1[9] + '<span class="mui-badge Surplus"  data="失效">' + SurplusTime1 + '分钟</span>';
+		} else {
+			return status1[0] + '<span class="mui-badge Surplus" >剩余:' + SurplusTime1 + '分钟</span>';
+		};
+	};
+
+	///计算剩余天数
+	function CalculationDays(start, end, i) {
+		var Days = ((Date.parse(end) - Date.parse(new Date())) / 86400000).toFixed(0);
+		if(Days <= 0) {
+			Days = 0;
+		};
+		$(".leaseList").eq(i).append('<span class="mui-badge" style="background: none;">剩余' + Days + '天数</span>');
+	};
+
+	window.addEventListener('slider', function(e) {
+		status = event.detail.slider;
+	});
+
+	////
+	window.addEventListener('pageflowerfresh', function() {
+		getUserLease();
+	});
+</script>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+		html,
+		body,
+		.mui-content {
+			background: #F5F5F5 !important;
+			width: 100%;
+		}
+		
+		ul {
+			background: #F5F5F5 !important;
+			padding: 10px 0px !important;
+		}
+		
+		li {
+			width: 98% !important;
+			margin-left: 1%;
+			background: white !important;
+			border-radius: 4px;
+		}
+		
+		.list {
+			border-bottom: 1px solid #F5F5F5;
+			padding: 10px 15px !important;
+		}
+		
+		.button {
+			margin-bottom: 10px;
+			padding-bottom: 8px !important;
+		}
+		
+		.list:active,
+		.button:active {
+			background: #e9e9e9 !important;
+		}
+		
+		.font_16 {
+			padding: 10px 0px;
+		}
+		
+		.news {
+			text-align: left !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">消息</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-grid-view mui-scroll" id="messageList">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script>
+	//------------------初始化页面------------------------------
+	mui.init({
+		swipeBack: false
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	app.ready(function() {
+		var _self = plus.webview.currentWebview();
+		var _TeamId = _self.TeamId;
+		if(_TeamId != undefined) {
+			//getTeamList(_TeamId);
+		}
+		getAppMessage();
+	});
+	///获取消息列表
+	function getAppMessage() {
+		var option = {
+			api: '/Login/NewsImgs',
+			success: function(data) { //message
+				var cb = JSON.parse(data);
+				var result = JSON.parse(cb['message']);
+				for(var i in result) {
+					var row = result[i];
+					var topTitle_news = "";
+					if(row.Title.length >= 30) {
+						topTitle_news = row.Title;
+					} else {
+						topTitle_news = row.Title;
+					}
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media mui-col-xs-12 list" data-index='+i+'>' +
+						'<p class="font_16 news">' + row['Title2'] + '</p>' +
+						'<p class="font_12 news">' + topTitle_news + ' >></p>' + 
+						'</li>' +
+						'<li class="mui-table-view-cell mui-media mui-col-xs-12 button"  data-index='+i+' id="btn" style="color:#1E9FEF">阅读全文' +
+						'</li>'
+					);
+					$html.on('tap', function() {
+						var index = $(this).attr('data-index');
+						Href_close(index, result[index]['Title3']); 
+						//console.log(JSON.stringify(result[index]));
+					});
+					$html.appendTo($("#messageList"));
+				};
+			},
+			error: function(data) {},
+		};
+		app.post3_4(option)
+	};
+
+	function Href_close(index, result, newsd) {
+		var nwsid = "";
+		var backButtonPress = 0;
+		//判断如果有微信链接地址跳转，如果没有则传主键打开内部页面
+		var userMessage = "";
+//		if(newsd == undefined) {
+//			for(var j in result) {
+//				var row = result[j]; 
+//				if(result[j]['Title3'] == null || result[j]['Title3'] == "") {
+//					userMessage = 'html/service/bannerText.html';
+//					nwsid = result[j]['newsId'];
+//				} else {
+//					userMessage = result[j]['Title3'];
+//				};
+//			};
+//		} else {
+//			//			if(result[index]['title3'] == null || result[index]['title3'] == "") {
+//			//			userMessage = 'html/service/bannerText.html';
+//			//			nwsid = result[index]['newsId'];
+//			//			} else {
+//			//				userMessage = result[index]['title3'];
+//			//			};
+//		};
+		mui.openWindow({
+			url: result,
+			id: 'message_wx',
+			styles: {
+				top: '44px'
+			},
+			extras: {
+				NEwsId: nwsid
+			},
+		});
+	};
+
+	///重置mui.back()
+	mui.back = function() {
+		var message_wx = plus.webview.getWebviewById('message_wx');
+		var MessageList = plus.webview.getWebviewById('MessageList');
+		if(message_wx) {
+			plus.webview.close('message_wx');
+		} else {
+			plus.webview.close('MessageList');
+		};
+	};
+</script>

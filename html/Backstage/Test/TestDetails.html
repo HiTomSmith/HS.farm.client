@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+		<link rel="stylesheet" href="../../../css/imageViewr.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.Status {
+			float: right;
+		}
+		.AccpetPicture{
+			display: block;
+			width: 150px;
+			height:100px;
+			float: left;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">检验详情</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="List">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script src="../../../js/mui.zoom.js"></script>
+<script src="../../../js/mui.previewimage.js"></script>
+<script>
+	mui.init();
+	mui.previewImage();
+	var UserInfo, sendData, _self
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "AcceptanceDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				LeaseTableId: _self.leaseId,
+			})
+		};
+		Test.List();
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	var Test = {
+		//获取列表
+		List: function() {
+			getLeaseInterface.getUavSend(sendData, function(cb) {
+				var rows = cb['rows'];
+				for(var i in rows){
+					var row = rows[i];
+					var tittle = "";
+					//判断当前检验是收货还是发货检验
+					row['Consignor']==null?tittle = '收获验收人：'+row['Consignee']:tittle = '发货验收人：'+row['Consignor'];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' leaseId=' + row['LeaseTableId'] + '>' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_14">' +tittle + '</span><span class="Status font_12">'+((row['AcceptancePhase']==0)?'不合格':'合格')+'</span>' +
+						'</div>' +
+						'<div class="mui-media-body">' + //
+						''+((row['Picture']==null)?"":'<img class="AccpetPicture"  data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['Picture']+'">')+''+
+						''+((row['AirfoilImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['AirfoilImg']+'">')+''+
+						''+((row['ElectricEngineImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['ElectricEngineImg']+'">')+''+
+						''+((row['TripodImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['TripodImg']+'">')+''+
+						''+((row['LavaboImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"   src="'+app.his_root+row['LavaboImg']+'">')+''+
+						''+((row['PowerPackImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['PowerPackImg']+'">')+''+
+						''+((row['ModuleTestingImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['ModuleTestingImg']+'">')+''+
+						''+((row['TurnToImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['TurnToImg']+'">')+''+
+						''+((row['LedLampImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['LedLampImg']+'">')+''+
+						''+((row['FlyAttitudeImg']==null)?"":'<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['FlyAttitudeImg']+'">')+''+
+						''+((row['PackBoxImg']==null)?"":'<img class="AccpetPicture"  data-preview-src="" data-preview-group="1"  src="'+app.his_root+row['PackBoxImg']+'">')+''+
+						'</div>' +
+						' </li>'
+					);
+					$html.appendTo($("#List"));
+				};
+			});
+		},
+		Taps:function(){
+			//点击预览放大图片
+			$(".AccpetPicture").each(function(i){
+				$(this).eq(i).on('tap',function(){
+					
+				});
+			});
+		},
+	};
+</script>

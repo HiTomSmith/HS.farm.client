@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/Commodity.css" rel="stylesheet" />
+		<style>
+			* {
+				color: #666666;
+			}
+			
+			.bar>div>span {
+				display: inline-block;
+			}
+			.Order-Information>span:nth-child(1){
+				float: left;
+			}
+			.Order-Information>span:nth-child(2){
+				float: right;
+			}
+			.mui-media-body>p{ 
+				padding:11px 0px;
+				border-bottom: 1px solid #F5F5F5;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">订单详情</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">
+							<span>订单号：15616516156</span>
+						</div>
+						<div class="mui-media-body ">
+							<p class="mui-ellipsis Order-Information font_12">
+								<span>日期:2018-01-01</span>
+								<span>100元</span>
+							</p>
+						</div>
+						<span class="mui-badge MoneyColor"></span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<span>采购信息</span>
+						</div>
+						<div class="mui-media-body ">
+							<p class="mui-ellipsis font_12">采购人：马冬梅</p>
+							<p class="mui-ellipsis font_12">联系方式：  17631802351</p>
+							<p class="mui-ellipsis font_12">收货地址：  苏州市高新区</p>
+						</div>
+						<span class="mui-badge MoneyColor"></span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<span>采购详情</span>
+						</div>
+						<div class="mui-media-body">
+							<p class="mui-ellipsis Order-Information font_12"> 
+								<span>药剂：  啶虫脒</span>
+								<span>*2  ￥55</span>
+							</p>
+							<p class="mui-ellipsis font_12">优惠券：已优惠5元</p>
+						</div>
+						<span class="mui-badge MoneyColor"></span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<span>采购详情</span>
+						</div>
+						<div class="mui-media-body">
+							<p class="mui-ellipsis Order-Information font_12"> 
+								<span>药剂：  啶虫脒</span>
+								<span>*2  ￥55</span>
+							</p>
+							<p class="mui-ellipsis font_12">优惠券：已优惠5元</p>
+						</div>
+						<span class="mui-badge MoneyColor"></span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/addCar.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+		Order.Taps();
+	});
+
+	//创建订单对象
+	var Order = {
+		Taps: function() {
+			//切换信息
+			$('.bar>div').each(function(i) {
+				$(this).on('tap', function() {
+					$('.bar>div>span').removeClass('active');
+					$(this).find('span').addClass('active');
+				});
+			});
+		}
+	};
+</script>

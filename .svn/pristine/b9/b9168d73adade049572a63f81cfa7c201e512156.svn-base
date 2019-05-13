@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title>任务申请者</title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+	</head>
+	<style>
+		.list {
+			padding-top: 10px !important;
+			padding-bottom: 8px !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">任务申请者</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="TaskApply">
+
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var UserInfo,_self
+	app.ready(function() {
+		UserInfo = app.accountInfo('info'); //用户信息
+		_self = plus.webview.currentWebview();
+		TaskApply.list(); //任务申请记录查看
+	});
+
+	//任务申请记录查看
+	var TaskApply = {
+		list: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 10,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					//OrganizeId: UserInfo.CompanyId,
+					TaskDistributionId:_self.taskId,
+					Examine: 0
+				}) 
+			};
+			
+			console.log(JSON.stringify(sendData))
+			UseIdGetName.SStaskApply(sendData, function(cb) {
+				
+				console.log(JSON.stringify(cb))
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					//获取指派人名称
+					UseIdGetName.getUserName(row['UserId'], function(Name) {
+						var $html = $(
+							'<li class="mui-table-view-cell mui-media list"  value=' + row['TaskDistributionId'] + ' name='+Name+' seeId='+row['TaskSeeRecordId']+'> '+
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/my-fill-light.png">' +
+							'<div class="mui-media-body font_14">' +
+							'' + Name + '' +
+							'<p class="mui-ellipsis font_size12">申请次数：<span>' + row['SeeCount'] + '</span></p>' +
+							'</div>' +
+							'</a>' +
+							'</div>'
+						);
+						$html.appendTo($("#TaskApply"));
+						
+						//点击某一个成为任务承接着
+						$html.on('tap', function() {
+							var name = $(this).attr('name');
+							var seeId = $(this).attr('seeId');
+							dialog.Dialogbox('提示','确认要同意'+name+'承接当前任务吗？',function(data) {
+								if(data == 1) {
+									TaskApply.ApplyTrue(seeId);
+								} else{
+									dialog.CloseLogBox();
+								};
+							});
+						});
+					});
+				};
+			});
+		},
+		//同意成为任务承接者
+		ApplyTrue:function(seeId){
+			var sendData = {
+				keyValue:seeId
+			};
+			TaskObj.ApplyTrue(sendData,function(cb){
+				if(cb['type']==1){
+					app.toast('审批成功！');
+					var TaskExecute = plus.webview.getWebviewById('TaskExecute');
+					mui.fire(TaskExecute,'pageflowrefresh');
+					var Task = plus.webview.getWebviewById('Task');
+					mui.fire(Task,'pageflowrefresh');
+					mui.back();
+				}else{
+					app.toast('审批失败！');
+				}
+			});
+		},
+	};
+</script>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link href="../../../css/list.css" rel="stylesheet" />
+		<link href="../../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../../css/mui.poppicker.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		* {
+			color: #666666;
+		}
+		
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			width: 100%;
+		}
+		
+		.bar>div>span {
+			display: inline-block;
+		}
+		
+		.Uav-time,
+		.Order span:nth-child(2) {
+			float: right;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">结算单</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">			
+			<ul class="mui-table-view mui-scroll" id="List">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/getData.js"></script>
+<script src="../../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				OrderTypeId:"473c994c-890b-4047-80e9-79f8efcb732e",
+				AuditStatus: 7
+			})
+		};
+		Order.List(sendData);
+//		Order.tap();
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	//订单提交对象
+	var Order = {
+		//时间筛选
+		search:function(){
+			app.contentHTML("#List");
+			//开始查询并且返回查询结果
+			$("#search").on('tap', function() {
+				var str = "";
+				var staus = 0;
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				if(str == 0) {
+					app.toast('请选择筛选条件');
+					return false;
+				};
+				var sendData = {
+					"page": 1,
+					"rows": 999,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						StartTime: s,
+						EndTime: e,
+						DeleteMark: 1
+					})
+				};
+				Order.List(sendData);
+			});
+		},
+		//获取订单列表
+		List: function(sendData) {
+			Orders.OrderLists(sendData, function(cb) {
+				$('#List').html('');
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell list lists font_14" data-index=' + i + ' GoodsId=' + row['GoodsBrandId'] + ' >' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' +
+						'<span>订单号：' + row['OrderNumber'] + '</span>' +
+						'<span class="Uav-time">' + (row['CreateDate'].substr(0, 10)) + '</span>' +
+						'</div>' +
+						'<div class="mui-media-body Order">' +
+						'<p class="mui-ellipsis Order-Information font_14">' +
+						'<span class="GoodsName font_14">品牌:</span>' +
+						'<span class="font_12" style="color:#15AE3F;">' + row['PayMoney'] + '元</span>' +
+						'</p>' +
+						'</div>' +
+						'</a>' +
+						'</li>'
+					);
+					
+					$html.appendTo($('#List'));
+					
+					//查看明细
+					$html.on('tap', function() {
+						var index = $(this).attr('data-index');					
+							mui.openWindow({
+								url: './ToManufactor.html',
+								id: 'ToManufactor',
+								extras: {
+									data: rows[index]
+								}
+						  })
+					});
+				};
+				Order.GoodsNames();
+			});
+		},
+		//获取厂家品牌名称
+		GoodsNames: function() {
+			//获取厂家品牌名称
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+
+				})
+			};
+			Orders.OrdersBrand(send, function(cb1) {
+				var rows = cb1['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					$(".lists").each(function(j) {
+						if($(".lists").eq(j).attr('GoodsId') == row['GoodsBrandId']) {
+							$(".GoodsName").eq(j).text('品牌：' + row['GoodsBrandName']);
+						};
+					});
+				};
+			});
+		}
+		
+	};
+	
+	
+	//回调刷新
+	window.addEventListener('fresh',function(){
+		Order.List(sendData); 
+	});
+	
+</script>

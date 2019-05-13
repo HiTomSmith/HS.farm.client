@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+		*{
+			color:#717171;
+		}
+		.mui-content{
+			margin-top:6px;
+		}
+		.iconfont{
+			color:#E4E4E4;
+			font-size: 12px;
+			margin-top:2px;
+			float: right;
+		}
+		li{
+			border-bottom: 1px solid #F5F5F5;
+		}
+		.id {
+			font-size: 12px;
+			float: right;
+			margin-top: 4px;
+			color: #15AE3F;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">设置</h1>
+		</header>
+		<div class="mui-content">
+		   <ul class="mui-table-view">
+		   			<li class="mui-table-view-cell" id="ResetPsd">
+		           		修改密码
+		           		<span class="mui-icon iconfont">&#xe741;</span> 
+		           </li>
+		           <li class="mui-table-view-cell" id="idInfo">
+						<span class="text">实名认证</span>
+						<span class="mui-icon id">已认证</span>
+					</li>
+		           <li class="mui-table-view-cell" id="clearStorage">
+		           		清理缓存
+		           		<span class="mui-icon iconfont">&#xe741;</span> 
+		           </li>
+		           <li class="mui-table-view-cell" id="aboutMe">
+		           		版权说明
+		           		<span class="mui-icon iconfont">&#xe741;</span> 
+		           </li>
+		           <li class="mui-table-view-cell" id="copyright">
+		           		关于我们
+		           		<span class="mui-icon iconfont">&#xe741;</span> 
+		           </li>
+		       </ul>
+		       <button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="backUser">退出登录</button>
+		</div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script>
+	mui.init();
+	app.ready(function(){
+		BtnEvents();
+		preload();
+	});
+	
+	//预加载
+	function preload(){
+		//预加载添修改密码
+		var ResetPsd =  mui.preload({
+			url:'../user/ResetPsd.html',
+			id:'ResetPsd'
+		});
+		//预加载/关于我们
+		var aboutMe =  mui.preload({
+			url:'./aboutMe.html',
+			id:'aboutMe'
+		});
+		//预加载版权说明
+		var aboutMe =  mui.preload({
+			url:'CopyRight.html',
+			id:'CopyRight'
+		});
+	};
+	
+	///bth
+	function BtnEvents(){
+		////关于我们
+		$("#aboutMe").on('tap',function(){
+			mui.openWindow({
+				url:'./aboutMe.html',
+				id:'aboutMe'
+			})
+		});
+		
+		
+		///版权说明
+		$("#copyright").on('tap',function(){
+			mui.openWindow({
+				url:'CopyRight.html',
+				id:'CopyRight'
+			})
+		});
+		
+		
+		///清理缓存
+		$("#clearStorage").on('tap',function(){
+			app.stock.removeItem('setting');
+			app.toast('清理成功');
+		});
+		
+		///退出登陆
+		$("#backUser").on('tap',function(){
+			app.storage("autoLogin","false");
+			app.outLogin();
+			app.restart();
+		});
+		
+		//修改密码
+		$("#ResetPsd").on('tap',function(){
+			mui.openWindow({
+				url:'../user/ResetPsd.html',
+				id:'ResetPsd'
+			})
+		});
+	};
+</script>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link href="../../../css/style.css" rel="stylesheet" />
+		<link href="../../../css/list.css" rel="stylesheet" />
+		<link href="../../../css/addCar.css" rel="stylesheet" />
+		<link href="../../../css/icons-extra.css" rel="stylesheet" />
+		<link href="../../../css/Commodity.css" rel="stylesheet" />
+		<style>
+			.ShoopCat-list{
+				height:100%;
+				padding-bottom: 100px;
+				overflow-y: scroll;
+			}
+			.saves {
+				border-radius: 4px;
+				margin: 0;
+				position: fixed;
+				width: calc(100% - 16px);
+				left: 8px;
+				bottom: 20px;
+			}
+			/*.footer>.purchase{
+				background: white;
+			}*/
+		</style>
+	</head>
+
+	<body>
+		<!--侧滑菜单容器 mui-draggable-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-slide-in ">
+			<!--菜单部分-->
+			<aside id="offCanvasSide" class="mui-off-canvas-right">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll" style="padding-bottom: 50px;">
+						<div class="screen">
+							<div class="screen-name">
+								品牌
+							</div>
+							<div class="screen-show">
+								全部
+								<span class="iconfont">&#xe741;</span>
+							</div>
+							<div style="clear: both"></div>
+							<div class="screen-class mui-row">
+								<div class="screen-items mui-col-xs-4 mui-col-sm-4">
+									<span>杀虫剂</span>
+								</div>
+								<div class="screen-items mui-col-xs-4 mui-col-sm-4">
+									<span>杀虫剂</span>
+								</div>
+								<div class="screen-items mui-col-xs-4 mui-col-sm-4">
+									<span>杀虫剂</span>
+								</div>
+								<div class="screen-items mui-col-xs-4 mui-col-sm-4">
+									<span>杀虫剂</span>
+								</div>
+							</div>
+							<div style="clear: both"></div>
+
+							<div class="screen-name">
+								品牌
+							</div>
+							<div class="screen-show">
+								全部
+								<span class="iconfont">&#xe741;</span>
+							</div>
+							<div style="clear: both"></div>
+							<div class="screen-class mui-row">
+								<div class="screen-items mui-col-xs-4 mui-col-sm-4">
+									<span>杀虫剂</span>
+								</div>
+								<div class="screen-items mui-col-xs-4 mui-col-sm-4">
+									<span>杀虫剂</span>
+								</div>
+								<div class="screen-items mui-col-xs-4 mui-col-sm-4">
+									<span>杀虫剂</span>
+								</div>
+								<div class="screen-items mui-col-xs-4 mui-col-sm-4">
+									<span>杀虫剂</span>
+								</div>
+							</div>
+							<div style="clear: both"></div>
+
+						</div>
+					</div>
+					<div class="screen-footer">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="Reset">重置</button>
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block">确定</button>
+					</div>
+				</div>
+			</aside>
+			<div class="mui-inner-wrap">
+				<header class="mui-bar mui-bar-nav">
+					<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<h1 class="mui-title">药剂调价</h1>
+				</header>
+				<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+					<div class="Mask"></div>
+					<div class="mui-row bar">
+						<!--<div class="mui-col-sm-6 mui-col-xs-6"><span class="active bar-items">农药</span></div>
+						<div class="mui-col-sm-6 mui-col-xs-6"><span class="bar-items">肥料</span></div>-->
+						<!--<div class="mui-col-sm-4 mui-col-xs-4">
+							<a class="mui-col-sm-4 mui-col-xs-4 mui-action-menu" id="offCanvasBtn" href="#offCanvasSide">
+								<span class="bar-items mui-icon-extra mui-icon-extra-filter">筛选</span>
+							</a>
+						</div>-->
+					</div>
+					<div class="mui-scroll">
+						<div class="boxList">
+							<div class="content">
+								<div class="mui-row CommodityLists">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- off-canvas backdrop -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+			<div class="footer " style="background: white;">
+				<!--<div class="shop-car">
+					<img src="../../../img/car.png" alt="" />
+				</div>
+				<div class="title">
+					选择您需要采购的药剂
+				</div>-->
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-block saves" id="confirm">确认</button>
+				<!--<div class="purchase font_18" id="confirm">
+				  确认
+				</div>-->
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script src="../../../js/addCar.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var keyboardStatus, oglHeight, waitStorage, _self,OrderDetails
+	
+	app.ready(function() {
+		oglHeight = document.querySelector("body").offsetHeight;
+		_self = plus.webview.currentWebview();
+		userInfo = app.accountInfo('info');
+		
+	    Commodity.loadOrderDetails();
+		
+		//OrderDetails= _self.OrderDetails;
+		//加载明细表 
+				
+//		Commodity.Tab(); //操作类
+	});
+
+	//创建商品对象 
+	var Commodity = {
+		
+		loadOrderDetails:function(){
+			
+				$('.CommodityLists').html('');
+				var rows = _self.OrderDetails;
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $( 
+						'<div class="mui-col-sm-6 mui-col-xs-6 content-items" GoodsDetailsId=' + row['GoodsDetailId'] + '>' +
+						'<img src=' + (app.his_host + row['Imges']) + ' alt="" />' +
+						'<div class="title">' +
+						'<div class="byline">' +
+						'<div class="title-name">' +
+						'' + row['GoodsName'] + '' +
+						'</div>' +
+						'<div class="Specifications font_10">' +
+						'规格：'+row['Constituents']+'' +
+						'<span style="margin-left:15px">'+
+						'数量：'+row['Number']+'' +
+						'</span>'+
+						'</div>' +
+						'<div class="money">' +
+						'￥'+row['Price']+'.00' +
+						'</div>' +
+						'</div>' +
+						'<div class="buy">' +
+						'<button class="reduce" data-index=' + i + ' comprice=' + row['ComPrice'] + '></button>' +
+                        '<span class="num font_10 comPrice">'+currentPrice(row['ComPrice'])+'' +
+                        '</span>' +
+						'<button class="plus" id="plus1" data-index=' + i + ' comprice=' + row['ComPrice'] + '></button>' +
+						'</div>' + 
+						'</div>' +
+						'</div>'
+					);
+					$html.appendTo($('.CommodityLists'));
+					_self.OrderDetails[i].TradePrice=$('.num').eq(i).text();
+					console.log(_self.OrderDetails[i].TradePrice)
+					
+					//加上数量
+					$html.find('.plus').on('tap', function() {						
+						var index = $(this).attr('data-index');
+						//现价
+						var num = $('.num').eq(index).text();
+						//出厂价
+						var comprice = $(this).attr('comprice');
+						num = increase(num,comprice);
+						$('.num').eq(index).text(num);
+						_self.OrderDetails[index].TradePrice=$('.num').eq(index).text();
+					});
+					
+					//减去数量
+					$html.find('.reduce').on('tap', function() {
+						var index = $(this).attr('data-index');
+						//现价
+						var num = $('.num').eq(index).text();
+						//出厂价
+						var comprice = $(this).attr('comprice');
+						
+						if(Number(num) < (Number(comprice)*1.1)) {
+							var value=Number(comprice)*1.1;
+							var result=Math.floor(value * 100) / 100	
+							num=result
+						}else{	
+							num=reduce(num,comprice);
+						}
+						$('.num').eq(index).text(num);					
+						_self.OrderDetails[index].TradePrice=$('.num').eq(index).text();
+						console.log(_self.OrderDetails[index].TradePrice)
+						
+					});
+					
+		        };
+		},
+		
+		Tab:function(){
+			$(".bar>div").each(function(i){
+				$(".bar>div").eq(i).on('tap',function(){
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".bar-items").eq(i).hasClass('active')){
+						return false;
+					};
+					$("#CommodityLists").html('');
+					$(".bar-items").removeClass('active');
+					$(".bar-items").eq(i).addClass('active');
+					switch ($(".bar-items").eq(i).text()){
+						case '农药':
+							plus.nativeUI.showWaiting();
+							var send = {
+								"page": 1,
+								"rows": 999,
+								"sidx": "CreateDate",
+								"sord": "desc",
+								"queryJson": JSON.stringify({
+									GoodsType:$(".bar-items").eq(i).text()
+								})
+							};
+							Commodity.CommodityList(send); //商品列表
+						break;
+						case '肥料':
+							plus.nativeUI.showWaiting();
+							var send = {
+								"page": 1,
+								"rows": 999,
+								"sidx": "CreateDate",
+								"sord": "desc",
+								"queryJson": JSON.stringify({
+									GoodsType:$(".bar-items").eq(i).text()
+								})
+							};
+							Commodity.CommodityList(send); //商品列表
+						break;
+					};
+				});
+			});
+	    }
+		
+		
+	
+	
+	};
+	//确认调价
+	$("#confirm").on('tap',function(){
+		
+		
+		OrderDetails= _self.OrderDetails;
+		
+		if(OrderDetails==''){
+			app.toast("请选择商品");
+		} 
+		
+		var strChildEntity = OrderDetails;
+		console.log(JSON.stringify(strChildEntity))
+		
+		var send = {
+				keyValue: OrderDetails[0].MedicamentId,
+				
+				strChildEntitys: JSON.stringify(strChildEntity)
+		};
+		
+		dialog.Dialogbox('提示', '确认保存这些商品？', function(cb) {
+				var index = plus.webview.getWebviewById('CommodityPrice');
+				var FatherView = plus.webview.getWebviewById('ChangePrice');
+				if(cb == 1) {
+					SetOrder.ModifyPrice(send, function(cb) {
+						
+					})
+					mui.fire(FatherView, 'Refresh');
+					setTimeout(function() {
+						index.close();
+					}, 500)
+					app.toast('编辑成功！');
+				} else if(cb == 0) {
+					app.toast('已取消');
+					dialog.CloseLogBox();
+				} else {
+					app.toast('已取消');
+				};
+			});
+	})
+	
+	//加
+	function increase(currentPrice,comprice){
+		if(comprice=='null'){
+			return 0
+		}
+		var value= comprice*0.05;
+		var aaa= Number(currentPrice)+Number(value)
+		var result=Math.floor(aaa * 100) / 100	
+		return result  
+	}
+	//减
+	function reduce(currentPrice,comprice){	
+		if(comprice=='null'){
+			return 0
+		}
+		var value= Number(currentPrice)-(Number(comprice)*0.05)
+		var result=Math.floor(value * 100) / 100
+		return result  
+	}
+	//现价格
+	function currentPrice(comprice){		
+		if(comprice=='undefined'){
+			return 0
+		}
+		var currentPrice= comprice*1.1	
+		var result=Math.floor(currentPrice * 100) / 100	
+		return result
+	}
+	
+</script>

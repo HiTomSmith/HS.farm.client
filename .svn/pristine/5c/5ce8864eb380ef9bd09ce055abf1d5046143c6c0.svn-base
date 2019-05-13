@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.min.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		#List{
+			padding:0;
+		}
+		.list>.mui-row {
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">库存</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row">
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle Organize">人员</div>
+					<div class="mentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle Sorties">总架次</div>
+					<div class="PaymentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle Money">总金额</div>
+					<div class="ReceivedNum"></div>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="List">
+				<!--<li class="mui-table-view-cell mui-media list">
+					<div class="mui-row">
+						<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+							<div class="tittle Organize">人员</div>
+							<div class="mentNum"></div>
+						</div>
+						<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+							<div class="tittle Sorties">总架次</div>
+							<div class="PaymentNum"></div>
+						</div>
+						<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+							<div class="tittle Money">总金额</div>
+							<div class="ReceivedNum"></div>
+						</div>
+					</div>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, s, e, UserLsits
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		Statistics.UserList(); //获取人员列表
+		Statistics.search(); //搜索
+		
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	var Statistics = {
+		search:function(){
+			app.contentHTML("#List");
+			//开始查询并且返回查询结果
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				Statistics.UserList(); //获取人员列表
+			});
+		},
+		UserList: function() {
+			//获取人员列表
+			var sendData = {};
+			UseIdGetName.getBaseMange(sendData, function(cb) {
+				UserLsits = [];
+				for(var i in cb) {
+					if(cb[i]['OpenId'] == 5) {
+						UserLsits.push({
+							UserId: cb[i]['UserId'],
+							Sorties: 0,
+							Money: 0
+						});
+					};
+				};
+				Statistics.LeaseList(UserLsits);
+			});
+		},
+		//获取租赁列表
+		LeaseList: function(UserLsits) {
+			var sendData = {
+				"page": 1,
+				"rows": 999,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					StartTime: s?s:"",
+					EndTime: e?e:"",
+				})
+			};
+			getLeaseInterface.getLease(sendData, function(cb) {
+				$("#List").html('');
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					for(var j in UserLsits) {
+						if(row['UserInfoId'] == UserLsits[j]['UserId']) {
+							//人员列表
+							if(JSON.stringify(UserLsits).indexOf(row['CreateUserName']) == -1) {
+								UserLsits[j]['RealName'] = row['CreateUserName'];
+							};
+							UserLsits[j]['Sorties']++;
+							UserLsits[j]['Money'] += row['PreTotal'];
+						};
+					};
+				};
+
+				//输出列表
+				for(var i in UserLsits) {
+					var row = UserLsits[i];
+					//总架次
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + '>' +
+						'<div class="mui-row">' +
+						'<div class="mui-col-sm-4 mui-col-xs-4 font_12">' +
+						'<div class="tittle Organize">' + row['RealName'] + '</div>' +
+						'<div class="mentNum"></div>' +
+						'</div>' +
+						'<div class="mui-col-sm-4 mui-col-xs-4 font_12">' +
+						'<div class="tittle Sorties">' + row['Sorties'] + '</div>' +
+						'<div class="PaymentNum"></div>' +
+						'</div>' +
+						'<div class="mui-col-sm-4 mui-col-xs-4 font_12">' +
+						'<div class="tittle Money">' + row['Money'] + '</div>' +
+						'<div class="ReceivedNum"></div>' +
+						'</div>' +
+						'</div>' +
+						' </li>'
+					);
+					if(row['RealName']) {
+						$html.appendTo($("#List"));
+					};
+				};
+			});
+		},
+	};
+</script>

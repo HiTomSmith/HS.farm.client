@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.picker.css" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/Bcurrency.css" />
+		<link rel="stylesheet" href="../../css/Bpage.css" />
+	</head>
+	<style>
+		.Lease,
+		.QA,
+		.Stock,
+		.Logistics,
+		.Examination,
+		.Activation,
+		.Repair,
+		.Finance,
+		.Statistics,
+		.DrugOrder,
+		.Reagents,
+		.BatteryOrder,
+		.UPament,
+		.Pjgl,
+		.Pjdd,
+		.cleartp,
+		.UAVPayment,
+		.BillGoods,
+		.batteryOrder,
+		.batteryPament,
+		.batteryDeliver,
+		.HistoryLease,
+		.repairPament {
+			display: none;
+		}
+	</style>
+
+	<body>
+		<div class="mengbi"></div>
+		<div class="mui-content">
+			<div class="banner"></div>
+			<div class="mui-row mui-scroll">
+				<div class="mui-col-xs-3 mui-col-xs-3 Lease">
+					<div class="icon1 iconfont">&#xe649;</div>
+					<div class="text">租赁单</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 HistoryLease">
+					<div class="icon1 iconfont">&#xe649;</div>
+					<div class="text">历史租赁单</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 QA">
+					<div class="icon1 iconfont">&#xe7c6;</div>
+					<div class="text">质检中心</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 Stock">
+					<div class="icon1 iconfont">&#xe739;</div>
+					<div class="text">库存</div>
+				</div>
+
+				<div class="mui-col-xs-3 mui-col-xs-3 Logistics">
+					<div class="icon1 iconfont">&#xe671;</div>
+					<div class="text">物流</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 Examination ">
+					<div class="icon1 iconfont">&#xe706;</div>
+					<div class="text">审批</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 UAVPayment ">
+					<div class="icon1 iconfont">&#xe706;</div>
+					<div class="text">无人机扣款</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 Activation">
+					<div class="icon1 iconfont">&#xe715;</div>
+					<div class="text">待激活</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 Repair">
+					<div class="icon1 iconfont">&#xe68a;</div>
+					<div class="text">维修单</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 Finance">
+					<div class="icon1 iconfont">&#xe7d1;</div>
+					<div class="text">财务</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 Statistics">
+					<div class="icon1 iconfont">&#xe6de;</div>
+					<div class="text">统计</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 DrugOrder">
+					<div class="icon1 iconfont">&#xe6fd;</div>
+					<div class="text">药剂订单</div>
+				</div>
+				<!--<div class="mui-col-xs-3 mui-col-xs-3 Reagents">
+					<div class="icon1 iconfont">&#xe6de;</div>
+					<div class="text">药剂支付</div>
+				</div>-->
+				<div class="mui-col-xs-3 mui-col-xs-3 UPament">
+					<div class="icon1 iconfont">&#xe6de;</div>
+					<div class="text">药剂扣款</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 Pjgl">
+					<div class="icon1 iconfont">&#xe6de;</div>
+					<div class="text">配件管理</div>
+				</div>
+
+				<div class="mui-col-xs-3 mui-col-xs-3 Pjdd">
+					<div class="icon1 iconfont">&#xe6de;</div>
+					<div class="text">配件订单</div>
+				</div>				
+
+				<div class="mui-col-xs-3 mui-col-xs-3 batteryOrder">
+					<div class="icon1 iconfont">&#xe6de;</div>
+					<div class="text">电池扣款</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 batteryPament">
+					<div class="icon1 iconfont">&#xe7c6;</div>
+					<div class="text">电池审核</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 batteryDeliver">
+					<div class="icon1 iconfont">&#xe7c6;</div>
+					<div class="text">电池发货</div>
+				</div>
+				<div class="mui-col-xs-3 mui-col-xs-3 repairPament">
+					<div class="icon1 iconfont">&#xe7c6;</div>
+					<div class="text">维修扣款</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var menuType = true;
+	var index, UserInfo
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		index = plus.webview.getWebviewById("page");
+		BpageEvents.Taps();
+	});
+
+	var BpageEvents = {
+		Taps: function() {
+			//关闭册页
+			$('.mengbi').on('tap', function() {
+				clearTimeout(run);
+				if(menuType) {
+					closeOrOpenWindow(index);
+					menuType = false;
+				};
+				var run = setTimeout(function() {
+					menuType = true;
+				}, 2000)
+			});
+			//控制按钮的显示隐藏
+			switch(UserInfo.ObjectId) {
+				case "1": //库管
+					$(".Lease,.Examination,.Activation,.Repair,.Finance").hide();
+					break;
+				case "2": //财务
+					$(".Lease,.QA,.Stock,.Logistics,.Examination,.Activation,.Repair").hide();
+					break;
+				case "3": //维修
+					$(".Lease,.QA,.Stock,.Logistics,.Examination,.Activation,.Finance").hide();
+					break;
+			};
+			if(UserInfo.OpenId == 10) {
+				//调度
+				$(".Lease,.Statistics,.Examination,.Activation,.batteryPament,.Pjdd,.QA").show();
+			} else if(UserInfo.OpenId == 11) {
+				//质检、维修
+				$(".Lease,.Repair,.Pjgl").show();
+			} else if(UserInfo.OpenId == 12) {
+				//库管
+				$(".Lease,.Stock,.Logistics,.Pjdd,.batteryDeliver").show();
+			} else if(UserInfo.OpenId == 13) {
+				//财务
+				$(".Lease,.Finance,.UPament,.batteryOrder,.UAVPayment,.Reagents,.Pjdd,.repairPament").show();
+			} else if(UserInfo.OpenId == 14) {
+				//药剂管理员
+				$(".DrugOrder").show();
+			} else if(UserInfo.OpenId == 8) {
+				//管理员
+				$(".Lease,.QA,.Stock,.Logistics,.Examination,.Activation,.Repair,.Finance,.Statistics,.DrugOrder,.Reagents,.cleartp,.clearcj,.UPament,.cleartp,.Pjgl,.UAVPayment,.BillGoods,.batteryOrder,.batteryPament,.batteryDeliver,.HistoryLease,.Pjdd,.repairPament").show();
+			}
+			//租赁单
+			$('.Lease').on('tap', function() {
+				mui.openWindow({
+					url: './Lease/BLeaseList.html',
+					id: 'BLeaseList',
+				});
+			});
+			//历史租赁单
+			$('.HistoryLease').on('tap', function() {
+				mui.openWindow({
+					url: './Lease/Completed.html',
+					id: 'Completed',
+				});
+			});
+			//财务
+			$('.Finance').on('tap', function() {
+				mui.openWindow({
+					url: './Finance/BFinance.html',
+					id: 'BFinance',
+				});
+			});
+			//待审批
+			$('.Examination').on('tap', function() {
+				mui.openWindow({
+					url: './Examination/Examination.html',
+					id: 'Examination',
+				});
+			});
+			//库存
+			$('.Stock').on('tap', function() {
+				mui.openWindow({
+					url: './Stock/StockList.html',
+					id: 'StockList',
+				});
+			});
+			//检验
+			$('.QA').on('tap', function() {
+				mui.openWindow({
+					url: './Test/Test.html',
+					id: 'Test',
+				});
+			});
+			//物流管理
+			$('.Logistics').on('tap', function() {
+				mui.openWindow({
+					url: './Express/ExpAdmin.html',
+					id: 'ExpAdmin',
+				});
+			});
+			//激活
+			$('.Activation').on('tap', function() {
+				mui.openWindow({
+					url: './Activation/Activation.html',
+					id: 'Activation',
+				});
+			});
+			//维修单
+			$('.Repair').on('tap', function() {
+				mui.openWindow({
+					url: './Repair/Repair.html',
+					id: 'Repair',
+				});
+			});
+			//统计 Statistics
+			$('.Statistics').on('tap', function() {
+				mui.openWindow({
+					url: './Statistics/Statistics.html',
+					id: 'Statistics',
+				});
+			});
+			//药剂订单
+			$('.DrugOrder').on('tap', function() {
+				mui.openWindow({
+					url: './MedicamentCheck/Order.html',
+					id: 'Order',
+				});
+			});
+			//药剂支付
+			$(".Reagents").on('tap', function() {
+				mui.openWindow({
+					url: './MedicamentWithdrawing/PaymentOrder.html',
+					id: 'PaymentOrder',
+				});
+			})
+			//结算单
+			$(".cleartp").on('tap', function() {
+				mui.openWindow({
+					url: './MedicamentWithdrawing/jiesuadan.html',
+					id: 'jiesuandan',
+				});
+			})
+			//厂家付款
+			$(".clearcj").on('tap', function() {
+				mui.openWindow({
+					url: './AccountCenter/GoodOrder/SettlementSheet',
+					id: 'SettlementSheet',
+				});
+			})
+			//药剂扣款
+			$(".UPament").on('tap', function() {
+				mui.openWindow({
+					url: './MedicamentWithdrawing/KKOrder.html',
+					id: 'KKOrder',
+				});
+			})
+			//配件管理
+			$(".Pjgl").on('tap', function() {
+				mui.openWindow({
+					url: './../Parts/PartList.html',
+					id: 'PartList',
+				});
+			})
+
+			//配件订单
+			$(".Pjdd").on('tap', function() {
+				mui.openWindow({
+					url: './../Parts/PartsOrder.html',
+					id: 'PartsOrder',
+				});
+			})
+			
+			$(".batteryOrder").on('tap', function() {
+				mui.openWindow({
+					url: './BatteryCheck/batteryOrder.html',
+					id: 'batteryOrder'
+				});
+			})
+			//电池审核
+			$(".batteryPament").on('tap', function() {
+				mui.openWindow({
+					url: './BatteryCheck/batteryCheck.html',
+					id: 'batteryCheck'
+				});
+			})
+			//无人机扣款
+			$(".UAVPayment").on('tap', function() {
+				mui.openWindow({
+					url: './Finance/uavPament.html',
+					id: 'uavPament'
+				});
+			})
+			//货单符合
+			$(".BillGoods").on('tap', function() {
+				mui.openWindow({
+					url: './Examination/OrderAgreement.html',
+					id: 'OrderAgreement'
+				});
+			})
+			//电池发货
+			$(".batteryDeliver").on('tap', function() {
+				mui.openWindow({
+					url: './BatteryCheck/batteryDeliver.html',
+					id: 'batteryDeliver'
+				});
+			})
+			//维修扣款
+			$(".repairPament").on('tap', function() {
+				mui.openWindow({
+					url: './Finance/repairPament.html',
+					id: 'repairPament'
+				});
+			})
+		}
+	};
+</script>

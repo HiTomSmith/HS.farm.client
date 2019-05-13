@@ -1,0 +1,385 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<link rel="stylesheet" type="text/css" href="../../css/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/myStyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/batteryOrder.css" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.iconfont {
+				font-size: 12px;
+				color: #717171;
+				position: absolute;
+				top: 12px;
+				right: 5px;
+				text-align: right;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">订单明细</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell list">
+					<div class="Address">
+						<p style="margin-bottom: 7px;">
+							<span class="black-color font-14">收货地址</span>
+							<span class="mui-icon mui-ellipsis iconfont  ChoiceAddress font-14">请选择&#xe741;</span>
+						</p>
+						<p>
+							<span class="gray-color Address-Moblie font-14">17631802351</span>
+							<span class="mui-pull-right gray-color Address-name font-14" style="text-align: right;">暂无&nbsp;&nbsp;&nbsp;</span>
+						</p>
+					</div>
+				</li>
+				<!--<li class="mui-table-view-cell list">
+					<div class="orderNum">
+						<div class="orderNum_number underline">
+							<img class="mui-media-object mui-pull-left Icon" src="../../img/battey.png">
+							<span class="orderNumber black-color font-14">订单号：2018040401</span>
+							<span class="mui-pull-right gray-color time  font-14">04-06</span>
+						</div>
+						<div class="orderNum_pay">
+							<span class="gray-color font-14">分期付款</span>
+							<span class="mui-pull-right blue-color font-14">20700&nbsp;元</span>
+						</div>
+					</div>
+				</li>-->
+				<li class="mui-table-view-cell list">
+					<div class="purchase">
+						<div class="purchase-o font-14 black-color underline">采购详情</div>
+						<div class="purchase-t black-color">
+							<span class="gray-color font-14">植保机电池*6块+充电器</span>
+							<div class="mui-pull-right font-14">
+								<span class="priceNum"></span>&nbsp;&nbsp;<span class="font-14 " id="priceto">￥0</span>
+							</div>
+							<!--x1&nbsp;&nbsp;&nbsp;&nbsp;￥<span class="mui-pull-right font-14">20700</span>-->
+						</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell list">
+					<div class="underline font-14 black-color" style="height: 35px; line-height: 35px;">分期明细</div>
+					<div class="bottom gray-color underline">
+						<p style="margin:7px 0px;">
+							<span class="font-14">1/3期</span>
+							 <span class="mui-pull-right blue-color font-14" id="priceto1">¥&nbsp;&nbsp;<b class="font-14 money" style="font-weight: normal;">0</b></span>
+						</p>
+						<p>
+							<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14 PayMent" style="font-weight: normal;"></b></span>
+							<span class="mui-pull-right font-14">未付款</span>
+						</p>
+					</div>
+					<div class="bottom gray-color underline">
+						<p style="margin:7px 0px;">
+							<span class="font-14">2/3期</span>
+							<span class="mui-pull-right blue-color font-14" id="priceto2">¥&nbsp;&nbsp;0</span>
+						</p>
+						<p>
+							<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14  PayMent1" style="font-weight: normal;"></b></span>
+							<span class="mui-pull-right font-14">未付款</span>
+						</p>
+					</div>
+					<div class="bottom gray-color">
+						<p style="margin:7px 0px;">
+							<span class="font-14">3/3期</span>
+							<span class="mui-pull-right blue-color font-14" id="priceto3">¥&nbsp;&nbsp;0</span>
+						</p>
+						<p>
+							<span class="font-14">还款日&nbsp;&nbsp;<b class="font-14  PayMent2" style="font-weight: normal;"></b></span>
+							<span class="mui-pull-right font-14">未付款</span>
+						</p>
+					</div>
+
+					<div class="bottom gray-color">
+						<p style="margin:7px 0px;">
+							<span> </span>
+							<span class="mui-pull-right blue-color"> </span>
+						</p>
+						<p>
+							<span> </span>
+							<span class="mui-pull-right"> </span>
+						</p>
+					</div>
+					<div class="bottom gray-color">
+						<p style="margin:7px 0px;">
+							<span> </span>
+							<span class="mui-pull-right blue-color"> </span>
+						</p>
+						<p>
+							<span> </span>
+							<span class="mui-pull-right"> </span>
+						</p>
+					</div>
+				</li>
+			</ul>
+			<button class="mui-btn mui-btn-blue mui-btn-block btn" id="ConfirmOder">立即提交</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script type="text/javascript">
+	mui.init({
+		swipeBack: false,
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var UserInfo, UserAdd, UserAdds, OrderTypeId,money,time;var dircid1 = ""; //分包数据
+		var goodnumber="0";
+		var allprice=0;
+		var allprice2;
+		var allprice1;
+		var resultdata1;
+	app.ready(function() {
+		
+		var _self = ""; //
+		
+		var TaskButionId = ""; //分包主键
+		var TaskDistributionState = "" //分包状态：0未发布1已发布
+		
+		var _teamId = ""; //团队主键
+		var fatherView = ""; //父级页面
+	
+			_self = plus.webview.currentWebview();
+			dircid1 = _self.dircid; //分包数据
+			goodnumber=_self.goodnum;
+			allprice=_self.allpricego*_self.resultdata2;
+			allprice2=_self.allpricego;
+			resultdata1=_self.resultdata2;
+		
+		UserAdd = [];
+		UserAdds = new mui.PopPicker();
+		UserInfo = app.accountInfo('info');
+		
+		//console.log(JSON.stringify(UserInfo))
+		 
+		time = getTime(0);
+		$(".PayMent").text(time);
+		time = getTime(1);
+		$(".PayMent1").text(time);
+		time = getTime(2);
+		$(".PayMent2").text(time);
+		
+		Order.UserAddress(); //地址
+		Order.tap();
+		Order.getBatteyType();
+		
+		$('#priceto').text('￥'+allprice);
+		allprice1=Math.round((allprice-5000*resultdata1)/3);
+		$('#priceto1').text('￥'+allprice1+"+"+5000*resultdata1);
+		$('#priceto2').text('￥'+allprice1);
+		$('#priceto3').text('￥'+allprice1);
+		
+		$(".priceNum").text('x'+resultdata1);
+		
+	});
+//	console.log(dircid1);
+	//获取时间
+	function getTime(s){
+		var n = new Date();
+		var YMR= (n.getFullYear()+s)+"-"+(n.getMonth()+1)+"-"+n.getDate();
+		return YMR;
+	}
+	var Order = {
+		//获取电池类型desc
+		getBatteyType:function(){
+			var send = {
+				queryJson: JSON.stringify({
+					TypeKey:"222"
+				})
+			};
+			Orders.OrderType(send,function(cb){
+				OrderTypeId=cb[0].OrderTypeId;
+				TypeName=cb[0].TypeName;
+				GoodsType=cb[0].GoodsType;
+				TypeKey=cb[0].TypeKey;
+			});
+			
+		},
+		//获取当前用户的收货地址
+		UserAddress: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId
+				})
+			};
+			UseIdGetList.GetAddress(sendData, function(cb) {
+//				alert(cb);
+				var row = cb['rows'];
+				for(var i in row) {
+					var res = row[i];
+					UserAdd.push({
+						text: res['Address'],
+						value: res['UserAddressAdminId'],
+						RealName: res['RealName'],
+						Phone: res['Phone'],
+					});
+					//默认收获地址
+					if(res['WhereAddress'] == 1) {
+						$(".ChoiceAddress").html(res['Address']).attr('AddressId', res['UserAddressAdminId']);
+						$(".Address-Moblie").html(res['Phone']);
+						$(".Address-name").html(res['RealName']);
+					} else {
+						$(".ChoiceAddress").html(row[0]['Address']).attr('AddressId', res['UserAddressAdminId']);;
+						$(".Address-Moblie").html(row[0]['Phone']);
+						$(".Address-name").html(row[0]['RealName']);
+					};
+				};
+				UserAdds.setData(UserAdd);
+			});
+
+		},
+		
+		
+			
+//			TaskButionId = TaskDistributionData.TaskDistributionId; //分包主键
+//			TaskDistributionState = TaskDistributionData.TeamExamine; //分包状态：0未发布1已发布
+//			UserInfo = app.accountInfo('info'); //用户信息
+//			_teamId = UserInfo.RoleId; //团队主键
+//			fatherView = plus.webview.getWebviewById('TaskList');
+		
+		
+		
+		
+		//提交订单
+		Save: function() { 
+			
+			money = $('.money').text();
+			
+			
+			var strChildEntity = [];
+			strChildEntity.push(
+				{
+					GoodsId:goodnumber, //商品Id,
+					GoodsName:"电池",
+					GoodsBrand:"大疆",
+					Constituents:"标注",
+					Number:resultdata1,
+					Price:allprice2,
+					Unit:"套",
+					GoodsType:GoodsType,
+					PackType:"盒装",
+					AgentiaType:"其他",
+					Crop:"其他",
+					GoodsEffect:"其他",
+					GoodsManufactor:"其他",
+					Licence:"其他",
+					Imges:"其他",
+					Describe:"其他",
+					Extend:"其他",
+					IsBe:1,
+					Delivery:3,
+					Description:dircid1
+				});
+				//
+			var sendData = {
+				keyValue: '',
+				entity: {
+					OrderTypeId:OrderTypeId,
+					CustomerName:UserInfo.UserName,
+					CustomerId: UserInfo.UserId, //客户主键
+					ReceivingMan: $(".Address-name").text(), //收货人
+					ReceivingTele: $(".Address-Moblie").text(), //联系方式
+					ReceivingAddress: $(".ChoiceAddress").text(), //收货地址
+					IsPay:0,
+					PayMoney: allprice, //付款金额
+					PayType: 1,
+					CreateUserId: UserInfo.UserId, //创建人主键
+					CreateUserName: UserInfo.UserName, //创建人
+					AuditStatus:0,
+					Description:dircid1
+				},
+				strChildEntitys: JSON.stringify(strChildEntity)
+			};
+			 
+//			console.log(JSON.stringify(sendData));
+			SetOrder.SaveOrderForms(sendData, function(cb) {
+//				dialog.Dialogbox('提示', '是否确认提交订单？', function(cb) {
+//					if(cb == 1) {
+//						dialog.CloseLogBox();
+//						app.toast('订单提交成功！');
+//						setTimeout(function() {
+//							mui.openWindow({
+//								url: './BatteryDivPay.html',
+//								id: 'BatteryDivPay',
+//								extras: {
+//									"money": money
+//								}
+//							});
+//						}, 500)
+//					} else if(cb == 0) {
+//						app.toast('已取消');
+//						dialog.CloseLogBox();
+//					} else {
+//						app.toast('已取消');
+//					};
+//				});
+			});
+		},
+		tap: function() {
+			//重新选择收货地址
+			$(".ChoiceAddress").on('tap', function() {
+				UserAdds.show(function(items) {
+					$(".ChoiceAddress").html(items[0]['text']).attr('AddressId', items[0]['value']);
+					$(".Address-Moblie").html(items[0]['Phone']);
+					$(".Address-name").html(items[0]['RealName']);
+				});
+			});
+			
+			$("#ConfirmOder").on("tap", function() {
+				dialog.Dialogbox('提示', '是否确认提交订单？', function(cb) {
+					if(cb == 1) {
+						console.log(dircid1);
+						Order.Save();
+						dialog.CloseLogBox();
+						app.toast('订单提交成功！');
+						setTimeout(function() {
+							var FatherView = plus.webview.getWebviewById('battery');
+			                mui.fire(FatherView,'fresh');
+							mui.openWindow({
+								url: './BatteryDivPay.html',
+								id: 'BatteryDivPay',
+								extras: {
+									"money": allprice
+								}
+							});
+						}, 500)
+					} else if(cb == 0) {
+						app.toast('已取消');
+						dialog.CloseLogBox();
+					} else {
+						app.toast('已取消');
+					};
+				});
+			});
+		}
+	};
+</script>

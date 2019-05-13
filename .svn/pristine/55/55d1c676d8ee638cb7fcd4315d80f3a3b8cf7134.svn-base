@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+			}
+			
+			.mui-content {
+				margin: 0 10px;
+			}
+			
+			.top {
+				margin-top: 30px;
+			}
+			
+			.fontSet {
+				height: 50px;
+				margin-bottom: 10px;
+			}
+			
+			.bottom {
+				margin-top: 40px;
+			}
+			
+			.fontSetBig {
+				width: 100%;
+				height: 25px;
+				margin-bottom: 0;
+				color: #3C3C3C;
+				font-size: 15px;
+				text-align: left;
+			}
+			
+			.fontSetSmall {
+				width: 100%;
+				height: 25px;
+				color: #9C9C9C;
+				font-size: 13px;
+				text-align: left;
+			}
+			
+			.face,
+			.side {
+				height: 150px;
+			}
+			
+			.faceImg,
+			.sideImg {
+				/*border: 1px solid green;*/
+				height: 100%;
+				width: 90%;
+				padding-top: 15px;
+			}
+			
+			.faceImg {
+				margin-right: 10%;
+			}
+			
+			.sideImg {
+				margin-left: 10%;
+			}
+			
+			#uploadIDFace {
+				background: url('../../img/cardz.png');
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			
+			#uploadIDSide {
+				background: url('../../img/cardf.png');
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			
+			#uploadFyFace {
+				background: url('../../img/cardz.png');
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			
+			#uploadFySide {
+				background: url('../../img/fsf.png');
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			
+			.btn {
+				width: 100%;
+				position: fixed;
+				bottom: 10px;
+				right: 0;
+			}
+			
+			.btn>button {
+				height: 40px;
+				width: 70%;
+				background: #15AE3F;
+				border-radius: 20px;
+				border: none;
+				font-size: 14px;
+				color: #FFFFFF;
+				margin: 0 15%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">报案信息</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-row top">
+				<div class="fontSet">
+					<p class="fontSetBig">请拍摄您的身份证证件的正反面</p>
+					<p class="fontSetSmall"> 证件全部信息必须清晰完整，避免反光</p>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6 face">
+					<div class="faceImg" id="uploadIDFace" img-value=""></div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6 side">
+					<div class="sideImg" id="uploadIDSide" img-value=""></div>
+				</div>
+			</div>
+
+			<div class="mui-row bottom">
+				<div class="fontSet">
+					<p class="fontSetBig">请拍摄您的飞手证证件的正反面</p>
+					<p class="fontSetSmall">证件全部信息必须清晰完整，避免反光</p>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6 face">
+					<div class="faceImg" id="uploadFyFace" img-value=""></div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6 side">
+					<div class="sideImg" id="uploadFySide" img-value=""></div>
+				</div>
+			</div>
+			<!--<canvas id="canvas" style="display: none;"></canvas>-->
+			<div class="btn">
+				<button type="button" class="mui-btn" id="confirm">确定，下一步</button>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo = "";
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		report.tap();
+	});
+	var report = {
+
+		tap: function() {
+			/*上传身份证正面*/
+			$("#uploadIDFace").on('tap', function() {
+				UploadPicture('uploadIDFace');
+			})
+			/*上传身份证反面*/
+			$("#uploadIDSide").on('tap', function() {
+				UploadPicture('uploadIDSide');
+			})
+			/*上传飞手证件正面*/
+			$("#uploadFyFace").on('tap', function() {
+				UploadPicture('uploadFyFace');
+			})
+			/*上传飞手证件反面*/
+			$("#uploadFySide").on('tap', function() {
+				UploadPicture('uploadFySide');
+			})
+
+			$("#confirm").on('tap', function() {
+				mui.openWindow({
+					url: '../Lease/reportNext.html',
+					id: 'reportNext'
+				})
+			})
+		}
+	}
+	//拍照或从相册选取
+	function UploadPicture(id) {
+		plus.nativeUI.actionSheet({
+			cancel: "取消",
+			buttons: [{
+					title: '拍照'
+				},
+				{
+					title: '相册选取'
+				},
+				{
+					title: '删除原图'
+				},
+			]
+		}, function(e) {
+			switch(e.index) {
+				case 1:
+					Photograph(id);
+					break;
+				case 2:
+					galleryImg(id);
+					break;
+				case 3:
+					deleteImg(id);
+					break;
+			};
+		});
+	};
+
+	//拍照
+	function Photograph(divid) {
+		var cmr = plus.camera.getCamera();
+		cmr.captureImage(function(p) {
+			plus.io.resolveLocalFileSystemURL(p, function(entry) {
+				ShowAndUploader(entry.toLocalURL(), entry.name, divid);
+			}, function(e) {
+				plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+			});
+		}, function(e) {}, {
+			filename: "_doc/camera/",
+			index: 1
+		});
+	}
+	//相册选取
+	function galleryImg(divid) {
+		plus.gallery.pick(function(p) {
+			console.log("p:" + p)
+			plus.io.resolveLocalFileSystemURL(p, function(entry) {
+				ShowAndUploader(entry.toLocalURL(), entry.name, divid);
+			}, function(e) {
+				plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+			});
+		}, function(e) {}, {
+			filename: "_doc/camera/",
+			filter: "image"
+		});
+	}
+
+	//删除div图片
+	function deleteImg(divid) {
+		switch(divid) {
+			case 'uploadIDFace':
+				url = '../../img/cardz.png';
+				break;
+			case 'uploadIDSide':
+				url = '../../img/cardf.png';
+				break;
+			case 'uploadFyFace':
+				url = '../../img/cardz.png';
+				break;
+			case 'uploadFySide':
+				url = '../../img/fsf.png';
+				break;
+		}
+		$("#" + divid).attr("img-value", "");
+		$("#" + divid).css({
+			'background-image': 'url(' + url + ')',
+			'background-size': '100% 100%',
+			'background-repeat': 'no-repeat',
+			'background-position': 'center'
+		});
+	}
+
+	//显示并且上传
+	function ShowAndUploader(url, name, divid) {
+		console.log("地址：" + url)
+		console.log("名称：" + name)
+		console.log("id：" + divid)
+		$("#" + divid).css({
+			'background-image': 'url(' + url + ')',
+			'background-size': '100% 100%',
+			'background-repeat': 'no-repeat',
+			'background-position': 'center'
+
+		}).html('');
+
+		//将图片转换为base64上传
+		function image2Base64(img) {
+			var canvas = document.createElement("canvas");
+			//			canvas.width = img.width / 5;
+			//			canvas.height = img.height / 5;
+			canvas.width = img.width;
+			canvas.height = img.height;
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+			var newImageData = canvas.toDataURL("image/jpeg", 1); //重新生成图片
+			sendData = newImageData.split(',')[1]; //newImageData.replace("data:"+fileType+";base64,",' ');
+			var data = window.atob(sendData);
+			var ia = new Uint8Array(data.length);
+			for(var i = 0; i < data.length; i++) {
+				ia[i] = data.charCodeAt(i);
+			};
+			blob = new Blob([ia], {
+				type: "image/jpeg"
+			});
+			return blob;
+		};
+
+		var img = document.createElement("img");
+		img.src = url;
+
+		img.onload = function() {
+			var base64 = image2Base64(img);
+
+			var formData = new FormData();
+			formData.append(img, base64);
+			setPicture(formData, divid);
+		};
+
+	}
+
+	function setPicture(formData, imgkey) {
+		plus.nativeUI.showWaiting();
+
+		$.ajax({
+			url: app.his_root + '/AccountCenter/Commodity/UploadFileApp', //请求地址
+			type: 'post',
+			data: formData, //发送数据
+			async: false,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				var result = JSON.parse(data);
+				if(result['type'] == 1) {
+					app.toast('上传成功')
+					console.log("message:" + result['message'])
+					$("#" + imgkey).attr("img-value", result['message'])
+
+				} else {
+					app.toast('上传失败！请更换图片');
+				};
+				plus.nativeUI.closeWaiting();
+			},
+			error: function() {
+				app.toast('上传失败');
+				target.value = "";
+				plus.nativeUI.closeWaiting();
+			}
+		});
+	};
+</script>

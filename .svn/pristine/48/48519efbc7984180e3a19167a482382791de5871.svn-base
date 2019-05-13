@@ -1,0 +1,617 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns="http://www.w3.org/TR/REC-html40">
+
+	<head>
+		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+		<meta name=ProgId content=Word.Document>
+		<meta name=Generator content="Microsoft Word 14">
+		<meta name=Originator content="Microsoft Word 14">
+		<meta name="viewport" content="width=device-width, initial-scale=0.6, maximum-scale=1.0, minimum-scale=0.5">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<!--[if gte mso 9]><xml><o:DocumentProperties><o:Author>Yinfeng Liu</o:Author><o:LastAuthor>帅旗</o:LastAuthor><o:Revision>1</o:Revision><o:Pages>6</o:Pages><o:Characters>2943</o:Characters><o:Lines>24</o:Lines><o:Paragraphs>6</o:Paragraphs><o:Company>Microsoft</o:Company></o:DocumentProperties><o:CustomDocumentProperties><o:KSOProductBuildVer dt:dt="string" >2052-11.1.0.8214</o:KSOProductBuildVer></o:CustomDocumentProperties></xml><![endif]-->
+		<!--[if gte mso 9]><xml><o:OfficeDocumentSettings></o:OfficeDocumentSettings></xml><![endif]-->
+		<!--[if gte mso 9]><xml><w:WordDocument><w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel><w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery><w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery><w:DocumentKind>DocumentNotSpecified</w:DocumentKind><w:DrawingGridVerticalSpacing>7.8 磅</w:DrawingGridVerticalSpacing><w:View>Web</w:View><w:Compatibility><w:DontGrowAutofit/><w:BalanceSingleByteDoubleByteWidth/><w:DoNotExpandShiftReturn/><w:UseFELayout/></w:Compatibility><w:Zoom>0</w:Zoom></w:WordDocument></xml><![endif]-->
+		<!--[if gte mso 9]><xml><w:LatentStyles DefLockedState="false"  DefUnhideWhenUsed="true"  DefSemiHidden="true"  DefQFormat="false"  DefPriority="99"  LatentStyleCount="260" >
+<w:LsdException Locked="false"  Priority="0"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Normal" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="heading 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  QFormat="true"  Name="heading 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  QFormat="true"  Name="heading 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  QFormat="true"  Name="heading 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  QFormat="true"  Name="heading 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  QFormat="true"  Name="heading 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  QFormat="true"  Name="heading 7" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  QFormat="true"  Name="heading 8" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="9"  SemiHidden="false"  QFormat="true"  Name="heading 9" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 7" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 8" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index 9" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 7" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 8" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="39"  SemiHidden="false"  Name="toc 9" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Normal Indent" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="footnote text" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="annotation text" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  QFormat="true"  Name="header" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  QFormat="true"  Name="footer" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="index heading" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="35"  SemiHidden="false"  QFormat="true"  Name="caption" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="table of figures" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="envelope address" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="envelope return" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="footnote reference" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="annotation reference" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="line number" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="page number" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="endnote reference" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="endnote text" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="table of authorities" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="macro" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="toa heading" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Bullet" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Number" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Bullet 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Bullet 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Bullet 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Bullet 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Number 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Number 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Number 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Number 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="10"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Title" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Closing" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Signature" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="1"  SemiHidden="false"  Name="Default Paragraph Font" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="1"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Body Text" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Body Text Indent" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Continue" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Continue 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Continue 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Continue 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Continue 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Message Header" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="11"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Subtitle" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Salutation" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Date" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Body Text First Indent" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Body Text First Indent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Note Heading" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Body Text 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Body Text 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Body Text Indent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Body Text Indent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Block Text" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="0"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Hyperlink" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="FollowedHyperlink" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="22"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Strong" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="20"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Emphasis" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Document Map" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Plain Text" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="E-mail Signature" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="0"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Normal (Web)" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Acronym" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Address" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Cite" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Code" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Definition" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Keyboard" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Preformatted" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Sample" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Typewriter" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="HTML Variable" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Normal Table" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="annotation subject" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="No List" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="1 / a / i" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="1 / 1.1 / 1.1.1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Article / Section" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Simple 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Simple 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Simple 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Classic 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Classic 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Classic 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Classic 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Colorful 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Colorful 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Colorful 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Columns 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Columns 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Columns 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Columns 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Columns 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Grid 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Grid 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Grid 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Grid 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Grid 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Grid 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Grid 7" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Grid 8" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table List 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table List 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table List 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table List 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table List 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table List 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table List 7" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table List 8" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table 3D effects 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table 3D effects 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table 3D effects 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Contemporary" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Elegant" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Professional" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Subtle 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Subtle 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Web 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Web 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Web 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Balloon Text" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="0"  SemiHidden="false"  UnhideWhenUsed="false"  QFormat="true"  Name="Table Grid" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Table Theme" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Placeholder Text" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="No Spacing" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="60"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Shading" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="61"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light List" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="62"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Grid" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="63"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="64"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="65"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="66"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="67"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="68"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="69"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="70"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Dark List" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="71"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Shading" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="72"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful List" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="73"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Grid" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="60"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Shading Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="61"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light List Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="62"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Grid Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="63"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 1 Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="64"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 2 Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="65"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 1 Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="List Paragraph" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Quote" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="99"  SemiHidden="false"  Name="Intense Quote" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="66"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 2 Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="67"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 1 Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="68"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 2 Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="69"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 3 Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="70"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Dark List Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="71"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Shading Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="72"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful List Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="73"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Grid Accent 1" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="60"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Shading Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="61"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light List Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="62"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Grid Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="63"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 1 Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="64"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 2 Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="65"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 1 Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="66"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 2 Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="67"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 1 Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="68"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 2 Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="69"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 3 Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="70"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Dark List Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="71"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Shading Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="72"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful List Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="73"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Grid Accent 2" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="60"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Shading Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="61"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light List Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="62"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Grid Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="63"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 1 Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="64"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 2 Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="65"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 1 Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="66"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 2 Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="67"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 1 Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="68"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 2 Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="69"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 3 Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="70"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Dark List Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="71"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Shading Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="72"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful List Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="73"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Grid Accent 3" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="60"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Shading Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="61"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light List Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="62"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Grid Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="63"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 1 Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="64"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 2 Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="65"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 1 Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="66"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 2 Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="67"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 1 Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="68"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 2 Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="69"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 3 Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="70"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Dark List Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="71"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Shading Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="72"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful List Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="73"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Grid Accent 4" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="60"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Shading Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="61"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light List Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="62"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Grid Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="63"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 1 Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="64"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 2 Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="65"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 1 Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="66"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 2 Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="67"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 1 Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="68"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 2 Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="69"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 3 Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="70"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Dark List Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="71"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Shading Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="72"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful List Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="73"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Grid Accent 5" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="60"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Shading Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="61"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light List Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="62"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Light Grid Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="63"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 1 Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="64"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Shading 2 Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="65"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 1 Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="66"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium List 2 Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="67"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 1 Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="68"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 2 Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="69"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Medium Grid 3 Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="70"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Dark List Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="71"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Shading Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="72"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful List Accent 6" ></w:LsdException>
+<w:LsdException Locked="false"  Priority="73"  SemiHidden="false"  UnhideWhenUsed="false"  Name="Colorful Grid Accent 6" ></w:LsdException>
+</w:LatentStyles></xml><![endif]-->
+		<style>
+			@font-face {
+				font-family: "Times New Roman";
+			}
+			
+			@font-face {
+				font-family: "宋体";
+			}
+			
+			@font-face {
+				font-family: "Calibri";
+			}
+			
+			@font-face {
+				font-family: "Wingdings";
+			}
+			
+			@font-face {
+				font-family: "Arial";
+			}
+			
+			@font-face {
+				font-family: "新宋体";
+			}
+			
+			@list l0:level1 {
+				mso-level-number-format: decimal;
+				mso-level-suffix: none;
+				mso-level-text: "%1、";
+				mso-level-tab-stop: none;
+				mso-level-number-position: left;
+				margin-left: 0.0000pt;
+				text-indent: 0.0000pt;
+				font-family: 'Times New Roman';
+			}
+			
+			p.MsoNormal {
+				mso-style-name: 正文;
+				mso-style-parent: "";
+				margin: 0pt;
+				margin-bottom: .0001pt;
+				mso-pagination: none;
+				text-align: justify;
+				text-justify: inter-ideograph;
+				font-family: Calibri;
+				mso-fareast-font-family: 宋体;
+				mso-bidi-font-family: 'Times New Roman';
+				font-size: 10.5000pt;
+				mso-font-kerning: 1.0000pt;
+			}
+			
+			span.10 {
+				font-family: Calibri;
+			}
+			
+			span.15 {
+				font-family: Calibri;
+				color: rgb(0, 0, 255);
+				text-decoration: underline;
+				text-underline: single;
+			}
+			
+			span.16 {
+				font-family: Arial;
+				color: rgb(0, 0, 0);
+				font-size: 11.0000pt;
+			}
+			
+			span.17 {
+				font-family: 宋体;
+				color: rgb(0, 0, 0);
+				font-size: 11.0000pt;
+			}
+			
+			span.18 {
+				font-family: Calibri;
+				font-size: 9.0000pt;
+				mso-font-kerning: 1.0000pt;
+			}
+			
+			span.19 {
+				font-family: Calibri;
+				font-size: 9.0000pt;
+				mso-font-kerning: 1.0000pt;
+			}
+			
+			p.MsoBodyText {
+				mso-style-name: 正文文本;
+				margin: 0pt;
+				margin-bottom: .0001pt;
+				mso-pagination: none;
+				text-align: justify;
+				text-justify: inter-ideograph;
+				font-family: Calibri;
+				mso-fareast-font-family: 宋体;
+				mso-bidi-font-family: 'Times New Roman';
+				font-size: 10.5000pt;
+				mso-font-kerning: 1.0000pt;
+			}
+			
+			p.p {
+				mso-style-name: "普通\(网站\)";
+				margin-top: 5.0000pt;
+				margin-bottom: 5.0000pt;
+				mso-margin-top-alt: auto;
+				mso-margin-bottom-alt: auto;
+				mso-pagination: widow-orphan;
+				text-align: left;
+				font-family: 宋体;
+				font-size: 12.0000pt;
+			}
+			
+			p.MsoFooter {
+				mso-style-name: 页脚;
+				mso-style-noshow: yes;
+				margin: 0pt;
+				margin-bottom: .0001pt;
+				layout-grid-mode: char;
+				mso-pagination: none;
+				text-align: left;
+				font-family: Calibri;
+				mso-fareast-font-family: 宋体;
+				mso-bidi-font-family: 'Times New Roman';
+				font-size: 9.0000pt;
+				mso-font-kerning: 1.0000pt;
+			}
+			
+			p.MsoHeader {
+				mso-style-name: 页眉;
+				mso-style-noshow: yes;
+				margin: 0pt;
+				margin-bottom: .0001pt;
+				border-bottom: 1.0000pt solid windowtext;
+				mso-border-bottom-alt: 0.7500pt solid windowtext;
+				padding: 0pt 0pt 1pt 0pt;
+				layout-grid-mode: char;
+				mso-pagination: none;
+				text-align: center;
+				font-family: Calibri;
+				mso-fareast-font-family: 宋体;
+				mso-bidi-font-family: 'Times New Roman';
+				font-size: 9.0000pt;
+				mso-font-kerning: 1.0000pt;
+			}
+			
+			p.24 {
+				mso-style-name: "Table Paragraph";
+				margin: 0pt;
+				margin-bottom: .0001pt;
+				mso-pagination: none;
+				text-align: justify;
+				text-justify: inter-ideograph;
+				font-family: Calibri;
+				mso-fareast-font-family: 宋体;
+				mso-bidi-font-family: 'Times New Roman';
+				font-size: 10.5000pt;
+				mso-font-kerning: 1.0000pt;
+			}
+			
+			span.msoIns {
+				mso-style-type: export-only;
+				mso-style-name: "";
+				text-decoration: underline;
+				text-underline: single;
+				color: blue;
+			}
+			
+			span.msoDel {
+				mso-style-type: export-only;
+				mso-style-name: "";
+				text-decoration: line-through;
+				color: red;
+			}
+			
+			table.MsoNormalTable {
+				mso-style-name: 普通表格;
+				mso-style-parent: "";
+				mso-style-noshow: yes;
+				mso-tstyle-rowband-size: 0;
+				mso-tstyle-colband-size: 0;
+				mso-padding-alt: 0.0000pt 5.4000pt 0.0000pt 5.4000pt;
+				mso-para-margin: 0pt;
+				mso-para-margin-bottom: .0001pt;
+				mso-pagination: widow-orphan;
+				font-family: 'Times New Roman';
+				font-size: 10.0000pt;
+				mso-ansi-language: #0400;
+				mso-fareast-language: #0400;
+				mso-bidi-language: #0400;
+			}
+			
+			table.MsoTableGrid {
+				mso-style-name: 网格型;
+				mso-tstyle-rowband-size: 0;
+				mso-tstyle-colband-size: 0;
+				mso-padding-alt: 0.0000pt 5.4000pt 0.0000pt 5.4000pt;
+				mso-border-top-alt: 0.5000pt solid windowtext;
+				mso-border-left-alt: 0.5000pt solid windowtext;
+				mso-border-bottom-alt: 0.5000pt solid windowtext;
+				mso-border-right-alt: 0.5000pt solid windowtext;
+				mso-border-insideh: 0.5000pt solid windowtext;
+				mso-border-insidev: 0.5000pt solid windowtext;
+				mso-para-margin: 0pt;
+				mso-para-margin-bottom: .0001pt;
+				mso-pagination: none;
+				text-align: justify;
+				text-justify: inter-ideograph;
+				font-family: 'Times New Roman';
+				font-size: 10.0000pt;
+				mso-ansi-language: #0400;
+				mso-fareast-language: #0400;
+				mso-bidi-language: #0400;
+			}
+			
+			@page {
+				mso-page-border-surround-header: no;
+				mso-page-border-surround-footer: no;
+			}
+			
+			@page Section0 {
+				margin-top: 72.0000pt;
+				margin-bottom: 72.0000pt;
+				margin-left: 90.0000pt;
+				margin-right: 90.0000pt;
+				size: 595.3000pt 841.9000pt;
+				layout-grid: 15.6000pt;
+			}
+			
+			div.Section0 {
+				page: Section0;
+			}
+		</style>
+	</head>
+
+	<body style="tab-interval:21pt;text-justify-trim:punctuation;">
+		
+		<header class="mui-bar mui-bar-nav header" style="height: 60px;display: flex;align-items: center;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="font-size:40px;"></a>
+			<h1 class="mui-title" style="font-size:25px;">租赁协议</h1>
+		</header>
+		
+		<div class="Section0 mui-content" style="layout-grid:15.6000pt;margin: 0 10px;">
+			<p class=MsoNormal align=center style="margin-top:30px;text-align:center;line-height:114%;"><b><span style="mso-spacerun:'yes';font-family:新宋体;line-height:114%;font-weight:bold;font-size:22.0000pt;mso-font-kerning:1.0000pt;" ><font face="新宋体" >嗨森农业县域服务平台</font></span></b><b><span style="mso-spacerun:'yes';font-family:新宋体;line-height:114%;font-weight:bold;font-size:22.0000pt;mso-font-kerning:1.0000pt;" ><o:p></o:p></span></b></p>
+			<p class=MsoNormal align=center style="margin-top:20px;text-align:center;line-height:114%;"><b><span style="mso-spacerun:'yes';font-family:新宋体;line-height:114%;font-weight:bold;font-size:16.0000pt;mso-font-kerning:1.0000pt;" ><font face="新宋体" >共享植保无人机租赁协议</font></span></b><b><span style="mso-spacerun:'yes';font-family:新宋体;line-height:114%;font-weight:bold;font-size:16.0000pt;mso-font-kerning:1.0000pt;" ><o:p></o:p></span></b></p>
+			<p class=MsoNormal style="text-indent:112.4500pt;mso-char-indent-count:7.0000;line-height:114%;"><b><span style="mso-spacerun:'yes';font-family:新宋体;line-height:114%;font-weight:bold;font-size:16.0000pt;mso-font-kerning:1.0000pt;" ><o:p>&nbsp;</o:p></span></b></p>
+			<p class=MsoNormal align=center style="text-align:center;line-height:114%;"><b><span style="mso-spacerun:'yes';font-family:新宋体;line-height:114%;font-weight:bold;font-size:7.5000pt;mso-font-kerning:1.0000pt;" ><o:p>&nbsp;</o:p></span></b></p>
+			<p class=MsoNormal style="margin-left:174.3000pt;mso-para-margin-left:0.5400gd;text-indent:-168.6500pt;mso-char-indent-count:-14.0000;"><b><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;font-size:12.0000pt;mso-font-kerning:1.0000pt;" ><font face="新宋体" >甲方：</font></span></b><b><u><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" ><font face="新宋体" >苏州大域无疆航空科技有限公司</font> &nbsp;&nbsp;</span></u></b><b><u><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;text-decoration:underline;text-underline:single;font-size:10.5000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;</span></u></b><b><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;font-size:10.5000pt;mso-font-kerning:1.0000pt;" >&nbsp;</span></b><b><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;font-size:10.5000pt;mso-font-kerning:1.0000pt;" ><o:p></o:p></span></b></p>
+			<p class=MsoBodyText><b><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;font-size:11.5000pt;mso-font-kerning:1.0000pt;" ><o:p>&nbsp;</o:p></span></b></p>
+			<p class=MsoNormal style="margin-left:17.3000pt;mso-para-margin-left:0.5400gd;text-indent:-11.6500pt;mso-char-indent-count:-1.0000;"><b><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;font-size:12.0000pt;mso-font-kerning:1.0000pt;" ><font face="新宋体" >乙方：</font></span></b><b><u><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;text-decoration:underline;text-underline:single;font-size:12.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u></b><b><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;font-size:12.0000pt;mso-font-kerning:1.0000pt;" ><font face="新宋体" >（平台运营商或担保保证方）</font></span></b><b><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;font-size:12.0000pt;mso-font-kerning:1.0000pt;" ><o:p></o:p></span></b></p>
+			<p class=MsoNormal style="margin-left:17.3000pt;mso-para-margin-left:0.5400gd;text-indent:-11.6500pt;mso-char-indent-count:-1.0000;"><b><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;font-size:12.0000pt;mso-font-kerning:1.0000pt;" ><o:p>&nbsp;</o:p></span></b></p>
+			<p class=MsoNormal style="margin-left:17.3000pt;mso-para-margin-left:0.5400gd;text-indent:-11.6500pt;mso-char-indent-count:-1.0000;"><b><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;font-size:12.0000pt;mso-font-kerning:1.0000pt;" ><font face="新宋体" >丙方：</font></span></b><b><u><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;text-decoration:underline;text-underline:single;font-size:12.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u></b><b><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;font-size:12.0000pt;mso-font-kerning:1.0000pt;" ><font face="新宋体" >（用户）</font></span></b><b><u><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.2000pt;font-weight:bold;text-decoration:underline;text-underline:single;font-size:12.0000pt;mso-font-kerning:1.0000pt;" ><o:p></o:p></span></u></b></p>
+			<p class=p align=center style="margin-top:0.0000pt;margin-bottom:0.0000pt;text-align:center;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >第一章</font>&#160; &nbsp;总则</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=p style="margin-top:0.0000pt;margin-bottom:0.0000pt;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >第一条</font> &nbsp;</span><b><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;</span></b><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >甲方、乙方和丙方本着自愿、平等、公平、诚实、信用的原则，经友好协商，根据中华人民共和国法律、法规的相关规定签订本协议，由三方共同遵守和履行本协议，彼此应当尽其全力并表明其谨慎、忠实合作。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=p align=center style="margin-top:0.0000pt;margin-bottom:0.0000pt;text-align:center;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >第二章</font> &nbsp;&nbsp;<font face="新宋体" >期限及交付地点</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=p style="margin-top:0.0000pt;margin-bottom:0.0000pt;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >第二条</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(255,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >租赁时间为：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >年</font> </span><u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >月</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >日至</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >年</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >月</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >日。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=p style="margin-top:0.0000pt;margin-bottom:0.0000pt;margin-left:14.0000pt;text-indent:-14.0000pt;mso-char-indent-count:-1.0000;"><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >第三条</font> &nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >本协议签订后，甲方将提供共享植保无人机给乙方，由乙方交付给丙方。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=p style="margin-top:0.0000pt;margin-bottom:0.0000pt;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >第四条</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;">&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >乙丙双方应在协</font></span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >议有效期满前</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >个月商议是否续签</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;">(合同名)。若继续合作的，日期顺延。</span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=p align=center style="margin-top:0.0000pt;margin-bottom:0.0000pt;text-align:center;"><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >第三章</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >甲方共享政策</font></span><span style="mso-spacerun:'yes';font-family:新宋体;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="text-align:left;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第五条</font></span><b><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;</span></b><b><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;</span></b><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >丙方租赁</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >型号</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >台、</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >型号</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >台共享植保无人机，共计：金额</font>:</span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >元（小写），金额</font>:</span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >（大写）</font> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第六条</font> &nbsp;&nbsp;<font face="新宋体" >丙方共享植保无人机可享受乙方担保免押金业务，只需缴纳对应机型的租金及保障计划费用即可提走共享植保无人机。</font></span><b><span style="mso-spacerun:'yes';font-family:新宋体;font-weight:bold;font-size:14.0000pt;mso-font-kerning:1.0000pt;" ><o:p></o:p></span></b></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第七条</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >丙方必须持有</font>AOPA或UTC无人机操作证书，未经过培训用户必须参加乙方组织的统一培训并考取证书，否则不予提供共享植保无人机。</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第八条</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;mso-list:l0 level1 lfo1;">
+				<![if !supportLists]><span style="font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><span style='mso-list:Ignore;' >1、</span></span>
+				<![endif]><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >本租赁协议期限到期后，丙方应返还乙方共享植保无人机。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >超过</font>6个月的共享无人机租赁费用按超额月数500元/月收取，不足30天的按一个月计算。不足六个月按六个月收取相关租赁费用。</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;mso-list:l0 level1 lfo1;">
+				<![if !supportLists]><span style="font-family:新宋体;letter-spacing:-0.3500pt;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><span style='mso-list:Ignore;' >2、</span></span>
+				<![endif]><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.3500pt;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >丙方可根据所辖区域植保作业情况，在协议签订之初可选择连续六个月或自由选择六个月，如在协议月份未进行返回</font></span><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.1500pt;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >，按第八条第一项标准进行收费。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;mso-list:l0 level1 lfo1;">
+				<![if !supportLists]><span style="font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><span style='mso-list:Ignore;' >3、</span></span>
+				<![endif]><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >共享植保无人机运返地点由乙方提前</font>3天提供给丙方，返回共享植保无人机运费由丙方承担。</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >验收流程：丙方在乙方处领取共享植保无人机，按照《共享植保无人机封箱单》（附件一）进行验收飞机，</font></span><span><a href="mailto:2386885097@qq.com；乙方在物流签收后的一个工作日内无反馈，及视为甲方提供的共享无人机为合格产品。" ><span class="15"  style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;" ><font face="新宋体" >如果丙方在物流签收后的一个工作日内无反馈，则视为甲乙双方提供的共享植保无人机为合格产品。</font></span></a>
+				</span><span class="15" style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;mso-list:l0 level1 lfo1;">
+				<![if !supportLists]><span style="font-family:新宋体;letter-spacing:-0.0500pt;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><span style='mso-list:Ignore;' >4、</span></span>
+				<![endif]><span style="mso-spacerun:'yes';font-family:新宋体;letter-spacing:-0.0500pt;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >退机流程：丙方将共享植保无人机退还给乙方，由乙方按照</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >《共享植保无人机封箱单》验收共享植保无人机。因返还共享植保无人机不符合《共享植保无人机封箱单》验收要求，所产生的全部费用由丙方全额承担。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;mso-list:l0 level1 lfo1;">
+				<![if !supportLists]><span style="font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><span style='mso-list:Ignore;' >5、</span></span>
+				<![endif]><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >丙方共享植保无人机逾期</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&#160;7 </span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >日未归还乙方，甲乙双方可解除本协议，锁定丙方共享植保无人机，并要求丙方赔偿甲乙双方的损失（包括但不限于服务费用、诉讼费、律师费、差旅费、共享植保无人机费用）。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;mso-list:l0 level1 lfo1;">
+				<![if !supportLists]><span style="font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><span style='mso-list:Ignore;' >6、</span></span>
+				<![endif]><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >共享植保无人机的所有权属于甲方，乙丙双方对共享植保无人机只享有服务期间的调配使用权。乙丙双方不得在所使用的共享植保无人机上随意增加或减少部件，不得以任何形式进行甲方共享植保无人机的抵押或质押，否则由此造成的全部后果由乙丙双方承担。乙丙双方应保证在操作本协议所涉的共享植保无人机时，应按照国家法律、法规、行业要求等相关规定进行。若因乙丙双方违反相关规定进行操作，造成甲方损失的，甲方有权向乙丙双方追偿。</font></span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;mso-list:l0 level1 lfo1;">
+				<![if !supportLists]><span style="font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><span style='mso-list:Ignore;' >7、</span></span>
+				<![endif]><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >丙方承担在租赁期内发生的因丙方责任导致的共享植保无人机毁损（正常损耗不在此内）和灭失风险。由于不可抗力的原因导致不能履行协议或造成损失时双方根据实际情况进行协商解决。</font></span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:0.3500pt;margin-bottom:2.6500pt;mso-list:l0 level1 lfo1;">
+				<![if !supportLists]><span style="font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><span style='mso-list:Ignore;' >8、</span></span>
+				<![endif]><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >在共享植保无人机发生毁损和灭失时，丙方应立即通知甲乙双方，甲方有权选择下列方式之一，由乙丙双方负责处理并承担一切费用。</font></span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >　　（</font>1）将共享植保无人机复原或修理至完全能正常使用的状态。</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >　　（</font>2）更换与共享植保无人机同等型号、性能的部件或配件使其能正常使用。</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >　　（</font>3）当共享植保无人机毁损或灭失并处于无法修理的程度时，丙方应按本年度市场价格赔偿甲方。</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal align=center style="text-align:center;line-height:110%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第四章</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >合作内容</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="text-indent:21.0000pt;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >甲乙双方提供共享植保无人机产品及嗨森农业服务平台为丙方使用，乙方提供培训、售后服务等相关技术保障服务。丙方租赁期间，在嗨森农业县域服务平台进行采购相关农资产品并享受供应商提供的批发价的同时，乙方给予丙方相应奖励。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal align=center style="text-align:center;line-height:110%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第五章</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >结算收款方式</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第九条</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >乙方收款账户：</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="text-indent:62.7000pt;mso-char-indent-count:4.4800;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >开户行：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="text-indent:20.7000pt;mso-char-indent-count:1.4800;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font face="新宋体" >账</font> &nbsp;<font face="新宋体" >号：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="text-indent:62.7000pt;mso-char-indent-count:4.4800;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >账户名：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal align=center style="text-align:center;line-height:110%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第六章</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >责任划分</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:110%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="margin-left:28.0000pt;text-indent:-28.0000pt;mso-char-indent-count:-2.0000;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第十条</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >甲方的责任和义务：甲方根据协议提供合格的产品并提供相关的技术服务支持。监督乙方和丙方遵守甲方制定的相关平台政策，保证平台有序的运行。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:1.7000pt;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第十一条</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >乙方的责任和义务：</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:1.7000pt;text-indent:28.0000pt;mso-char-indent-count:2.0000;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">1</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >、乙方需要配合甲方完善运营平台，并对丙方提供相关培训和技术服务，指导丙方正确使用共享植保无人机产品。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:1.7000pt;text-indent:28.0000pt;mso-char-indent-count:2.0000;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">2、</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="宋体" >乙方按本协议签订收费标准负责收取丙方租机、电池分期款，并及时转入甲方账户。</font></span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:1.7000pt;text-indent:28.0000pt;mso-char-indent-count:2.0000;"><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;">3、</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >乙方需要使用嗨森农业县域服务平台为丙方提供药剂、种子、化肥、农事服务等相关产品。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoBodyText style="margin-top:1.7000pt;text-indent:28.0000pt;mso-char-indent-count:2.0000;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">4、乙方需要对丙方共享植保无人机做出担保义务。</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="margin-left:28.0000pt;text-indent:-28.0000pt;mso-char-indent-count:-2.0000;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第十二条</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >丙方的权利和义务</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="margin-left:27.9500pt;mso-para-margin-left:2.6600gd;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">1、丙方在使用该产品时必须严格遵守中华人民共和国有关该类航空器的各项法律法规，若违反国家法律法规所导致的一切后果由丙方承担；</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="margin-left:27.9500pt;mso-para-margin-left:2.6600gd;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">2、丙方在使用甲方产品时必须严格按照相关共享植保无人机</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >的《农业植保机免责声明和安全操作指引》《农业植保机用户手册》进行规范操作，因违反手册操作所造成的一切后果由丙方承担；</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="margin-left:27.9500pt;mso-para-margin-left:2.6600gd;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;color:rgb(0,0,0);font-size:14.0000pt;mso-font-kerning:1.0000pt;">3、丙方对甲方提供的产品不可进行擅自改动，导致的一切风险由丙</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >方承担。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="margin-left:28.0000pt;text-indent:-28.0000pt;mso-char-indent-count:-2.0000;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;4、丙方必须严格遵守甲方提供的《共享植保无人机保障计划》&#60;附件二&#62;及《第三者责任险》&#60;附件三&#62;相关规定进行实施，违反相关规定产生的损失由丙方承担。</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal align=center style="text-align:center;line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第七章</font> &nbsp;<font face="新宋体" >协议终止</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:16.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >第十三条</font> </span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >未经书面同意，任何一方不得中途变更或解除协议。任何一方违反本协议约定构成根本违约并导致合同无法继续履行的，都应终止本协议。</font></span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >第十四条</font> &nbsp;</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >在租赁期间，丙方不得将共享植保无人机转让、转租给第三方使用，也不得变卖或作抵押品，否则视为丙方根本违约，即刻终止本协议，甲方有权无条件提前收回共享植保无人机。</font></span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >第十五条</font> &nbsp;</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="宋体" >不可抗力是指不能预见、不能克服、不能避免并对一方当事人造成重大影响的客观事件，包括但不限于自然灾害如洪水、地震、火灾和风暴等以及社会事件如战争、动乱、政府行为等。如因不可抗力事件的发生导致协议无法履行时，遇不可抗力的一方应立即将事故情况书面告知另一方，并应在</font>3天内，提供事故详情及协议不能履行或者需要延期履行的书面资料，甲乙丙三方认可后协商终止协议或暂时延迟协议的履行。</span><span style="mso-spacerun:'yes';font-family:宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第十六条</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >本合同中未尽事宜，甲乙丙三方另行协商解决，协商不成的，任何一方均可向甲方所在地人民法院提起诉讼。</font></span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >第十七条</font> </span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="宋体" >本协议一式三份，经三方代表签字并加盖公章后生效，甲乙丙三方各执一份，乙方附下列盖公章的复印件材料：</font>&#9312;《营业执照》复印件；&#9313;法人身份证复印件。丙方应提供：&#9312;无人机操作合格证等相关证件；&#9313;身份证复印件；&#9314;《履约保证协议》。</span><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal style="line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p>&nbsp;</o:p></span></p>
+			<p class=MsoNormal style="line-height:150%;"><span style="mso-spacerun:'yes';font-family:新宋体;line-height:150%;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p>&nbsp;</o:p></span></p>
+			<p class=p style="margin-top:0.0000pt;margin-bottom:0.0000pt;"><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><font face="新宋体" >甲方（公章）：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:0.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:0.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >代表人签字：</font> &nbsp;</span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >签约时间：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p>&nbsp;</o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >乙方</font>(公章）：</span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >代表人签字：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >签约时间：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p>&nbsp;</o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >丙方：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >代表人签字：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+			<p class=MsoNormal><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><font face="新宋体" >签约时间：</font></span><u><span style="mso-spacerun:'yes';font-family:新宋体;text-decoration:underline;text-underline:single;font-size:14.0000pt;mso-font-kerning:1.0000pt;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></u><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun:'yes';font-family:新宋体;font-size:14.0000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p>
+		</div>
+		<!--EndFragment-->
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script>
+	mui.init();
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+</script>

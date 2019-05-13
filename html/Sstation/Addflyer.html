@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-switch.mui-active {
+			background: #FB9543;
+			border: 2px solid #FB9543;
+		}
+		
+		.mui-input-row .mui-switch {
+			margin-top: 10px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加飞手</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label class="Required">姓名</label>
+					<input id="DriverName" name="DriverName" type="text" placeholder="必填" />
+				</div>
+				<div class="mui-input-row">
+					<label class="Required">电话</label>
+					<input id="Mobile" name="Mobile" type="text" maxlength="11" onkeyup="if(/\D/.test(this.value)){app.toast('只能输入数字');this.value='';}" placeholder="必填" />
+				</div>
+				<div class="mui-input-row">
+					<label class="Required">身份证号</label>
+					<input id="IDnumber" name="IDnumber" type="text" placeholder="必填"/>
+				</div>
+				<div class="mui-input-row">
+					<label class="Required">城市</label>
+					<input id="Ress" name="Ress" type="text" placeholder="请选择" readonly="readonly" />
+				</div>
+				<div class="mui-input-row">
+					<label class="Required">地址</label>
+					<input id="Address" name="Address" type="text" placeholder="请选择"  />
+				</div>
+				<input type="text" id="OrganizeId" name="OrganizeId" style="display: none;" />
+			</form>
+
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="save">确定</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/city.data-3.js"></script>
+<script>
+	mui.init();
+	var _self = "";
+	var cityPicker3 = "";
+	app.ready(function() {
+		var userInfo = app.accountInfo('info');
+		cityPicker3 = new mui.PopPicker({
+			layer: 3
+		});
+		cityPicker3.setData(cityData3);
+		$("#OrganizeId").val(userInfo.CompanyId);
+	});
+ 
+	//三级联动
+	$("#Ress").on('tap', function() {
+		cityPicker3.show(function(items) {
+			$("#Ress").val(items[0]['text'] + '-' + items[1]['text'] + '-' + items[2]['text']);
+		});
+	});
+
+	///新增收货地址
+	$("#save").on('tap', function() {
+		btnsShield(3, "save");
+		var IDnumber = $(".IDnumber").val();
+		if($("#Ress").val() == "") {
+			app.toast('所在城市不能为空');
+			return false;
+		};
+		if($("#Address").val() == "") {
+			app.toast('收货地址不能为空');
+			return false;
+		};
+		if($("#DriverName").val() == "") {
+			app.toast('姓名不能为空');
+			return false;
+		};
+		if($("#Mobile").val() == "") {
+			app.toast('电话不能为空');
+			return false;
+		};
+		if($("#IDnumber").val() == "") {
+			app.toast('身份证号不能为空');
+			return false;
+		};
+		if(!(/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/ || /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(IDnumber))) {
+			mui.toast("请输入正确的身份证号");
+			return false;
+		}
+		plus.nativeUI.showWaiting();
+		var _addRess = $('.mui-input-group').serializeJSON();
+		Address = $("#Ress").val() + ';' + $("#Address").val();
+		console.log(Address);
+		
+		var option = {
+			api: '/XhxManage/XHX_UAVDriver/SaveForm',
+			data: _addRess,
+			success: function(data) { 
+				var result = JSON.parse(data);
+				if(result['type'] == "1") {
+					app.toast('新增成员成功');
+					mui.back();
+				} else {
+					app.toast('当前成员已经被添加');
+				}
+				plus.nativeUI.closeWaiting();
+			},
+			error: function() {
+				app.toast('新增成员失败');
+				plus.nativeUI.closeWaiting();
+			}
+		};
+		app.post3_1(option);
+	});
+</script>

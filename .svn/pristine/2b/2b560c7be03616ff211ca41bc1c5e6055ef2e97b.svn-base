@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.Unfilled {
+			margin: 0 !important;
+			padding: 0 !important;
+			height: 26px !important;
+			width: 70% !important;
+			border: none !important;
+		}
+		
+		.mui-active {
+			background: white !important;
+		}
+		
+		#prcode {
+			margin-top: 4px;
+		}
+		
+		.Arrow {
+			margin-top: 6px;
+			margin-right: 4px;
+			font-size: 12px;
+			transform: rotate(90deg);
+		}
+		
+		#repairMoney {
+			border-radius: 4px;
+			position: fixed;
+			z-index: 100;
+			bottom: 10px;
+			width: 96%;
+			left: 2%;
+			margin: 0;
+		}
+		
+		.backParts {
+			display: none;
+		}
+		
+		table {
+			width: 100%;
+			font-size: 12px;
+			text-align: center;
+			box-shadow: 3px 4px 3px #F5F5F5;
+			position: relative;
+		}
+		
+		th {
+			background: #4381E6;
+			color: white;
+			border-left: 1px solid white;
+			height: 40px;
+		}
+		
+		td {
+			border-left: 1px solid #F5F5F5;
+		}
+		
+		tr {
+			height: 30px;
+			border-bottom: 1px solid #F5F5F5;
+		}
+		
+		.repairTypes {
+			padding-bottom: 30px;
+		}
+		
+		.add {
+			width: 40px;
+			height: 20px;
+			background: #4381E6;
+			border-radius: 0px 0px 20px 20px;
+			position: absolute;
+			bottom: 10px;
+			left: calc((100% - 40px) / 2);
+			z-index: 9;
+			text-align: center;
+			color: white;
+			display: none;
+		}
+		
+		.UserNumber {
+			display: none;
+		}
+		
+		.UserAmount,
+		.Amounts {
+			width: 30px !important;
+			height: 30px !important;
+			padding: 0 !important;
+			padding-top: 11px !important;
+			text-align: left;
+			border: none !important;
+			font-size: 12px;
+		}
+		#repairMoney{
+			display: none;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">维修详情</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="List">
+				<li class="mui-table-view-cell mui-media list repair">
+					<a href="Javascrip:;">
+						<div class="Uav">
+							<span class="Name font_14"> 维修</span>
+						</div>
+					</a>
+					<!--<p class="mui-ellipsis EquipmentLease">维修状态：<input class="Unfilled font_12 RepairStatus" type="text" readonly="readonly"/></p>-->
+					<p class="mui-ellipsis EquipmentLease">维修原因：<input class="Unfilled font_12 Description" type="text" readonly="readonly" /></p>
+					<p class="mui-ellipsis EquipmentLease">维修公司：<input class="Unfilled font_12 OrganizeId" type="text" readonly="readonly" /></p>
+					<p class="mui-ellipsis EquipmentLease">维修人：<input class="Unfilled font_12 RepairName" type="text" readonly="readonly" /></p>
+					<p class="mui-ellipsis EquipmentLease">维修开始时间：<input class="Unfilled font_12 RepairStart" type="text" readonly="readonly" value="暂无" /></p>
+				
+					<p class="mui-ellipsis EquipmentLease">财务扣款时间：<input class="Unfilled font_12 DeductionsTime" type="text" readonly="readonly" value="暂无" /></p>
+					<p class="mui-ellipsis EquipmentLease">维修完成时间：<input class="Unfilled font_12 CompletionTime" type="text" readonly="readonly" value="暂无" /></p>
+					
+					<input class="Unfilled font_12 GoodsId" type="text" readonly="readonly" style="display: none;" />
+					<input class="Unfilled font_12 StockId" type="text" readonly="readonly" style="display: none;" />
+				</li>
+				<li class="mui-table-view-cell mui-media list repairTypes">
+					<table>
+						<th width="30px"></th>
+						<th>配件名称</th>
+					<!--	<th>类型</th>-->
+						<th>数量</th>
+						<th>单价</th>
+					</table>
+					<br/>
+					<span style="float: right;">总价：<span class="RepairMoeny">0</span></span>
+				</li>
+
+			</ul>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="repairMoney">确认扣款</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, _self, Statuss, PartsList;
+	Statuss = ['', '受理中', '正在维修', '维修完成'];
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview().data;
+		$(".Description").val(_self['Description']);
+		$(".RepairName").val(_self.RepairUserName);
+		if(_self.Status==4){
+			$(".CompletionTime").val(_self.EndDate==null?'暂无':_self.EndDate.substring(0,10));
+		}
+		Repair.List(); //获取租赁详情
+		Repair.getRepairChild(); //获取维修单从表
+		Repair.Company(); //获取维修公司
+		Repair.Taps(); //获取维修公司
+		if(_self.Status>=3){
+			Repair.getFinaceTime();
+		}
+		console.log(_self.Status)
+		if(_self.Status==2){
+			$("#repairMoney").show();
+		}
+	});
+	var Repair = {
+		
+		
+		//获取财务扣费日期、维修开始日期
+		getFinaceTime:function(){
+			var sendData = {
+				"page": 1,
+				"rows": 100, 
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					OrderID:_self.LeaseTableId  
+				}) 
+			} 
+			console.log(JSON.stringify(sendData))  
+			Backstage.FinanceList(sendData,function(cb){ 
+				var cb = JSON.parse(cb);
+				$(".RepairStart").val(cb.rows[0].CreateDate.substr(0,10));
+				$(".DeductionsTime").val(cb.rows[0].CreateDate.substr(0,10));
+			}) 
+		},
+		
+		//获取租赁详情 
+		List: function() {
+			//获取租赁详情
+			var send = {
+				"page": 1,
+				"rows": 1,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					LeaseTableId: _self.LeaseTableId,
+					
+				})
+			};
+			getLeaseInterface.getLease(send, function(cb) {
+				console.log(JSON.stringify(cb))
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + ' date=' + row['CreateDate'] + '>' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_14">' + row['RealName'] + '</span><span class="CarrierSpecs font_12">(' + row['Model'] + ',' + row['SN'] + ')</span>' +
+						'<span class="LeaseStatus"></span>' +
+						'</div>' +
+						'<div class="mui-media-body">' +
+						'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+						'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+						'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0, 10) + '</p>' +
+						'</div>' +
+						'<span class="mui-badge MoneyColor">' + row['PreTotal'] + '元</span>' +
+						' </li>'
+					);
+					$('.repair').before($html);
+				};
+			});
+		},
+		//获取维修单从表
+		getRepairChild: function() {
+			var send = {
+				keyValue: _self.RepairId
+			};
+			getLeaseInterface.getRepairFrom(send, function(cb) {
+				var rows = cb;
+				var money = 0;
+				//输出维修单从表
+				for(var i in rows) {
+					var row = rows[i];
+					var html = $(
+						'<tr>' +
+						'<td>' + (parseInt(i) + 1) + '</td>' +
+						'<td class="GoodsName" key=' + row['RepairDetailId'] + '>' + row['GoodsName'] + '</td>' +
+//						'<td class="RepairType">' + row['RepairType'] + '</td>' +
+						'<td class="Amount">' + row['UsedAmount'] + '</td>' +
+						'<td class="Price">' + row['Price'] + '</td>' +
+						'</tr>'
+					);
+					html.appendTo($("table"));
+					money += row['UsedAmount'] * row['Price'];
+				};
+				$(".RepairMoeny").text(money);
+			});
+		},
+		//获取维修公司
+		Company: function() {
+			var send = {
+				"page": 1,
+				"rows": 1,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					OrganizeId: _self['OrganizeId']
+				})
+			};
+			getLeaseInterface.getOrganize(send, function(cb) {
+				var rows = cb['rows'];
+				var row = rows[0];
+				$(".OrganizeId").val(row['FullName']);
+			});
+		},
+		//事件
+		Taps: function() {
+			//确认扣款
+			$("#repairMoney").on('tap', function() {
+				var send = {
+					keyValue: _self.RepairId
+				};
+				console.log(JSON.stringify(send))
+				dialog.Dialogbox('提示', '是否扣款？', function(cb) {
+					if(cb == 1) {
+						LeaseInterface.repairPament(send, function(cb) {
+							console.log(JSON.stringify(cb))
+							if(cb['type'] == 1) {
+								app.toast('扣款成功！');
+								var repairPament = plus.webview.getWebviewById('repairPament');
+								mui.fire(repairPament, 'pageflowerfresh');
+								mui.back();
+							} else {
+								app.toast(cb['message']);
+							};
+						});
+					} else if(cb == 0) {
+						dialog.CloseLogBox();
+					} else {
+						app.toast('已取消');
+					};
+				});
+			})
+		}
+	};
+	window.addEventListener('send', function(e) {
+		
+	});
+</script>

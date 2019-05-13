@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>嗨森农业</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/FarmLease.css" rel="stylesheet" />
+		<style>
+			.machineCost {
+				height: 60px;
+				/*border: 1px solid green;*/
+				display: flex;
+				background-color: #F4F4F4;
+				justify-content: space-around;
+				margin-top: 3px;
+			}
+			
+			.machineCost .fisrt {
+				height: 30px;
+				line-height: 35px;
+				font-size: 15px;
+				text-align: center;
+				color: #23241D;
+				margin-bottom: 0px;
+				/*border: 1px solid orange;*/
+			}
+			
+			.machineCost .second {
+				height: 30px;
+				line-height: 23px;
+				font-size: 12px;
+				color: #9B9B9B;
+				text-align: center;
+				/*border: 1px solid red;*/
+			}
+			
+			.machineCost .total {
+				height: 30px;
+				line-height: 35px;
+				text-align: center;
+				color: #15AE3F;
+				margin-bottom: 0px;
+				/*border: 1px solid orange;*/
+			}
+			
+			.machineCost .cost_lease {
+				height: 66px;
+				width: 33%;
+			}
+			
+			.machineCost .cost_clean {
+				height: 66px;
+				width: 34%;
+			}
+			
+			.machineCost .cost_total {
+				height: 66px;
+				width: 32%;
+			}
+			
+			.mui-backdrop {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 998;
+				background-color: rgba(0, 0, 0, .3);
+			}
+			/*弹出层样式*/
+			
+			.feeList {
+				color: #23241D;
+				font-size: 12px;
+				margin: 0 10px;
+			}
+			
+			.feeList>.cleanUnderline {
+				border-bottom: 1px solid #F4F4F4;
+				padding-bottom: 10px;
+			}
+			
+			.feeList .moneyRight {
+				text-align: right;
+			}
+			
+			.feeList .tai {
+				color: #9B9B9B;
+			}
+			
+			.feeList .taiMiddle {
+				text-align: center;
+			}
+			
+			.feeList>div {
+				margin-top: 15px;
+			}
+			
+			.feeList .coupon,
+			.feeList .total {
+				/*	border: 1px solid red;*/
+				margin-top: 0px;
+			}
+			
+			.feeList .coupon span {
+				color: red;
+				margin-left: 5px;
+			}
+			
+			.feeList .coupon>div:nth-child(2) {
+				text-align: right;
+			}
+			
+			.feeList .total {
+				font-size: 13px;
+				border-bottom: 1px solid #F4F4F4;
+			}
+			
+			.feeList .total>div:nth-child(2) {
+				text-align: right;
+				color: #15AE3F;
+				font-size: 15px;
+			}
+			
+			.feeList .total span {
+				margin-left: 5px;
+			}
+			
+			.payButton {
+				position: absolute;
+				/*border: 1px solid red;*/
+				bottom: 10px;
+				width: 100%;
+			}
+			
+			.payButton button {
+				height: 40px;
+				background: #15AE3F;
+				border: none;
+				color: #FFFFFF;
+				width: 70%;
+				margin: 0 15%;
+				border-radius: 20px;
+			}
+			
+			.ejectLayer {
+				display: none;
+			}
+			
+			.popup {
+				height: 300px;
+				width: 100%;
+				margin: 0 auto;
+				background: #FFFFFF;
+				position: fixed;
+				z-index: 10000;
+				bottom: 0px;
+				font-size: 14px;
+			}
+			
+			.feeHeight {
+				height: 30px;
+				/*border: 1px solid green;*/
+			}
+			
+			.mask {
+				display: none;
+			}
+			
+			.maskHeight {
+				height: 100%;
+				margin: 0 10;
+			}
+			
+			.font14 {
+				font-size: 13px;
+			}
+			/*月份*/
+			
+			.circle {
+				background-image: url(../../img/newbyq.png);
+				background-size: 20px 20px;
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+			
+			.circleDh {
+				background-image: url(../../img/newbdh.png);
+				background-size: 20px 20px;
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+			
+			.bod {
+				/*border: 1px solid green;*/
+				color: #23241D;
+				height: 35px;
+			}
+			
+			.bod>div {
+				height: 35px;
+				/*border: 1px solid green;*/
+				display: flex;
+				align-items: center;
+			}
+			
+			.bodFirst {
+				/*	border:1px solid green;*/
+				height: 35px;
+				width: 100%;
+			}
+			
+			.glay {
+				color: #9B9B9B;
+			}
+			
+			.paddingLeft {
+				padding-left: 10px;
+				padding-top: 3px;
+			}
+			
+			.marginLR {
+				margin-left: 5px;
+				margin-right: 5px;
+			}
+			
+			.footer {
+				background: #FFFFFF;
+				width: 100%;
+				height: 50px;
+				/*border: 1px solid red;*/
+				position: fixed;
+				bottom: 0px;
+				right: 0;
+				z-index: 22;
+				margin-top: 10px;
+			}
+			
+			.footer button {
+				margin-top: 5px;
+			}
+			
+			
+			/*弹出层样式*/
+			#div {
+				width: 0px;
+				height: 0px;
+				background: red;
+				position: fixed;
+				top: 70%;
+				left: 50%;
+			}
+			/*移除底部或顶部三角,需要在删除此代码*/
+			
+			.mui-popover .mui-popover-arrow:after {
+				width: 0px;
+			}
+			.cellLi{
+				display: flex;
+				justify-content: space-between;
+				/*border: 1px solid red;*/
+				height: 40px;
+				padding-top: 0px;
+			}
+			.cellTextLeft{
+				height: 40px;
+			/*	border: 1px solid green;*/
+				width: 50%;
+				line-height: 40px;
+				text-align: left;
+			}
+			.cellTextRight{
+				height: 400px;
+				/*border: 1px solid green;*/
+				width: 50%; 
+				line-height: 40px;
+				text-align: right;
+			}
+			.btn{
+				 width: 100%;
+				 /*border: 1px solid green;*/
+				 margin-top: 27%;
+			}
+			.btn>button{
+				width: 70%;
+				background:#15AE3F;
+				color: #FFFFFF;
+				border: none;
+				margin-left: 15%;
+				height: 40px;
+				border-radius: 20px;
+			}
+			
+			
+			
+			/*按钮*/
+			.footer {
+				height: 45px;
+				width: 100%;
+				position: fixed;
+				bottom: 0px;
+				z-index: 22;
+				padding-top: 3px;
+			}
+			
+			.footer button {
+				width: 70%;
+				height: 40px;
+				margin: 0 15%;
+				border: none;
+				border-radius: 20px;
+				background: #15AE3F;
+				font-size: 14px;
+				color: #FFFFFF;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">续租</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="main" style="padding-bottom: 30%;">
+				<!--植保机图片-->
+				<div class="machineImg" style="margin-top: 50px;">
+					<img class="mgs ms" src="../../img/1s.png" height="160" width="100%" />
+					<img class="mgp mp" src="../../img/1p.png" height="140" width="90%" />
+					<img class="mga ma" src="../../img/1a.png" height="140" width="90%" />
+				</div>
+				<div class="leaseRule" style="margin-top: 34px;">
+					<p style="font-size: 15px;">大疆植保机&nbsp;&nbsp;<span id="model" style="font-size: 15px;"></span></p>
+					<p style="color: #9B9B9B;font-size: 12px;">
+						编号：<span style="color: #9B9B9B;font-size: 12px;" id="planCode">植保机编号</span>
+						<span class="mui-pull-right" style="color: #9B9B9B;">开始时间：<span id="nowTime" >2018-12-10</span></span>
+					</p>
+				</div>
+				<div class="machineCost" style="margin-top: 8px;">
+					<div class="cost_clean">
+						<p class="fisrt" id="leaseDeadline">2018.07.15</p>
+						<p class="second">截止日期</p>
+					</div>
+					<div class="cost_total">
+						<p class="total" id="totalSum">1000</p>
+						<p class="second">总金额(元)</p>
+					</div>
+				</div>
+
+				<div class="leaseMonth" style="height: 35px;">
+					<p class="font14" style="font-size: 15px;">续租时长</p>
+				</div>
+				<div class="renewMonth">
+					<div class="mui-row bod">
+						<div class="mui-col-sm-1 mui-col-xs-1 chooseCircle">
+							<div style="padding-top: 4px;" class="bodFirst circle circleDh"></div>
+						</div>
+						<div class="mui-col-sm-11 mui-col-xs-11  paddingLeft font14">续租1个月<span class="font14 marginLR">x</span>租金<span class="font14" id="renewF"></span>元</div>
+					</div>
+					<div class="mui-row bod">
+						<div class="mui-col-sm-1 mui-col-xs-1 chooseCircle">
+							<div class="iconfont bodFirst circle "></div>
+						</div>
+						<div class="mui-col-sm-11 mui-col-xs-11 font14 paddingLeft">续租2个月<span class="font14 marginLR">x</span>租金<span class="font14" id="renewS"></span>元</div>
+					</div>
+					<div class="mui-row bod">
+						<div class="mui-col-sm-1 mui-col-xs-1 chooseCircle">
+							<div class="iconfont bodFirst circle "></div>
+						</div>
+						<div class="mui-col-sm-11 mui-col-xs-11 font14 paddingLeft">续租3个月<span class="font14 marginLR">x</span>租金<span class="font14" id="renewT"></span>元</div>
+					</div>
+					<div class="mui-row bod">
+						<div class="mui-col-sm-1 mui-col-xs-1 chooseCircle">
+							<div class="iconfont bodFirst circle"></div>
+						</div>
+						<div class="mui-col-sm-11 mui-col-xs-11 font14 paddingLeft">续租4个月<span class="font14 marginLR">x</span>租金<span class="font14" id="renewFo"></span>元</div>
+					</div>
+					<div class="mui-row bod">
+						<div class="mui-col-sm-1 mui-col-xs-1 chooseCircle">
+							<div class="iconfont bodFirst circle"></div>
+						</div>
+						<div class="mui-col-sm-11 mui-col-xs-11 font14 paddingLeft">续租5个月<span class="font14 marginLR">x</span>租金<span class="font14" id="renewFi"></span>元</div>
+					</div>
+					<div class="mui-row bod">
+						<div class="mui-col-sm-1 mui-col-xs-1 chooseCircle">
+							<div class="iconfont bodFirst circle"></div>
+						</div>
+						<div class="mui-col-sm-11 mui-col-xs-11 font14 paddingLeft">续租6个月<span class="font14 marginLR">x</span>租金<span class="font14" id="renewSe"></span>元</div>
+					</div>
+					<div class="note" style="height: 20px;margin-top: 5px;line-height: 20px;">
+						<span style="font-size: 13px;color: #15AE3F;">注:续租 500元/月</span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div id="div"></div>
+		<div id="popover" class="mui-popover mui-popover-action mui-popover-bottom" style="height: 280px;border-bottom-left-radius:0px;border-bottom-right-radius:0px;">
+			<div style="height: 280px;background: white;padding-top: 5px;">
+				<ul class="mui-table-view" style="margin: 0 auto;background:white;">
+					<li class="mui-table-view-cell cellLi" >
+						<p class="cellTextLeft" >
+							开始日期
+						</p>
+						<p class="cellTextRight" id="popStartDate">
+							2019-1-23
+						</p>
+					</li>
+					<li class="mui-table-view-cell cellLi">
+						<p class="cellTextLeft">
+							结束日期
+						</p>
+						<p class="cellTextRight" id="popEndDate">
+							2019-1-23
+						</p>
+					</li>
+					<li class="mui-table-view-cell cellLi">
+						<p class="cellTextLeft">
+							总金额
+						</p>
+						<p class="cellTextRight">
+							￥<span id="popTotal" style="font-size: 14px;"></span>
+						</p>
+					</li>
+				</ul>
+				<div class="btn">
+					<button type="button" id="goPay">确定</button>
+				</div>
+			</div>
+		</div>
+		
+		<footer class="footer">
+			<button type="button" class="mui-btn" id="next">确定，下一步</button>
+		</footer>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var UserInfo = {};
+	var _MainGroup = []; //套餐主表信息
+	var _FromGroup = []; //套餐从表信息
+	var LeaseDetails = []; //提交的套餐详情
+	var _UavType = []; //飞机型号
+	var planMode, resultData;
+	var ETime, userAddress;
+	var addDays; //增加续租天数
+	var renewTotal; //续租总金额
+	var renewLeaseMoney;
+	var addData = {};
+	var xuzuTan=1;
+	app.ready(function() {
+		UserInfo = app.accountInfo("info");
+		resultData = plus.webview.currentWebview().data;
+		console.log("租赁："+JSON.stringify(resultData.LeaseTableId))
+		/*续租租金*/
+		var month = resultData.LeaseEndDate;
+		if(month >= 3 && month <= 9) {
+			$("#rent").text('1000')
+		} else {
+			$("#rent").text('500')
+		}
+		planMode = resultData.GoodsName; //飞机型号
+		$("#model").text(resultData.SN);//植保机编号
+		$("#planCode").text(resultData.SN);//植保机编号
+		Lease.planImg(planMode);
+		Lease.nowTime();
+		Lease.addDate('30'); //默认续租30天
+		Lease.getRenewList();
+		Lease.tap();
+	});
+
+	var Lease = {
+
+		/*无人机图片*/
+		planImg: function() {
+			/*切换无人机型号图片*/
+			switch(planMode) {
+				case 'MG-1S':
+					
+					$(".ms").removeClass('mgs');
+					break;
+				case 'MG-1P':
+				
+					$(".mp").removeClass('mgp');
+					break;
+				case 'MG-1SA':
+				
+					$(".ma").removeClass('mga');
+					break;
+			}
+		},
+
+		//获取当前时间
+		nowTime: function() {
+			$("#nowTime").text(resultData.LeaseEndDate.substr(0, 10)); //默认每月续租租金
+			$("#cleanFee").text(new Date().format().substr(0, 10)); //默认截止日期
+		},
+		
+		/*日期相加*/
+		addDate: function(addDays) {
+			console.log("天数：" + addDays)
+			var begdate = $("#nowTime").text();
+			var d = new Date(begdate.replace(/-/g, "/"));
+			d.setDate(d.getDate() + parseInt(addDays));
+			var nowDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+			$("#leaseDeadline").text(nowDate);
+		},
+		/*获取续租费用列表*/
+		getRenewList:function(){
+			getLeaseInterface.getRenewFee(function(cb){
+				
+				for(var i in cb){
+					var row = cb[i];
+					console.log("结果："+JSON.stringify(row))
+					renewLeaseMoney = row.Money
+					$("#renewF").text(renewLeaseMoney);
+					$("#renewS").text(renewLeaseMoney*2);
+					$("#renewT").text(renewLeaseMoney*3);
+					$("#renewFo").text(renewLeaseMoney*4);
+					$("#renewFi").text(renewLeaseMoney*5);
+					$("#renewSe").text(renewLeaseMoney*6);
+					addData.GroupDetailsID=row.GroupDetailsID;
+				}
+			});
+		},
+		
+		
+		//点击
+		tap: function() {
+			$("#totalSum").text('500');
+			//切换续租时长
+			$(".chooseCircle>div").each(function(i) {
+				$(".chooseCircle>div").eq(i).on('tap', function() {
+					console.log(i)
+
+					$(".chooseCircle>div").removeClass("circleDh")
+					$(".chooseCircle>div").eq(i).addClass("circleDh");
+
+					switch(i) {
+						case 0:
+							addDays = 30;
+							console.log(i)
+							Lease.addDate(addDays);
+							$("#totalSum").text($("#renewF").text());
+							xuzuTan=1;//续租月数
+							break;
+						case 1:
+							addDays = 60;
+							Lease.addDate(addDays);
+							$("#totalSum").text($("#renewS").text());
+							xuzuTan=2;//续租月数
+							break;
+						case 2:
+							addDays = 90;
+							Lease.addDate(addDays);
+							$("#totalSum").text($("#renewT").text());
+							xuzuTan=3;//续租月数
+							break;
+						case 3:
+							addDays = 120;
+							Lease.addDate(addDays);
+							$("#totalSum").text($("#renewFo").text());
+							xuzuTan=4;//续租月数
+							break;
+						case 4:
+							addDays = 150;
+							Lease.addDate(addDays);
+							$("#totalSum").text($("#renewFi").text());
+							xuzuTan=5;//续租月数
+							break;
+						case 5:
+							addDays = 180;
+							Lease.addDate(addDays);
+							$("#totalSum").text($("#renewSe").text());
+							xuzuTan=6;//续租月数
+							break;
+					}
+
+				})
+			});
+
+			/*选择开始租赁日期*/
+			$("#leaseButton").on('tap', function() {
+				var epicker = new mui.DtPicker({
+					type: "date",
+					beginDate: new Date(2018, 00, 01),
+					endDate: new Date(2100, 11, 30)
+				});
+				epicker.show(function(item) {
+					var day = $('#cleanFee').text(item['text']);
+					var Days = $(".days").attr('day') * 86400000;
+					ETime = new Date(Date.parse(item['text']) + Days).format();
+					var month = item['text'].substr(5, 2);
+					if(month >= 3 && month <= 9) {
+						$("#rent").text('1000')
+					} else {
+						$("#rent").text('500')
+					}
+
+				});
+			})
+
+			/*下一步*/
+			$("#next").on('tap', function() {
+				mui("#popover").popover('toggle', document.getElementById("div"));
+
+				$("#popStartDate").text($("#nowTime").text());
+				$("#popEndDate").text($("#leaseDeadline").text());
+				$("#popTotal").text($("#totalSum").text());
+			});
+
+			/*去支付*/
+			$("#goPay").on('tap', function() {
+				addData.LeaseTableId=resultData.LeaseTableId;
+				addData.RenewNumber=xuzuTan;//续租月数
+				addData.Money = $("#popTotal").text();
+				mui.openWindow({
+					url: '../Lease/renewPay.html',
+					id: 'renewPay',
+					extras: {
+						entity:addData
+					}
+					
+				})
+			})
+		}
+	}
+	window.addEventListener('pageflowerfresh', function() {
+		location.reload();
+	})
+</script>

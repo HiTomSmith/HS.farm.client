@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+	</body>
+
+</html>
+<script src="js/mui.min.js"></script>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/hx.functor.js"></script>
+<script src="js/app.js"></script>
+<script src="js/getData.js"></script>
+
+<script>
+	mui.init();
+	app.ready(function() {
+		//获取数据
+
+		var brigde_str = "{\"userid\":\"27573ddf-8a48-42b9-a77f-f37f70b03ef8\",\"token\":\"cb788ce2-40ec-48a7-8b0e-1f5c962686a8\",\"tap\":\"Page\"}";
+
+		var brigdeObj = JSON.parse(brigde_str);	
+		getLeaseInterface.loginAuthentication({
+			token: brigdeObj.token 
+		}, function(data) {
+			
+			
+			console.log(JSON.stringify(data));
+		
+			var result = data; 
+
+			if(result['type'] == "1") {
+				var userInfo;
+				console.log(JSON.stringify(result));
+				if(result.resultdata == null) {
+					var message = result['message'];
+					var message1 = eval("(" + message + ")");
+					//var message2 = eval("(" + message1.info + ")");
+					console.log("message1:"+JSON.stringify(message1));
+					userInfo = { 
+						userid: message1.UserId,
+						token: message1.Token,
+						info: message1.info,
+					}
+					 
+					console.log("-------------"+JSON.stringify(userInfo));
+				
+				} else {
+					userInfo = {
+						userid: result.resultdata.UserId,
+						token: result.resultdata.Token,
+						info: result.resultdata,
+					}
+				}
+				console.log("用户：" + JSON.stringify(userInfo))
+				app.storage('username', $('#username').val());  
+				app.storage('psd', $('#password').val());
+				app.storage('login', userInfo);
+				//app.storage("autoLogin", "true");
+
+				//console.log(JSON.stringify(app.accountInfo("info")))
+				switch(brigdeObj.tap) {
+					case "LeaseIndex": //租赁主页
+						mui.openWindow({
+							id: 'HomeServer',
+							url: './html/PageChildren/HomeSever2.html',
+							extras: {
+								tap: "osation"
+							}
+						})
+						break;
+					case "NewLease": //飞机租赁
+						mui.openWindow({
+							id: 'FarmLease',
+							url: './html/Lease/FarmLease.html',
+							extras: {
+								tap: "osation"
+							}
+						})
+						break;
+					case "EquipmentList": //我的设备
+						mui.openWindow({
+							id: 'EquipmentList',
+							url: './html/Equipment/EquipmentList.html',
+							extras: {
+								tap: "osation"
+							}
+						})
+						break;
+					case "TaskList": //任务管理
+						mui.openWindow({
+							id: 'TaskList',
+							url: './html/Task/TaskList.html',
+							extras: {
+								tap: "osation"
+							}
+						})
+						break;
+
+					case "TeamList": //团队管理
+						mui.openWindow({
+							id: 'TeamList',
+							url: ' ./html/Sstation/TeamList.html',
+							extras: {
+								tap: "osation"
+							}
+						})
+						break;
+					case "TwoCode": //扫码
+						mui.openWindow({
+							id: 'TwoCode',
+							url: './html/TwoCode/TwoCode.html',
+							extras: {
+								tap: "osation"
+							}
+						})
+						break;
+					case "Page": //扫码
+						mui.openWindow({
+							id: 'TwoCode',
+							url: './html/page.html',
+							extras: {
+								"phone": userInfo.info.UserName
+							}
+						})
+						break;	
+				}
+
+			} else {
+				app.toast('账号或密码不正确')
+			}
+			//跳转页面
+
+		})
+
+	})
+</script>

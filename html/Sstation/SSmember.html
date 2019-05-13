@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.indexedlist.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-indexed-list {
+			height: 100%;
+		}
+		
+		.mui-indexed-list-item {
+			border-top: 1px solid #F5F5F5;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">人员列表</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div id='list' class="mui-indexed-list ">
+				<div class="mui-indexed-list-search mui-input-row mui-search" style="display: none;">
+					<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索机场">
+				</div>
+				<div class="mui-indexed-list-bar">
+					<a>A</a>
+					<a>B</a>
+					<a>C</a>
+					<a>D</a>
+					<a>E</a>
+					<a>F</a>
+					<a>G</a>
+					<a>H</a>
+					<a>I</a>
+					<a>J</a>
+					<a>K</a>
+					<a>L</a>
+					<a>M</a>
+					<a>N</a>
+					<a>O</a>
+					<a>P</a>
+					<a>Q</a>
+					<a>R</a>
+					<a>S</a>
+					<a>T</a>
+					<a>U</a>
+					<a>V</a>
+					<a>W</a>
+					<a>X</a>
+					<a>Y</a>
+					<a>Z</a>
+				</div>
+				<div class="mui-indexed-list-alert"></div>
+				<div class="mui-indexed-list-inner ">
+					<div class="mui-indexed-list-empty-alert">没有数据</div>
+					<ul class="mui-table-view ">
+						<li data-group="A" class="mui-table-view-divider mui-indexed-list-group A">A</li>
+						<li data-group="B" class="mui-table-view-divider mui-indexed-list-group B">B</li>
+						<li data-group="C" class="mui-table-view-divider mui-indexed-list-group C">C</li>
+						<li data-group="D" class="mui-table-view-divider mui-indexed-list-group D">D</li>
+						<li data-group="E" class="mui-table-view-divider mui-indexed-list-group E">E</li>
+						<li data-group="F" class="mui-table-view-divider mui-indexed-list-group F">F</li>
+						<li data-group="G" class="mui-table-view-divider mui-indexed-list-group G">G</li>
+						<li data-group="H" class="mui-table-view-divider mui-indexed-list-group H">H</li>
+						<li data-group="I" class="mui-table-view-divider mui-indexed-list-group I">I</li>
+						<li data-group="J" class="mui-table-view-divider mui-indexed-list-group J">J</li>
+						<li data-group="K" class="mui-table-view-divider mui-indexed-list-group K">K</li>
+						<li data-group="L" class="mui-table-view-divider mui-indexed-list-group L">L</li>
+						<li data-group="M" class="mui-table-view-divider mui-indexed-list-group M">M</li>
+						<li data-group="N" class="mui-table-view-divider mui-indexed-list-group N">N</li>
+						<li data-group="O" class="mui-table-view-divider mui-indexed-list-group O">O</li>
+						<li data-group="P" class="mui-table-view-divider mui-indexed-list-group P">P</li>
+						<li data-group="Q" class="mui-table-view-divider mui-indexed-list-group Q">Q</li>
+						<li data-group="R" class="mui-table-view-divider mui-indexed-list-group R">R</li>
+						<li data-group="S" class="mui-table-view-divider mui-indexed-list-group S">S</li>
+						<li data-group="T" class="mui-table-view-divider mui-indexed-list-group T">T</li>
+						<li data-group="U" class="mui-table-view-divider mui-indexed-list-group U">U</li>
+						<li data-group="V" class="mui-table-view-divider mui-indexed-list-group V">V</li>
+						<li data-group="W" class="mui-table-view-divider mui-indexed-list-group W">W</li>
+						<li data-group="X" class="mui-table-view-divider mui-indexed-list-group X">X</li>
+						<li data-group="Y" class="mui-table-view-divider mui-indexed-list-group Y">Y</li>
+						<li data-group="Z" class="mui-table-view-divider mui-indexed-list-group Z">Z</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/mui.indexedlist.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/jquery.charfirst.pinyin.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		scrollY: true,
+		scrollX: false, //是否横向滚动**
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var UserInfo = "";
+	app.ready(function() {
+		var header = document.querySelector('header.mui-bar');
+		var list = document.getElementById('list');
+		//calc hieght
+		list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+		//create
+		window.indexedList = new mui.IndexedList(list);
+		UserInfo = app.accountInfo('info');
+		SS.getPreson(); //获取服务站成员列表
+	});
+
+	//获取服务站成员列表
+	var SS = {
+		//汉字转换拼音获取首字母
+		Transformation: function(a) {
+			return makePy(a.charAt(0))[0].toUpperCase();
+		},
+		//获取成员
+		getPreson: function() {
+			var sendData = {
+				organizeId: UserInfo.CompanyId
+			};
+			UseIdGetName.getBaseMange(sendData, function(cb) {
+				console.log(JSON.stringify(cb)); 
+				console.log(UserInfo.CompanyId);
+				for(var i in cb) {
+					var row = cb[i];
+					if(cb[i]['RealName'] != null) {
+						var Chart = SS.Transformation(row['RealName']);
+						switch(Chart) {
+							case 'A':
+								var $html = $(
+									'<li data-value="A" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + ' userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".A").after($html);
+								break;
+							case 'B':
+								var $html = $(
+									'<li data-value="B" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".B").after($html);
+								break;
+							case 'C':
+								var $html = $(
+									'<li data-value="C" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".C").after($html);
+								break;
+							case 'D':
+								var $html = $(
+									'<li data-value="D" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".D").after($html);
+								break;
+							case 'E':
+								var $html = $(
+									'<li data-value="E" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".E").after($html);
+								break;
+							case 'F':
+								var $html = $(
+									'<li data-value="F" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".F").after($html);
+								break;
+							case 'G':
+								var $html = $(
+									'<li data-value="G" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".G").after($html);
+								break;
+							case 'H':
+								var $html = $(
+									'<li data-value="H" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".H").after($html);
+								break;
+							case 'I':
+								var $html = $(
+									'<li data-value="I" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".I").after($html);
+								break;
+							case 'J':
+								var $html = $(
+									'<li data-value="J" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + '<span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".J").after($html);
+								break;
+							case 'K':
+								var $html = $(
+									'<li data-value="K" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".K").after($html);
+								break;
+
+							case 'L':
+								var $html = $(
+									'<li data-value="L" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".L").after($html);
+								break;
+							case 'M':
+								var $html = $(
+									'<li data-value="M" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".M").after($html);
+								break;
+
+							case 'N':
+								var $html = $(
+									'<li data-value="N" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".N").after($html);
+								break;
+							case 'O':
+								var $html = $(
+									'<li data-value="O" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".O").after($html);
+								break;
+							case 'P':
+								var $html = $(
+									'<li data-value="P" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".P").after($html);
+								break;
+							case 'Q':
+								var $html = $(
+									'<li data-value="Q" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + '<span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".Q").after($html);
+								break;
+							case 'R':
+								var $html = $(
+									'<li data-value="R" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".R").after($html);
+								break;
+							case 'S':
+								var $html = $(
+									'<li data-value="S" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".S").after($html);
+								break;
+							case 'T':
+								var $html = $(
+									'<li data-value="T" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + '<span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".T").after($html);
+								break;
+							case 'U':
+								var $html = $(
+									'<li data-value="U" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".U").after($html);
+								break;
+							case 'V':
+								var $html = $(
+									'<li data-value="V" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".V").after($html);
+								break;
+							case 'W':
+								var $html = $(
+									'<li data-value="W" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".W").after($html);
+								break;
+							case 'X':
+								var $html = $(
+									'<li data-value="X" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".X").after($html);
+								break;
+							case 'Y':
+								var $html = $(
+									'<li data-value="Y" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".Y").after($html);
+								break;
+							case 'Z':
+								var $html = $(
+									'<li data-value="Z" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" userId=' + row['UserId'] + '>' + row['RealName'] + ' <span class="mui-pull-right">Tel：' + row['Mobile'] + '</span></li>'
+								);
+								$(".Z").after($html);
+								break;
+
+						};
+					};
+				};
+				SS.Btns();
+			});
+		},
+		//添加队员
+		AddPreson: function(_teamId, User, user_Name) {
+			var sendData = {
+				TeamId: _teamId,
+				UserId: User,
+				Duties: "队员",
+				Description: UserInfo.CompanyId,
+				IsAgree: 1,
+				UserName: user_Name,
+				IsSendMachine: 0,
+			};
+			TaskObj.InvitationPerson(sendData, function(cb) {
+				if(cb['type'] == 1) {
+					app.toast('添加成功！');
+					var SSTeamPreson = plus.webview.getWebviewById('SSTeamPreson');
+					mui.fire(SSTeamPreson, 'pageflowerfresh');
+					mui.back()
+				} else { 
+					app.toast(cb.message)
+				};
+				plus.nativeUI.closeWaiting();
+			});
+		},
+		//点击
+		Btns: function() {
+			$(".mui-indexed-list-item").each(function(i) {
+				var $this = $(".mui-indexed-list-item").eq(i);
+				$this.on('tap', function() {
+					var _self = plus.webview.currentWebview();
+					var list = _self.list;
+					console.log(list)
+					console.log(_self.type)
+					if(_self.type) {
+						if(list.indexOf($this.attr('userId'))!=-1) {
+							app.toast('他已经加入了该团队！');
+						} else{
+							//添加队员
+							SS.AddPreson(_self.Team,$this.attr('userId'),$this.text().substr(0, $this.text().indexOf("Tel")));
+						};
+					}else{
+						var send = {
+							"page": 1,
+							"rows": 100,
+							"sidx": "UserId",
+							"sord": "asc",
+							"queryJson": JSON.stringify({
+								UserId:$this.attr('userId')
+							})
+						};
+						UseIdGetList.getUserIdTeamPreson(send,function(cb){
+							if(cb.length>=1){
+								app.toast('当前飞手已加入其他团队');
+							}else{
+								var CreateTeam = plus.webview.getWebviewById('CreateTeam');
+								mui.fire(CreateTeam, 'pageflowerfresh', {
+									'text': $this.text(),
+									'UserId': $this.attr('userId')
+								});
+								mui.back();
+							};
+						});
+					};
+				});
+			});
+		},
+	};
+</script>

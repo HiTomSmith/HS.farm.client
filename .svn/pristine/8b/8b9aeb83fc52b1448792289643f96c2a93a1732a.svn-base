@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/Commodity.css" rel="stylesheet" />
+		<style>
+			* {
+				color: #666666;
+			}
+			.list .mui-input-row:last-child{
+				border:none;
+			}
+			.mui-input-row{
+				position: relative;
+			}
+			.mui-input-row label {
+				padding: 0;
+				width: 25%;
+			}
+			
+			input {
+				width: 70% !important;
+				text-align: right;
+			}
+			.mui-input-row>.iconfont{
+				position: absolute;
+				top:10px;
+			}
+			.corptype {
+				color: #E4E4E4;
+				font-size: 12px;
+				margin-top: 8px;
+				opacity: 1;
+			}
+			.perTotal{
+				padding-left: calc(100% / 6);
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">药剂采购</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<form class="mui-input-group">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell list">
+						<div class="mui-input-row">
+							<label class="Required">收货地址</label>
+							<input id="RealName" name="RealName" type="text" placeholder="必填" />
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row">
+							<label class="Required">收货人</label>
+							<input id="Phone" name="Phone" type="text" maxlength="11" onkeyup="if(/\D/.test(this.value)){app.toast('只能输入数字');this.value='';}" placeholder="必填" />
+						</div>
+						<div class="mui-input-row">
+							<label class="Required">收货电话</label>
+							<input id="Ress" name="Ress" type="text" placeholder="请选择" readonly="readonly" />
+						</div>
+					</li>
+					<li class="mui-table-view-cell list">
+						<div class="mui-input-row">
+							<label>采购详情</label>
+						</div>
+						<div class="mui-input-row">
+							<label class="">药剂:啶虫脒</label>
+							<input id="Phone" name="Phone" type="text" />
+						</div>
+						<div class="mui-input-row">
+							<label class="">优惠卷</label>
+							<input id="Ress" name="Ress" type="text" placeholder="请选择" readonly="readonly" />
+						</div>
+					</li>
+				</ul>
+			</form>
+			<div class="footer ">
+				<div class="shop-car">
+					<img src="../../img/car.png" alt="" />
+				</div>
+				<div class="title perTotal">
+					￥300
+				</div>
+				<div class="purchase font_18" id="purchase">
+					采购
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/addCar.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+
+	});
+
+	//创建支付对象 
+	var Pay = {};
+</script>

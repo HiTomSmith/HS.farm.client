@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/Homep.css" />
+		<link rel="stylesheet" href="../../css/massif.css" />
+	</head>
+	<style>
+		.mengbi {
+			width: 100%;
+			height: 100%;
+			background: #747474;
+			position: fixed;
+			top: 0;
+			z-index: 10000;
+			display: none;
+			opacity: 0.8;
+		}
+		
+		.type {
+			float: right;
+			position: absolute;
+			right: 20px;
+			top: 30px;
+		}
+		
+		.bottom {
+			height: 300px;
+			position: relative;
+			z-index: 999;
+		}
+		
+		.mui-table-view>li {
+			padding: 10px 15px;
+			height: 80px;
+		}
+	</style>
+
+	<body>
+		<div class="mui-content">
+			<div class="banner">
+				<img src="../../img/fieldB.png" />
+			</div>
+			<div class="mui-row">
+				<div class="mui-col-sm-4 mui-col-xs-4 " id="Draw">
+					<div class="Four_1">
+						<span class="mui-icon iconfont">&#xe6eb;</span>
+					</div>
+					<span class="text font_14">绘制地块</span>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4" id="MyMassIf">
+					<div class="Four_2">
+						<span class="mui-icon iconfont">&#xe72e;</span>
+					</div>
+					<span class="text font_14">我的地块</span>
+				</div>
+				<!--<div class="mui-col-sm-3 mui-col-xs-3" id="CreateTask">
+					<div class="Four_2">
+						<span class="mui-icon iconfont">&#xe6fd;</span>
+					</div>
+					<span class="text font_14">新建任务</span>
+				</div>-->
+				<div class="mui-col-sm-4 mui-col-xs-4" id="Assessment">
+					<div class="Four_4">
+						<span class="mui-icon iconfont">&#xe77b;</span>
+					</div>
+					<span class="text font_14">任务管理</span>
+				</div>
+			</div>
+			<div class="footer bottom mui-scroll-wrapper">
+				<div class="title"><span></span> &nbsp;&nbsp;作业评估</div>
+				<ul class="mui-table-view mui-scroll" id="MyAssessment">
+					
+				</ul>
+			</div>
+			<!--<div class="mengbi"></div>-->
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+
+<script>
+	mui.init();
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var status = "close";
+	var UserInfo = "";
+	app.ready(function() {
+		var _self, _next, _index, timer
+		_self = plus.webview.currentWebview();
+		_prve = plus.webview.getWebviewById("Task");
+		index = plus.webview.getWebviewById("page");
+		UserInfo = app.accountInfo('info');
+		//		var Slide = function(){
+		//			_self.drag({
+		//					direction:"right",
+		//					moveMode:"followFinger"
+		//				},
+		//				{
+		//					view:_prve,
+		//					moveMode:"follow"
+		//				},function(){
+		//					if(timer!=null){clearTimeout(timer)}
+		//					timer  = setTimeout(function(){
+		//						index.evalJS("$('#nav').find('a').removeClass('mui-active');$('#Task').addClass('mui-active')")
+		//					},500)
+		//			})
+		//		};
+		//		$("body").on('swipeleft swiperight',function(){
+		//			if(status=="close"){
+		//				Slide();
+		//			};
+		//		});
+		btns();
+		MassIf.MassIfList(); //任务列表
+		preload(); //预加载
+		NoData.bgImg('bottom', '../../img/BGIMG.png');
+	});
+
+	///预加载
+	function preload() {
+		//任务管理
+		var Assessment = mui.preload({
+			url: '../Massif/Assessment.html',
+			id: 'Assessment',
+		});
+		//预加载绘制地块
+		var DrawMassif = mui.preload({
+			url: '../Massif/DrawMassif.html',
+			id: 'DrawMassif',
+		});
+		//预加载我的地块
+		var MyMassIf = mui.preload({
+			url: '../Massif/MyMassIf.html',
+			id: 'MyMassIf',
+		});
+
+		//预加载创建任务
+		var MassifDrawMassif = mui.preload({
+			url: '../Massif/CreateTask.html',
+			id: 'MassifDrawMassif',
+		});
+	};
+
+	///
+	function btns() {
+		var menuType = true;
+		///任务管理
+		$("#Assessment").on('tap', function() {
+			if(UserInfo.OpenId == 5) {
+				mui.openWindow({
+					url: '../Sstation/SSTaskList.html',
+					id: 'SSTaskList',
+					extras: {
+						CompanyId1: UserInfo.CompanyId
+					}
+				});
+			} else {
+				mui.openWindow({
+					url: '../Massif/Assessment.html',
+					id: 'Assessment',
+				});
+			};
+		});
+
+		//绘制地块
+		$("#Draw").on('tap', function() {
+			mui.openWindow({
+				url: '../Massif/DrawMassif.html',
+				id: 'DrawMassif',
+			})
+		});
+
+		//我的地块
+		$("#MyMassIf").on('tap', function() {
+			mui.openWindow({
+				url: '../Massif/MyMassIf.html',
+				id: 'MyMassIf',
+			})
+		});
+
+		//关闭册页
+		$('.mengbi').on('tap', function() {
+			clearTimeout(run);
+			if(menuType) {
+				closeOrOpenWindow(index);
+				menuType = false;
+			};
+			var run = setTimeout(function() {
+				menuType = true;
+			}, 2000)
+		});
+
+		//创建任务
+		$("#CreateTask").on('tap', function() {
+			mui.openWindow({
+				url: '../Massif/CreateTask.html',
+				id: 'MassifDrawMassif',
+			})
+		});
+
+		//任务列表
+		$("#Task").on('tap', function() {
+			mui.openWindow({
+				url: '../Massif/MassifTaskList.html',
+				id: 'MassifTaskList',
+			})
+		});
+
+//		//点击参与团队动画
+//		$(".bottom").on('swipeup', function() {
+//			var off = $(".bottom").offset().top;
+//			var len = $("#MyAssessment>li").length;
+//			if(off > 100 && len > 0) {
+//				$(".bottom").animate({
+//					top: -(off + 6) + 'px',
+//					height: "800px",
+//				}).css({
+//					'background-position': 'center 30%',
+//				});
+//			};
+//		});
+//		$(".bottom").on('swipedown ', function() {
+//			$(".bottom").animate({
+//				top: "0px",
+//				height: "300px"
+//			}).css({
+//				'background-position': 'center 300px',
+//			});
+//		})
+	};
+
+	//获取待评估任务列表
+	var MassIf = {
+		MassIfList: function() {
+			var sendData = {
+				userId: UserInfo.UserId
+			};
+			UseIdGetList.GetTask(sendData,function(cb) {
+					$("#MyAssessment").html('');
+					if(cb[0]) {
+						NoData.ClearImg('bottom');
+					} else {
+						return false;
+					};
+					var rows = [];
+					for(var i in cb) {
+						var row = cb[i];
+						if(JSON.stringify(rows).indexOf(row['TaskDistributionId']) == -1) {
+							rows.push(row);
+						};
+					};
+					for(var i = 0; i < rows.length; i++) {
+						var row = rows[i];
+						//判断当前任务执行者是否绑定设备
+						//单个任务的总作业量  
+						var $html = $(
+							'<li class="mui-table-view-cell mui-media" data-index=' + i + ' value=' + row['TaskDistributionId'] + ' pa=' + row['RealArea'] + ' sa=' + row['SprayArea'] + ' pg=' + row['SprayQuality'] + ' Undertaker=' + row['Undertaker'] + '>' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+							'<div class="mui-media-body font_14">' +
+							'' + row['TaskName'] + '' +
+							'<p class="mui-ellipsis font_12" >作物种类：<span class="font_12">' + row['WorkDescription'] + '</span></p>' +
+							'<p class="mui-ellipsis font_12">单价：<span class="font_12">' + row['Price'] + '</span></p>' +
+							'</div>' +
+							'</a>' +
+							'<div class="type"></div>' +
+							'</li>'
+						);
+						$html.appendTo($("#MyAssessment"));
+						$html.on('tap', function() {
+							var index = $(this).attr('data-index');
+							var Distribution = $(this).attr("value");
+							mui.openWindow({
+								url: '../Massif/FarmExecute.html',
+								id: 'FarmExecute', 
+								extras: {
+									TaskDistributionData: rows[index]
+								},
+							});
+							return false;
+						});
+
+					}
+					//判断当前的任务是不是农民发布的
+					$(".mui-table-view-cell").each(function(i) {
+						var FieldId = $(".mui-table-view-cell").eq(i).attr('FieldId');
+						var Undertaker = $(".mui-table-view-cell").eq(i).attr('Undertaker');
+						if(Undertaker) {
+							$(".type").eq(i).html('<span class="mui-badge mui-badge-primary selection   mui-badge-inverted"><button type="button" class="mui-btn mui-btn-blue apply">发布</button></span>');
+							if(Undertaker != "null") {
+								UseIdGetName.getUserName(Undertaker, function(cb) {
+									$(".type").eq(i).html('<span class="mui-badge mui-badge-primary selection   mui-badge-inverted">' + cb + '已承接</span>');
+								});
+							};
+						};
+
+						//发布任务
+						$('.apply').eq(i).on('tap', function() {
+							var value1 = $(".mui-table-view-cell").eq(i).attr('value');
+							//							//生成二维码
+							var TeamCode = JSON.stringify({
+								"ProJectId": value1,
+								"status": "5"
+							});
+							mui.openWindow({
+								url: '../TwoCode/ShareCode.html',
+								id: 'ShareCode',
+								extras: {
+									data: TeamCode
+								}
+							})
+							return false;
+						});
+					});
+				});
+		}
+	};
+
+	//刷新地块任务
+	window.addEventListener('pageflowerfresh', function() {
+		MassIf.MassIfList(); //任务列表
+	});
+</script>

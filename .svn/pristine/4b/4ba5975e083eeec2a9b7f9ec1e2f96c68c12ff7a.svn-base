@@ -1,0 +1,628 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+		<style type="text/css">
+			.footer {
+				position: fixed;
+				bottom: 40px;
+				display: inline-block;
+			}
+			
+			.footer button {
+				border-radius: 4px;
+				width: 90%;
+			}
+			/*.footer button {
+				border-radius: 4px;
+				width: 47%;
+			}*/
+			
+			.IdInfo,
+			.IdInfo1 {
+				width: 70%;
+				height: 160px;
+				border: 1px dashed #C0C0C0;
+				margin: 0 auto;
+				position: relative;
+			}
+			
+			.IdInfo1 {
+				margin-top: 20px;
+			}
+			
+			.IdInfo>.iconfont {
+				font-size: 48px;
+				color: #BEBEBE;
+				position: absolute;
+				left: calc((100% - 48px) /2);
+				top: 30%;
+			}
+			
+			.IdInfoText {
+				position: absolute;
+				width: 100%;
+				font-size: 14px;
+				text-align: center;
+				bottom: 20%;
+				color: #3D3D3D;
+			}
+			.mui-input-row label {
+				width: 36%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 64%;
+			}
+			
+			.mui-input-row .iconfont {
+				font-size: 14px;
+				line-height: 36px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">商品列表</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell list">
+					<form class="mui-input-group">
+						<div class="mui-input-row">
+							<label>品牌</label>
+							<input type="text" class="mui-input-clear" placeholder="暂无" id="BrandHtml" disabled="disabled">
+							<input type="text" class="mui-input-clear" id="CommodityBrand" name="CommodityBrand" style="display: none;">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row">
+							<label>计量单位</label>
+							<input type="text" class="mui-input-clear" placeholder="暂无" id="Unit" name="Unit" disabled="disabled" />
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row">
+							<label>商品分类</label>
+							<input type="text" class="mui-input-clear" placeholder="暂无" id="GoodsType" name="GoodsType" disabled="disabled">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row">
+							<label>包装类型</label>
+							<input type="text" class="mui-input-clear" placeholder="暂无" id="PackType" name="PackType" disabled="disabled">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row">
+							<label>剂型</label>
+							<input type="text" class="mui-input-clear" placeholder="暂无" id="AgentiaType" name="AgentiaType" disabled="disabled">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row">
+							<label>使用作物</label>
+							<input type="text" class="mui-input-clear" placeholder="暂无" id="Crop" name="Crop" disabled="disabled">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row">
+							<label>名称</label>
+							<input type="text" class="mui-input-clear" placeholder="暂无" id="CommodityName" name="CommodityName" disabled="disabled">
+						</div>
+
+						<div class="mui-input-row">
+							<label>规格型号</label>
+							<input type="text" placeholder="暂无" id="Constituents" name="Constituents" disabled="disabled">
+						</div>
+						<div class="mui-input-row">
+							<label>数量</label>
+							<input type="text" placeholder="0" id="Number" name="Number" disabled="disabled">
+						</div>
+						<div class="mui-input-row">
+							<label>出厂价格</label>
+							<input type="text" placeholder="0" id="ComPrice" name="ComPrice" disabled="disabled">
+						</div>
+						<div class="mui-input-row">
+							<label>市场价格</label>
+							<input type="text" placeholder="0" id="Price" name="Price" disabled="disabled">
+						</div>
+						<div class="mui-input-row">
+							<label>功效</label>
+							<input type="text" placeholder="暂无" id="GoodsEffect" name="GoodsEffect" disabled="disabled">
+						</div>
+						<div class="mui-input-row" style="display: none;">
+							<label>生产厂家</label>
+							<input type="text" class="mui-input-clear" placeholder="请选择" id="GoodsManufactor" name="GoodsManufactor" readonly="readonly">
+							<span class="mui-icon iconfont corptype">&#xe741;</span>
+						</div>
+						<div class="mui-input-row">
+							<label>生产许可证号</label>
+							<input type="text" placeholder="暂无" id="Licence" name="Licence" disabled="disabled">
+						</div>
+						<div class="mui-input-row">
+							<label>货期</label>
+							<input type="text" placeholder="暂无" id="Delivery" name="Delivery" disabled="disabled">
+						</div>
+						<div class="mui-input-row">
+							<label>是否有货</label>
+							<!--<input type="text" placeholder="普通输入框" id="IsBe" name="IsBe">-->
+							<select name="IsBe" id="IsBe" disabled="disabled">
+								<option value="0">有</option>
+								<option value="1">无</option>
+							</select>
+						</div>
+						<div class="mui-input-row">
+							<label>备注</label>
+							<input type="text" placeholder="暂无" maxlength="50" id="Description" name="Description" disabled="disabled">
+							<input type="text" id="Imges" name="Imges" value="" style="display: none;">
+						</div>
+						<div class="IdInfo IdJust OICQ">
+							<span class="iconfont">&#xe6e0;</span>
+							<span class="IdInfoText">添加商品图片</span>
+						</div>
+					</form>
+				</li>
+			</ul>btns
+			<div class="footer">
+				<button type="button" class="mui-btn mui-btn-primary mui-btn-block" id="Edit">编辑</button>
+				<button type="button" class="mui-btn mui-btn-primary mui-btn-block" id="Save" style="display: none;">保存</button>
+			</div>
+		</div>
+
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script type="text/javascript">
+	mui.init();
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var userInfo, Brand, BrandList, Measurement, MeasurementList, GoodsTypes, GoodsTypesList, PackTypes, PackTypesList,
+		AgentiaTypes, AgentiaTypesList, Crops, CropsList, _self;
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		Brand = [];
+		BrandList = new mui.PopPicker();
+		Measurement = [];
+		MeasurementList = new mui.PopPicker();
+		GoodsTypes = [];
+		GoodsTypesList = new mui.PopPicker();
+		PackTypes = [];
+		PackTypesList = new mui.PopPicker();
+		AgentiaTypes = [];
+		AgentiaTypesList = new mui.PopPicker();
+		Crops = [];
+		CropsList = new mui.PopPicker();
+		Commodity.getBrandList(); //获取商品列表
+		Commodity.getMeasurementList(); //计量单位
+		Commodity.getGoodsType(); //获取商品分类
+		Commodity.getPackingType(); //获取包装类型
+		Commodity.getMedicament(); //获取药剂类型
+		Commodity.getCrop(); //获取使用作物
+		//Commodity.Taps(); //事件
+		getCommodityDetails();
+	});
+	//获取商品信息
+	function getCommodityDetails() {
+		var Unit = _self.Commodity.Unit;
+		var GoodsType = _self.Commodity.GoodsType;
+		var PackType = _self.Commodity.PackType;
+		var AgentiaType = _self.Commodity.AgentiaType;
+		var Crop = _self.Commodity.Crop;
+		var CommodityName = _self.Commodity.CommodityName;
+		var Constituents = _self.Commodity.Constituents;
+		var Number = _self.Commodity.Number;
+		var ComPrice = _self.Commodity.ComPrice;
+		var Price = _self.Commodity.Price;
+		var GoodsEffect = _self.Commodity.GoodsEffect;
+		var Licence = _self.Commodity.Licence;
+		var Delivery = _self.Commodity.Delivery;
+		var Description = _self.Commodity.Description;
+		var IsBe = _self.Commodity.IsBe;
+		var Imges = _self.Commodity.Imges;
+		var CommodityBrand = _self.Commodity.CommodityBrand;
+
+		$("#Unit").val(Unit);
+		$("#GoodsType").val(GoodsType);
+		$("#PackType").val(PackType);
+		$("#AgentiaType").val(AgentiaType);
+		$("#Crop").val(Crop);
+		$("#CommodityName").val(CommodityName);
+		$("#Constituents").val(Constituents);
+		$("#Number").val(Number);
+		$("#ComPrice").val(ComPrice);
+		$("#Price").val(Price);
+		$("#GoodsEffect").val(GoodsEffect);
+		$("#Licence").val(Licence);
+		$("#Delivery").val(Delivery);
+		$("#Description").val(Description);
+		$("#IsBe").val(IsBe);
+
+		$(".IdInfo").css({
+			'background-image': 'url(' + app.his_host + Imges + ')',
+			'background-size': '100% 100%',
+			'background-repeat': 'no-repeat',
+			'background-position': 'center',
+		}).html('');
+		//获取品牌列表
+		var option = {
+			api: '/AccountCenter/GoodsBrandName/GetFormJson',
+			data: {
+				KeyValue: CommodityBrand
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				if(result) {
+					$("#BrandHtml").val(result.GoodsBrandName);
+				}
+
+			}
+		};
+		app.post3_4(option);
+	}
+	//编辑
+	$("#Edit").on('tap', function() {
+		
+		$('#BrandHtml').attr("disabled", false);
+		$('#Unit').attr("disabled", false);
+		$('#GoodsType').attr("disabled", false);
+		$('#PackType').attr("disabled", false);
+		$('#AgentiaType').attr("disabled", false);
+		$('#Crop').attr("disabled", false);
+		$('#CommodityName').attr("disabled", false);
+		$('#Constituents').attr("disabled", false);
+		$('#Number').attr("disabled", false);
+		$('#ComPrice').attr("disabled", false);
+		$('#Price').attr("disabled", false);
+		$('#GoodsEffect').attr("disabled", false);
+		$('#Licence').attr("disabled", false);
+		$('#Delivery').attr("disabled", false);
+		$('#Description').attr("disabled", false);
+		$('#IsBe').attr("disabled", false);
+		$('#CommodityBrand').attr("disabled", false);
+		$('#Edit').attr("style", "display: none");
+		$('#Save').attr("style", "display: normal");
+		mui.toast("请编辑！");
+//		dialog.Dialogbox('提示', '确定要编辑吗？', function(cb) {
+//			return true;
+//		});
+		Commodity.Taps(); //事件
+
+	})
+	//保存
+	$("#Save").on('tap', function() {
+			//验证输入框
+		var BrandHtml = $("#BrandHtml").val();
+		if(BrandHtml == "") {
+			mui.toast("请输入品牌");
+			return;
+		};
+		var CommodityName = $("#CommodityName").val();
+		if(CommodityName == "") {
+			mui.toast("请输入名称");
+			return;
+		};
+		var Price = $("#Price").val();
+		if(Price == "") {
+			mui.toast("请输入价格");
+			return;
+		}
+		var Number = $("#Number").val();
+		if(Number == "") {
+			mui.toast("请输入数量");
+			return;
+		}
+		var send = $(".mui-input-group").serializeJSON();
+		var sendData = {
+			keyValue: _self.Commodity.CommodityId,
+			entity: send
+		};
+		//alert(JSON.stringify(sendData));
+		Medicament.SaveGood(sendData, function(cb) {
+			if(cb['type'] == 1) {
+				app.toast('编辑成功!');
+				var FatherView = plus.webview.getWebviewById('MedicamentManage');
+				mui.fire(FatherView, 'fresh');
+				mui.back();
+			} else {
+				app.toast('操作失败!');
+			}
+			//alert("编辑成功");
+		})
+	});
+	///添加商品
+	var Commodity = {
+		//获取品牌列表
+		getBrandList: function() {
+			var send = {
+				"page": 1,
+				"rows": 102,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					GoodsManufactorId: userInfo['CompanyId'],
+				})
+			};
+			Orders.OrdersBrand(send, function(cb) {
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					Brand.push({
+						text: row['GoodsBrandName'],
+						value: row['GoodsBrandId'],
+						value1: row['GoodsManufactorId']
+					})
+				};
+				BrandList.setData(Brand);
+				//选择品牌
+				$("#BrandHtml").on('tap', function() {
+					BrandList.show(function(item) {
+						$("#BrandHtml").val(item[0]['text']); //品牌名称
+						$("#CommodityBrand").val(item[0]['value']); //品牌Id
+						$("#GoodsManufactor").val(item[0]['value1']); //厂家Id
+					});
+				});
+			});
+		},
+		//计量单位
+		getMeasurementList: function() {
+			var send = {
+				EnCode: "GoodsUnit"
+			};
+			Orders.getMeasurementLists(send, function(cb) {
+				for(var i in cb) {
+					var row = cb[i];
+					Measurement.push({
+						text: row['ItemName'],
+						value: row['ItemId']
+					});
+					MeasurementList.setData(Measurement);
+				};
+				//选择单位
+				$("#Unit").on('tap', function() {
+					MeasurementList.show(function(item) {
+						$("#Unit").val(item[0]['text']);
+					});
+				});
+			});
+		},
+		//获取商品类型
+		getGoodsType: function() {
+			var send = {
+				EnCode: "DrugType"
+			};
+			Orders.getMeasurementLists(send, function(cb) {
+				for(var i in cb) {
+					var row = cb[i];
+					GoodsTypes.push({
+						text: row['ItemName'],
+						value: row['ItemId']
+					});
+					GoodsTypesList.setData(GoodsTypes);
+				};
+				//商品类型
+				$("#GoodsType").on('tap', function() {
+					GoodsTypesList.show(function(item) {
+						$("#GoodsType").val(item[0]['text']);
+					});
+				});
+			});
+		},
+		//获取包装类型\ 
+		getPackingType: function() {
+			var send = {
+				EnCode: "PackType"
+			};
+			Orders.getMeasurementLists(send, function(cb) {
+				for(var i in cb) {
+					var row = cb[i];
+					PackTypes.push({
+						text: row['ItemName'],
+						value: row['ItemId']
+					});
+					PackTypesList.setData(PackTypes);
+				};
+				//包装类型\ 
+				$("#PackType").on('tap', function() {
+					PackTypesList.show(function(item) {
+						$("#PackType").val(item[0]['text']);
+					});
+				});
+			});
+		},
+		//获取药剂类型\ 
+		getMedicament: function() {
+			var send = {
+				EnCode: "AgentiaType"
+			};
+			Orders.getMeasurementLists(send, function(cb) {
+				for(var i in cb) {
+					var row = cb[i];
+					AgentiaTypes.push({
+						text: row['ItemName'],
+						value: row['ItemId']
+					});
+					AgentiaTypesList.setData(AgentiaTypes);
+				};
+				//包装类型
+				$("#AgentiaType").on('tap', function() {
+					AgentiaTypesList.show(function(item) {
+						$("#AgentiaType").val(item[0]['text']);
+					});
+				});
+			});
+		},
+		//获取使用作物
+		getCrop: function() {
+			var send = {
+				EnCode: "Crop"
+			};
+			Orders.getMeasurementLists(send, function(cb) {
+				for(var i in cb) {
+					var row = cb[i];
+					Crops.push({
+						text: row['ItemName'],
+						value: row['ItemId']
+					});
+					CropsList.setData(Crops);
+				};
+				//作物
+				$("#Crop").on('tap', function() {
+					CropsList.show(function(item) {
+						$("#Crop").val(item[0]['text']);
+					});
+				});
+			});
+		},
+		//拍照
+		Photo: function(divid) {
+			var cmr = plus.camera.getCamera();
+			cmr.captureImage(function(p) {
+				plus.io.resolveLocalFileSystemURL(p, function(entry) {
+					Commodity.ShowAndUploader(entry.toLocalURL(), entry.name, divid);
+				}, function(e) {
+					plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+				});
+			}, function(e) {}, {
+				filename: "_doc/camera/",
+				index: 1
+			});
+		},
+		//相册选取
+		galleryImg: function(divid) {
+			plus.gallery.pick(function(p) {
+				plus.io.resolveLocalFileSystemURL(p, function(entry) {
+					Commodity.ShowAndUploader(entry.toLocalURL(), entry.name, divid);
+				}, function(e) {
+					plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+				});
+			}, function(e) {}, {
+				filename: "_doc/camera/",
+				filter: "image"
+			});
+		},
+		//显示并且上传
+		ShowAndUploader: function(url, name, divid) {
+			$(".IdInfo").css({
+				'background-image': 'url(' + url + ')',
+				'background-size': '100% 100%',
+				'background-repeat': 'no-repeat',
+				'background-position': 'center',
+			}).html('');
+			//将图片转换为base64上传
+			function image2Base64(img) {
+				var canvas = document.createElement("canvas");
+//				canvas.width = img.width / 5;
+//				canvas.height = img.height / 5;
+                canvas.width = img.width;
+			    canvas.height = img.height;
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+				var newImageData = canvas.toDataURL("image/jpeg", 1); //重新生成图片
+				sendData = newImageData.split(',')[1]; //newImageData.replace("data:"+fileType+";base64,",' ');
+				var data = window.atob(sendData);
+				var ia = new Uint8Array(data.length);
+				for(var i = 0; i < data.length; i++) {
+					ia[i] = data.charCodeAt(i);
+				};
+				blob = new Blob([ia], {
+					type: "image/jpeg"
+				});
+				return blob;
+			};
+
+			var img = document.createElement("img");
+
+			img.src = url;
+			img.onload = function() {
+				var base64 = image2Base64(img);
+
+				var formData = new FormData();
+				formData.append(img, base64);
+				setPicture(formData, "Imges"); //上传身份证正反面；
+				//setPicture(formData)
+			};
+		},
+		//事件
+		Taps: function() {
+			//上传图片
+			$(".IdInfo").on('tap', function() {
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: [{
+							title: '拍照'
+						},
+						{
+							title: '相册选取'
+						},
+					]
+				}, function(e) {
+					switch(e.index) {
+						case 1:
+							Commodity.Photo('IdInfo');
+							break;
+						case 2:
+							Commodity.galleryImg('IdInfo');
+							break;
+					};
+				});
+			});
+
+		}
+	};
+
+	function setPicture(formData, imgkey) {
+		plus.nativeUI.showWaiting();
+
+		$.ajax({
+			url: app.his_root + '/AccountCenter/Commodity/UploadFileApp', //请求地址
+			type: 'post',
+			data: formData, //发送数据
+			async: false,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				console.log(data);
+				var result = JSON.parse(data);
+				if(result['type'] == 1) {
+					app.toast('上传成功')
+					$("#" + imgkey).val(result['message']);
+					//var img = result['message'];
+					//$("#Description").val(img);
+
+				} else {
+					app.toast('上传失败！请更换图片');
+				};
+				plus.nativeUI.closeWaiting();
+			},
+			error: function() {
+
+				app.toast('上传失败');
+				target.value = "";
+				plus.nativeUI.closeWaiting();
+			}
+		});
+	};
+</script>

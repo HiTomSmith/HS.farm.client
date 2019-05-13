@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=2,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link rel="stylesheet" href="../../css/leaflet.css">
+		<link rel="stylesheet" href="../../css/leaflet.pm.css" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			overflow: hidden;
+			list-style-type: none;
+		}
+		
+		.Map {
+			width: 100%;
+			height: 100%;
+		}
+		
+		.footer {
+			position: fixed;
+			bottom: 0px;
+			width: 100%;
+			height: 60px;
+			z-index: 998;
+			background: white;
+		}
+		
+		.footer>span {
+			width: 70%;
+			height: 100%;
+			display: block;
+			text-align: center;
+			line-height: 60px;
+			float: left;
+			color: #15AE3F;
+			font-size: 14px;
+		}
+		
+		.footer>button {
+			width: 30%;
+			background: #15AE3F;
+			height: 100%;
+			border-radius: 0;
+			font-size: 20px;
+		}
+		
+		.Outside {
+			height: 220px;
+			width: 100%;
+			background: white;
+			position: fixed;
+			bottom: 0px;
+			z-index: 999;
+		}
+		
+		.iconfont {
+			position: absolute;
+			top: 10px;
+			right: 20px;
+			font-size: 12px;
+		}
+		
+		#save{
+			border-radius: 0;
+			border:none;
+			bottom: -36px;
+		}
+		.mui-pull-right{
+			font-size: 20px;
+			color:  #15AE3F;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-pull-right iconfont" id="edit">&#xe706;</a>
+			<h1 class="mui-title">我的地块</h1>
+		</header>
+		<div class="mui-content">
+			<div class="Map" id="example2"></div>
+			<div class="footer">
+				<span>点击地图，规划您的地块位置</span>
+				<button type="button" class="mui-btn mui-btn-blue" id="startDraw">开始绘制</button>
+			</div>
+			<div class="Outside">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>地块名称</label>
+						<input type="text" class="mui-input-clear" id="FieldName" name="FieldName" placeholder="请输入地块名称">
+					</div>
+					<div class="mui-input-row">
+						<label>地块面积</label>
+						<input type="text" class="mui-input-clear" id="FieldArea" name="FieldArea" placeholder=""> 
+						<input type="text" name="keyvalue" id="keyvalue" value="" style="display: none;" />
+					</div>
+					<!--<div class="mui-input-row" style="position: relative;">
+						<label>种植作物</label>
+						<input type="text" class="mui-input-clear" placeholder="请选择作物种类名称" readonly="readonly" id="crop">
+						<span class="iconfont">&#xe741;</span>
+					</div>-->
+				</form>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="save">确定</button>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/leaflet.js"></script>
+<script src="../../js/leaflet.pm.min.js"></script>
+<script src="../../js/Leaflet.AccuratePosition.js"></script>
+<script src="../../js/GeometryUtil.js"></script>
+<script src="../../js/wgs84-to-gcj02.js"></script>
+<script src="../../js/xhx-map.js"></script>
+<script src="../../js/map.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({});
+	var userInfo = "";
+	var region = "";
+	var _self = "";
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+		btns();
+		_self = plus.webview.currentWebview();
+		if(_self['Region']!=undefined){
+			region = _self['Region'];
+			//console.log(JSON.stringify(_self['Region']['FieldRegion']));
+			AutomaticDraw(region);
+			$("#FieldName").val(region.FieldName);
+			$("#FieldArea").val(region.FieldArea);
+			$("#keyvalue").val(region.FieldId);
+			region = _self['Region']['FieldRegion'];
+		}else{
+			$(".Outside").on('swipedown',function(){
+				$(".Outside").animate({
+					'bottom':'-220px',
+				});
+			});
+		}
+	});
+	
+	//获取作物种类
+	function getCropType() {
+		var option = {
+			api: '/SystemManage/DataItemDetail/GetDataItemListJson',
+			data: {
+				"EnCode": "CropTypes"
+			},
+			success: function(data) {
+				var result = eval("(" + data + ")");
+				var Crop = [];
+				var CropList = new mui.PopPicker();
+				for(var i in result) {
+					var row = result[i];
+					Crop.push({
+						text: row['ItemName'],
+						value: row['ItemValue']
+					});
+				};
+				CropList.setData(Crop);
+				//选择作物种类 
+				$("#crop").on('tap',function(){
+					CropList.show(function(item){
+						$("#crop").val(item[0]['text']);
+					});
+				});
+			},
+			error: function(data) {
+				app.toast('获取作物种类失败!');
+			}
+		};
+		app.post3_2(option)
+	};
+	//坐标点不为空自动绘制
+	function AutomaticDraw(region){
+		var rows = JSON.parse(region['FieldRegion'])[0];
+		var coordinate = [];
+		for(var i in rows){
+			var row = rows[i];
+			coordinate.push([row['lat'],row['lng']]);
+		};
+		var Layer = XHX_region.creatNew(map2,coordinate, "MassIf"); 
+		//var position = WGS84_to_GCJ02.creatNew().transform(rows[0]['lat'], rows[0]['lng']);
+		var position = [rows[0]['lat'], rows[0]['lng']];
+		var marker = L.marker(position) /// <button id="edit">重新编辑</button>
+	   	.bindPopup('<p>名称:'+region['FieldName']+'</p><p>面积:'+region['FieldArea']+'亩</p><p style="text-align: center;"></p>')  
+	    .addTo(map2) 
+	    .openPopup(); 
+	    
+	    //重新编辑
+	    $("#edit").on('tap',function(){
+	    	map2.removeLayer(Layer);
+	    	map2.removeLayer(marker);
+	    	$(".Outside").animate({
+				'bottom':'-220px',
+			});
+	    });
+	};
+	
+	
+	///
+	function btns(){
+		////开始绘制
+		$("#startDraw").on('tap',function(){
+			map2.pm.Draw.Poly.toggle();
+			$("#startDraw").attr('disabled','disabled');
+		});
+	};
+	
+	/////绘制完成回调
+	function Area(area,coordinate){ 
+		$(".Outside").animate({
+			'bottom':'0px',
+		});
+		//面积
+		$("#FieldArea").val(area);
+		region = coordinate;
+		$("#startDraw").removeAttr('disabled');
+	};
+	
+	//保存
+	$("#save").on('tap',function(){
+		var en = $("form").serializeJSON();
+		en.FieldRegion = region;
+		en.Landlord = userInfo.UserId;
+		if($("#FieldName").val()==""){
+			app.toast('地块名称不能为空！');
+		};
+		if($("#FieldArea").val()==""){
+			app.toast('请绘制地块')
+		};
+		
+		var snedData = {
+			keyValue:$("#keyvalue").val(),
+			entity:en,
+		}; 
+		TaskObj.SaveMassif(snedData,function(cb){
+			if(cb['type']=="1"){
+				app.toast('创建地块成功!');
+				var fatherWeb = plus.webview.getWebviewById('MyMassIf');
+				mui.fire(fatherWeb,'pageflowrefresh');
+				_self.close();
+			}else{
+				app.toast('失败！');
+			};
+			plus.nativeUI.closeWaiting();
+		});
+	});
+	
+	//
+	mui.back = function(){
+		_self.close();
+	};
+	
+	///滑动隐藏
+	
+	$(".footer").on('swipeup',function(){
+				$(".Outside").animate({
+					'bottom':'0px',
+				});
+			});
+	
+</script>

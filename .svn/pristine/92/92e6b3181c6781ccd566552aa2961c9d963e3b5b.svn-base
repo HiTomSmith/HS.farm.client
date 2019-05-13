@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+		<link rel="stylesheet" href="../../../css/imageViewr.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.Status {
+			float: right;
+		}
+		.upImg{
+			width: 200px;
+			height: 230px;
+		}
+		.upImg-img{
+			display: flex;
+			width: 160px;
+			height: 190px;
+			border: 1px solid #eee;
+			justify-content: center;
+			align-items: center;
+		}
+		.upImg .AccpetPicture {
+			width: 160px;
+			height: 190px;
+		}
+		.upImg p{
+			height: 20px;
+			width: 160px;
+			margin-top: 4px;
+			text-align: center;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">租赁使用图片</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" style="background:#fff; margin: 0 auto;">
+			<ul class="mui-table-view mui-scroll" id="List" style="padding: 0 25%;background:#fff;">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script src="../../../js/mui.zoom.js"></script>
+<script src="../../../js/mui.previewimage.js"></script>
+<script>
+	mui.init();
+	mui.previewImage();
+	var UserInfo, sendData, _self
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		Test.List();
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	var Test = {
+		//获取列表
+		List: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "AcceptanceDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					LeaseTableId: _self.LeaseTableId,
+					ExpressState:1
+				})
+			};
+			console.log(JSON.stringify(sendData))
+			getLeaseInterface.getUavSend(sendData, function(cb) {
+				var rows = cb['rows']; 
+				console.log(JSON.stringify(rows)) 
+				console.log(rows.length) 
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+//						'<li class="mui-table-view-cell" data-index=' + i + ' leaseId=' + row['LeaseTableId'] + '>' +
+						'<li data-index=' + i + ' leaseId=' + row['LeaseTableId'] + '>' +
+						'<div class="upImg" style="margin: 30px 0;">'+
+						'<div class="upImg-img">'+
+						'' + ((row['UseImage'] == null) ? "<p>暂无图片</p>" : '<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="' + app.his_root + row['UseImage'] + '">') + '' +
+						'</div>'+
+					    '<p>试飞正常图片</p>'+
+						'</div>'+
+						
+						'<div class="upImg">'+
+						'<div class="upImg-img">'+
+						'' + ((row['SortingBImage'] == null) ? "<p>暂无图片</p>" : '<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="' + app.his_root + row['SortingBImage'] + '">') + '' +
+						'</div>'+
+						'<p>封箱单B面</p>'+
+						'</div>'+
+//						
+//						'' + ((row['UseImage'] == null) ? "" : '<img class="AccpetPicture" data-preview-src="" data-preview-group="1"  src="' + app.his_root + row['UseImage'] + '">') + '' +
+//						'' + ((row['SortingBImage'] == null) ? "" : '<img class="AccpetPicture"  data-preview-src="" data-preview-group="1"  src="' + app.his_root + row['SortingBImage'] + '">') + '' +
+//					
+//						
+						' </li>'
+					);
+					$html.appendTo($("#List"));
+				};
+			});
+		},
+		Taps: function() {
+			//点击预览放大图片
+			$(".AccpetPicture").each(function(i) {
+				$(this).eq(i).on('tap', function() {
+
+				});
+			});
+		},
+	};
+</script>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/Page.css" />
+		<link rel="stylesheet" href="../css/menu.css" />
+	</head>
+	<style>
+		#AddFlyer{
+			display: none;
+		}
+	</style>
+
+	<body>
+		<div class="mui-content">
+			<div class="mheadIcon" style="position: relative;">
+				<form class="mui-input-group" id="head" name="head" enctype="multipart/form-data" method="post" style="background-color: #1B1B1B;">
+					<input type="file" id="uploadFile" name="uploadFile" accept="image/png,image/gif,image/jpg,image/jpeg" onchange="uploadHead(this)" />
+				</form>
+				<img src="../img/my-fill-light.png" alt="" id="UpdateIcon" />
+				<br/>
+				<p class="name"></p>
+				<p class="phone"></p>
+			</div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="Record">
+					<span class="mui-icon iconfont Arrow mui-pull-left">&#xe753;</span>
+					<span class="text">我的战绩</span>
+				</li>
+				<!--<li class="mui-table-view-cell" id="AddFlyer">
+					<span class="mui-icon iconfont Arrow mui-pull-left">&#xe753;</span>
+					<span class="text">添加飞手</span>
+				</li>-->
+				<li class="mui-table-view-cell" id="wallet">
+					<!--<span class="mui-icon iconfont Arrow">&#xe741;</span>-->
+					<span class="mui-icon iconfont Arrow mui-pull-left">&#xe756;</span>
+					<span class="text">我的钱包</span>
+				</li>
+				<li class="mui-table-view-cell" id="SStask">
+					<!--<span class="mui-icon iconfont Arrow">&#xe741;</span>-->
+					<span class="mui-icon iconfont Arrow mui-pull-left">&#xe756;</span>
+					<span class="text">站点任务</span>
+				</li>
+				<li class="mui-table-view-cell" id="Message">
+					<span class="mui-icon iconfont Arrow mui-pull-left">&#xe72f;</span> 
+					<span class="text">我的消息</span>
+				</li>
+				<li class="mui-table-view-cell" id="address">
+					<span class="mui-icon iconfont Arrow mui-pull-left">&#xe6e8;</span>
+					<span class="text">收货地址</span>
+				</li>
+				<li class="mui-table-view-cell" id="setting">
+					<span class="mui-icon iconfont Arrow mui-pull-left">&#xe758;</span>
+					<span class="text">设置</span>
+				</li>
+				<li class="mui-table-view-cell" id="service">
+					<span class="mui-icon iconfont Arrow mui-pull-left">&#xe6ff;</span>
+					<span class="text">客服电话</span>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../js/mui.min.js"></script>
+<script src="../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script src="../js/mui.enterfocus.js"></script>
+<script src="../js/jquery-2.1.4.min.js"></script>
+<script src="../js/jquery.serialize-json.js"></script>
+<script src="../js/validator.js"></script>
+<script src="../js/hx.functor.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/data-unit.js"></script>
+<script src="../js/setData.js"></script>
+<script>
+	mui.init();
+	var userInfo = "";
+	app.ready(function() {
+		userInfo = app.accountInfo('info');
+		if(userInfo.HeadIcon != null) {
+			$("#UpdateIcon").attr('src', app.req_host + userInfo.HeadIcon);
+		};
+		//判断是否实名认证
+		if(userInfo.UserName == null) {
+			//实名认证
+			$("#idInfo").on('tap', function() {
+				mui.openWindow({
+					url: './user/NameAuthentication.html',
+					id: 'NameAuthentication'
+				});
+			});
+		} else {
+			$(".name").text(userInfo.UserName);
+			$(".phone").text(userInfo.Account);
+		};
+
+		//判断为植保站飞手的时候隐藏钱包，地址
+		if(userInfo['OpenId'] == 6||userInfo['OpenId'] == 7) {
+			$("#wallet,#address").hide();
+		};
+		//判断为服务站的时候隐藏战绩，显示添加飞手  AddFlyer
+		if(userInfo['OpenId']==5){
+			$("#service").hide();
+			$("#AddFlyer").show();
+		};
+		ResetBack();
+		preload(); //预加载
+		BtnEvents();
+	});
+
+	//预加载
+	function preload() {
+		//预加载战绩
+		//		var MyRecord =  mui.preload({
+		//			url:'./Team/MyRecord.html',
+		//			id:'MyRecord'
+		//		});
+		//预加载钱包
+		//		var MyWallet =  mui.preload({
+		//			url: './user/MyWallet.html',
+		//			id:'MyWallet'
+		//		});
+		//预加载消息
+		var MessageList = mui.preload({
+			url: './Message/MessageList.html',
+			id: 'MessageList'
+		});
+		//预加载地址
+		var AddressList = mui.preload({
+			url: './Menu/AddressList.html',
+			id: 'AddressList'
+		});
+
+		//预加载设置
+		var Setting = mui.preload({
+			url: './Menu/Setting.html',
+			id: 'Setting'
+		});
+	};
+
+	function BtnEvents() {
+		//设置
+		$("#setting").on('tap', function() {
+			mui.openWindow({
+				url: './Menu/Setting.html',
+				id: 'Setting'
+			})
+		});
+
+		//收获地址
+		$("#address").on('tap', function() {
+			mui.openWindow({
+				url: './Menu/AddressList.html',
+				id: 'AddressList'
+			})
+		});
+
+		//我的钱包
+		$("#wallet").on('tap', function() {
+			mui.openWindow({
+				url: './user/MyWallet.html',
+				id: 'MyWallet'
+			})
+		});
+
+		//我的xiaoxi 
+		$("#Message").on('tap', function() {
+			mui.openWindow({
+				url: './Message/MyMessage.html',
+				id: 'MyMessage'
+			})
+		});
+
+		///客服
+		$("#service").on('tap', function() {
+			//			dialog.Dialogbox('确认拨打电话','拨打',function(cb){
+			//				if(cb==1){
+			//					plus.device.dial("0512 - 66277071", false);
+			//				}else{
+			//					app.toast('已取消')
+			//				};
+			//			});
+			mui.confirm('0512 - 6624 - 7071', '拨打', function(e) {
+				if(e.index == 0) {
+					app.toast('已经取消');
+				} else {
+					plus.device.dial("0512 - 6624 - 7071", false);
+				}
+			});
+		}); 
+
+		//我的战绩
+		$("#Record").on('tap', function() {
+			//判断为服务站查看战绩时候i
+			if(userInfo.OpenId ==5 ||userInfo.OpenId ==15){  
+				mui.openWindow({
+					url: './Sstation/Record.html',
+					id: 'Record'
+				});
+			}else{
+				mui.openWindow({
+					url: './Team/Record.html',
+					id: 'Record'
+				});
+			};
+		});
+
+		//用于服务站团队申请任务列表
+		if(userInfo.OpenId == 6) {
+			$("#SStask").on('tap', function() {
+				mui.openWindow({
+					url: './Sstation/SStask.html',
+					id: 'SStask'
+				});
+			});
+		} else {
+			$("#SStask").hide();
+		}; 
+		//飞手
+		if(userInfo.OpenId == 8){
+			$("#Record,#AddFlyer,#wallet,#SStask,#Message,#address").hide();
+		};
+		
+		if(userInfo.OpenId > 9 &&userInfo.OpenId < 15){
+			$("#Record,#AddFlyer,#wallet,#SStask,#Message,#address").hide();
+		};
+		
+		//厂家
+		if(userInfo.OpenId == 9){
+			$("#Record,#AddFlyer,#wallet,#SStask,#Message,#address").hide();
+		};
+		//添加飞手
+		$('#AddFlyer').on('tap',function(){
+			mui.openWindow({
+				url:'./Sstation/Addflyer.html',
+				id:'Addflyer',
+			})
+		});
+	};
+
+	function uploadHead(target) {
+		var fileSize = target.files[0].size;
+		var size = fileSize / 1024;
+		if(size > 2000) {
+			alert("图片不能大于2M");
+			target.value = "";
+			return;
+		} else {
+			plus.nativeUI.showWaiting();
+			var formData = new FormData($("#head")[0]);
+			$.ajax({
+				url: app.req_host + '/PersonCenter/UploadFileApp', //请求地址
+				type: 'post',
+				data: formData, //发送数据
+				async: false,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data) {
+					var result = eval("(" + data + ")");
+					if(result['type'] == "1") {
+						var imgsrc = eval("(" + result.resultdata.Content + ")");
+						var src = imgsrc['BigImage'];
+						$("#UpdateIcon").attr('src', app.req_host + src + '?v=' + random());
+						plus.nativeUI.closeWaiting();
+						target.value = "";
+					};
+				},
+				error: function() {
+					app.toast('上传失败');
+					target.value = "";
+					plus.nativeUI.closeWaiting();
+				}
+			});
+		};
+	};
+
+	////随机数
+	function random() {
+		var random = Math.random().toFixed(6) * 1000000;
+		return random;
+	};
+
+	function ResetBack() {
+		/////安卓默认返回事件覆盖
+		var backButtonPress = 0;
+		mui.back = function() {
+			var message_wx = plus.webview.getWebviewById('message_wx');
+			var ExpWindow = plus.webview.getWebviewById('ExpWindow');
+			if(message_wx) {
+				plus.webview.close('message_wx');
+			} else if(ExpWindow) {
+				plus.webview.close('ExpWindow');
+			} else {
+				//返回事件更改
+				backButtonPress++;
+				if(backButtonPress > 1) {
+					plus.runtime.quit();
+				} else {
+					plus.nativeUI.toast('再按一次退出应用');
+				}
+				setTimeout(function() {
+					backButtonPress = 0;
+				}, 1000);
+			}
+		};
+	};
+</script>

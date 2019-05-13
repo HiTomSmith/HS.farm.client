@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/dateRange.css" />
+		<link rel="stylesheet" href="../../css/teamRecord.css" />
+	</head>
+	<style>
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">战绩</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+			    <li class="mui-table-view-cell mui-media" id="TeamBoos">
+		            <a href="javascript:;">
+				        <img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+				        <div class="mui-media-body font_14">
+				                队员:<span class="font_14"></span><br/>
+				        <p class="font_12">累计亩数: <span class="TotalArea">0</span></p>
+				        </div>
+				    </a> 
+		        </li>
+		        <li class="date">
+		        	<span class="date_title dateController" id="date1"></span>
+		        	<span class="toda">Today</span>
+		        </li>
+		        <li class="currentArea">
+		        	<span class="DateTotalArea">作业亩数：<span>0</span></span>
+		        	<span class="Qualified">合格率：<span>0%</span></span> 
+		        </li>
+			</ul>
+			<ul class="mui-table-view-cell mui-media" id="TeamList">
+		    	
+		    </ul>
+		</div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/dateRange.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var userInfo = "";
+	app.ready(function(){
+		userInfo = app.accountInfo('info');
+		$(".mui-media-body>span").text(userInfo.UserName);
+		NowTime = new Date().format().substr(0,10);///默认开始时间
+		LTime = Date.parse(new Date())+86400000;
+		ETime = new Date(LTime).format().substr(0,10);////默认结束时间  
+		TeamRecord.Date(NowTime,ETime);//时间
+	});
+	
+	
+	
+	///
+	var TeamRecord = {
+		//时间控件
+		Date:function(NowTime,ETime){
+			var dateRange1 = new pickerDateRange('date1', {
+				stopToday : false,
+				isTodayValid : true,
+				startDate: NowTime,
+				endDate: ETime,
+				needCompare : false,
+				defaultText : ' 至 ',
+				autoSubmit : false,
+				inputTrigger : 'input_trigger1',
+				theme : 'ta'
+			});
+		},
+		//获取我当前参与团队的战绩
+		GetTeamRecord:function(){
+			UseIdGetList.GetRecord({queryJson:JSON.stringify({TeamId: userInfo.RoleId,StartTime:ETime,EndTime:NowTime,WorkPersonId:""})},function(cb){ 
+				
+			});
+		},
+	};
+	
+	
+	
+	
+	
+	
+	////日期控件
+	function dateController(NowTime,ETime){
+		var dateRange1 = new pickerDateRange('date1', {
+			stopToday : false,
+			isTodayValid : true,
+			startDate: NowTime,
+			endDate: ETime,
+			needCompare : false,
+			defaultText : ' 至 ',
+			autoSubmit : false,
+			inputTrigger : 'input_trigger1',
+			theme : 'ta'
+		});
+	}
+	
+</script>

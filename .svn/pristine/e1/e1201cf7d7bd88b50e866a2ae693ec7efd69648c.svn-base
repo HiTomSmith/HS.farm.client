@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.min.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.Mbtn>.mui-btn {
+			height: 30px;
+			margin-top: 50px;
+			padding: 0 10px;
+			font-size: 12px;
+		}
+		
+		.UavType {
+			position: relative;
+		}
+		
+		.Mbtn {
+			position: absolute;
+			top: 20px;
+			right: 0;
+		}
+		
+		.Mbtn>button:nth-child(1) {
+			margin-right: 10px;
+		}
+		
+		.status {
+			width: 100px;
+			text-align: right;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">库存</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row">
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle activeT">闲置无人机</div>
+					<div class="mentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle payment">无人机出库</div>
+					<div class="PaymentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					<div class="tittle received">无人机入库</div>
+					<div class="ReceivedNum"></div>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="List">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, StartTimes, EndTimes, StockList, StockPicker, s, e, mentNum, ReceivedNum, PaymentNum
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		console.log(JSON.stringify(UserInfo)) 
+		StockList = [];
+		StockPicker = new mui.PopPicker();
+		var nowTime = Date.parse(new Date());
+		StartTimes = new Date(nowTime).format();
+		EndTimes = new Date(nowTime - 2592000000).format();
+		sendData = {
+			"page": 1,
+			"rows": 999,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				StartTime: ((s) ? s : '1970-01-01'),
+				EndTime: ((e) ? e : '2099-09-09'),
+			})
+		};
+		Stock.List();
+		//Stock.search();
+		Stock.Taps();
+		Stock.Num();
+		Stock.InStockNum();
+		Stock.OutStockNum();
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	var Stock = {
+		//时间搜索
+		search: function() {
+			app.contentHTML("#List");
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				//开始判断当前选中的是那个状态
+				$(".mui-row>div").each(function(i) {
+					if($(".mui-row>div>.tittle").eq(i).hasClass('activeT')) {
+						switch($(".mui-row>div>.tittle").eq(i).text()) {
+							case '闲置无人机':
+								plus.nativeUI.showWaiting();
+								Stock.List();
+								Stock.Num();
+								break;
+							case '无人机出库':
+								plus.nativeUI.showWaiting();
+								Stock.OutStock();
+								Stock.OutStockNum();
+								break;
+							case '无人机入库':
+								plus.nativeUI.showWaiting();
+								Stock.InStock();
+								Stock.InStockNum();
+								break;
+						};
+					};
+				});
+			});
+		},
+		//Num
+		Num: function() {
+			getLeaseInterface.getUavStock(sendData, function(cb) {
+				mentNum = 0;
+				var free = 0;
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					mentNum++;
+					if(row['Status'] == "空闲") {
+						free++;
+					};
+				};
+				//判断当前如果当前数量超过99，那么最多只显示99 、、
+				//全部订单数量
+				if(mentNum > 0) {
+					if(mentNum > 99) {
+						mentNum = 99;
+					};
+					$('.mentNum').show().text(free);
+				} else {
+					$('.mentNum').hide();
+				};
+			});
+		},
+		//入库单数量
+		InStockNum: function() {
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					EnabledMark: 0,
+					StartTime: ((s) ? s : EndTimes),
+					EndTime: ((e) ? e : StartTimes),
+				})
+			};
+			getLeaseInterface.getInSotck(send, function(cb) {
+				ReceivedNum = 0;
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					ReceivedNum++;
+				};
+				//判断当前如果当前数量超过99，那么最多只显示99 、、
+				//全部订单数量
+				if(ReceivedNum > 0) {
+					if(ReceivedNum > 99) {
+						ReceivedNum = 99;
+					};
+					$('.ReceivedNum').show().text(ReceivedNum);
+				} else {
+					$('.ReceivedNum').hide();
+				};
+			});
+		},
+		// 出库单数量
+		OutStockNum: function() {
+			var Data = [];
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					EnabledMark: 0,
+					StartTime: ((s) ? s : EndTimes),
+					EndTime: ((e) ? e : StartTimes),
+				})
+			};
+			getLeaseInterface.getOutStock(send, function(cb) {
+				PaymentNum = 0;
+				var rows = cb['rows'];
+				for(var i in rows) {
+					PaymentNum++;
+				};
+				//判断当前如果当前数量超过99，那么最多只显示99 、、
+				//全部订单数量
+				if(PaymentNum > 0) {
+					if(PaymentNum > 99) {
+						PaymentNum = 99;
+					};
+					$('.PaymentNum').show().text(PaymentNum);
+				} else {
+					$('.PaymentNum').hide();
+				};
+			});
+		},
+		//库存列表
+		List: function() {
+			getLeaseInterface.getUavStock(sendData, function(cb) {
+				$('#List').html('');
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					if(row['Status'] == "空闲") {
+						var $html = $(
+							'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + ' date=' + row['CreateDate'] + '>' +
+							'<a href="javascript:;">' +
+							'<div class="Uav">' +
+							'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+							'<span class="Name font_18">' + row['Model'] + '</span><span class="CarrierSpecs font_12">(序列号：' + row['SN'] + ')</span><span class="font_12 mui-pull-right status">状态：' + row['Status'] + '</span>' +
+							'</div>' +
+							'<div class="mui-media-body">' +
+							'<span class="font_12">机身编号：' + (row['ExtendParams']?row['ExtendParams']:'无') + '</span>' +
+							'</div>' +
+							'</li>'
+						);
+						$html.appendTo($("#List"));
+					};
+				};
+
+				////排序排序排序排序
+				rows.sort(function(a, b) {
+					return parseInt(a['SN'].substring(5, a['SN'].length) - b['SN'].substring(5, b['SN'].length));
+				});
+				for(var i in rows) {
+					var row = rows[i];
+					//循环状态等于空闲的无人机
+					if(row['Status'] == "空闲") {
+						StockList.push({
+							'text': row['SN'],
+							'value': row['StockId']
+						});
+					};
+				};
+
+			});
+		},
+		//入库列表
+		InStock: function() {
+			var Data = [];
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					EnabledMark: 0,
+					StartTime: ((s) ? s : EndTimes),
+					EndTime: ((e) ? e : StartTimes),
+				})
+			};
+			getLeaseInterface.getInSotck(send, function(cb) {
+				$('#List').html('');
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['InId'] + '>' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_18">' + row['CreateUserName'] + '</span><span class="CarrierSpecs font_12">(' + row['InType'] + ')</span><span class="font_12" style="float: right;">' + row['CreateDate'] + '</span>' +
+						'</div>' +
+						'</li>'
+					);
+					$html.appendTo($("#List"));
+					//点击
+					$html.on('tap', function() {
+						var InId = $(this).attr('value');
+						var index = $(this).attr('data-index');
+						var send = {
+							keyValue: InId
+						};
+						getLeaseInterface.getInStockDetails(send, function(cb) {
+							var row = cb[0];
+							//console.log(JSON.stringify(cb)); 
+							var $html1 = $(
+								'<div class="mui-media-body UavType">' +
+								'<p class="mui-ellipsis">型号:' + row['Model'] + '</p>' +
+								'<p class="mui-ellipsis">序列号:' + row['SN'] + '</p>' +
+								'<p class="mui-ellipsis">数量：' + row['Amount'] + '</p>' +
+								'<div class="Mbtn">' +
+								'<button type="button" class="mui-btn mui-btn-blue" id="InStock">入库</button>' +
+								'</div>' +
+								'</div>'
+							);
+							$(".UavType").each(function(j) {
+								$(".UavType").remove();
+							});
+							$('.list').each(function(i){
+								if(index==$(this).attr('data-index')){
+									$('.Uav').eq(i).after($html1);
+									return false;
+								}
+							})
+							//审核入库
+							$html1.find('#InStock').on('tap', function() {
+								dialog.Dialogbox('审核', '确认审核入库？', function(cb) {
+									if(cb == 1) {
+										Stock.InStockEntity(InId, index);
+									} else if(cb == 0) {
+										dialog.CloseLogBox();
+									} else {
+										app.toast('已取消');
+									};
+								});
+							});
+						});
+						return false;
+					});
+				};
+			});
+		},
+		//审核入库
+		InStockEntity: function(value, index) {
+			var send = {
+				keyValue: value
+			};
+			LeaseInterface.InStockEntity(send, function(cb) {
+				if(cb['type'] == 1) {
+					app.toast('入库成功！');
+					dialog.CloseLogBox();
+					$(".list").each(function(i){
+						if(value==$(this).attr('value')){
+							$(".list").eq(i).remove();
+							return false;
+						}
+					});
+					Stock.InStockNum();
+				} else {
+					app.toast(cb['message']);
+				};
+			});
+		},
+		//出库单列表
+		OutStock: function() {
+			var Data = [];
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					EnabledMark: 0,
+					StartTime: ((s) ? s : EndTimes),
+					EndTime: ((e) ? e : StartTimes),
+				})
+			};
+			getLeaseInterface.getOutStock(send, function(cb) {
+				$('#List').html('');
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['OutId'] + '>' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_18">' + row['CreateUserName'] + '</span><span class="CarrierSpecs font_12">(' + row['OutType'] + ')</span><span class="font_12" style="float: right;">' + row['CreateDate'] + '</span>' +
+						'</div>' +
+						'</li>'
+					);
+					$html.appendTo($("#List"));
+					//点击
+					$html.on('tap', function() {
+						var OutId = $(this).attr('value');
+						var index = $(this).attr('data-index');
+						var send = {
+							keyValue: OutId
+						};
+						console.log(JSON.stringify(send)) 
+						getLeaseInterface.getOutStockDetails(send, function(cb) {
+							var row = cb[0];
+							console.log(JSON.stringify(cb)); 
+							var $html1 = $(
+								'<div class="mui-media-body UavType">' +
+								'<p class="mui-ellipsis">型号:' + row['Model'] + '</p>' +
+								'<p class="mui-ellipsis">序列号:' + row['SN'] + '</p>' +
+								'<p class="mui-ellipsis">数量：' + row['Amount'] + '</p>' +
+								'<div class="Mbtn">' +
+								'<button type="button" class="mui-btn mui-btn-blue" id="outStock">出库</button>' +
+								'<button type="button" class="mui-btn mui-btn-blue" id="change">换SN</button>' +
+								'</div>' +
+								'</div>'
+							);
+							$(".UavType").each(function(j) {
+							
+								$(".UavType").remove();
+							});
+							
+							$('.list').each(function(i){
+								if(index==$(this).attr('data-index')){
+									$('.Uav').eq(i).after($html1);
+									return false;
+								}
+							})
+							
+							$html1.find('#change').on('tap', function() {
+								StockPicker.setData(StockList);
+								StockPicker.show(function(item) {
+									Stock.ChangeSN(item[0]['text'], OutId);
+								});
+							});
+							//审核出库
+							$html1.find('#outStock').on('tap', function() {
+								dialog.Dialogbox('审核', '确认审核出库？', function(cb) {
+									if(cb == 1) {
+										Stock.OutStockEntity(OutId, index);
+									} else if(cb == 0) {
+										dialog.CloseLogBox();
+									} else {
+										app.toast('已取消');
+									};
+								});
+							});
+						});
+						return false;
+					});
+				};
+			});
+		},
+		//更换SN出库
+		ChangeSN: function(sn, value) {  
+			var send = {  
+				keyValue: value,
+				sN: sn
+			};
+			console.log(JSON.stringify(send))
+			LeaseInterface.ResetSnOutStock(send, function(cb) {
+				console.log(JSON.stringify(cb))
+				if(cb['type'] == 1) {
+					app.toast('更换成功！'); 
+					$(".UavType").each(function(j) { 
+						$(".UavType").remove();
+					});  
+				} else {
+					app.toast('更换失败！');
+				};
+			});
+		},
+		//出库
+		OutStockEntity: function(value, index) {
+			console.log(value)
+			var send = {
+				keyValue: value,
+				userId:UserInfo.UserId
+			};
+			console.log(JSON.stringify(send))
+			LeaseInterface.StockOutCheck(send, function(cb) { 
+				if(cb['type'] == 1) {
+					app.toast('出库成功！');
+					dialog.CloseLogBox();
+					$(".list").each(function(i){
+						if(value==$(this).attr('value')){ 
+							$(".list").eq(i).remove();
+							return false;
+						}
+					});
+					Stock.OutStockNum();
+					
+				} else {
+					app.toast(cb['message']);
+				};
+			});
+		},
+		//事件
+		Taps: function() {
+			//顶部状态循环点击
+			$(".mui-row>div").each(function(i) {
+				$(".mui-row>div").eq(i).on('tap', function() {
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".mui-row>div>.tittle").eq(i).hasClass('activeT')) {
+						return false;
+					};
+					$("#List").html('');
+					$(".mui-row>div>.tittle").removeClass('activeT');
+					$(".mui-row>div>.tittle").eq(i).addClass('activeT');
+					switch($(".mui-row>div>.tittle").eq(i).text()) {
+						case '闲置无人机':
+							plus.nativeUI.showWaiting();
+							Stock.List();
+							break;
+						case '无人机出库':
+							plus.nativeUI.showWaiting();
+							Stock.OutStock();
+							break;
+						case '无人机入库':
+							plus.nativeUI.showWaiting();
+							Stock.InStock();
+							break;
+					};
+				});
+			});
+		},
+	};
+</script>

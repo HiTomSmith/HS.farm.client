@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+	</head>
+	<style>
+		/*新增品牌*/
+		
+		.AddBrand {
+			height: 44px;
+			line-height: 44px;
+			padding-right: 10px;
+		}
+		.mui-media-body p{
+			font-size: 14px;
+			margin-left: 40px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-pull-right AddBrand">添加品牌</a>
+			<h1 class="mui-title">品牌管理</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view list" id="getNoPayList">
+				</ul>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script type="text/javascript">
+	mui.init();
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var GoodsBrandList = null;
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		Brand.BrandList(UserInfo.CompanyId);
+		Brand.Taps(); //
+	});
+
+	/*品牌*/
+	var Brand = {
+		//获取品牌列表
+		BrandList: function(GoodsManufactorId) {
+			var option = {
+				api: '/AccountCenter/GoodsBrandName/GetPageListJson',
+				data: {
+					"page": 1,
+					"rows": 102,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						GoodsManufactorId: GoodsManufactorId
+					})
+				},
+				success: function(data) {
+					
+					$("#getNoPayList").html('');
+					var $html = "";
+					var result = JSON.parse(data);
+					var rows = result['rows'];
+					GoodsBrandList = rows;
+					for(var i in rows) {
+						var row = rows[i];
+						var $html = $(
+							'<li class="mui-table-view-cell mui-media leaseList" index-id="' + i + '">' +
+							'<div class="mui-slider-right mui-disabled">' +
+							'<a class="mui-btn mui-btn-red delete" id=' + row['GoodsBrandId'] + '   index-id="' + i + '">删除</a>' +
+							'</div>' +
+							'<div class="mui-slider-handle">' +
+							'<a href="javascript:;">' +
+							'<img class="mui-media-object mui-pull-left" src="../../img/leaseUav.png">' +
+							'<div class="mui-media-body">' +
+							'<p class="mui-ellipsis">品牌：' + row.GoodsBrandName + '</p>' +
+							'</div>' +
+							'</a>' +
+							'</div>' +
+							' </li>'
+						);
+						$html.appendTo($("#getNoPayList"));
+
+						$html.on('tap', function() {
+							var index = $(this).attr('index-id');
+							mui.openWindow({
+								url: "./CreateBrand.html",
+								id: 'CreateBrand',
+								extras: {
+									data: GoodsBrandList[index]
+								}
+							})
+						});
+						//删除当前品牌
+						$html.find('.delete').on('tap', function(event) {
+							event.stopPropagation();
+							var id = $(this).attr('id');
+							var index = $(this).attr('index-id');
+							var sendData = {
+								keyValue: id
+							};
+							dialog.Dialogbox('提示', '确认删除当前品牌？', function(cbs) {
+								if(cbs == 1) {
+									Medicament.DeleteBrand(sendData, function(cb) {
+										if(cb['type'] == 1) {
+											app.toast('删除成功!');
+											$('.leaseList').eq(index).remove();
+										} else {
+											app.toast('删除失败');
+										};
+										dialog.CloseLogBox();
+									});
+								} else if(cbs == 0) {
+									dialog.CloseLogBox();
+								} else {
+									app.toast('已取消');
+								};
+							});
+						});
+
+					}
+				},
+				error: function(data) {
+					app.toast('获取药品列表失败！')
+				}
+			};
+			app.post3_4(option);
+		},
+		Taps: function() {
+			//添加品牌
+			$(".AddBrand").on('tap', function() {
+				mui.openWindow({
+					id: 'AddBrand',
+					url: './CreateBrand.html'
+				})
+			});
+		},
+	};
+
+	//回调刷新
+	window.addEventListener('fresh', function() {
+		//
+		Brand.BrandList(UserInfo.CompanyId);
+	});
+</script>

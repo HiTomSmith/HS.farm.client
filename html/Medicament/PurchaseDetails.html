@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+	</head>
+	<style>
+		.Oprice {
+			padding-left: 20px;
+			text-decoration: line-through;
+		}
+		
+		.iconfont {
+			top: 0;
+		}
+		
+		.footer {
+			height: 50px;
+		}
+		
+		.welfares {
+			background: #F5F5F5;
+		}
+		
+		.ChoiceAddresss {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		
+		.address {
+			height: auto;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">药剂采购</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell list">
+					<div class="mui-row brand brand-active">
+						<div class="mui-col-sm-3 mui-col-xs-3">
+							<span>药剂品牌 &nbsp;&nbsp;</span>
+						</div>
+						<span class="brand-items">
+							<span class="font_14 brand-items-active"></span>
+						</span>
+					</div>
+				</li>
+				<!--地址-->
+				<li class="mui-table-view-cell list address">
+					<div class="Address-Choice">
+						<div>收货地址:</div>
+					</div>
+					<div class="font_14 ChoiceAddresss"> 请选择</div>
+					<div class="Address-user">
+						<div class="font_14 Address-Moblie">暂无</div>
+						<div class="font_14 Address-name">暂无</div>
+					</div>
+				</li>
+				<!--采购详情-->
+				<li class="mui-table-view-cell list Purchase">
+					<div class="Purchase-details">
+						采购详情
+					</div>
+					<div style="padding: 5px 0px;"></div>
+					<div class="Purchase-money font_14">
+						金额：<input type="text" class="money font_14" placeholder="请输入药剂金额" readonly="readonly" />
+					</div>
+				</li>
+				<div class="mui-row welfares">
+					<div class="mui-col-sm-6 mui-col-xs-6 circle">
+						<span class="xianjin font_14">现金劵</span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6 circle">
+						<span class="youhui font_14">优惠券</span>
+
+					</div>
+				</div>
+				<li class="footer">
+					<!--<div class="footer-Discount font_12 CouponList">
+						<span>可用金额：5000</span>&nbsp;&nbsp;&nbsp;&nbsp;
+						<span>可用优惠券：4折</span>
+					</div>-->
+					<div class="footer-Pretotal">
+						<span class="footer-money"><span class="Net">合计：￥110元</span> <span class="Oprice font_12">￥23132</span></span>
+						<span class="footer-Purchase">采购</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, ObjStorages
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		Order.storages();
+		Order.tap();
+	});
+	//订单提交对象
+	var Order = {
+		//获取缓存
+		storages: function() {
+			ObjStorages = JSON.parse(app.storage('Order'));
+			//计算实际支付金额
+			var money = ObjStorages['Money'];
+			$(".brand-items-active").text(ObjStorages['brand']).attr('brandId', ObjStorages['brandId']); //品牌 brandId
+			$(".ChoiceAddresss").text(ObjStorages['Address']); //地址 
+			$(".Address-Moblie").text(ObjStorages['AddressMoblie']); //收货人电话
+			$(".Address-name").text(ObjStorages['AddressUserName']); //收货人名称
+			$(".money").val(ObjStorages['Money']); //金额
+			$(".Oprice").text('￥' + ObjStorages['Money']); //原价
+			$(".CouponList").html('<span>' + ObjStorages['Coupon'] + ':' + ObjStorages['CouponMoney'] + '</span>');
+			$(".xianjin").text('现金劵：' + money / 2 + '元');
+			$(".youhui").text('优惠券：' + money / 2 + '元');
+			$(".Net").text('合计：￥' + (money) + '元');
+		},
+		//提交订单
+		Save: function() {
+			var sendData = {
+				entity: {
+					OrderTypeId: ObjStorages['OrderTypeId'],
+					IsPay: 0,
+					CustomerName: UserInfo.UserName, //客户名称
+					CustomerId: UserInfo.UserId, //客户主键
+					OrganizeId: ObjStorages['Manufactors'], //机构主键
+					ReceivingMan: $(".Address-name").text(), //收货人
+					ReceivingTele: $(".Address-Moblie").text(), //联系方式
+					ReceivingAddress: $(".ChoiceAddresss").text(), //收货地址
+					PayMoney: $('.money').val(), //付款金额
+					CreateUserId: UserInfo.UserId, //创建人主键
+					CreateUserName: UserInfo.UserName, //创建人
+					GoodsBrandId: $(".brand-items-active").attr('brandId'), //企业品牌Id
+					PayType: 0,
+					GoodsManufactorId: ObjStorages.Manufactors,
+				}
+			};
+			SetOrder.SaveOrder(sendData, function(cb) {
+				console.log(JSON.stringify(cb))
+				dialog.Dialogbox('提示', '是否确认提交订单？', function(cb) {
+					app.storage_remove('Order');
+					var index = plus.webview.getWebviewById('PurchaseDetails');
+					var FatherView = plus.webview.getWebviewById('Purchase');
+					if(cb == 1) {
+						dialog.CloseLogBox();
+						//mui.fire(FatherView, 'Refresh');
+						app.toast('订单提交成功！');
+						setTimeout(function() {
+							mui.openWindow({
+								url: './Mpay.html',
+								id: 'Mpay',
+								extras: {
+									"money": ObjStorages['Money']
+								},
+								styles: {
+									top: '45px'
+								}
+							});
+						}, 500)
+					} else if(cb == 0) {
+						app.toast('已取消');
+						dialog.CloseLogBox();
+					} else {
+						app.toast('已取消');
+					};
+				});
+			});
+		},
+		tap: function() {
+			//关闭页面清除缓存
+			mui.back = function() {
+				var Mpay = plus.webview.getWebviewById('Mpay');
+				var index = plus.webview.getWebviewById('PurchaseDetails');
+				var FatherView = plus.webview.getWebviewById('Purchase');
+				if(!Mpay) {
+					dialog.CloseLogBox();
+					dialog.Dialogbox('提示', '是否结束订单？', function(cb) {
+						app.storage_remove('Order');
+						if(cb == 1) {
+							mui.fire(FatherView, 'Refresh');
+							setTimeout(function() {
+								mui.back();
+							}, 500)
+							app.toast('订单已结束！');
+						} else if(cb == 0) {
+							app.toast('已取消');
+							dialog.CloseLogBox();
+						} else {
+							app.toast('已取消');
+						};
+					});
+				}else{
+					mui.fire(FatherView, 'Refresh');
+					plus.webview.close(Mpay);
+					plus.webview.close(index);
+				};
+
+			};
+
+			//采购
+			$(".footer-Purchase").on('tap', function() {
+				Order.Save();
+			});
+		}
+	};
+</script>

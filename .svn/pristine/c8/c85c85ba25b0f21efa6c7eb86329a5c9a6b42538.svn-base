@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link href="../../../css/style.css" rel="stylesheet" />
+		<link href="../../../css/list.css" rel="stylesheet" />
+		<link href="../../../css/Commodity.css" rel="stylesheet" />
+		<style>
+			* {
+				color: #666666;
+			}
+			
+			.Uav {
+				height: 46px;
+				line-height: 46px;
+			}
+			
+			.Uav>img {
+				margin-top: calc((46px - 24px)/2);
+			}
+			
+			.mui-media-body {
+				padding-top: 0;
+			}
+			
+			.mui-content {
+				padding-bottom: 100px;
+			}
+			
+			.bar>div>span {
+				display: inline-block;
+			}
+			
+			.Order-Information>span:nth-child(1) {
+				float: left;
+			}
+			
+			.Order-Information>span:nth-child(2) {
+				float: right;
+			}
+			
+			.mui-media-body>p {
+				padding: 11px 0px;
+				border-bottom: 1px solid #F5F5F5;
+			}
+			
+			.details>p>span {
+				width: 100%;
+			}
+			
+			.saves {
+				border-radius: 4px;
+				margin: 0;
+				position: fixed;
+				width: calc(100% - 16px);
+				left: 8px;
+				bottom: 20px;
+			}
+			
+			.font_12 {
+				color: #717171 !important;
+			}
+			/*按钮样式*/
+			
+			.footerBox {
+				position: fixed;
+				bottom: 18px;
+				width: calc(100% - 16px);
+				left: 8px;
+			}
+			
+			.footerBox>div {
+				/*background: #F5F5F5;*/
+				background: none;
+			}
+			
+			.footerBox button {
+				margin: 0;
+				padding: 0;
+				line-height: 0;
+				border-radius: 4px;
+				width: 90%;
+				margin: 0 auto;
+			}
+			
+			#UpdatePrice,
+			#confirmPrice {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">订单详情</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">
+							<span class="OrderNumber">订单号：15616516156</span>
+							<span class="mui-pull-right OrderState" style="color: #1E9FEF;font-size: 12px;">状态</span>
+						</div>
+						<div class="mui-media-body ">
+							<p class="mui-ellipsis Order-Information font_12">
+								<span class="time">日期:2018-01-01</span>
+								<span class="money">100元</span>
+							</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media list moneyDetails">
+					<div class="Uav">
+						<span>消费明细</span>
+					</div>
+					<!--<div class="mui-media-body ">
+						<p class="mui-ellipsis Order-Information font_12">
+						<span class="">现金 : 药剂卷</span>
+						<span class="">元</span>
+						</p>
+					</div>-->
+				</li>
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<span>采购信息</span>
+						</div>
+						<div class="mui-media-body ">
+							<p class="mui-ellipsis font_12 name">采购人：</p>
+							<p class="mui-ellipsis font_12 Moblie">联系方式： </p>
+							<p class="mui-ellipsis font_12 address">收货地址： </p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media list">
+					<div class="Uav ">
+						<span>采购详情</span>
+					</div>
+					<a href="javascript:;" class="OrderDetailss">
+
+					</a>
+				</li>
+			</ul>
+			<div class="footerBox">
+				<div class="mui-row">
+					<div class="mui-col-sm-6 mui-col-xs-6">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="UpdatePrice">调价</button>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="confirmPrice">确认</button>
+					</div>
+				</div>
+			</div>
+			<!--<button type="button" class="mui-btn mui-btn-blue mui-btn-block saves" id="UpdatePrice">调价</button>-->
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script src="../../../js/addCar.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var UserInfo, _self, dataResult, OrderDetails;
+
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		console.log(JSON.stringify(_self))
+		Order.Taps();
+		Order.Fill();
+		Order.OrderDetails();
+		//Order.getOrderDetails();
+		//Order.getYaoJi();
+		//		//判断订单状态为3，显示确认订单按钮
+		//		if(_self['data']['AuditStatus'] == 3) {
+		//			$("#saves").show()
+		//		};
+		//		if(_self['data']['AuditStatus'] == 5) {
+		//			$("#saves").hide()
+		//		};
+	});
+
+	//创建订单对象
+	var Order = {
+		//开始填充数据
+		Fill: function() {
+
+			var goodOrder = _self.data.GoodOrder;
+			var send = {
+				keyValue: goodOrder
+			};
+			Orders.GetDrugerOrders(send, function(cb) {
+				dataResult = cb.entity;
+				console.log(JSON.stringify(dataResult))
+
+				var data = dataResult;
+
+				$(".OrderNumber").text('订单号：' + data['OrderNumber']); //订单号
+				$(".OrderState").text(Order.getStauts(data['AuditStatus'])); //订单状态
+				$(".time").text('日期：' + data['CreateDate'].substr(0, 10)); //订单号
+				$(".money").text(data['PayMoney'] + '元'); //金额
+				$(".name").text('采购人：' + data['CustomerName']); //采购人
+				$(".Moblie").text('联系方式：' + data['ReceivingTele']); //手机号
+				$(".address").text('收货地址：' + data['ReceivingAddress']); //地址
+				Order.GoodsNames(data.GoodsBrandId);
+
+				//判断订单状态为3，显示确认订单按钮
+//				if(data['AuditStatus'] == 4) {
+//					$("#UpdatePrice").show();
+//					$("#confirmPrice").show()
+//				};
+
+				OrderDetails = cb.childEntity;
+				for(var i in OrderDetails) {
+					console.log(JSON.stringify(OrderDetails))
+					var row = OrderDetails[i];
+					console.log(row['GoodsType'])
+					console.log(row['GoodsName'])
+					var $html = $(
+						'<div class="mui-media-body details">' +
+						'<p class="mui-ellipsis Order-Information font_12">' +
+						'<span class="font_12 ">' + row['GoodsType'] + ':<span class="font_12 s GoodsName">' + row['GoodsName'] + '</span>' +
+						'<span class="" style="padding-left:30px">' + row['Constituents'] + '</span>' +
+						//'+
+//						'<span style="float: right;padding-left:30px">' + (row['TradePrice']) + '元</span>' +
+					    '<span style="float: right;padding-left:30px">'+(row['Number']*row['TradePrice'])+'元</span>'+
+						'<span style="float: right;font_12" class="price">' + row['TradePrice'] + '元 </span>' +
+						'<span style="float: right;padding-right:20px;font_12" class="number">' + row['Number'] + 'X </span></span>' +
+						'</p>' +
+						'</div>'
+					);
+					$html.appendTo($(".OrderDetailss"))
+				};
+
+			})
+		},
+		//获取厂家品牌名称
+		GoodsNames: function(goodsid) {
+			//获取厂家品牌名称
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					GoodsBrandId: goodsid
+				})
+			};
+			Orders.OrdersBrand(send, function(cb1) {
+				var rows = cb1['rows'];
+				var row = rows[0];
+				$(".Brand").text('药剂品牌： ' + row['GoodsBrandName']);
+			});
+		},
+		//获取订单消费明细
+		OrderDetails: function() {
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					GoodsOrderId: _self['data']['GoodOrder']
+				})
+			};
+			Orders.OrderDetail(send, function(cb) {
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<div class="mui-media-body ">' +
+						'<p class="mui-ellipsis Order-Information font_12">' +
+						'<span class="">' + ((row['AmountType'] == 10) ? '现金' : '药剂卷') + '</span>' +
+						'<span class="">' + row['Quota'] + '元</span>' +
+						'</p>' +
+						'</div>'
+					);
+					$html.appendTo($(".moneyDetails"));
+				};
+			});
+		},
+		//		//获取订单明细
+		getOrderDetails: function() {
+			//OrderDetailss
+			var send = {
+				keyValue: _self['data']['GoodOrder']
+			};
+
+			Orders.GetOrderDetails(send, function(cb) {
+
+				OrderDetails = cb;
+				for(var i in cb) {
+					var row = cb[i];
+					var $html = $(
+						'<div class="mui-media-body details">' +
+						'<p class="mui-ellipsis Order-Information font_12">' +
+						'<span class="font_12 ">' + row['GoodsType'] + ':<span class="font_12 s GoodsName">' + row['GoodsName'] + '</span>' +
+						'<span class="" style="padding-left:30px">' + row['Constituents'] + '</span>' +
+						//'+
+//						'<span style="float: right;padding-left:30px">' + row['TradePrice'] + '元</span>' +
+						'<span style="float: right;padding-left:30px">'+(row['Number']*row['TradePrice'])+'元</span>'+
+						'<span style="float: right;font_12" class="price">' + row['TradePrice'] + '元 </span>' +
+						'<span style="float: right;padding-right:20px;font_12" class="number">' + row['Number'] + 'X </span></span>' +
+						'</p>' +
+						'</div>'
+					);
+					$html.appendTo($(".OrderDetailss"))
+				};
+			});
+		},
+		Taps: function() {
+			//切换信息
+			$('.bar>div').each(function(i) {
+				$(this).on('tap', function() {
+					$('.bar>div>span').removeClass('active');
+					$(this).find('span').addClass('active');
+				});
+			});
+		},
+		//获取订单状态
+		getStauts: function(AuditStatus) {
+			//订单状态
+			var OrderStatus = [{
+					name: "下单",
+					key: 0,
+					label: "待审核"
+				},
+				{
+					name: "审核",
+					key: 2,
+					label: "待添加明细"
+				},
+				{
+					name: "上架",
+					key: 3,
+					label: "确认"
+				},
+				{
+					name: "用户确认",
+					key: 4,
+					label: "待扣款"
+				},
+//				{
+//					name: "调价",
+//					key: 5,
+//					label: "待扣款"
+//				},
+				{
+					name: "扣款",
+					key: 7,
+					label: "待付款"
+				},
+				{
+					name: "付款",
+					key: 8,
+					label: "待发货"
+				},
+				{
+					name: "厂家确认发货",
+					key: 9,
+					label: "代签收"
+				},
+				{
+					name: "用户签收",
+					key: 10,
+					label: "已完成"
+				}
+			];
+			for(var j = 0; j < OrderStatus.length; j++) {
+				var key = OrderStatus[j].key;
+				if(key == AuditStatus) {
+					return OrderStatus[j].label;
+					break;
+				}
+			}
+		},
+		//获取单个药剂订单
+		getYaoJi: function() {
+			var goodOrder = _self.data.GoodOrder;
+			var send = {
+				keyValue: goodOrder
+			};
+			Orders.GetDrugerOrders(send, function(cb) {
+				dataResult = cb;
+				console.log(JSON.stringify(dataResult))
+			})
+		}
+	};
+	//确认调价
+	$("#confirmPrice").on('tap', function() {
+		var goodOrder = _self.data.GoodOrder;
+		var send = {
+			key: goodOrder,
+			auditstatus: 5
+		};
+		dialog.Dialogbox('提示', '确认调价？', function(cb) {
+			var index = plus.webview.getWebviewById('ChangePrice');
+			var FatherView = plus.webview.getWebviewById('Order');
+			if(cb == 1) {
+				SetOrder.EditOrderStatus(send, function(cb) {
+					console.log(JSON.stringify(cb))
+					if(cb.type == 1) {
+						mui.fire(FatherView, 'Refresh');
+						setTimeout(function() {
+							index.close();
+						}, 500)
+						app.toast('调价成功！');
+					} else if(cb.type == 3) {
+						app.toast('当前已调价!')
+						dialog.CloseLogBox();
+					} else {
+						app.toast('调价失败')
+						dialog.CloseLogBox();
+					}
+				})
+
+			} else if(cb == 0) {
+				app.toast('取消调价');
+				dialog.CloseLogBox();
+			} else {
+				app.toast('取消调价');
+			};
+		});
+
+	});
+
+	//调价
+	$("#UpdatePrice").on('tap', function() {
+		mui.openWindow({
+			url: '../MedicamentCheck/CommodityPrice.html',
+			id: 'CommodityPrice',
+			extras: {
+				OrderDetails: OrderDetails
+			}
+		})
+	});
+
+	//回调刷新
+	window.addEventListener('Refresh', function() {
+		var FatherView = plus.webview.getWebviewById('ChangePrice');
+		FatherView.reload(true)
+	});
+</script>

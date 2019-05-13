@@ -1,0 +1,342 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/myStyle.css" />
+		<style type="text/css">
+			.bottom {
+				margin: 0 8px;
+			}
+			
+			.top_img {
+				width: 100%;
+				height: 100%;
+				/*border: 1px solid red;*/
+				margin-top: 5px;
+				text-align: center;
+				line-height: 600px;
+				
+			}
+			
+			.top_img img {
+				height: 260px;
+				width: 300px;
+				margin-left: 10px;
+				margin-bottom: 20px;
+				
+			}
+			
+			.cent {
+				height: 85px;
+				padding-top: 5px;
+			}
+			
+			.cent img {
+				width: 25px;
+				height: 25px;
+			}
+			
+			.cent .cent_o {
+				height: 34px;
+				margin-top: 8px;
+			}
+			
+			.cent_o ul li {
+				height: 25px;
+				width: 25px;
+				text-align: center;
+			}
+			
+			.cent_t {
+				height: 38px;
+			}
+			
+			.bottom {
+				height: 130px;
+				/*	border: 1px solid orange;*/
+			}
+			
+			.footer {
+				width: 100%;
+				height: 230px;
+				position: fixed;
+				bottom: -18px;
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+			.mui-row{
+				margin-top: -40px;
+				margin-left: 20px;
+				margin-right: 20px;
+			}
+			/*.jjzy{
+				margin-right: 5px;
+			}*/
+			.topbannaer{
+				position: relative;
+				top: -30px ;
+			}
+			#fourblock{
+				height: 70px;
+				display: -webkit-flex; /* Safari */
+  				display: flex;
+  				flex-direction: row;
+  				justify-content:space-between;
+  				align-items:center;
+  				 /*background: red;*/
+			}
+			.fourblock1{
+				width:45%;
+				height: 40px;
+				border: 1px solid #F5F5F5;
+				border-radius: 5px;
+				text-align: center;
+				margin-bottom: 10px;
+				/*background: blue;*/
+				
+			}
+			.fourblock1:nth-child(1){
+				margin-left: 8px;
+			}
+			.fourblock1:nth-child(2){
+				margin-right: 8px;
+			}
+			.fourblock1 span{
+				font-size: 14px;
+				line-height: 40px;
+			}
+			.reallycolor{
+				background-color: #15AE3F;
+				color: #FFFFFF;
+			}
+			.mui-btn-block{
+				margin: 10px auto;
+				background: #15AE3F;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">电池</h1>
+		</header>
+		<div class="mui-content wrapper">
+			<div class="top_img">
+				<img src="../../img/batteryBack.png" />
+			</div>
+			<div class="footer">
+				<div class="cent gray-color">
+					<div class="topbannaer">
+						<div class="cent_o">
+							<p class="mui-pull-left">
+								<span class="font-16 black-color">植保机电池*6块+充电器</span>
+							</p>
+							<ul class="mui-pull-right mui-list-unstyled">
+								<li class="mui-pull-left reduce"><img src="../../img/reduce.png" />&nbsp;&nbsp;</li>
+								<li class="font-16 mui-pull-left " id="reallynum">0</li>
+								<li class="mui-pull-left increase"><img src="../../img/plus.png" /></li>
+							</ul>
+						</div>
+						<div class="cent_t">
+							<span class="font-14 blue-color" id="allpriceto">&nbsp;&nbsp;</span>
+							<span class="mui-pull-right font-14">可购：<span id="batteryNum" class="font-14">0</span>套</span>
+						</div>
+						<div class="black-color font-16" style="margin-bottom: 10px;">MG系列充电器类型：</div>
+						<!--<div class="font-14">植保机电池*6块+充电器可三年分三期购买</div>-->
+						<div id="fourblock" class="font-14">
+							<div class="fourblock1 fourblock1-1 mui-active" onselect="Selection"> 
+								<span>六通道智能充电器</span>
+							</div>
+							<!--<div class="fourblock1">
+								<span>双通道充电器1200W</span>
+							</div>-->
+							<!--<div class="fourblock1">
+								<span>智能平衡充电器（CN）</span>
+							</div>-->
+							<div class="fourblock1">
+								<span>智能平衡充电器（EV）</span>
+							</div>
+						</div>
+						
+					</div>
+					
+					
+					
+						
+							
+						<!--<button type="button" class="mui-btn mui-btn-block mui-btn-blue btn" id="DividedPurchase">分期采购</button>-->
+						<!--<button type="button" class="mui-col-sm-5 mui-col-xs-5 mui-btn mui-btn-primary" style="margin-right: 30px;">三年分期采购</button>
+						<button type="button" class="mui-col-sm-5 mui-col-xs-5 mui-btn mui-btn-primary">立即采购</button>-->
+						
+						<div class="mui-row">
+							<div class="mui-col-sm-12 mui-col-xs-12" style="margin-right: 20%;">
+								<button type="button" class="mui-btn mui-btn-blue mui-btn-block " id="DividedPurchase">三年分期采购</button>
+							</div>
+							<!--<div class="mui-col-sm-5 mui-col-xs-5" >
+								<button type="button" class="mui-btn mui-btn-blue mui-btn-block " >立即采购</button>
+							</div>-->
+						</div>
+					
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script type="text/javascript">
+mui.init();
+var resultdata;
+var UserInfo;
+var dirction2='';
+var allprice=15600;
+var goodid='0';
+app.ready(function() {
+	
+		var osaction = plus.webview.currentWebview().tap;
+		if(osaction == "osaction") {
+			mui.back = function() {
+				app.CustomClose(osaction);
+			}
+		}
+	UserInfo = app.accountInfo('info');
+	Order.getBatteryOrderNum();
+	$('.fourblock1-1').click();
+	
+});
+var Order = {
+	
+	//获取可购买电池套装数量
+	getBatteryOrderNum:function(){
+		var send = {			
+			userId:UserInfo.UserId
+		}; 
+		console.log(JSON.stringify(UserInfo));
+		Orders.BatteryOrderNum(send,function(cb){ 
+			console.log(JSON.stringify(cb))      
+			resultdata = cb.resultdata; 
+			console.log(resultdata); 
+			if(resultdata>=$('#reallynum').text()){
+				$("#batteryNum").text(resultdata);
+				$("#DividedPurchase").on("tap", function() {
+				if($("#batteryNum").text()>=$('#reallynum').text()&&$('#reallynum').text()>0){
+//					var objView = plus.webview.getWebviewById("battery");
+//			        objView .reload(true);
+					mui.openWindow({
+						url: 'batteryOrderDetail.html',
+						id: 'DividedPurchase',
+						extras:{
+							dircid:dirction2,
+							goodnum:goodid,
+							allpricego:allprice,
+							resultdata2:$('#reallynum').text()
+							
+							}
+				   })
+					
+				}else{
+					
+					mui.toast("请选择正确的电池数量");
+					return false;
+				}
+			});	
+			}
+			
+			
+			
+		});
+	}
+}
+//回调刷新
+window.addEventListener('fresh', function() {
+	Order.getBatteryOrderNum();
+});
+//var Order = {
+//	//获取订单类型
+//	Otype: function() {
+//		var send = {
+//			queryJson: JSON.stringify({})
+//		};
+//		Orders.OrderType(send, function(cb) {
+//			OrderTypeId = cb[0]['OrderTypeId']
+//		});
+//	},
+	//点击
+	$('.fourblock1').click(function(){
+		$(this).addClass('reallycolor');
+		
+		$(this).siblings().removeClass('reallycolor');
+		dirction2=$(this).text();
+	
+//		dirction2='植保机电池*6块+'+dirction2;
+		if($('.fourblock1').eq(0).hasClass('reallycolor')){
+			allprice=21600;
+			goodid='159159159159';
+			$('.top_img').html('<img src="../../img/we3.jpg" />');
+		}
+		else if($('.fourblock1').eq(1).hasClass('reallycolor')){
+			allprice=19300;
+			goodid='259159159159';
+			$('.top_img').html('<img src="../../img/we1.jpg" />');
+		}
+		else if($('.fourblock1').eq(2).hasClass('reallycolor')){
+			allprice=19300;
+			goodid='359159159159';
+			$('.top_img').html('<img src="../../img/we2.jpg" />');
+		}
+		else if($('.fourblock1').eq(3).hasClass('reallycolor')){
+			allprice=19300;
+			goodid='459159159159';
+			$('.top_img').html('<img src="../../img/we4.jpg" />');
+		}
+		$("#allpriceto").text("￥"+allprice);
+		
+	});
+	
+	
+	
+	
+	
+//	tap: function() {
+		//加减电池数量
+		$(".reduce").on('tap', function() {
+			var num = $('#reallynum').text();
+			num--;
+			if(num <0) {
+				return false;
+			};
+			$('#reallynum').text(num);
+		});
+
+		$(".increase").on('tap', function() {
+			var num = $('#reallynum').text();
+			num++;
+//			if(num > resultdata) {
+//				
+//				mui.toast("您最多可以购买"+resultdata+"套");
+//				return false;
+//			};
+			$('#reallynum').text(num);
+		});
+//	}
+//};
+
+
+</script>

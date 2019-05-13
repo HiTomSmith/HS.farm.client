@@ -1,0 +1,61 @@
+html,
+body,
+.mui-content {
+	width: 100%;
+	height: 100%;
+}
+
+header {
+	border-bottom: 1px solid #F5F5F5;
+}
+
+@font-face {
+	font-family: 'iconfont';
+	src: url('../html/Backstage/fonts/iconfont.eot');
+	src: url('../html/Backstage/fonts/iconfont.eot?#iefix') format('embedded-opentype'), url('../html/Backstage/fonts/iconfont.woff') format('woff'), url('../html/Backstage/fonts/iconfont.ttf') format('truetype'), url('../html/Backstage/fonts/iconfont.svg#iconfont') format('svg');
+}
+
+.icon {
+	/* 通过设置 font-size 来改变图标大小 */
+	width: 1em;
+	height: 1em;
+	/* 图标和文字相邻时，垂直对齐 */
+	vertical-align: -0.15em;
+	/* 通过设置 color 来改变 SVG 的颜色/fill */
+	fill: currentColor;
+	/* path 和 stroke 溢出 viewBox 部分在 IE 下会显示
+    normalize.css 中也包含这行 */
+	overflow: hidden;
+	border: 1px solid red;
+	position: absolute;
+	top: 10px;
+}
+
+.iconfont {
+	font-family: "iconfont" !important;
+	font-size: 20px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-stroke-width: 0.2px;
+	-moz-osx-font-smoothing: grayscale;
+}
+.mentNum,
+.PaymentNum,
+.ReceivedNum {
+	position: absolute;
+	width: 14px;
+	height: 14px;
+	background: red;
+	right: 18px;
+	top: 3px;
+	border-radius: 100%;
+	font-size: 8px;
+	text-align: center;
+	line-height: 15px;
+	color: white;
+	display: none;
+}
+
+#List{
+	padding-bottom: 60px;
+}

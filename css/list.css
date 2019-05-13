@@ -1,0 +1,202 @@
+.mui-content {
+			background: #F5F5F5;
+			padding-bottom: 60px;
+		}
+		/*头样式*/
+		
+		.mui-row {
+			position: relative;
+			z-index: 999;
+			background: white;
+		}
+		
+		.mui-row>div {
+			text-align: center;
+			height: 40px;
+			line-height: 40px;
+		}
+		
+		.tittle {
+			height: 100%;
+			width: 50%;
+			margin: 0 auto;
+		}
+		
+		.activeT {
+			color:  #15AE3F;
+			border-bottom: 1px solid  #15AE3F;
+		}
+		/*列表样式*/
+		
+		.mui-table-view {
+			width: calc(100% - 16px);
+			margin: 0 auto;
+			background: #F5F5F5;
+		}
+		
+		.list {
+			padding-top: 6px !important;
+			height: auto;
+			margin-top: 6px;
+			background: white;
+			box-shadow: 1px 1px 3px 1px #efecec;
+			border-radius: 4px;
+			padding-bottom:10px;
+		}
+		/*图片大小*/
+		
+		.Uav {
+			height: 54px;
+			line-height: 54px;
+			margin-left: -10px;
+			border-bottom: 1px solid #F5F5F5;
+			margin-bottom: 1px;
+		}
+		
+		.Uav>img {
+			width: 24px;
+			height: 24px !important;
+			margin-top: calc((54px - 24px)/2);
+		}
+		
+		.UavStatus ,.UavStatus1,.UavStatus2,.UavStatus3,.UavStatus4,.UavStatus5,.UavStatus6,.UavStatus7,.UavStatus8,.UavStatus9,.UavStatus10,.UavStatus11{
+			float: right;
+			position: relative;
+		}
+		
+		.UavStatus:before,.UavStatus2:before,.UavStatus3:before,.UavStatus4:before,.UavStatus5:before,.UavStatus6:before,.UavStatus7:before,.UavStatus8:before,.UavStatus9:before,.UavStatus10:before,.UavStatus11:before{
+			display: block;
+			width: 6px;
+			height: 6px;
+			content: '';
+			position: absolute;
+			border-radius: 100%;
+			top: 24px;
+			left: -10px;
+		}
+		.UavStatus:before{
+			background: red;
+		}
+		.UavStatus2:before{
+			background: #3995ec;
+		}
+		.UavStatus3:before{
+			background: #10b165;
+		}
+		.UavStatus4:before{
+			background: #16bfb9;
+		}
+		
+		.UavStatus5:before{
+			background: #ff5050;
+		}
+		
+		.UavStatus6:before{
+			background: #fd9826;
+		}
+		
+		.UavStatus7:before{
+			background: #16bfb9;
+		}
+		.UavStatus8:before{
+			background: #ff5050;
+		}
+		
+		.UavStatus9:before{
+			background: #ff744f;
+		}
+		.UavStatus10:before{
+			background: #16bfb9;
+		}
+		
+		.UavStatus11:before{
+			background: #a7a7a7;
+		}
+		
+		
+		
+		.UavStatus1:before {
+			display: block;
+			width: 6px;
+			height: 6px;
+			content: '';
+			background:  #15AE3F;
+			position: absolute;
+			border-radius: 100%;
+			top: 24px;
+			left: -10px;
+		}
+		/*所属人，租赁人，使用人,收回按钮*/
+		
+		.mui-media-body {
+			padding-top: 10px;
+		}
+		
+		.mui-media-body>p {
+			padding: 6px 0px;
+		}
+		
+		.Delivery {
+			margin-top: 20px;
+			width: 54px;
+			height: 24px;
+			text-align: center;
+			line-height: 24px;
+			padding: 0 !important;
+			border-radius: 4px;
+			background:  #15AE3F;
+			color: white;
+		}
+		
+		button{
+			border:none;
+		}
+		
+		.mui-content{
+			padding-bottom: 60px;
+		}
+		
+/* 租赁样式*/
+/*收货按钮*/
+	.list{
+		position:relative;
+		z-index: 99;
+	}
+	.ExpBtn{
+		position: absolute;
+		right:6px;
+		bottom: 30px;
+		height:60px;
+	}
+	.ExpBtn>button{
+		float: left;
+		border-radius: 4px;
+		font-size:12px; 
+		width:70px;
+		height:28px;
+		padding:0 !important;
+		padding:10px 15px;
+		margin-right:4px;
+	}
+	.MoneyColor{
+		color:#15AE3F;
+		background: white;
+		margin-right:-5px;
+		font-size: 12px;
+	}
+	.Color717171{
+		color: #717171 !important;
+	}
+	
+
+	/*地图*/
+	.list>p{
+		padding:10px 0px;
+		border-top:1px solid #F5F5F5 ;
+	}
+	.ttle{
+		padding:10px 0px;
+	}
+	.vale{
+		color: #717171;
+	}

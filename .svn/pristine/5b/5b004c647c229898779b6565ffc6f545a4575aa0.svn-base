@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/Homep.css"/>
+		
+	</head>
+	<style>
+			.content{
+				width:90%;
+				height:170px;
+				background: white;
+				position: fixed;
+				z-index:101;
+				top:170px;
+				margin-left: 5%;
+				border-radius: 4px;
+				display: none;
+			}
+			.top{
+				color:#4CC36B;
+				text-align: center;
+				margin-top: 14px;
+				height:20px;
+			}
+			#mangerName{
+				margin-top:24px;
+				width:90%;
+				margin-left: 5%;
+			}
+			.save,.close{
+				width:42%;
+				height:34px;
+				margin-left:5%;
+				color:white;
+				border: none;
+				margin-top:12px;
+			}
+			.save{
+				background: #4CC36B;
+			}
+			.close{
+				background: #d06969;
+			}
+			.mengbi{
+				width:100%;
+				height:100%;
+				background: #ccc;
+				position: fixed;
+				z-index: 100;
+				opacity: 0.6;
+				display: none;
+			}
+			.mui-pull-right{
+				margin-right: 10px;
+			}
+			#qrcode{
+				width:250px;
+				height:250px;
+				background: white;
+				position: fixed;
+				z-index: 100;
+				top:150px;
+				left:calc((100% - 250px)/2);
+				display: none;
+				border:20px solid white;
+			}
+			.teamBtn{
+				background: #CF2D28;
+				color:white ;
+				border:none;
+				border-radius: 4px;
+				height:40px;
+			}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">团队设置</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+		    <ul class="mui-table-view" id="teamList">
+		        <form class="mui-input-group">
+		            <div class="mui-input-row"> 
+		                <label>团队名称</label>
+		                <input type="text" class="mui-input-clear" placeholder="点击修改名称" readonly="readonly" id="ResetTeamName">
+		            </div>
+		            <div class="mui-input-row" id="setTwoCode"> 
+		                <label>群二维码</label>
+		                <input type="text" class="mui-input-clear" placeholder="点击分享群二维码" readonly="readonly" style="width:33%">
+		    			<a class="mui-icon iconfont mui-pull-right">&#xe749;</a>
+		            </div>
+		        </form>
+		    </ul>
+		</div>
+		<div class="mengbi"></div>
+		<div class="content"> 
+			<div class="top">团队名称</div>
+			<input type="text" maxlength="10" id="mangerName" placeholder="请输入新的团队名称"/>
+			<button class="save" id="save">确认</button>
+			<button class="close">取消</button>
+		</div>
+		<div id="qrcode">
+			
+		</div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	}); 
+	var _teamId = "";
+	var userInfo  = null;
+	app.ready(function(){
+		userInfo = app.accountInfo('info');
+		BtnEvents();
+		_teamId = plus.webview.currentWebview()._teamId;
+		_teamName = plus.webview.currentWebview()._teamName;
+		$("#ResetTeamName").val(_teamName);
+		var TeamCode = JSON.stringify({"_teamId":_teamId,"status":"2"})
+		$("#qrcode").qrcode({
+			width:210,
+			height:210,
+			top:10,
+			left:10,
+			text:TeamCode
+		});
+		
+		getTeamPreson();
+	});
+	
+	//用USERiD 请求TeamPreson
+	function getTeamPreson(){
+		var option = {
+			api:'/XhxManage/XHX_TeamPerson/GetPageListJson',
+			data:{
+				"page": 1,
+				"rows": 100,
+				"sidx": "TeamId",
+				"sord": "asc",
+				"queryJson": JSON.stringify({
+					TeamId: _teamId,
+					UserId:userInfo.UserId
+				})
+			},
+			success:function(data){
+				var result = eval("("+data+")");
+				var rows = result['rows'];
+				var $html = "";
+				//判断当前用户身份，
+				if(rows[0]['Duties']=="队长"){
+					$html = $(
+						'<button type="button" class="mui-btn  mui-btn-block teamBtn" id="dissolution">解散团队</button>'
+					)
+				}else{
+					$html = $(
+						'<button type="button" class="mui-btn mui-btn-block teamBtn" id="removeBack">删除并退出</button>'
+					);
+					//退出团队
+					$html.on('tap',function(){
+						backTeam();
+					});
+				}
+				$html.appendTo($("#teamList"));
+				$html.find("#dissolution").on('tap',function(){
+					//backTeam();
+				});
+			},
+			error:function(data){
+				app.toast('获取成员列表失败')
+			}
+		};
+		app.post3_2(option)
+	}
+	
+	//退出团队
+	function backTeam(){
+		var option = {
+			api:'/XhxManage/XHX_Team/SignOut',
+			data:{
+				keyValue:_teamId,
+				UserId:userInfo.UserId,
+			},
+			success:function(data){
+				var result = eval("("+data+")");
+				if(result['type']=="1"){
+					app.toast('退出成功');
+					var TeamPreson = plus.webview.getWebviewById('TeamPreson');
+					mui.fire(TeamPreson,'pageflowrefresh');
+					TeamPreson.close();
+					mui.back();
+				};
+			},
+			error:function(data){
+			}
+		};
+		app.post3_1(option)
+	}
+	
+	///////点击事件集合
+	function BtnEvents(){
+		///修改团队名称 mengbi content
+		$("#ResetTeamName").on('tap',function(){
+			$(".mengbi , .content").fadeIn("slow");
+			//确认修改
+			$('.save').on('tap',function(){
+				var keyValue =  _teamId;
+				//按钮屏蔽
+				btnsShield(3,"save");
+				if($("#mangerName").val()!=""){
+					var XHX_TeamEntity = {
+						"TeamName":$("#mangerName").val(),
+						"TeamId":_teamId, 
+					};
+					var option = {
+						api:'/XhxManage/XHX_Team/SaveForm?keyValue=' + keyValue,
+						data:XHX_TeamEntity,
+						success:function(data){
+							var result = eval("("+data+")");
+							if(result['type']=="1"){
+								app.toast("修改成功");
+								$("#ResetTeamName").val($("#mangerName").val());
+								$(".mengbi , .content").fadeOut("slow");
+								var TeamList = plus.webview.getWebviewById('TeamList');
+								mui.fire(TeamList,"freshTeamName",{
+									"Name":$("#mangerName").val()
+								})
+								
+							}else{
+								app.toast('修改失败')
+							};
+						},
+						error:function(){
+							app.toast('修改失败')
+						},
+					}
+					app.post3_1(option);
+				}else{
+					app.toast('团队名称不能为空')
+				}
+			});
+		});
+		
+		//取消修改
+		$(".close").on('tap',function(){
+			$(".mengbi , .content").fadeOut("slow");
+		});
+		
+		//生成二维码
+		$("#setTwoCode").on('tap',function(){
+			$("#qrcode").slideToggle("slow");
+		});
+		
+		//搜索添加成员
+		$("#addPreson").on('tap',function(){
+			mui.openWindow({
+				url:'./AddTeamPreson.html',
+				id:'AddTeamPreson'
+			})
+		});
+	};
+</script>

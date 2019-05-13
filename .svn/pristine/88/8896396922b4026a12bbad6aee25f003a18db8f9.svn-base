@@ -1,0 +1,349 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<style>
+			.leaseBanner {
+				height: 100pt;
+				background-image: url(../../img/hszb-1.png);
+				background-size: 100% 100%;
+				text-align: center;
+				border-radius: 5px;
+			}
+			/*.leaseBanner p{
+				font-size: 20pt;
+				color: #1D0C52;
+				padding-top: 35pt;
+			}
+			.leaseBanner p span{
+				color: #FFFFFF;
+			}*/
+			
+			.leaseBtn {
+				background-image: url(../../img/141@2x.png);
+				background-size: 100% 100%;
+				width: 66pt;
+				height: 22pt;
+				margin: 18pt auto;
+				line-height: 22pt;
+				border-radius: 7px;
+			}
+			
+			.leaseBtn span {
+				font-size: 9pt;
+				color: #FFFFFF;
+			}
+			
+			.myLease {
+				height: 50pt;
+			}
+			
+			.myLease div {
+				height: 50pt;
+				width: 25%;
+				float: left;
+				background: #F4F4F4;
+			}
+			
+			.myLease div:nth-child(1) {
+				border-top-left-radius: 5px;
+				border-bottom-left-radius: 5px;
+			}
+			
+			.myLease div:nth-child(5) {
+				border-top-right-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+			
+			.leaseNav {
+				color: #414141;
+				font-size: 10pt;
+				font-weight: 700;
+				padding: 0 0 0 14pt;
+				margin-bottom: 0;
+			}
+			
+			.myLease>div>p.leaseNum {
+				padding-top: 8pt;
+				font-size: 15pt;
+				color: #23241D;
+				text-align: center;
+			}
+			
+			.myLease>div>p.leaseType {
+				margin-bottom: 13pt;
+				font-size: 11pt;
+				color: #9B9B9B;
+				text-align: center;
+			}
+			
+			.navMenu {
+				width: 25%;
+				height: 55pt;
+				float: left;
+			}
+			
+			.navMenu div {
+				/*background: red;*/
+				height: 35pt;
+				width: 35pt;
+				margin: 0 auto;
+				/*border-radius: 20px;*/
+			}
+			
+			.navMenu p {
+				margin-top: 5pt;
+				text-align: center;
+				color: #414141;
+				font-size: 10pt;
+				font-weight: 400;
+				letter-spacing: 1pt;
+			}
+			
+			.navMenu img {
+				width: 100%;
+			}
+			
+			.activity {
+				height: 70pt;
+				width: 49%;
+				/*background: #409BFE url(../../img/134@2x.png) no-repeat;
+				background-size: 35% 35%;
+				background-position: bottom right;*/
+				border-radius: 5px;
+			}
+			
+			.activity:nth-child(1) {
+				background-image: url(../../img/hszb-2.png);
+				background-size: 100% 100%;
+			}
+			
+			.activity:nth-child(2) {
+				background-image: url(../../img/hszb-3.png);
+				background-size: 100% 100%;
+			}
+			/*.activity:nth-child(1){
+				background: #FEBD40;
+			}
+			.activity .activeTitle{
+				padding: 13pt 0 0 13pt;
+				color: #FFFFFF;
+				font-size: 13pt;
+			}
+			.activity p:nth-child(2){
+				margin: 7pt 0 0 13pt;
+				font-size: 10pt;
+				color: #FFFFFF;
+			}*/
+			
+			.info-1-1 {
+				height: 13px;
+				width: 3px;
+				float: left;
+				margin-left: 10px;
+				margin-top: 3px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div style="padding: 7pt 7pt 9pt 7pt;">
+			<div class="leaseBanner" id="quzulin">
+				<!--<p>16400元，<span>租台飞机</span>带回家</p>
+				<div class="leaseBtn">
+					<span>去租赁</span>
+				</div>-->
+			</div>
+		</div>
+		<img src="../../img/readygo.png" class="info-1-1" />
+		<p class="leaseNav">我的租赁</p>
+		<div style="padding: 9pt 7pt;">
+			<div class="myLease">
+				<div>
+					<p class="leaseNum" id="daifukuan" style="color: darkorange;">0</p>
+					<p class="leaseType">待付款</p>
+				</div>
+				<div>
+					<p class="leaseNum" id="daishouhuo" style="color: pink;">0</p>
+					<p class="leaseType">待收货</p>
+				</div>
+				<div>
+					<p class="leaseNum" id="yiwancheng" style="color: gold;">0</p>
+					<p class="leaseType">租赁中</p>
+				</div>
+				<div style="width: 1pt;background-color: #F4F4F4;">
+					<div style="height: 40pt;width: 1pt;background: #E5E5E5;margin-top: 5pt;"></div>
+				</div>
+				<div id="quanbu" style="width: 24%;">
+					<p class="leaseNum" style="padding-top: 6pt;color: green;"><span class="mui-icon mui-icon-list" style="margin-top: 1px;"></span></p>
+					<p class="leaseType" style="margin-top: -1px;">租赁单</p>
+				</div>
+			</div>
+		</div>
+		<div style="padding: 5pt 9pt 9pt 9pt;">
+			<div style="height: 55pt;">
+				<div class="navMenu" id="feiji">
+					<div>
+						<img src="../../img/11@2x.png" />
+					</div>
+					<p>飞机租赁</p>
+				</div>
+				<div class="navMenu" id="dianchi">
+					<div>
+						<img src="../../img/8@2x.png" />
+					</div>
+					<p>电池分期</p>
+				</div>
+				<div class="navMenu" id="wode">
+					<div>
+						<img src="../../img/10@2x.png" />
+					</div>
+					<p>我的设备</p>
+				</div>
+				<div class="navMenu" id="shouhou">
+					<div>
+						<img src="../../img/9@2x.png" />
+					</div>
+					<p>售后服务</p>
+				</div>
+			</div>
+		</div>
+		<div style="padding: 0 9pt 5pt 9pt;">
+			<div style="height: 66pt;">
+				<div class="navMenu" id="xinjian">
+					<div>
+						<img src="../../img/4@2x.png" />
+					</div>
+					<p>新建任务</p>
+				</div>
+				<div class="navMenu" id="renwu">
+					<div>
+						<img src="../../img/7@2x.png" />
+					</div>
+					<p>任务管理</p>
+				</div>
+				<div class="navMenu" id="guanli">
+					<div>
+						<img src="../../img/5@2x.png" />
+					</div>
+					<p>团队管理</p>
+				</div>
+				<div class="navMenu" id="zhanji">
+					<div>
+						<img src="../../img/6@2x.png" />
+					</div>
+					<p>团队战绩</p>
+				</div>
+			</div>
+		</div>
+		<div style="padding: 0 7pt 1pt 7pt;">
+			<div style="height: 70pt;">
+				<div class="mui-pull-left activity imgLeft">
+					<!--<p class="activeTitle">租赁植保机</p>
+					<p>我出飞机，你当老板</p>-->
+				</div>
+				<div class="mui-pull-right activity imgRight">
+					<!--<p class="activeTitle">租赁植保机</p>
+					<p>我出飞机，你当老板</p>-->
+				</div>
+			</div>
+		</div>
+
+		<script src="../../js/mui.js"></script>
+		<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/mui.picker.min.js"></script>
+		<script src="../../js/mui.poppicker.min.js"></script>
+		<script src="../../js/mui.enterfocus.js"></script>
+		<script src="../../js/jquery-2.1.4.min.js"></script>
+		<script src="../../js/jquery.serialize-json.js"></script>
+		<script src="../../js/validator.js"></script>
+		<script src="../../js/hx.functor.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/data-unit.js"></script>
+		<script src="../../js/getData.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			var UserInfo = "";
+			var waitPay = 0;
+			var waitExp = 0;
+			var finishOver = 0;
+
+			app.ready(function() {
+
+
+
+		
+				function plusReady() {
+					// 设置系统状态栏背景为红色
+					plus.navigator.setStatusBarBackground('#15AE3F');
+				}
+				if(window.plus) {
+					plusReady();
+				} else {
+					document.addEventListener('plusready', plusReady, false);
+				}
+
+				UserInfo = app.accountInfo('info');
+				interNum();
+			});
+			$('#feiji').on('tap', function() {
+				mui.openWindow('../Lease/FarmLease.html', 'FarmLease')
+			});
+			$('#dianchi').on('tap', function() {
+				mui.openWindow('../Battery/battery.html', 'battery')
+			});
+			$('#wode').on('tap', function() {
+				mui.openWindow('../Equipment/EquipmentList.html', 'EquipmentList')
+			});
+			$('#shouhou').on('tap', function() {
+				mui.openWindow({
+					url: '../Lease/AfterService.html',
+					id: 'AfterService'
+				})
+			});
+			$('#xinjian').on('tap', function() {
+				mui.openWindow('../Task/CreatTask.html', 'CreatTask')
+			});
+			$('#renwu').on('tap', function() {
+				mui.openWindow('../Task/TaskList.html', 'TaskList')
+			});
+			$('#guanli').on('tap', function() {
+				mui.openWindow('../Sstation/TeamList.html', 'TeamList')
+			});
+			$('#zhanji').on('tap', function() {
+				mui.openWindow('../Sstation/Record.html', 'Record')
+			});
+			$('#quanbu').on('tap', function() {
+				mui.openWindow('../Lease/LeaseList.html', 'LeaseList')
+			});
+			$('#quzulin').on('tap', function() {
+				mui.openWindow('../Lease/FarmLease.html', 'FarmLease')
+			});
+
+			$('.imgLeft').on('tap', function() {
+				mui.openWindow('../Lease/FarmLease.html', 'FarmLease')
+			});
+			$('.imgRight').on('tap', function() {
+				mui.openWindow('../Team/TeamList.html', 'TeamList')
+			});
+
+			function interNum() {
+				var sendData = {
+					UserInfoId: UserInfo.UserId
+				};
+				getLeaseInterface.getUserLeaseUavNumber(sendData, function(cb) {
+					console.log(JSON.stringify(cb))
+					$("#daifukuan").text(cb.UnplayNum);
+					$("#daishouhuo").text(cb.UnreceivedNum);
+					$("#yiwancheng").text(cb.LeasingNum);
+				});
+
+			}
+		</script>
+	</body>
+
+</html>

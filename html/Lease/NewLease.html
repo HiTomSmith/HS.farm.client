@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+
+		<head>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+			<meta name="theme-color" content="RGBA(181,209,237,0)">
+			<meta name="msapplication-TileColor" content="#de7300">
+			<title></title>
+			<link href="../../css/mui.css" rel="stylesheet" />
+			<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+			<link href="../../css/NewLease.css" rel="stylesheet" />
+		</head>
+	</head>
+	<style>
+		.mui-content {
+			position: relative;
+		}
+		
+		.GroupType {
+			overflow: hidden;
+		}
+		
+		#Cart {
+			line-height: 44px;
+		}
+		
+		.UavTypes {
+			background: #15AE3F;
+		}
+		
+		.UserName {
+			margin-top: 10px;
+		}
+		
+		.Address,
+		.Leaseback {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			height: 65px;
+			padding-left: 12px;
+		}
+		
+		.Leaseback {
+			line-height: 65px;
+			display: none;
+		}
+		
+		.Leaseback>span {
+			color: #1B9FF1;
+		}
+		/*弹窗月份*/
+		
+		.Popup-month {
+			position: absolute;
+			width: 310px;
+			height: 410px;
+			border-radius: 4px;
+			bottom: 166px;
+			left: calc((100% - 310px) / 2);
+			top: 60px;
+			z-index: 999;
+			background: white;
+			overflow: hidden;
+			display: none;
+		}
+		
+		.PopUp-title {
+			width: 100%;
+			height: 32px;
+			background: #1DA0F0;
+			color: white;
+			line-height: 32px;
+		}
+		
+		.PopUp-title>span:nth-child(1) {
+			float: left;
+			padding-left: 12px;
+		}
+		
+		.PopUp-title>span:nth-child(2) {
+			float: right;
+			padding-right: 12px;
+		}
+		
+		.Popup-month-Choice {
+			margin-top: 15px;
+			width: calc(100% - 68px);
+			margin: 15px auto;
+		}
+		
+		.Popup-month-Choice>div {}
+		
+		.month-items {
+			margin-top: 20px;
+			border: 1px solid #BDBDBD;
+			padding: 2px 4px;
+			display: inline-block;
+			line-height: 36px;
+			color: #717171;
+		}
+		
+		.Proup-save>button {
+			width: 242px;
+			border-radius: 31px;
+			margin: 0 auto;
+			margin-top: 30px;
+			background: #1DA0F0;
+			border: none;
+		}
+		
+		.item-active {
+			background: #1DA0F0;
+			color: white;
+			border: 1px solid #1DA0F0;
+		}
+		
+		.month-items {
+			border-radius: 4px;
+		}
+		/*遮罩层样式重置*/
+		
+		.mui-backdrops {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 998;
+			background-color: rgba(0, 0, 0, .3);
+			display: none;
+		}
+		#constract{
+			position: absolute;
+			right: 20px;
+			color: deepskyblue;
+			bottom: 60px;
+			font-size: 18px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-pull-right" id="Cart"><span class=" iconfont">&#xe77f;</span></a>
+			<h1 class="mui-title">新机租赁</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-backdrops"></div>
+			<!--飞机型号-->
+			<div class="UavType mui-scroll-wrapper">
+				<div class="mui-scroll UavTypes">
+				</div>
+			</div>
+			<!--套餐种类-->
+			<div class="GroupType  mui-scroll-wrapper">
+				<div class="mui-scroll GroupTypes"></div>
+			</div>
+			<!--选择开始时间-->
+			<div class="LeaseStartTime">
+				<div class="mui-row">
+					<div class="mui-col-sm-3 mui-col-xs-3">
+						<div class="goods black">
+							请选择日期
+						</div>
+					</div>
+					<div class="mui-col-sm-5 mui-col-xs-5">
+						<div class="goods gray font_12">
+							租赁时间：<span class="days black">0天</span>
+						</div>
+					</div>
+					<div class="mui-col-sm-4 mui-col-xs-4">
+						<div class="goods">
+							<span class="nowTime blue"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--选择数量-->
+			<div class="StockNum">
+				<div class="mui-row">
+					<div class="mui-col-sm-3 mui-col-xs-3">
+						<div class="goods black">
+							请选择数量
+						</div>
+					</div>
+					<div class="mui-col-sm-5 mui-col-xs-5">
+						<div class="goods gray font_12">
+							库存数量：<span class="Stock black">0架</span>
+						</div>
+					</div>
+					<div class="mui-col-sm-4 mui-col-xs-4">
+						<div class="goods icon1">
+							<button type="button" class="mui-btn gray down">--</button>
+							<span class="blue font_14 num">1</span>
+							<button type="button" class="mui-btn iconfont gray up">&#xe6e0;</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--销售公司，收货地址-->
+			<div class="Address">
+				<p class="UserName"></p>
+				<p class="UserAddress font_10">收货地址：暂无</p>
+			</div>
+			<!--返祖-->
+			<div class="Leaseback font_14">
+				根据<span id="LeasebackReturn">《年返租政策》</span><b id="LeasebackMonth" style="font-weight: normal;">选择返租月份</b>
+			</div>		
+			<i id="constract">《租机合同样本》</i>
+			<!--备注-->
+			<div class="descposition mui-row">
+			</div>
+			<!--脚-->
+			<div class="footer">
+				<div class="mui-row">
+					<div class="mui-col-sm-6 mui-col-xs-6 total ">
+						<span>合计：</span>
+						<span class="yellow">￥<span class="MoneyTotal">0</span></span>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6">
+						<!--<button id="contract" type="button">查看合同</button>-->
+						<!--<button class="product-term to-clause" id="noteDetail">《投保须知》</button>
+						<button class="to-clause" id="clauseDetail">《保险条款》</button>-->
+						<button id="shooping" type="button">加入租赁</button>
+						<button id="pay" type="button">立即租赁</button>
+					</div>
+				</div>
+			</div>
+			<form id="GroupId">
+				<input style="width:60%;display: none;" type="text" id="CreateUserName" name="CreateUserName" />
+				<input style="width:60%;display: none;" type="text" id="GroupName" name="GroupName" />
+				<input style="width:60%;display: none;" type="text" id="OrganizeId" name="OrganizeId" />
+				<input style="width:60%;display: none;" type="text" id="StockId" name="StockId" />
+				<input style="width:60%;display: none;" type="text" id="UserInfoId" name="UserInfoId" />
+				<input style="width:60%;display: none;" type="text" id="RealName" name="RealName" />
+				<input style="width:60%;display: none;" type="text" id="CreateUserId" name="CreateUserId" />
+				<input style="width:60%;display: none;" type="text" id="SN" name="SN" />
+				<input style="width:60%;display: none;" type="text" id="Brand" name="Brand" />
+				<input style="width:60%;display: none;" type="text" id="Model" name="Model" />
+				<input style="width:60%;display: none;" type="text" id="Unit" name="Unit" />
+				<input style="width:60%;display: none;" type="text" id="UavOwnerId" name="UavOwnerId" />
+				<input style="width:60%;display: none;" type="text" id="GoodsId" name="GoodsId" />
+				<input style="width:60%;display: none;" type="text" id="GoodsName" name="GoodsName" />
+				<input style="width:60%;display: none;" type="text" id="PreLoss" name="PreLoss" />
+
+			</form>
+			<div class="Popup-month">
+				<!--<div class="PopUp-title"><span class="title">选择6个返祖月份</span><span class="iconfont close">&#xe6f3;</span></div>-->
+				<div class="Popup-month-Choice mui-row">
+
+				</div>
+				<div class="Proup-save">
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-block Proup-saves">确定</button>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo = "";
+	var _MainGroup = []; //套餐主表信息
+	var _FromGroup = []; //套餐从表信息
+	var Organize = []; //销售公司 
+	var UserAdd = []; //销售公司 
+	var LeaseDetails = []; //提交的套餐详情
+	var _UavType = []; //飞机型号
+	var NowTime, LTime, ETime, OrganizeList, UserAddress, UserInfo, ws, Description
+	mui(".mui-scroll-wrapper").scroll({
+		scrollY: false,
+		scrollX: true, //是否横向滚动**
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	app.ready(function() {
+//		var btnArray = ['取消', '确认'];
+//		mui.confirm('是否审阅租赁合同？', '嗨森农业', btnArray, function(e) {
+//          if (e.index == 1) {
+//              window.open('pdf/web/viewer.html?file=demo2.pdf');
+//          } 
+//      })
+		Description = []; ///年租返租月份
+		UserInfo = app.accountInfo('info');
+		console.log(JSON.stringify(UserInfo)) 
+		if(UserInfo.OpenId==5){
+			$("#LeasebackReturn").text('《半年租使用政策》');
+			$("#LeasebackMonth").text('选择使用月份');
+			$('.PopUp-title .title').text('选择6个使用月份'); 
+		}
+		OrganizeList = new mui.PopPicker();
+		UserAddress = new mui.PopPicker();
+		ws = plus.webview.currentWebview();
+//		Lease._UavStock(); //获取无人机库存
+		Lease._MainGroup(); //获取套餐主表 
+		Lease._DeliverAddress(); //服务站
+		Lease._UserAddess(); //收货地址
+		Lease._NowTime(); //获取当前时间
+		Lease._YearLeaseBack(); //选择年租返租
+		plus.webview.getWebviewById('NewLease').setStyle({
+			scrollIndicator: 'none'
+		}) //隐藏滚动条
+		$('#constract').click(function () {  
+		    window.open('pdf/web/viewer.html?file=demo2.pdf');  
+		});
+	});
+	//Lease对象
+	var Lease = {
+		//选择年租返租
+		_YearLeaseBack: function(DateTime) {
+			$('.Popup-month-Choice').html('');
+			//month-items 计算当前月份
+			var Time = null;
+			DateTime ? Time = new Date(DateTime) : Time = new Date();
+			var NowYear = Time.getFullYear(); //当前年
+			var NowMonth = Time.getMonth(); //当前月
+			for(var i = 0; i < 12; i++) {
+				NowMonth++;
+				if(NowMonth >= 13) {
+					NowYear += 1
+					NowMonth = 0;
+					NowMonth++;
+				};
+				var $html = $(
+					'<div class="mui-col-sm-4 mui-col-xs-4">' +
+					'<span class="month-items font_12">' + NowYear + '-' + ((NowMonth < 10) ? '0' + NowMonth : NowMonth) + '-01</span>' +
+					'</div>'
+				);
+				$html.appendTo($('.Popup-month-Choice'))
+			};
+
+			//选择租赁月份，最多只能够选6个
+			$('.month-items').each(function(i) {
+				$(this).on('tap', function() {
+					var num = 0;
+					//判断如果当点点击的有则终止
+					if(!$(this).hasClass('item-active')) {
+						$(this).addClass('item-active');
+					} else {
+						$(this).removeClass('item-active');
+					};
+					//记录当前被选中了几个
+					$('.month-items').each(function(j) {
+						if($('.month-items').eq(j).hasClass('item-active')) {
+							num++
+						};
+						if(num > 6) {
+							$('.month-items').eq(j).removeClass('item-active');
+							num--;
+						};
+					});
+				});
+			});
+		},
+		//获取无人机库存
+		_UavStock: function(model) {
+			var sendData = {
+				"page": 1,
+				"rows": 999,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					Status: "空闲",
+//					Model: model ? model : "MG-1P"
+					Model: model
+				})
+			};
+			console.log("sendData:"+JSON.stringify(sendData))
+			getLeaseInterface.getUavStock(sendData, function(cb) {
+				var rows = cb['rows'];
+				////随机数
+				console.log(JSON.stringify(rows)); 
+				function random() {
+					var random = Math.random().toFixed(2) * 100;
+					if(random < rows.length) {
+						random = random;
+					} else {
+						random = 0;
+					};
+					return random;
+				}; 
+				var subscript = 0; 
+				$(".Stock").text(rows.length + '架');
+				$('#SN').val(rows[subscript]['SN']); //序列号 
+				$('#CreateUserName').val(UserInfo.UserName); //创建人姓名
+				$('#GoodsName').val(rows[subscript]['GoodsName']); //型号
+				$('#OrganizeName').val(rows[subscript]['OrganizeName']); //机构名称
+				$('#StockId').val(rows[subscript]['StockId']); //库存ID  
+				$('#UserInfoId').val(UserInfo.UserId); //租赁用户ID
+				$('#RealName').val(UserInfo.UserName); //租赁用户姓名CreateUserId
+				$('#CreateUserId').val(UserInfo.UserId); //租赁用户姓名 CreateUserId
+				$('#Unit').val(rows[subscript]['Unit']); //租赁用户姓名 CreateUserId
+				$('#Model').val(rows[subscript]['Model']); //租赁用户姓名 CreateUserId
+				$('#Brand').val(rows[subscript]['Brand']); //租赁用户姓名 CreateUserId
+				$('#UavOwnerId').val(rows[subscript]['UavOwnerId']); //租赁用户姓名 CreateUserId
+				$('#GoodsId').val(rows[subscript]['GoodsId']); //租赁用户姓名 CreateUserId
+			});
+		},
+		//获取套餐主表
+		_MainGroup: function() {
+			var option = {
+				api: '/BillingManage/Billing_PriceList/spliList',
+				success: function(data) {
+					var result = JSON.parse(data); 
+					for(var i in result) {
+						var row = result[i];
+						console.log(JSON.stringify(row)) 
+						console.log(row.UserType);  
+						 
+						if(row.UserType.indexOf(',' + UserInfo.OpenId + ',')>-1){
+							console.log(JSON.stringify(row))  
+							_MainGroup.push({ 
+							value: row['GroupID'], 
+							text: row['GroupName'],
+							UavType: row['EquipmentType'],
+							OrganizationID: row['OrganizationID'], 
+							UserType:row['UserType'],
+							children: []
+						});
+						}
+						
+						//循环输出所有飞机型号
+						if(_UavType.indexOf(row['EquipmentType']) == -1) {
+							_UavType.push(row['EquipmentType']); 
+						};
+					};
+
+					//获取型号数量，给与父级长度
+					var UavWidth = $(".Uav").width() * _UavType.length;
+					var len = 0;
+					
+					var w_width= 100/_UavType.length;
+					
+					//循环输出飞机型号
+					for(var i in _UavType) {
+						var $html = $( //
+							'<div class="' + _UavType[i] + ' Uav" value=' + _UavType[i] + ' style="width:'+ w_width +'%" >' +
+							'<img class="Huav" src="../../img/' + _UavType[i] + '.png" alt="" />' +
+							'<div class="">' + _UavType[i] + '</div>' +
+							'</div>'
+						); 
+						console.log(_UavType[i]);
+						$html.appendTo($(".UavTypes"));
+						len++;
+					};
+					var widths = 0;
+					if(len <= 4) {
+						widths = 100 + '%';
+					} else {
+						widths = (100 * len) + 'px';
+					};
+					$(".UavTypes").css('width', widths);
+					Lease.Events(); //点击 
+					Lease._FromGroup(); //从表
+					
+				},
+				error: function(data) {
+					app.toast('获取套餐信息失败')
+				},
+			};
+			app.post3_4(option);
+			
+		},
+		//获取套餐从表
+		_FromGroup: function() {
+			getLeaseInterface.getLeaseChild(function(cb) { 
+				console.log(JSON.stringify(cb))
+				for(var j in _MainGroup) { 
+					for(var i in cb) {
+						var row = cb[i];
+						//console.log(JSON.stringify(row)) 
+						if(row['GroupID'] == _MainGroup[j].value) {
+							_MainGroup[j]['children'].push(row);
+						};
+					};
+				};
+				Lease._UavTapGroupTap(); //默认出发事件
+				Lease._ReadyLease(); //开始整理需要提交的数据
+			});
+		},
+		//发货地址
+		_DeliverAddress: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 99,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({})
+			};
+			getLeaseInterface.getOrganize(sendData, function(cb) {
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					Organize.push({
+						text: row['FullName'],
+						value: row['OrganizeId']
+					});
+				};
+				OrganizeList.setData(Organize);
+				//默认销售公司
+				$(".OgIdAddress").text(rows[rows.length - 1]['FullName']).attr('value', rows[rows.length - 1]['OrganizeId']);
+				$("#OrganizeId").val(UserInfo.CompanyId);
+			});
+		},
+		//收货地址列表
+		_UserAddess: function() {
+			var sendData = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					UserInfoId: UserInfo.UserId
+				})
+			};
+			UseIdGetList.GetAddress(sendData, function(cb) {
+				var row = cb['rows'];
+				//ad
+				for(var i in row) {
+					var res = row[i];
+					UserAdd.push({
+						text: res['Address'],
+						value: res['UserAddressAdminId'],
+						RealName: res['RealName'],
+						Phone: res['Phone'],
+					});
+					//默认收获地址
+					if(res['WhereAddress'] == 1) {
+						$(".UserAddress").html('收货地址：' + res['Address']);
+						$(".UserName").html(res['RealName'] + ' &nbsp;&nbsp;&nbsp;&nbsp;' + res['Phone']);
+						$(".UserAddress").attr('adreid', res['UserAddressAdminId']);
+
+					};
+				};
+				UserAddress.setData(UserAdd);
+			});
+		},
+		//获取当前时间\n
+		_NowTime: function() {
+			NowTime = new Date().format().substr(0, 10);
+			$(".nowTime").text(NowTime);
+		},
+		//默认自动触发点击事件
+		_UavTapGroupTap: function() {
+			var UavType = $('.Uav').eq(0).attr('value');
+			
+			console.log("572:"+UavType)
+			var len = 0;
+			$(".GroupTypes").html('');
+			for(var j in _MainGroup) {
+				var row = _MainGroup[j];
+				if(UavType == row['UavType']) {
+					console.log(JSON.stringify(row)) 
+//					console.log(row.UserType)
+					len++;
+					var $html = $(
+						'<div class="' + row['value'] + ' Groups font_12 " userType = '+row['UserType']+' value=' + row['value'] + '>' + row['text'] + '</div>'
+					);
+					$html.appendTo($(".GroupTypes"));
+					
+				};
+				
+			};
+			
+			var widths = (100 * len) + 'px';
+			$(".GroupTypes").css('width', widths);
+			$('.Groups').eq(0).addClass('Groups-active');
+			//2018.12.6 此处调用是为了初始加载时选择默认的飞机型号
+			Lease._UavStock(UavType);
+			
+			//选择套餐
+			$(".Groups").each(function(i) {
+				$(".Groups").eq(i).on('tap', function() {
+					$(".Groups").removeClass('Groups-active');
+					$(".Groups").eq(i).addClass('Groups-active'); 
+					console.log($(this).text())
+					if($(this).text().indexOf('365') != -1) {
+						console.log(99999)
+						$("#LeasebackReturn").text('');
+						$("#LeasebackMonth").text('');
+						$("#LeasebackReturn").text('《年返租政策》');
+			            $("#LeasebackMonth").text('选择返祖月份');
+						
+						$(".PopUp-title .title").text('');
+						$('.Leaseback').show()
+						$(".PopUp-title .title").text('选择6个返祖月份'); 
+						console.log($(".PopUp-title").html())
+						
+						Lease._YearLeaseBack()
+						Lease._ReadyLease(); //开始整理需要提交的数据
+						return false;
+					}if($(this).text().indexOf('180') != -1){
+						$('.Leaseback').show();
+						
+						$("#LeasebackReturn").text('《半年租使用政策》');
+			            $("#LeasebackMonth").text('选择使用月份');
+						console.log($(".PopUp-title").html()) 
+						$(".PopUp-title .title").text('选择6个使用月份');
+						console.log($(".PopUp-title").html())   
+						
+						
+						Lease._YearLeaseBack()
+						Lease._ReadyLease(); //开始整理需要提交的数据
+					}else {
+						$('.Leaseback').hide()
+						Lease._ReadyLease(); //开始整理需要提交的数据
+					};
+					
+					
+					
+//					if($(this).text().indexOf('年') != -1) {
+//						$('.Leaseback').show()
+//					}else {
+//						$('.Leaseback').hide()
+//					};
+                    
+                    
+//					Lease._ReadyLease(); //开始整理需要提交的数据
+				});
+			});
+		},
+		//开始整理需要提交的数据
+		_ReadyLease: function() {
+//			console.log(11111111)
+			var UavType = null; //获取当前飞机型号
+			var Group = null; //获取当前选择套餐
+			var GroupDetails = null; //当前套餐详情
+			var deposit = 0; //押金
+			var rent = 0; //租金
+			var Num = $(".num").text(); ////租赁无人机数量
+			var leaseNumDays = 0; ////租赁时间长短
+			LeaseDetails = [];
+
+			var LeaseDetail = {};
+			//详细
+			$('.descposition').html('');
+			$(".Uav").each(function(i) {
+				if($(".Uav").eq(i).hasClass('Uav-active')) {
+					UavType = $(".Uav").eq(i).attr('value');
+					console.log("UavType123:"+UavType)
+				};
+			});
+			$(".Groups").each(function(i) {
+				if($(".Groups").eq(i).hasClass('Groups-active')) {
+					Group = $(".Groups").eq(i).attr('value');
+					console.log("Group:"+Group)
+				};
+			});
+			//判断当前选中的套餐
+			for(var i in _MainGroup) {
+				var row = _MainGroup[i];
+				if(Group == row['value']) {
+					GroupDetails = row['children'];
+					$(".days").text(row['OrganizationID'] + '天').attr('day', row['OrganizationID']);
+					leaseNumDays = row['OrganizationID'];
+					break;
+				};
+			};
+			//开始计算价格
+			//LeaseDetails
+			var LeaseMoney = 0;
+			for(var i in GroupDetails) {
+				var row = GroupDetails[i];
+//				console.log(JSON.stringify(row))
+				LeaseDetail.ChargingItem = row['ChargingItem']; //费用项目
+				LeaseDetail.ChargingItemCode = row['ChargingItemCode']; //费用项目编号
+				LeaseDetail.ChargingType = row['ChargingType']; //费用项目编号
+				LeaseDetail.amountUnit = row['AmountUnit']; //计量单位
+				LeaseDetail.UsageUnit = row['UsageUnit']; //单位
+				LeaseDetail.Money = row['Money']; //单价 
+				LeaseDetail.Usage = Num; //数量 Usage
+				console.log(Num)
+				var $html = $(
+					'<div class="mui-col-sm-6 mui-col-xs-6 circle font_14">' +
+					'' + row['ChargingItem'] + ':' + (row['Money'] * Num+'元') +
+					'</div>'
+				);
+				$html.appendTo($('.descposition'));
+				//押金
+				if(row['ChargingItemCode'] == "0") {
+					LeaseDetail.Usage = 1; //数量 Usage
+					LeaseDetail.TotalMoney = (row['Money'] * 1);
+					deposit = (row['Money'] * Num);
+					LeaseDetails.push(JSON.stringify(LeaseDetail))
+				} else if(row['ChargingItemCode'] == "2000") {//租金
+					LeaseDetail.Usage = 1; //数量 Usage 
+					LeaseMoney += row['Money'] * Num;
+					LeaseDetail.TotalMoney = row['Money'] * 1;
+					LeaseDetails.push(JSON.stringify(LeaseDetail))
+				} else if(row['ChargingItemCode'] == "3000") {//客户关怀计划
+					LeaseDetail.Usage = 1; //数量 Usage 
+					LeaseMoney += row['Money'] * Num;
+					LeaseDetail.TotalMoney = row['Money'] * 1;
+					LeaseDetails.push(JSON.stringify(LeaseDetail));
+					$("#PreLoss").val(row['Money']);
+				};
+			};
+			//总价
+			var TotalMoney = deposit + LeaseMoney;
+			$(".MoneyTotal").text(TotalMoney);
+			var Days = $(".days").attr('day') * 86400000;
+			ETime = new Date(Date.parse($(".nowTime").text()) + Days).format();
+		},
+		//点击
+		Events: function() {
+			var str = [];
+
+			//选择型号 
+			$('.Uav').eq(0).addClass('Uav-active');
+			$('.Huav').eq(0).prop('src', '../../img/MG-1x.png');
+			$(".Leaseback").show();
+			$('.Uav').each(function(i) {
+				$('.Uav').eq(i).on('tap', function() {
+					$('.Huav').each(function(j) {
+						var UavTypes = $('.Uav').eq(j).attr('value');
+						console.log("UavTypes:"+UavTypes)
+						$('.Huav').eq(j).prop('src', '../../img/' + UavTypes + '.png');
+						$(".Leaseback").show();
+					});
+					var UavType = $('.Uav').eq(i).attr('value');
+					console.log(UavType)
+					Lease._UavStock(UavType); //获取无人机库存
+					var len = 0;
+					$(".GroupTypes").html('');
+					str = [];
+					$('.Uav').removeClass('Uav-active');
+					$('.Uav').eq(i).addClass('Uav-active');
+					$('.Huav').eq(i).prop('src', '../../img/' + UavType + 'x.png');
+
+					console.log($(".UavTypes").html());
+					
+					//输出当前型号的套餐种类
+					for(var j in _MainGroup) {
+						var row = _MainGroup[j];
+						console.log(row)
+						if(UavType == row['UavType']) {
+							console.log(row['UavType']) 
+							len++;
+							var $html = $(
+								'<div class="' + row['value'] + ' Groups font_12 " value=' + row['value'] + '>' + row['text'] + '</div>'
+							);
+							$html.appendTo($(".GroupTypes"));
+						};
+					};
+					$('.Groups').eq(0).addClass('Groups-active');
+					var widths = (100 * len) + 'px';
+					$(".GroupTypes").css('width', widths);
+					if(len <= 4) {
+						var widths = $("body").width();
+						switch(len) {
+							case 2:
+								$(".Groups").css('width', (widths / 2) + 'px')
+								break;
+							case 4:
+								$(".Groups").css('width', (widths / 4) + 'px')
+								break;
+						};
+					};
+					Lease._ReadyLease(); //开始整理需要提交的数据
+					//选择套餐
+					$(".Groups").each(function(i) {
+						$(".Groups").eq(i).on('tap', function() {
+							$(".Groups").removeClass('Groups-active');
+							$(".Groups").eq(i).addClass('Groups-active');
+							
+							
+					if($(this).text().indexOf('365') != -1) {
+						
+						$("#LeasebackReturn").text('');
+						$("#LeasebackMonth").text('');
+						$("#LeasebackReturn").text('《年返租政策》');
+			            $("#LeasebackMonth").text('选择返祖月份');
+						
+						
+						$(".PopUp-title .title").text('');
+						$('.Leaseback').show()
+						$(".PopUp-title .title").text('选择6个返祖月份');
+						
+						Lease._YearLeaseBack();
+						Lease._ReadyLease(); //开始整理需要提交的数据
+						return false;
+					}if($(this).text().indexOf('180') != -1){
+						
+						$("#LeasebackReturn").text('');
+						$("#LeasebackMonth").text('');
+						$("#LeasebackReturn").text('《半年租使用政策》');
+			            $("#LeasebackMonth").text('选择使用月份');
+						
+						
+						$('.Leaseback').show()
+						$(".PopUp-title .title").text('选择6个使用月份');
+						
+						
+						Lease._YearLeaseBack()
+						Lease._ReadyLease(); //开始整理需要提交的数据
+					}else {
+						$('.Leaseback').hide();
+						Lease._ReadyLease(); //开始整理需要提交的数据
+					};
+							
+							
+							
+//							if($(this).text().indexOf('年') != -1) {
+//								$('.Leaseback').show()
+//							}
+//							else {
+//								$('.Leaseback').hide()
+//							};
+//							Lease._ReadyLease(); //开始整理需要提交的数据
+						});
+					});
+				});
+			});
+			
+			//选择销售公司
+			$(".OgIdAddress").on('tap', function() {
+				OrganizeList.show(function(item) {
+					$(".OgIdAddress").text(item[0]['text']).attr('value', item[0]['value']);
+				});
+			});
+
+			//选择收货地址
+			$(".Address").on('tap', function() {
+				//判断当前用户没有收货地址的时候
+				if(UserAdd.length < 1) {
+					dialog.Dialogbox('提示', '当前尚未添加收货地址', function(cb) {
+						if(cb == 1) {
+							mui.openWindow({
+								url: '../Menu/AddressList.html',
+								id: 'AddressList'
+							})
+						} else if(cb == 0) {
+							app.toast('已取消');
+							dialog.CloseLogBox();
+						} else {
+							app.toast('已取消');
+						};
+					});
+				} else {
+					UserAddress.show(function(item) {
+						$(".UserAddress").html('收货地址：' + item[0]['text']);
+						$(".UserName").html(item[0]['RealName'] + ' &nbsp;&nbsp;&nbsp;&nbsp;' + item[0]['Phone']);
+						$(".UserAddress").attr('adreid', item[0]['value']);
+					});
+				};
+			});
+
+			//选择租赁开始时间
+			$('.nowTime').on('tap', function() {
+				var epicker = new mui.DtPicker({
+					type: "date",
+//					beginDate: new Date($(".nowTime").text()),
+                    beginDate: new Date(2018, 00, 01),
+					endDate: new Date(2100, 11, 30)
+				});
+				epicker.show(function(item) {
+					$('.nowTime').text(item['text']);
+					var Days = $(".days").attr('day') * 86400000;
+					ETime = new Date(Date.parse(item['text']) + Days).format();
+					console.log(ETime)
+					console.log(item['text'])
+					Lease._YearLeaseBack(item['text']); //选择年租返租
+				});
+			});
+
+			//加减无人机数量
+			$(".down").on('tap', function() {
+				var num = $('.num').text();
+				num--;
+				if(num <= 0) {
+					return false;
+				};
+				$('.num').text(num);
+				Lease._ReadyLease(); //开始整理需要提交的数据
+			});
+
+			$(".up").on('tap', function() {
+				var num = $('.num').text();
+				var Scount = parseInt(($('.Stock').text()).replace("架","").trim());
+				if(num >=Scount){
+					return false;
+				}
+				num++;
+				if(num >= 11) {
+					return false;
+				};
+				$('.num').text(num);
+				Lease._ReadyLease(); //开始整理需要提交的数据
+			});
+
+			//加入购物车或立即购买
+			$("#shooping").on('tap', function() {
+				Lease._Pay(0);
+			});
+			$("#pay").on('tap', function() {
+				Lease._Pay(1);
+			});
+
+			//去往购物车
+			$("#Cart").on('tap', function() {
+				mui.openWindow({
+					url: "ShoppingCart.html",
+					id: "ShoppingCart"
+				});
+			});
+			//选择返租月
+			$(".Leaseback").on('tap', function() {
+				$(".Popup-month,.mui-backdrops").show();
+			});
+			//关闭弹窗
+			$(".close").on('tap', function() {
+				$(".Popup-month,.mui-backdrops").hide();
+			});
+			//关闭弹窗
+			$(".mui-backdrops").on('tap', function() {
+				$(".Popup-month,.mui-backdrops").hide();
+			});
+
+			//判断当前选择了多少个月
+			$(".Proup-saves").on('tap', function() {
+				Description = [];
+				var Nmoth = 0;
+				//遍历当前选中了那
+				$('.month-items').each(function(i) {
+					if($(this).hasClass('item-active')) {
+						Description.push({
+							"time": $(this).text()
+						});
+						Nmoth++;
+					};
+				});
+				if(Nmoth != 6) {
+					app.toast('最少需要选择6个月！');
+					return false;
+				};
+				$(".Popup-month,.mui-backdrops").hide();
+				//判断是否选够6个月
+				app.toast('选择成功！');
+			});
+		},
+		//支付
+		_Pay: function(type) {
+			//
+			var GroupTyps = null;
+			if($(".UserName").text() == "") {
+				app.toast('请选择收货地址！');
+				return false;
+			};
+			if($(".Stock").text() == "0架") {
+				app.toast('当前库存为0，请更换型号！');
+				return false;
+			};
+			//判断是年租的话是否选择了返租
+			$(".Groups").each(function(i) {
+				if($(this).hasClass('Groups-active')){
+					if($(this).text().indexOf('365') != -1) {
+						GroupTyps = 0;
+					};
+					if($(this).text().indexOf('180') != -1) {
+						GroupTyps = 1;
+					};
+				};
+			});
+			if(GroupTyps == 0 && Description.length < 1) {
+				app.toast('请选择返租月份！');
+				return false;
+			};
+			if(GroupTyps == 1 && Description.length < 1) {
+				app.toast('请选择使用月份！');
+				return false;
+			};
+			
+			
+			
+			
+//			$(".Groups").each(function(i) {
+//				if($(this).hasClass('Groups-active')){
+//					if($(this).text().indexOf('年') != -1) {
+//						GroupTyps = 0;
+//					};
+//				};
+//			});
+//			if(GroupTyps == 0 && Description.length < 1) {
+//				app.toast('请选择返租月份！');
+//				return false;
+//			};
+            console.log($(".days").attr('day'))
+			var LIst = "[" + LeaseDetails + "]";
+			var PDR = JSON.parse(LIst);
+			console.log("LIst:"+LIst)
+			var LeaseTable2Entity1 = $("#GroupId").serializeJSON();
+			console.log("LeaseTable2Entity1:"+JSON.stringify(LeaseTable2Entity1))
+			LeaseTable2Entity1['OrganizeName'] = $(".OgIdAddress").text(); //销售公司
+			LeaseTable2Entity1['OrganizeId'] = $("#OrganizeId").val(); //销售公司
+			LeaseTable2Entity1['LeaseBeginDate'] = $(".nowTime").text(); //租赁开始时间
+			LeaseTable2Entity1['LeaseEndDate'] = ETime; //租赁结束时间 
+			LeaseTable2Entity1['ActualLeaseDay'] = $(".days").attr('day'); //租赁天数 
+			LeaseTable2Entity1['UavNumber'] = $('.num').text(); //租赁无人机数量
+			LeaseTable2Entity1['PreTotal'] = $(".MoneyTotal").text(); //预收合计
+			LeaseTable2Entity1['UserAddressAdminId'] = $(".UserAddress").attr('adreid'); //用户收货地址主键
+			LeaseTable2Entity1['RepairState'] = 0; //
+			LeaseTable2Entity1['Description'] = JSON.stringify(Description); //
+			$(".Groups").each(function(i) {
+				if($(".Groups").eq(i).hasClass('Groups-active')) {
+					LeaseTable2Entity1['GroupName'] = $(".Groups").eq(i).text();
+					console.log("GroupName:"+$(".Groups").eq(i).text())
+					LeaseTable2Entity1['GroupID'] = $(".Groups").eq(i).attr('value');
+					console.log("GroupID:"+$(".Groups").eq(i).attr('value'))
+				};
+			});
+			//判断金额类型
+			var PreRent = 0;
+			for(var i in PDR) {
+				var row = PDR[i];
+				if(row['ChargingItemCode'] == "0") {
+					LeaseTable2Entity1['PreDeposit'] = row['TotalMoney']; //预交押金
+				} else if(row['ChargingItemCode'] == "2000"){
+					PreRent += row['TotalMoney']; //预交租金
+				};
+			};
+			LeaseTable2Entity1['PreRent'] = PreRent; //预交租金
+			var sendData = {
+				"entity": LeaseTable2Entity1,
+				"strChildEntitys": LIst
+			}; 
+//			console.log(JSON.stringify(sendData))
+			LeaseInterface.SaveLeaseTable(sendData, function(cb) {
+				console.log(JSON.stringify("cb:"+JSON.stringify(cb)))
+				if(cb['type'] == 1) {
+					Description = [];
+					//清空上一次选择的月份
+					$('.month-items').each(function(i) {
+						$(this).removeClass('item-active');
+					});
+					//判断当前是否为立即购买
+					if(type == 1) {
+						var row = JSON.parse(cb['message']);
+						var Lease = row['LeaseTableId2'];
+						console.log(JSON.stringify(Lease))
+						app.wndOpenNew('ShoppingCart', 'ShoppingCart.html', {
+							"leaseTable2": Lease,
+							"Now_pay": 1
+						});
+					} else {
+						app.toast('已加入租赁表！');
+					};
+				} else if(cb['type'] == 3) {
+					Description = [];
+					//清空上一次选择的月份
+					$('.month-items').each(function(i) {
+						$(this).removeClass('item-active');
+					});
+					app.toast(cb['message']);
+				} else {
+					Description = [];
+					//清空上一次选择的月份
+					$('.month-items').each(function(i) {
+						$(this).removeClass('item-active');
+					});
+					app.toast('保存失败！');
+				};
+				plus.nativeUI.closeWaiting();
+			});
+		},
+	};
+
+	//回调刷新
+	window.addEventListener('pageflowerfresh', function() {
+		Lease._UserAddess(); //收货地址
+		dialog.CloseLogBox();
+	});
+//	window.addEventListener('refresh', function(e){//执行刷新
+//	    location.reload();
+//	});
+</script>

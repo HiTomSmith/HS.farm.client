@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+		li {
+			padding: 10px 4px !important;
+			width: 100%;
+			border-bottom: 1px solid #F5F5F5;
+		}
+		
+		.iconfont {
+			font-size: 32px;
+			border-radius: 100%;
+			height: 50px;
+			line-height: 50px;
+			width: 50px;
+			color: white;
+		}
+		
+		.shut {
+			margin-right: 0px !important;
+			font-size: 28px;
+		}
+		
+		.name {
+			display: block;
+			float: left;
+			padding-left: 10px;
+			text-align: left;
+		}
+		
+		.font_18 {
+			padding-bottom: 4px;
+			padding-top: 4px;
+		}
+		/*新闻*/
+		
+		.newsMessage {
+			background: #F07C69;
+			margin-left: 10px;
+		}
+		/*团队*/
+		
+		.teamMessage {
+			background: #4DA3FA;
+			margin-left: 10px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的消息</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-grid-view">
+				<li class="mui-table-view-cell mui-media news">
+					<span class="iconfont mui-pull-left newsMessage">&#xe721;</span>
+					<span class="name">
+				 		<p class="font_18">推送消息</p>
+				 		<p class="">嗨森，专业无人机服务提供商</p>
+				 	</span>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-grid-view mes">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	//------------------初始化页面------------------------------
+	var UserInfo = "";
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		message.btns(); //
+		message.messageList();
+	});
+
+	var message = {
+		messageList: function() {
+			message.TeamMessage(); //获取团队类消息
+			//message.ApplyTask(); //获取申请任务类消息
+			//message.ReceiveTask(); //获取有人派送的任务
+			message.IsSendEuipment(); //获取是否有人派送设备
+		},
+		//获取团队类消息
+		TeamMessage: function() {
+			UseIdGetList.getUserTeamTeamPreson({
+				TeamId: UserInfo.RoleId,
+				IsAgree: 0
+			}, function(cb) {
+				for(var i in cb) {
+					var row = cb[i];
+
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media team" userid=' + row['UserId'] + '>' +
+						'<span class="iconfont mui-pull-left teamMessage">&#xe718;</span>' +
+						'<span class="name">' +
+						'<p class="font_18">团队消息</p>' +
+						'<p class="">' + row['RealName'] + '申请加入你的团队<i>！！</i></p>' +
+						'</span>' +
+						'</li>'
+					);
+					$html.appendTo($(".mes"));
+					//执行
+					$html.on('tap', function() {
+						var UserId = $(this).attr('userid');
+						dialog.Dialogbox('提示', '确认要同意加入你的团队？', function(data) {
+							if(data == 1) {
+								//同意
+								message.IsTeam(1, UserId);
+							} else if(data == 0) {
+								//拒绝
+								message.IsTeam(2, UserId);
+							};
+						});
+					});
+				};
+			});
+		},
+		//获取派送任务消息
+		ReceiveTask: function() { //EmployerId:userInfo.UserId,DeleteMark:0,UndertakerId:userInfo.UserId,TeamExamine:1,Examine:0
+			UseIdGetList.getTaskExecuteView({
+				WorkUser: UserInfo.UserId,
+				DeleteMark: 0,
+				Examine: 0,
+				IsApply: 1
+			}, function(cb) {
+				var rows = [];
+				for(var i in cb) {
+					var row = cb[i];
+					if(JSON.stringify(rows).indexOf(row['TaskExecuteId']) == -1) {
+						rows.push(row);
+					};
+				};
+				for(var i in rows) {
+					var row = rows[i];
+					//获取指派人名称
+					UseIdGetName.getUserName(row['UndertakerId'], function(Name) {
+						var $html = $(
+							'<li class="mui-table-view-cell mui-media task" taskId=' + row['TaskExecuteId'] + ' userid=' + row['UserId'] + ' name=' + Name + '  Description = ' + row['Description'] + '>' +
+							'<span class="iconfont mui-pull-left teamMessage">&#xe718;</span>' +
+							'<span class="name">' +
+							'<p class="font_18">任务消息</p>' +
+							'<p class="">' + Name + '邀请你执行' + row['Description'] + '<i>！！</i></p>' +
+							'</span>' +
+							'</li>'
+						);
+						$html.appendTo($(".mes"));
+						console.log(row['IsApply']);
+						$html.on('tap', function() {
+							var Description = $(this).attr('Description');
+							var TaskExecuteId = $(this).attr('taskId');
+							dialog.Dialogbox('任务消息', '确认要执行' + Description + '任务？', function(data) {
+								if(data == 1) {
+									//同意
+									message.AgreeTaskExecutor1(TaskExecuteId);
+								} else if(data == 0) {
+									//拒绝
+									message.RefuseTaskExecutor(TaskExecuteId);
+								};
+							});
+						});
+					});
+				};
+			});
+		},
+		//获取有人申请的任务
+		ApplyTask: function() { //TeamId:_teamId,TeamExamine:1,Undertaker:userInfo.UserId,DeleteMark:0
+			UseIdGetList.getTaskExecuteView({
+				DeleteMark: 0,
+				UndertakerId: UserInfo.UserId,
+				TeamExamine: 1,
+				Examine: 0,
+				IsApply: 0,
+			}, function(cb) {
+				var rows = [];
+				for(var i in cb) {
+					var row = cb[i];
+					if(JSON.stringify(rows).indexOf(row['TaskExecuteId']) == -1) {
+						rows.push(row);
+					};
+				};
+				for(var i in rows) {
+					var row = cb[i];
+					console.log(row['UndertakerId']);
+					console.log(UserInfo.UserId);
+					var TaskDescription = row['RealName'] + '申请执行你的' + row['Description'] + '的任务';
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media task" taskId=' + row['TaskExecuteId'] + ' RealName=' + row['RealName'] + ' Description=' + row['Description'] + '  data-index=' + i + '>' +
+						'<span class="iconfont mui-pull-left teamMessage">&#xe718;</span>' +
+						'<span class="name">' +
+						'<p class="font_18">任务消息</p>' + //row['Description']
+						'<p class="">' + ((TaskDescription.length > 20) ? TaskDescription.substr(0, 20) + '...' : TaskDescription) + '</p>' +
+						'</span>' +
+						'</li>'
+					);
+					$html.appendTo($(".mes"));
+					//
+					$html.on('tap', function() {
+						var taskId = $(this).attr('taskId');
+						var RealName = $(this).attr('RealName');
+						var Description1 = $(this).attr('Description');
+						dialog.Dialogbox('任务消息', RealName + '申请执行你的' + Description1, function(data) {
+							if(data == 1) {
+								//同意
+								message.AgreeTaskExecutor1(taskId);
+							} else if(data == 0) {
+								//拒绝
+								message.RefuseTaskExecutor(taskId);
+							};
+						});
+					});
+				};
+			});
+		},
+		//获取是否有人派送设备
+		IsSendEuipment: function() {
+			UseIdGetList.getIsSendUav({
+				"page": 1,
+				"rows": 100,
+				"sidx": "WorkUsersId",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					WorkUser: UserInfo.UserId,
+					IsWordOk: 1
+				})
+			}, function(cb) {
+				for(var i in cb) {
+					var row = cb[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media EQ" taskId=' + row['TaskExecuteId'] + ' RealName=' + row['RealName'] + ' UserId=' + row['UserId'] + ' IMEI=' + row['IMEI'] + '>' +
+						'<span class="iconfont mui-pull-left teamMessage">&#xe72e;</span>' +
+						'<span class="name">' +
+						'<p class="font_18">设备消息</p>' + //row['Description']
+						'<p class="">' + row['RealName'] + '向你指派设备' + '</p>' +
+						'</span>' +
+						'</li>'
+					);
+					$html.appendTo($(".mes"));
+					$html.on('tap', function() {
+						var RealName = $(this).attr('RealName');
+						var UserId = $(this).attr('UserId');
+						var Imei = $(this).attr('IMEI');
+						dialog.Dialogbox('设备消息', RealName + '向你指派设备', function(data) {
+							if(data == 1) {
+								//同意
+								message.AgreeEQ(UserId, Imei);
+							} else if(data == 0) {
+								//拒绝
+								message.RefuseEquipment(UserId, Imei);
+							};
+						});
+					});
+				};
+			})
+		},
+		btns: function() {
+			//新闻消息\n
+			$(".news").on('tap', function() {
+				mui.openWindow({
+					id: 'MessageList',
+					url: './MessageList.html',
+				});
+			});
+		},
+		//同意/拒绝申请人加入团队 同意1 拒绝2
+		IsTeam: function(is, userid) {
+			plus.nativeUI.showWaiting();
+			TaskObj.ISTeam({
+				keyValue: UserInfo.RoleId,
+				IsAgree: is,
+				UserId: userid
+			}, function(cb) {
+				plus.nativeUI.closeWaiting();
+				dialog.CloseLogBox();
+				if(cb['type'] == "1") {
+					if(is == 1) {
+						app.toast('已同意');
+						var TeamList = plus.webview.getWebviewById('TeamList');
+						mui.fire(TeamList, 'pageflowrefresh');
+					} else {
+						app.toast('已拒绝');
+					};
+
+					$(".team").each(function(i) {
+						if($(".team").eq(i).attr('userid') == userid) {
+							$(".team").eq(i).remove();
+						};
+					});
+				} else {
+					app.toast('操作失败');
+				};
+			});
+		},
+		//同意成为任务执行者
+		AgreeTaskExecutor1: function(id) {
+			plus.nativeUI.showWaiting();
+			TaskObj.AgreeTaskExecutor({
+				keyValue: id
+			}, function(cb) {
+				plus.nativeUI.closeWaiting();
+				dialog.CloseLogBox();
+				if(cb['type'] == "1") {
+					app.toast('操作成功！');
+					$(".task").each(function(i) {
+						if($(".task").eq(i).attr('taskId') == id) {
+							$(".task").eq(i).remove();
+						};
+					});
+				} else {
+					app.toast('操作失败');
+				};
+			});
+		},
+		//拒绝成为任务执行着
+		RefuseTaskExecutor: function(id) {
+			plus.nativeUI.showWaiting();
+			TaskObj.RefuseTaskExecutor({
+				keyValue: id
+			}, function(cb) {
+				plus.nativeUI.closeWaiting();
+				dialog.CloseLogBox();
+				if(cb['type'] == "1") {
+					app.toast('操作成功！');
+					$(".task").each(function(i) {
+						if($(".task").eq(i).attr('taskId') == id) {
+							$(".task").eq(i).remove();
+						};
+					});
+				} else {
+					app.toast('操作失败');
+				};
+			});
+		},
+		//拒绝接受设备
+		RefuseEquipment: function(userid, imei) {
+			UseIdGetList.getTeamId(userid, function(cb) {
+				plus.nativeUI.showWaiting();
+				//拒绝接受设备
+				TaskObj.ISEquipment({
+					WorkUser: UserInfo.UserId,
+					TeamId: cb,
+					IMEI: imei
+				}, function(data) {
+					plus.nativeUI.closeWaiting();
+					dialog.CloseLogBox();
+					if(data['type'] == "1") {
+						app.toast('已拒绝');
+						$(".EQ").each(function(i) {
+							if($(".EQ").eq(i).attr('IMEI') == imei) {
+								$(".EQ").eq(i).remove();
+							};
+						});
+					} else {
+						app.toast('操作失败');
+					}
+				});
+			});
+		},
+		//同意接收设备
+		AgreeEQ: function(userid, _imei) {
+			mui.openWindow({
+				url: '../TwoCode/TwoCode.html',
+				id: 'TwoCode',
+				extras: {
+					"status": "3",
+					"UserId1": userid,
+					"_imei": _imei
+				}
+			})
+		},
+	};
+
+	//回调刷新
+	window.addEventListener('pageflowrefresh', function(e) {
+		//刷新所有消息
+		$(".mes").html('');
+		message.messageList();
+		dialog.CloseLogBox();
+	});
+</script>

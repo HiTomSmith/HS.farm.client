@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+		<title>按起终点经纬度规划路线</title>
+		<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/Route.css" />
+		<style type="text/css">
+			
+		</style>
+		<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=9f248f5dcc1dab7661853e0847e23cac&plugin=AMap.Driving"></script>
+	</head>
+
+	<body>
+		<header id="creatplant" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">路线图</h1>
+		</header>
+		<div id="container" style="">
+
+		</div>
+
+		<div id="falsetitle" style="height: 5px;width: 40px;color: lightgrey;background:lightgrey;border-radius:2px;position: absolute;left: 50%;margin-left:-20px;bottom: 75px;z-index: 9999999999999999;"></div>
+		<ul id="falsebtn" class="mui-table-view" style="width:100%;height: 50px;background: white;position: absolute;bottom: 40px;">
+			<div class="fl" id="timer">
+
+			</div>
+			<div class="fl" id="distance">
+
+			</div>
+		</ul>
+		<ul id="falsebtn2" class="mui-table-view" style="width: 100%;height: 40px;background: white;position: absolute;bottom:0px;padding: 0px;border-bottom: 1px solid lightgrey;">
+			<li class="mui-table-view-cell" style="margin-top: 0px;font-size: 14px;color: #535353;">
+				<div style="margin-top:3px;float: left;width: 15px;height: 15px;background: #7ccc47;font-size: 11px;text-align: center;line-height: 15px;border-radius: 50%;color: white;">起</div>
+				<div style="float: left;color: black;margin-left: 10px;font-size: 14px;">从我的位置开始</div>
+			</li>
+		</ul>
+
+		<ul class="mui-table-view" id="gpsGj" style="height: 350px;">
+		</ul>
+
+		<div id="falsetn2" style="width: 100%;height: 50px;border: 1px solid transparent;position: absolute;bottom: 350px;z-index: 9999999999;display: none;"></div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/jquery-2.1.4.min.js"></script>
+		<script src="../../js/hx.functor.js"></script>
+		<script src="../../js/hx.plugin.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript">
+			//			上
+			$("#falsebtn").on('tap', function() {
+				$("#falsetitle").animate({
+					bottom: '380px'
+				});
+				$("#falsebtn").animate({
+					bottom: '350px'
+				});
+				$("#falsebtn2").animate({
+					bottom: '310px'
+				});
+				$("#gpsGj").animate({
+					bottom: '-40px'
+				});
+				$("#falsetn2").css("display", "block");
+			});
+			//		下
+			$("#falsetn2").on('tap', function() {
+				$("#falsetitle").animate({
+					bottom: '75px'
+				});
+				$("#falsebtn").animate({
+					bottom: '40px'
+				});
+				$("#falsebtn2").animate({
+					bottom: '0px'
+				});
+				$("#gpsGj").animate({
+					bottom: '-350px'
+				});
+				$("#falsetn2").css("display", "none");
+			});
+			//基本地图加载
+			var map = new AMap.Map("container", {
+				resizeEnable: true,
+				zoom: 13 //地图显示的缩放级别
+			});
+			//构造路线导航类
+
+			app.ready(function() {
+				var self = plus.webview.currentWebview();
+				$.ajax({																							//now_lng			 now_lat							
+					url: 'http://restapi.amap.com/v3/direction/driving?origin='+self['now_lng']+','+self['now_lat']+'&destination='+self['company_lat']+','+self['company_lng']+'&key=4cd8c018f64883bc22c41d1f2f685956',
+					type: 'get',
+					success: function(data) {
+						console.log(JSON.stringify(data)) 
+						for(var i in data.route.paths) {
+							var reg = data.route.paths[i];
+							//时间
+							var timer1 = parseInt((reg.duration / 60) / 60);
+							var timer2 = parseInt((reg.duration / 60) % 60);
+							$("#timer").html(timer1 + '小时' + timer2 + '分');
+
+							//距离
+							if(reg.distance < 1000) {
+								var regg = reg.distance + '米';
+							} else if(reg.distance >= 1000) {
+								var regg = (Math.round(reg.distance / 100) / 10).toFixed(1) + "公里";
+							};
+							$("#distance").html(regg);
+							//						$("#distance").html()=
+							for(var j in reg.steps) {
+								var res = reg.steps[j];
+								var $html = $(
+									'<li class="mui-table-view-cell" style="margin-top: 0px;font-size: 14px;color: #535353;padding: 0px;padding-top: 5px;padding-bottom: 5px;background:white;height: 50px;">' +
+									'<img class="frimg" id="frimg" src="../../img/qian-03.png" width="18px"/>' +
+									'<div class="fr" id="">' + res.instruction + '</div>' +
+									'</li>'
+								);
+								$html.appendTo($("#gpsGj"));
+
+								switch(res.action) {
+									case "右转":
+										$html.find(".frimg").attr('src', '../../img/you-03.png');
+										break;
+									case "左转":
+										$html.find(".frimg").attr('src', '../../img/zuo-03.png');
+										break;
+									case "向左前方行驶":
+										$html.find(".frimg").attr('src', '../../img/zuoqian-03.png');
+										break;
+									case "向右前方行驶":
+										$html.find(".frimg").attr('src', '../../img/youqian-03.png');
+										break;
+									case "减速行驶":
+										$html.find(".frimg").attr('src', '../../img/qian-03.png');
+										break;
+									case "靠右":
+										$html.find(".frimg").attr('src', '../../img/qian-03.png');
+										break;
+									case "靠左":
+										$html.find(".frimg").attr('src', '../../img/qian-03.png');
+										break;
+									case "直行":
+										$html.find(".frimg").attr('src', '../../img/qian-03.png');
+										break;
+									case "向左后方行驶":
+										$html.find(".frimg").attr('src', '../../img/zuohou-03.png');
+										break;
+									case "向右后方行驶":
+										$html.find(".frimg").attr('src', '../../img/youhou-03.png');
+										break;
+									case "":
+										$html.find(".frimg").attr('src', '../../img/qian-03.png');
+										break;
+									default:
+										break;
+								};
+							};
+						};
+
+					},
+					error: function() {
+
+					},
+				});
+				var driving = new AMap.Driving({
+					map: map,
+					gpsGj: "gpsGj"
+				});
+
+				driving.search(new AMap.LngLat(self.now_lng, self.now_lat), new AMap.LngLat(self.company_lat, self.company_lng));
+			});
+		</script>
+	</body>
+
+</html>

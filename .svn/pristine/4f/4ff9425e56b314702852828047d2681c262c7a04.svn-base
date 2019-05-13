@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/LeasDetails.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-content {
+			padding-bottom: 100px;
+		}
+		
+		#Rent {
+			border-left: 1px solid #F5F5F5;
+			border-right: 1px solid #F5F5F5;
+		}
+		
+		#delete {
+			position: fixed;
+			bottom: -34px;
+			display: none;
+		}
+		
+		.dialogBG {
+			z-index: 100 !important;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的订单</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="getLeaseDetail">
+				<!--<li class="mui-table-view-cell mui-media list" >
+			        <a href="javascript:;">
+			        	<div class="Uav font_16">
+			            <img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">
+			            <span class="mui-pull-right MoneyColor"></span>
+			            </div>
+			            <div class="mui-media-body">
+			        </div> 
+			   	</a>
+			   	<div class="mui-row">
+			   	<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					'租金：
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					'押金：
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_12">
+					'换新计划：
+				</div>
+			   	</div>
+			</li>-->
+			</ul>
+			<br/>
+			<br/>
+			<!--<div class="mui-row btns">
+				<div class="mui-col-sm-6 mui-col-xs-6"><button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="Renew">续租</button></div>
+				<div class="mui-col-sm-6 mui-col-xs-6"><button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="Rent">退租</button></div>
+			</div>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="Repair">维修</button>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="delete">删除</button>-->
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	var UserInfo = "";
+	var LeaseDetail = "";
+	var cycle, cycleList
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		var _self = plus.webview.currentWebview();
+		console.log(JSON.stringify(_self))
+		var type = _self.type;
+		cycle = [];
+		cycleList = new mui.PopPicker();
+		LeaseDetail = _self.data;
+		btnClickEvents(LeaseDetail);
+		getNowLeaseDetails(LeaseDetail);
+		getRenewCycle();
+		//getGroupDetails(LeaseDetail.LeaseTableId);
+//		if(_self.type == "repair") {
+//			$("#Repair").show();
+//		};
+//      if(LeaseDetail['LeaseState'] == 5) {
+//			$(".btns").show();
+//			$("#Rent").hide();
+//		};
+	});
+
+	///租赁状态
+	var status1 = ['等待支付', '已付款', '商家已发货', '客户已收货', '申请退租', '客户已发货', '商家已收货', '维修', '完成', '已经失效'];
+	status1[18] = '已激活';
+	status1[19] = '正常使用';
+	/////////获取当前租赁单详情
+	function getNowLeaseDetails(LeaseDetail) {
+		console.log(JSON.stringify(LeaseDetail))
+		//返租日期
+		function BackTime() {
+			var times = JSON.parse(LeaseDetail['Description'])
+			var timer = "";
+			for(var j in times) {
+				var row = times[j]
+				timer += row['time'].substr(0, 7) + ','
+			};
+			console.log(timer)
+			return timer;
+		};
+		var status2 = null;
+		if(LeaseDetail['LeaseState'] == 19) {
+			$(".btns").show();
+		};
+		//判断当前用户是否已经申请过续租
+		if(LeaseDetail['RenewNumber'] == 1) {
+			$("#Renew").attr('disabled', 'disabled');
+		};
+		//判断当前租赁状态是否为带支付
+		if(LeaseDetail['LeaseState'] == 0) {
+			$("#delete").show();
+		};
+		console.log(LeaseDetail['Description'])
+		var $html = $(
+			'<li class="mui-table-view-cell mui-media list" >' +
+			'<a href="javascript:;">' +
+			'<div class="Uav font_16">' +
+			'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+			'租赁人:' + LeaseDetail['RealName'] + '' +
+			'<span class="mui-pull-right MoneyColor">' + LeaseDetail['PreTotal'] + '元' + '</span>' +
+			'</div>' +
+			'<div class="mui-media-body">' +
+			'</div>' +
+			'</a>' +
+			'<div class="mui-row">' +
+			'<div class="mui-col-sm-4 mui-col-xs-4 font_12">' +
+			'租金：' + LeaseDetail['PreRent'] + '' +
+			'</div>' +
+			'<div class="mui-col-sm-4 mui-col-xs-4 font_12">' +
+			'押金：' + LeaseDetail['PreDeposit'] +
+			'</div>' +
+			'<div class="mui-col-sm-4 mui-col-xs-4 font_12">' +
+			'保险：' + ((LeaseDetail['PreLoss'] == null) ? '无' : LeaseDetail['PreLoss']) +
+			'</div>' +
+			'</div>' +
+			'</li>' +
+			'<li class="mui-table-view-cell mui-media list" >' +
+			'<div class="font_16 ttle">订单信息</div>' + //<span class="font_14"></span>
+			'<p class="mui-ellipsis EquipmentLease ">合同号：<span class="vale">' + ((LeaseDetail['ContractNo'] == null) ? '暂无' : LeaseDetail['ContractNo']) + '</span> </p>' +
+			'<p class="mui-ellipsis EquipmentLease ">设备信息：<span class="vale">' + LeaseDetail['GoodsName'] + ' (' + LeaseDetail['SN'] + ')' + '</span> </p>' +
+			'<p class="mui-ellipsis EquipmentLease ">租赁时间：<span class="vale">' + LeaseDetail['LeaseBeginDate'].substr(0, 10) + '~' + LeaseDetail['LeaseEndDate'].substr(0, 10) + '</p></span>' +
+			//'<p class="mui-ellipsis EquipmentLease ">销售公司：<span class="vale">' + LeaseDetail['OrganizeName'] + '</span></p>' +
+			'<p class="mui-ellipsis EquipmentLease ">租赁状态：<span class="vale">' + status1[LeaseDetail['LeaseState']] + '</span></p>' +
+			'<p class="mui-ellipsis EquipmentLease Renew">续租状态：<span class="vale">暂无续租</span></p>' +
+			'<p class="mui-ellipsis EquipmentLease RenewDays">续租天数：<span class="vale">暂无续租天数</span></p>' +
+			'' + ((LeaseDetail['ActualLeaseDay'] != '365' ? "" : '<p class="">返租日期：<span class="font_12">' + BackTime() + '</span></p>')) + '' +
+			'</li>' +
+			'<li class="mui-table-view-cell mui-media list" >' +
+			'<div class="font_16 ttle">服务清单</div>' +
+			'<p class="mui-ellipsis EquipmentLease ">租赁方式：<span class="vale">' + LeaseDetail['GroupName'] + '</span></p>' +
+			'<p class="mui-ellipsis EquipmentLease ">租赁天数：<span class="vale">' + CalculationTime(LeaseDetail['LeaseBeginDate'], LeaseDetail['LeaseEndDate']) + '天</span></p>' +
+			'<p class="mui-ellipsis EquipmentLease ">合计金额：<span class="vale">' + LeaseDetail['PreTotal'] + '元</span></p>' +
+			'</li>'
+		);
+		$html.appendTo($("#getLeaseDetail"));
+		getRenew(); //获取续租状态
+		//		//判断当前状态
+		//		if(LeaseDetail['LeaseState']==3){
+		//			$(".mui-media>a").prepend('<span class="mui-badge" style="color:#a7a7a7;background: white;">等待激活</span>');
+		//		};
+	};
+
+	//获取续租状态
+	function getRenew() {
+		var sendData = {
+			queryJson: JSON.stringify({
+				LeaseTableId: LeaseDetail.LeaseTableId
+			})
+		};
+		getLeaseInterface.getRenew(sendData, function(cb) {
+			if(cb.length < 1) {
+				return false;
+			};
+			var row = cb[0];
+			$(".Renew>span").text(((row['EnabledMark']) ? '审批通过' : '等待审批'));
+			$(".RenewDays>span").text(row['RenewDay'] + '天');
+		});
+	};
+
+	//获取套餐消费明细
+	function getGroupDetails(leaseId) {
+		var option = {
+			api: '/PlanManage/AmountDetails/GetListJson',
+			data: {
+				queryJson: JSON.stringify({
+					LeaseTableId: leaseId
+				})
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				for(var i in result) {
+					var row = result[i];
+					var $html = $(
+						'<li class="mui-table-view-cell font_14">' +
+						'' + row['ChargingItem'] + '：' + row['TotalMoney'] + '' + row['AmountUnit'] + '' +
+						'</li>'
+					);
+					$html.appendTo($("#getLeaseDetail"));
+				};
+
+			},
+			error: function(data) {
+
+			}
+		};
+		app.post3_4(option)
+	};
+
+	////////计算天数
+	function CalculationTime(stime, entiem) {
+		var stime = Date.parse(stime);
+		var entiem = Date.parse(entiem);
+		var days = ((entiem - stime) / 86400000).toFixed(0);
+		return days;
+	};
+
+	//退租
+	function btnClickEvents(LeaseDetail) {
+		$("#Rent").on('tap', function() {
+			dialog.Dialogbox('提示', '确定退租？', function(cb) {
+				if(cb == 1) {
+					var data = {
+						LeaseTableId: LeaseDetail.LeaseTableId
+					};
+					console.log("data:" + JSON.stringify(data))
+					LeaseInterface.RentRefund(data, function(result) {
+						console.log("结果：" + JSON.stringify(result))
+						if(result.type==1){
+							//获取当前页面
+				           var LeasDetails = plus.webview.currentWebview();
+				           LeasDetails.close();
+				           var LeaseList = plus.webview.getWebviewById('LeaseList');
+				           mui.fire(LeaseList,'pageflowerfresh1');
+						}
+					});
+				} else if(cb == 0) {
+					app.toast('已取消');
+					dialog.CloseLogBox();
+				} else {
+					app.toast('已取消');
+				};
+			});
+
+		});
+		//		$("#rent-repair").on('tap', function() {
+		//			mui.openWindow({
+		//				url: 'RentRepairDetails4.html',
+		//				id: 'RentRepairDetails4',
+		//				extras: {
+		//					type: '维修',
+		//					data: LeaseDetail,
+		//				}
+		//			});
+		//		});
+
+		//换机
+		$("#Replacement").on('tap', function() {
+			mui.openWindow({
+				url: 'RentRepairDetails.html',
+				id: 'RentRepairDetails',
+				extras: {
+					type: '换机',
+					data: LeaseDetail,
+				}
+			});
+		});
+
+		//维修
+		$("#Repair").on('tap', function() {
+			mui.openWindow({
+				url: 'Repair.html',
+				id: 'Repair',
+				extras: {
+					data: LeaseDetail,
+				}
+			});
+		});
+
+		//删除
+		$("#delete").on('tap', function() {
+			dialog.Dialogbox('提示', '确认是否删除？', function(cb) {
+				if(cb == 1) {
+					plus.nativeUI.showWaiting();
+					DeleteLease(LeaseDetail.LeaseTableId);
+				} else if(cb == 0) {
+					dialog.CloseLogBox();
+				} else {
+					app.toast('已取消');
+				};
+			});
+		});
+		//续租
+		$("#Renew").on('tap', function() {
+			Renew();
+		});
+	};
+
+	//删除
+
+	//删除过期租赁单
+	function DeleteLease(leaseid) {
+		console.log(leaseid)
+		var option = {
+			api: '/PlanManage/LeaseTable/RemoveForm',
+			data: {
+				keyValue: leaseid
+			},
+			success: function(data) {
+				console.log(data)
+				plus.nativeUI.closeWaiting();
+				var result = JSON.parse(data);
+				//getNoPayList
+				if(result['type'] == "1") {
+					dialog.CloseLogBox();
+					app.toast('删除成功');
+					var LeaseList = plus.webview.getWebviewById('LeaseList');
+					mui.fire(LeaseList, 'pageflowerfresh');
+					mui.back();
+				} else {
+					app.toast('删除失败');
+				};
+			},
+			error: function(data) {
+				console.log(data)
+				plus.nativeUI.closeWaiting();
+				app.toast('删除失败');
+			}
+		};
+		app.post3_3(option)
+	};
+
+	//获取续租周期
+	function getRenewCycle() {
+		var option = {
+			api: '/BillingManage/Billing_PriceList/spliList',
+			success: function(data) {
+				var rows = JSON.parse(data);
+				for(var i in rows) {
+					var row = rows[i];
+					cycle.push({
+						text: row['OrganizationID'] + '天',
+						value: row['OrganizationID']
+					})
+				};
+				cycleList.setData(cycle);
+			},
+		};
+		app.post3_4(option);
+	};
+
+	//续租接口
+	function Renew() {
+		dialog.Dialogbox('提示', '<input type="text" id="mangerName" placeholder="请输入续租天数" readonly="readonly"  style="border-radius:4px;margin-top:-2px;height:50px;height:40px">', function(cb) {
+			if(cb == 1) {
+				var days = $("#mangerName").attr('days');
+				var entity = {
+					"LeaseTableId": LeaseDetail.LeaseTableId,
+					"RenewDay": days,
+				};
+				LeaseInterface.Renew(entity, function(cb) {
+					dialog.CloseLogBox();
+					if(cb.type == 1) {
+						app.toast('申请续租成功，等待审批！');
+						var LeaseList = plus.webview.getWebviewById('LeaseList');
+						mui.fire(LeaseList, 'pageflowerfresh');
+						$("#Renew").attr('disabled', 'disabled');
+					};
+				});
+			} else if(cb == 0) {
+				dialog.CloseLogBox();
+			} else {
+				dialog.CloseLogBox();
+			};
+		});
+	};
+
+	///回掉刷新
+	window.addEventListener('pageflowerfresh', function() {
+		$("#getLeaseDetail").html('');
+		getNowLeaseDetails(LeaseDetail);
+	});
+</script>

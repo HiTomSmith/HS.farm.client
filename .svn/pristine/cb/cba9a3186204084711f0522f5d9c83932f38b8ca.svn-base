@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../../css/mui.poppicker.min.css" />
+		<link rel="stylesheet" href="../../../css/list.css" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		.mui-row {
+			margin-top: 1px;
+		}
+		
+		.box {
+			width: 80%;
+			height: 54%;
+			border-radius: 10px;
+			position: absolute;
+			z-index: 1100;
+			top: 20%;
+			left: 10%;
+			background: #F5F5F5;
+			background-image: url('../../../img/update.png');
+			background-repeat: no-repeat;
+			background-size: 100% 366px;
+			display: none;
+		}
+		
+		.boxbg {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			z-index: 1100;
+			background: #747474;
+			opacity: 0.6;
+			display: none;
+		}
+		
+		.moreMoney {
+			position: relative;
+			top: 100px;
+		}
+		
+		.close {
+			width: 20px;
+			height: 20px;
+			transform: rotate(45deg);
+			float: right;
+			margin: 6px;
+			font-size: 24px;
+			color: white;
+		}
+		
+		.titles {
+			text-align: center;
+			margin-top: 20px;
+			color: white;
+		}
+		
+		.OverMoney {
+			margin-top: 80px;
+			margin-bottom: 20px;
+			text-align: center;
+			color: #444444;
+		}
+		
+		.OverMoney>span {
+			font-size: 26px;
+		}
+		
+		.LeaseingNum,
+		.RepairNum,
+		.ReceivedNum1 {
+			font-size: 10px;
+			line-height: 20px;
+		}
+		
+		.LeaseingNum>span,
+		.RepairNum>span,
+		.ReceivedNum1>span {
+			color: #1E9FEF;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">已完成租赁单</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll" id="List">
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/setData.js"></script>
+<script src="../../../js/getData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, LeaseType, s, e, mentNum, ReceivedNum, PaymentNum
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		sendData = {
+			"page": 1,
+			"rows": 999,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+				LeaseState: 8
+			})
+		};
+		LeaseObj.search();
+		LeaseObj.List(sendData); //获取所有租赁单
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var status1 = [
+		'<span class="font_12 UavStatus2">等待支付</span>',
+		'<span class="font_12 UavStatus3">已付款</span>',
+		'<span class="font_12 UavStatus4">商家已发货</span>',
+		'<span class="font_12 UavStatus5">客户已收货</span>',
+		'<span class="font_12 UavStatus6">申请退租</span>',
+		'<span class="font_12 UavStatus7">客户已发货</span>',
+		'<span class="font_12 UavStatus8">商家已收货</span>',
+		'<span class="font_12 UavStatus9">维修</span>',
+		'<span class="font_12 UavStatus10">完成</span>',
+		'<span class="font_12 UavStatus11">已经失效</span>',
+	];
+	status1[18] = '<span class="font_12 UavStatus">已激活</span>';
+	var LeaseObj = {
+		//添加日期查询功能
+		search: function() {
+			app.contentHTML("#List");
+			//开始查询并且返回查询结果
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				sendData = {
+					"page": 1,
+					"rows": 999,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						LeaseState: 8,
+						StartTime: s,
+						EndTime: e
+					})
+				};
+				LeaseObj.List(sendData); //获取所有租赁单
+			});
+		},
+
+		//获取已经完成的租赁单列表
+		List: function(sendData) {
+			getLeaseInterface.getLease(sendData, function(cb) {
+				$("#List").html('');
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var LeaseTime = Date.parse(row['LeaseEndDate']);
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['LeaseTableId'] + ' date=' + row['CreateDate'] + '>' +
+						'<a href="javascript:;">' +
+						'<div class="Uav">' +
+						'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+						'<span class="Name font_18">' + row['RealName'] + '</span><span class="CarrierSpecs ">(' + row['Model'] + ',' + row['SN'] + ')</span>' + status1[row['LeaseState']] +
+						'<span class="LeaseStatus"></span>' +
+						'</div>' +
+						'<div class="mui-media-body">' +
+						'<p class="mui-ellipsis EquipmentLease">租赁单号:' + row['ContractNo'] + '</p>' +
+						'<p class="mui-ellipsis EquipmentLease">租赁方式:' + row['GroupName'] + '</p>' +
+						'<p class="mui-ellipsis EquipmentUser">还机时间：' + row['LeaseEndDate'].substr(0, 10) + '</p>' +
+						'</div>' +
+						'<span class="mui-badge MoneyColor">' + row['PreTotal'] + '元</span>' +
+						' </li>'
+					);
+					$html.appendTo($("#List"));
+					//查看租赁单详情
+					$html.on('tap', function() {
+						var index = $(this).attr('data-index');
+						mui.openWindow({
+							url: './BleaseDetails.html',
+							id: 'BleaseDetails',
+							extras: {
+								LeaseDetails: rows[index]
+							}
+						});
+					});
+				};
+			});
+		}
+	};
+</script>

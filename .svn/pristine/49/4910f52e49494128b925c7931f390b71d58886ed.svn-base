@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<link href="../../css/Commodity.css" rel="stylesheet" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+		<style>
+			* {
+				color: #666666;
+			}
+			
+			.bar>div>span {
+				display: inline-block;
+			}
+			
+			.Order-Information>span:nth-child(1) {
+				float: left;
+			}
+			
+			.Order-Information>span:nth-child(2) {
+				float: right;
+			}
+			
+			.Address-Choice>div {
+				height: 100%;
+				display: table-cell;
+				vertical-align: text-bottom;
+			}
+			
+			.address>div {
+				margin-top: 4px;
+			}
+			
+			.money {
+				text-align: right;
+			}
+			/*添加商品*/
+			
+			#SaveCommodity {
+				width: calc(100% - 16px);
+				border-radius: 4px;
+				position: fixed;
+				bottom: 10px;
+				left: 8px;
+				margin: 0;
+				display: none;
+			}
+			
+			.Brand {
+				display: inline-block;
+				width: 100%;
+			}
+			
+			.UavOderDetails {
+				height: 40px;
+				line-height: 40px;
+			}
+			
+			.UavOderDetails>span {
+				display: inline-block;
+				padding-left: 10px;
+			}
+			/*保存完从表之后的按钮*/
+			
+			.footerBox {
+				position: fixed;
+				bottom: 18px;
+				width: calc(100% - 16px);
+				left: 8px;
+				display: none;
+			}
+			
+			.footerBox>div {
+				background: #F5F5F5;
+			}
+			
+			.footerBox button {
+				margin: 0;
+				padding: 0;
+				line-height: 0;
+				border-radius: 4px;
+				width: 90%;
+				margin: 0 auto;
+			}
+			
+			.footerBox1 {
+				position: fixed;
+				bottom: 18px;
+				width: calc(100% - 16px);
+				left: 8px;
+				display: none;
+			}
+			
+			.footerBox1>div {
+				background: #F5F5F5;
+			}
+			
+			.footerBox1 button {
+				margin: 0;
+				padding: 0;
+				line-height: 0;
+				border-radius: 4px;
+				width: 90%;
+				margin: 0 auto;
+			}
+			
+			.font_12 {
+				color: #717171 !important;
+			}
+			
+			.details>p>span {
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">药剂采购</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media list">
+					<a href="javascript:;">
+						<div class="Uav">
+							<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">
+							<span class="OrderNumber">订单号：15616516156</span>
+							<span class="mui-pull-right OrderState" style="color: #1E9FEF;font-size: 12px;">状态</span>
+						</div>
+						<div class="mui-media-body ">
+							<p class="mui-ellipsis Order-Information font_12">
+								<span class="time" style="">日期:2018-01-01</span>
+								<span></span>
+								<span class="money" style="color: #666666;display: inline-block;padding-right: 8px;">订单金额：100元</span>
+							</p>
+						</div>
+					</a>
+				</li>
+
+				<!--<li class="mui-table-view-cell list" id="express">
+					<div class="font_16 ttle" style="font-size: 14px;color: #717171">填写物流</div>
+					<div class="mui-input-row">
+						<label class="font_12" style="font-size: 12px;">物流单号</label>
+						<input type="text" class="mui-input-clear font_12" style="font-size: 12px;" placeholder="请输入物流单号" id="ExpressRealId">
+						<span class="mui-icon iconfont mui-pull-right" id="prcode" >&#xe751;</span>
+					</div>
+					<div class="mui-input-row">
+						<label class="font_12" style="font-size: 12px;">物流公司</label>
+						<input type="text" class="mui-input-clear font_12" style="font-size: 12px;" placeholder="请选择物流公司" readonly="readonly" id="ExpressCompany">
+						<span class="mui-icon iconfont Arrow">&#xe741;</span>
+					</div>
+				</li>-->
+
+				<li class="mui-table-view-cell list">
+					<div style="border-bottom: 1px solid #eee;">
+						<span>采购信息</span>
+					</div>
+					<div class="mui-media-body" style="font-size: 13px;height: 110px;">
+						<p class="mui-ellipsis" style="color: #717171">采购人：<span class="address-name"></span></p>
+						<p class="mui-ellipsis" style="color: #717171">联系方式：<span class="address-Moblie"></span></p>
+						<p class="mui-ellipsis" style="color: #717171">收货地址: <span class="choiceAddress"></span></p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-media list ">
+					<div class="Uav UavOderDetails">
+						<span>采购详情</span>
+					</div>
+					<a href="javascript:;" class="OrderDetails">
+
+					</a>
+				</li>
+			</ul>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="SaveCommodity">添加商品</button>
+			<div class="footerBox">
+				<div class="mui-row">
+					<div class="mui-col-sm-6 mui-col-xs-6">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="edit">编辑商品</button>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="save">确认采购</button>
+					</div>
+				</div>
+			</div>
+			<div class="footerBox1">
+				<div class="mui-row">
+
+					<div class="mui-col-sm-12 mui-col-xs-12">
+						<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="ConfirDelivery">确认发货</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/addCar.js"></script>
+<script>
+	mui.init({
+		swipeBack: false
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var UserInfo, _self, datadetals;
+	var ExpressCompany = [];
+	var ExpressCompanyList = new mui.PopPicker();
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		//Order.getStorage();
+		Order.getOrderDetails()
+		Order.Fill();
+		Order.Taps();
+		//getLogisticsCompany();
+		//确认是否已经添加缓存
+		if(_self['data']['AuditStatus'] == 2) {
+			$('.footerBox').show();
+		};
+		if(_self['data']['AuditStatus'] == 8) {
+
+			$('.footerBox1').show();
+		};
+
+	});
+	//创建订单对象
+	var Order = {
+		//开始填充数据
+		Fill: function() {
+			var data = _self.data;
+			$(".OrderNumber").text('订单号：' + data['OrderNumber']); //订单号
+			$(".OrderState").text(Order.getStauts(data['AuditStatus'])); //订单状态
+			$(".time").text('日期：' + data['CreateDate'].substr(0, 10)); //订单号
+			//			$(".money").text('订单金额：' + data['PayMoney'] + '元'); //金额
+			$(".address-name").text(data['CustomerName']); //采购人
+			$(".address-Moblie").text(data['ReceivingTele']); //手机号
+			$(".choiceAddress").text(data['ReceivingAddress']); //地址
+			//ChoiceAddress
+		},
+
+		//获取订单明细
+		getOrderDetails: function() {
+
+			var send = {
+				keyValue: _self['data']['GoodOrder']
+			};
+			console.log(JSON.stringify(send))
+			Orders.GetOrderDetails(send, function(cb) {
+				//				console.log(JSON.stringify(cb)) 
+				$(".OrderDetails").html('');
+				var totalMoney = 0;
+				var rows = cb;
+				datadetals = rows;
+				for(var i in rows) {
+
+					var row = rows[i];
+
+					var $html = $(
+						'<div class="mui-media-body details">' +
+						'<p class="mui-ellipsis Order-Information font_12">' +
+						'<span class="font_12 "><span class="font_12">' + row['GoodsType'] + ':' + row['GoodsName'] + '</span>' +
+						'<span class="" style="padding-left:30px">' + row['Constituents'] + '</span>' +
+						//'+
+						'<span style="float: right;padding-left:30px" class="purchaseMoney" numberPrice=' + (row['Number'] * row['TradePrice']) + '>' + (row['Number'] * row['TradePrice']).toFixed(2) + '元</span>' +
+						'<span style="float: right;font_12">' + row['TradePrice'].toFixed(2) + '元 </span>' +
+						'<span style="float: right;padding-right:20px;font_12">' + row['Number'] + 'X </span></span>' +
+						'</p>' +
+						'</div>'
+					);
+					$html.appendTo($(".OrderDetails"))
+					var numberPrice = $(".purchaseMoney").eq(i).attr("numberPrice");
+					totalMoney += parseFloat(numberPrice);
+					console.log(totalMoney)
+				}
+				$(".money").text(totalMoney.toFixed(2))
+
+				localStorage.setItem(_self.data.GoodOrder + 'shooppps', JSON.stringify(rows));
+
+			});
+
+		},
+
+		//获取缓存显示已经保存的从表
+		getStorage: function() {
+			console.log(JSON.stringify(localStorage))
+			for(var key in localStorage) {
+				//					console.log(key)  
+				//					console.log(_self['data']['GoodOrder']) 
+				if(key.indexOf('shooppps') != -1 && key.indexOf(_self['data']['GoodOrder']) != -1) {
+					console.log(localStorage[key]);
+					var rows = JSON.parse(localStorage[key]);
+					datadetals = rows;
+					console.log(JSON.stringify(datadetals))
+				}
+			};
+		},
+
+		//		getStorage: function() {
+		//			//判断状态
+		//			$(".OrderDetails").html('');
+		//			if(_self['data']['AuditStatus'] < 3) {
+		//				var totalMoney = 0;
+		//				for(var key in localStorage) {
+		//					//					console.log(key) 
+		//					//					console.log(_self['data']['GoodOrder']) 
+		//					if(key.indexOf('shooppps') != -1 && key.indexOf(_self['data']['GoodOrder']) != -1) {
+		//						console.log(localStorage[key]);
+		//						var rows = JSON.parse(localStorage[key]);
+		//						datadetals = rows;
+		//						for(var i in rows) {
+		//
+		//							var row = rows[i];
+		//
+		//							var $html = $(
+		//								'<div class="mui-media-body details">' +
+		//								'<p class="mui-ellipsis Order-Information font_12">' +
+		//								'<span class="font_12 "><span class="font_12">' + row['GoodsType'] + ':' + row['CommodityName'] + '</span>' +
+		//								'<span class="" style="padding-left:30px">' + row['Constituents'] + '</span>' +
+		//								//'+
+		//								'<span style="float: right;padding-left:30px" class="purchaseMoney" numberPrice=' + (row['number'] * row['TradePrice']) + '>' + (row['number'] * row['TradePrice']).toFixed(2) + '元</span>' +
+		//								'<span style="float: right;font_12">' + row['TradePrice'].toFixed(2) + '元 </span>' +
+		//								'<span style="float: right;padding-right:20px;font_12">' + row['number'] + 'X </span></span>' +
+		//								'</p>' +
+		//								'</div>'
+		//							);
+		//							$html.appendTo($(".OrderDetails"))
+		//							var numberPrice = $(".purchaseMoney").eq(i).attr("numberPrice");
+		//							totalMoney += parseFloat(numberPrice);
+		//							console.log(totalMoney) 
+		//						}
+		//					}
+		//				};
+		////				$(".money").text(totalMoney.toFixed(2))
+		//
+		//			} else {
+		//				//OrderDetailss
+		//				var send = {
+		//					keyValue: _self['data']['GoodOrder']
+		//				};
+		//				Orders.GetOrderDetails(send, function(cb) {
+		//
+		//					datadetals = cb;
+		//
+		//					for(var i in cb) {
+		//						var row = cb[i];
+		//						console.log(JSON.stringify(row));
+		//						var $html = $(
+		//							'<div class="mui-media-body details">' +
+		//							'<p class="mui-ellipsis Order-Information font_12">' +
+		//							'<span class="font_12 "><span class="font_12">' + row['GoodsType'] + ':' + row['GoodsName'] + '</span><span class="" style="padding-left:30px">使用作物：' + row['Crop'] + '</span><span style="float: right;font_12">' + row['TradePrice'] + '元</span> <span style="float: right;padding-right:20px;font_12">' + row['Number'] + 'X </span></span>' +
+		//							'</p>' +
+		//							'</div>'
+		//						);
+		//						$html.appendTo($(".OrderDetails"))
+		//					};
+		//				});
+		//
+		//			};
+		//		},
+		Taps: function() {
+
+			//选择物流公司
+			$("#ExpressCompany").on('tap', function() {
+				ExpressCompanyList.show(function(item) {
+					$("#ExpressCompany").val(item[0]['text']);
+				});
+			});
+
+			//扫码物流单号
+			$("#prcode").on('tap', function() {
+				mui.openWindow({
+					url: '../TwoCode/TwoCode.html',
+					id: 'TwoCode',
+					extras: {
+						status: "6"
+					},
+				});
+			});
+			//切换信息
+			$('.bar>div').each(function(i) {
+				$(this).on('tap', function() {
+					$('.bar>div>span').removeClass('active');
+					$(this).find('span').addClass('active');
+				});
+			});
+			//添加商品
+			$("#SaveCommodity,#edit").on('tap', function() {
+				mui.openWindow({
+					url: './goodslist.html',
+					id: 'goodslist',
+					extras: {
+						GoodOrder: _self['data'],
+						GoodsDetal: datadetals,
+					},
+
+				});
+			});
+			//确认保存
+			$("#save").on('tap', function() {
+
+				if($('.OrderDetails').text()) {
+					dialog.Dialogbox('提示', '确认提交？', function(cb) {
+
+						for(var key in localStorage) {
+							if(key.indexOf('shooppps') != -1) {
+
+								localStorage.removeItem(key);
+
+							}
+						};
+
+						if(cb == 1) {
+							var sendData = {
+								entity: {
+									GoodOrder: _self['data']['GoodOrder'],
+									AuditStatus: 3,
+									PayMoney: $(".money").text()
+								}
+							};
+
+							console.log(JSON.stringify(_self['data']['GoodOrder']));
+							SetOrder.SaveOrder(sendData, function(cb) {
+								console.log(JSON.stringify(cb));
+								if(cb['type'] == 1) {
+									for(var key in localStorage) {
+										if(key.indexOf('shoop') != -1 && key.indexOf(_self['data']['GoodOrder']) != -1) {
+											var row = JSON.parse(localStorage[key])[0];
+											var keys = _self['data']['GoodOrder'] + row['GoodsId'] + 'shoop';
+											var local = localStorage.getItem(keys);
+											console.log(local);
+											localStorage.removeItem(local);
+										}
+									};
+									var FatherView = plus.webview.getWebviewById('ManuOrder');
+									mui.fire(FatherView, 'Fresh');
+									mui.back();
+								} else {
+									app.toast('操作失败！');
+								};
+							});
+						} else if(cb == 0) {
+							app.toast('已取消');
+							dialog.CloseLogBox();
+						} else {
+							app.toast('已取消');
+						};
+					});
+				} else {
+					app.toast("请先采购商品");
+				}
+			});
+		},
+		//获取订单状态
+		getStauts: function(AuditStatus) {
+			//订单状态
+			var OrderStatus = [{
+					name: "下单",
+					key: 0,
+					label: "待审核"
+				},
+				{
+					name: "审核",
+					key: 2,
+					label: "待添加明细"
+				},
+				{
+					name: "上架",
+					key: 3,
+					label: "待确认"
+				},
+				{
+					name: "用户确认",
+					key: 4,
+					label: "待扣款"
+				},
+				{
+					name: "调价",
+					key: 5,
+					label: "待扣款"
+				},
+				{
+					name: "扣款",
+					key: 7,
+					label: "待付款"
+				},
+				{
+					name: "付款",
+					key: 8,
+					label: "待发货"
+				},
+				{
+					name: "厂家确认发货",
+					key: 9,
+					label: "待签收"
+				},
+				{
+					name: "用户签收",
+					key: 10,
+					label: "已完成"
+				}
+			];
+			for(var j = 0; j < OrderStatus.length; j++) {
+				var key = OrderStatus[j].key;
+				if(key == AuditStatus) {
+					return OrderStatus[j].label;
+					break;
+				}
+			}
+		}
+	};
+
+	$("#save-1").on('tap', function() {
+		dialog.Dialogbox('提示', '确认收货？', function(cb) {
+			if(cb == 1) {
+				var sendData = {
+					entity: {
+						GoodOrder: _self['data']['GoodOrder'],
+						AuditStatus: 9
+					}
+				};
+
+				console.log(JSON.stringify(_self['data']['GoodOrder']));
+				SetOrder.SaveOrder(sendData, function(cb) {
+					console.log(JSON.stringify(cb));
+					if(cb['type'] == 1) {
+						for(var key in localStorage) {
+							if(key.indexOf('shoop') != -1 && key.indexOf(_self['data']['GoodOrder']) != -1) {
+								var row = JSON.parse(localStorage[key])[0];
+								var keys = _self['data']['GoodOrder'] + row['GoodsId'] + 'shoop';
+								var local = localStorage.getItem(keys);
+								console.log(local);
+								localStorage.removeItem(local);
+							}
+						};
+						var FatherView = plus.webview.getWebviewById('ManuOrder');
+						mui.fire(FatherView, 'Fresh');
+						mui.back();
+					} else {
+						app.toast('操作失败！');
+					};
+				});
+			} else if(cb == 0) {
+				app.toast('已取消');
+				dialog.CloseLogBox();
+			} else {
+				app.toast('已取消');
+			};
+		});
+	});
+	//确认收货
+	$("#save-1").on('tap', function() {
+		dialog.Dialogbox('提示', '确认收货？', function(cb) {
+			if(cb == 1) {
+				var sendData = {
+					entity: {
+						GoodOrder: _self['data']['GoodOrder'],
+						AuditStatus: 9
+					}
+				};
+
+				console.log(JSON.stringify(_self['data']['GoodOrder']));
+				SetOrder.SaveOrder(sendData, function(cb) {
+					console.log(JSON.stringify(cb));
+					if(cb['type'] == 1) {
+						for(var key in localStorage) {
+							if(key.indexOf('shoop') != -1 && key.indexOf(_self['data']['GoodOrder']) != -1) {
+								var row = JSON.parse(localStorage[key])[0];
+								var keys = _self['data']['GoodOrder'] + row['GoodsId'] + 'shoop';
+								var local = localStorage.getItem(keys);
+								console.log(local);
+								localStorage.removeItem(local);
+							}
+						};
+						var FatherView = plus.webview.getWebviewById('ManuOrder');
+						mui.fire(FatherView, 'Fresh');
+						mui.back();
+					} else {
+						app.toast('操作失败！');
+					};
+				});
+			} else if(cb == 0) {
+				app.toast('已取消');
+				dialog.CloseLogBox();
+			} else {
+				app.toast('已取消');
+			};
+		});
+	});
+	//确认发货
+	$("#ConfirDelivery").on('tap', function() {
+		dialog.Dialogbox('提示', '是否发货？', function(cb) {
+			if(cb == 1) {
+				//				alert(JSON.stringify(_self['data']['GoodOrder']))				
+				var sendData = {
+					key: _self['data']['GoodOrder'],
+					auditstatus: '9',
+					logistical: $("#ExpressCompany").val(),
+				    logisticalCode: $("#ExpressRealId").val()
+				}
+				SetOrder.EditOrderStatus(sendData, function(cb) {
+					console.log(JSON.stringify(cb))
+					if(cb['type'] == 1) {
+						app.toast('操作成功');
+						var FatherView = plus.webview.getWebviewById('ManuOrder');
+						mui.fire(FatherView, 'Fresh');
+						mui.back();
+					} else {
+						app.toast('操作失败！');
+					};
+					dialog.CloseLogBox();
+				});
+
+			} else if(cb == 0) {
+				app.toast('已取消');
+				dialog.CloseLogBox();
+			} else {
+				app.toast('已取消');
+			};
+		});
+	});
+	//获取物流公司
+	function getLogisticsCompany() {
+		var option = {
+			api: '/SystemManage/DataItemDetail/GetDataItemListJson',
+			data: {
+				EnCode: "ExpressCompany"
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				for(var i in result) {
+					var rows = result[i];
+					ExpressCompany.push({
+						text: rows['ItemName']
+					});
+				};
+				ExpressCompanyList.setData(ExpressCompany);
+			},
+			error: function(data) {
+				app.toast('获取物流公司信息失败')
+			}
+		};
+		app.post3_4(option)
+
+	};
+	//回调刷新
+	window.addEventListener('Refresh', function() {
+		//Order.getStorage();
+		Order.getOrderDetails()
+	});
+</script>

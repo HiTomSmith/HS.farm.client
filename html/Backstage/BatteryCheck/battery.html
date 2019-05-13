@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../../css/mui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/myStyle.css" />
+		<style type="text/css">
+			.bottom {
+				margin: 0 8px;
+			}
+			
+			.top_img {
+				width: 100%;
+				height: 100%;
+				/*border: 1px solid red;*/
+				margin-top: 5px;
+				text-align: center;
+				line-height: 600px;
+			}
+			
+			.top_img img {
+				height: 260px;
+				width: 240px;
+				margin-left: 60px;
+			}
+			
+			.cent {
+				height: 85px;
+				padding-top: 5px;
+			}
+			
+			.cent img {
+				width: 25px;
+				height: 25px;
+			}
+			
+			.cent .cent_o {
+				height: 34px;
+				margin-top: 8px;
+			}
+			
+			.cent_o ul li {
+				height: 25px;
+				width: 25px;
+				text-align: center;
+			}
+			
+			.cent_t {
+				height: 38px;
+			}
+			
+			.bottom {
+				height: 130px;
+				/*	border: 1px solid orange;*/
+			}
+			
+			.footer {
+				width: 100%;
+				height: 230px;
+				position: fixed;
+				bottom: -18px;
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">电池</h1>
+		</header>
+		<div class="mui-content wrapper">
+			<div class="top_img">
+				<img src="../../../img/batteryBack.png"/>
+			</div>
+			<div class="footer">
+				<div class="cent gray-color">
+					<div class="cent_o">
+						<p class="mui-pull-left">
+							<span class="font-14 black-color">植保机电池*6块+充电器</span>
+						</p>
+						<ul class="mui-pull-right mui-list-unstyled">
+							<!--<li class="mui-pull-left reduce"><img src="../../img/reduce.png" />&nbsp;&nbsp;</li>-->
+							<li class="font-16">1</li>
+							<!--<li class="mui-pull-left increase"><img src="../../img/plus.png" alt="" /></li>-->
+						</ul>
+					</div>
+					<div class="cent_t">
+						<span class="font-14 blue-color">￥20700&nbsp;&nbsp;</span>
+						<span class="mui-pull-right font-14">可购：<span id="batteryNum" class="font-14">5</span>套</span>
+					</div>
+					<div class="black-color font-14" style="margin-bottom: 10px;">备注：</div>
+					<div class="font-14">植保机电池*6块+充电器可三年分三期购买</div>
+					<div style="margin: 10px 20px;">
+						<button type="button" class="mui-btn mui-btn-block mui-btn-blue btn" id="DividedPurchase">分期采购</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.js"></script>
+<script src="../../../js/mui.poppicker.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/getData.js"></script>
+<script src="../../../js/setData.js"></script>
+<script type="text/javascript">
+mui.init();
+var UserInfo;
+app.ready(function() {
+	UserInfo = app.accountInfo('info');
+	Order.getBatteryOrderNum();
+	
+});
+var Order = { 
+	
+	//获取可购买电池套装数量
+	getBatteryOrderNum:function(){
+		var send = {			
+			userId:UserInfo.UserId
+		};
+		Orders.BatteryOrderNum(send,function(cb){
+			 
+			console.log(JSON.stringify(cb));
+			var resultdata = cb.resultdata;
+			$("#batteryNum").html(resultdata);
+			
+			$("#DividedPurchase").on("tap", function() { 
+				if(($("#batteryNum").html())>-1){
+//					var objView = plus.webview.getWebviewById("battery");
+//			        objView .reload(true);
+					mui.openWindow({
+						url: 'batteryOrderDetail.html',
+						id: 'DividedPurchase'
+				   })
+					
+				}else{
+					alert("您当前可租赁电池0套！");
+					return;
+				}
+			});	
+		});
+	}
+}
+
+//回调刷新
+window.addEventListener('fresh', function() {
+	Order.getBatteryOrderNum();
+});
+//var Order = {
+//	//获取订单类型
+//	Otype: function() {
+//		var send = {
+//			queryJson: JSON.stringify({})
+//		};
+//		Orders.OrderType(send, function(cb) {
+//			OrderTypeId = cb[0]['OrderTypeId']
+//		});
+//	},
+//	//点击
+//	tap: function() {
+//		//加减电池数量
+//		$(".reduce").on('tap', function() {
+//			var num = $('.num').text();
+//			num--;
+//			if(num <= 0) {
+//				return false;
+//			};
+//			$('.num').text(num);
+//		});
+//
+//		$(".increase").on('tap', function() {
+//			var num = $('.num').text();
+//			num++;
+//			if(num > 5) {
+//				mui.toast("您最多可以购买5套");
+//				return false;
+//			};
+//			$('.num').text(num);
+//		});
+//	}
+//};
+
+
+</script>

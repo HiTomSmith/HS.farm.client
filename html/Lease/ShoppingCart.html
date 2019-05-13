@@ -1,0 +1,516 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/cart.css" />
+		<style>
+			li{
+				height:90px !important;
+				width:100% !important;
+				margin:0 !important;
+			}
+			.cls{
+				width: 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">租赁</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view  mui-scroll" id="balance_uav">
+			</ul>
+			<!--<span id="back_span">你的购物车为空~</span>-->
+		</div>
+		<div class="footer">
+			<div class="footer_left" id="footer_left_id">
+				<div class="Multiselect_div_footer" id="hideN"><img class="Multiselect_img_footer" src="../../img/Multiselect-img.png" style="display: none;"></div>
+				<a class="Select">全选</a>
+			</div>
+			<div class="footer_content">
+				<span style="color: gray;">合计:<span style="color: #F0721C;font-size:14px ;">￥</span><a id="colr">0</a></span>
+			</div>
+			<div class="footer_right font_14" id="pay">
+				<span>支付</span>
+			</div>
+		</div>
+		<div id="bg_container">
+			<img src="../../images/bgshopping.png" width="180px" height="133px" style="margin-left: -10px;" />
+			<div style="color:gray;text-align: center;">您暂时无购物信息！</div>
+		</div>
+		<div class="copyright">
+			<p><span class="cancel"><img id="closeBtn" src="../../images/cancel.png" width="20px" height="20px"/></span><span class="monTitle">确认付款</span></p>
+			<p style="text-align: center;margin-top: 30px;"><span class="cole">￥</span><span class="cole" id="payment"></span></p>
+			<p style="margin-top:30px;"><span class="fl">账户余额</span><span class="fr" id="scol"><span>￥</span><span id="account_balance">0</span></span>
+			</p>
+			<p style="margin-top:30px ;" id="yue"><span class="fl">付款方式</span><span class="fr" id="payment_type">余额</span></p>
+			<div class="mui-button-row" style="margin-top: 120px;">
+				<button type="button" id="payMon" class="mui-btn mui-btn-primary">立即付款</button>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	//-------------MUI 初始化 开始-----------------------------------------------------
+	//todo:...
+	mui.init();
+
+	(function($) {
+		$(".mui-scroll-wrapper").scroll({
+			bounce: true, //滚动条是否有弹力默认是true
+			indicators: false, //是否显示滚动条,默认是true
+		});
+	})(mui);
+
+	//点击返回
+	$("#back").on('tap', function() {
+		mui.back();
+	});
+	//关闭
+	$("#closeBtn").on('tap', function() {
+		$(".copyright").css("display", "none");
+		$(".mui-content").css("opacity", "1");
+	});
+	
+	//等待支付
+	$("#btn-actionCreat").on('tap',function(){
+		
+		delay_till_last('btn-actionCreat', function() {
+			app.wndOpenNew('wait_pay','./wait_pay.html');
+		}, 300);
+	});
+	//全选
+	$("#footer_left_id").on('tap', function() {
+		//获取当前总价
+		var leaseProtal = $('.footer_content>span>a').html();
+		//获取选中的当前套餐的的预售合计
+		var leasePro = 0;
+		$('.removeLI').each(function(k) {
+			leasePro += parseInt($('.mony>a').eq(k).html());
+			if($(".Multiselect_img_footer").css('display') == 'block') {
+				$(".Multiselect_img").eq(k).css('display', 'none'); //图片隐藏
+				$(".Multiselect_div").eq(k).attr('text_number', '0'); //图片隐藏 9a9a9a
+				$(".Multiselect_div").css('border', '1px solid #9a9a9a') //图片隐藏 Multiselect_div
+			} else { 
+				$(".Multiselect_img").eq(k).css('display', 'block'); //图片隐藏
+				$(".Multiselect_div").eq(k).attr('text_number', '1'); //图片隐藏 
+				$(".Multiselect_div").css('border', '1px solid #FB9543') //图片隐藏 Multiselect_div
+			}; 
+		});
+		$('.footer_content>span>a').html(leasePro);//全选之u后赋值总价 
+		if($(".Multiselect_img_footer").css('display') == 'block') {
+			$(".Multiselect_img_footer").css('display', 'none');
+			$('.footer_content>span>a').html(0);
+			$("#hideN").css('border','1px solid #9a9a9a'); 
+		}else{
+			$(".Multiselect_img_footer").css('display','block'); 
+			$("#hideN").css('border','1px solid #FB9543'); 
+		};
+	});
+
+
+	//点开支付按钮调用获取租赁单
+	function getLeaseList() {
+		var deleteMoney = 0;
+		var userInfo = app.accountInfo('info');
+		var option = {
+			api: '/PlanManage/LeaseTable2/GetPageListJson',
+			data: {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({UserInfoId:userInfo.UserId,LeaseState:0})
+			},
+			success: function(data) {
+				console.log(JSON.stringify(option.data))
+				var status = ['已申请租赁', '已付款', '已申请退租', '退组未结算', '已完成'];
+				var result = JSON.parse(data);
+				var rows = result['rows'];
+				if(rows[0]){
+					NoData.ClearImg('mui-content');
+				};
+				var item = [];
+				var reveseItem = [];
+				for(var i in rows) {
+					var row = rows[i];
+					console.log(JSON.stringify(row)) 
+					var leaseID = {};
+					var reveserId = {};
+					var left_top_number_text = parseInt(i) + 1;
+					var replace_plant = 0;
+					if(row['PreLoss']!=null&&row['PreLoss']!=""){
+						replace_plant = '换新:￥<a>' + row['PreLoss'] + '';
+					}else{
+						replace_plant = "";
+					};
+					console.log(row['ActualLeaseDay'])
+					var $html1 = $(   
+						'<div class="removeLI" data-index=' + i + ' ><li class="mui-table-view-cell mui-media">' +
+						//'<div class="left_top_number">' + left_top_number_text + '</div>' +
+						'<div class="Multiselect_div" data-index=' + i + ' text_number="0"><img class="Multiselect_img" src="../../img/Multiselect-img.png" style="display: none;"></div>' +
+						'<img height="60px" width="60px" border="1px solid red" class="mui-pull-left" src="../../img/leaseUav.png" style="margin-left: 40px;" />' +
+						'<div class="mui-media-body">' +
+						'<p class="mui-ellipsis cl cls">型号:' + row['GoodsName'] + '</p>' +
+						'<p class="mui-ellipsis cl">开始时间:' + row['LeaseBeginDate'].substr(0, 10) + '</p>' +
+						'<p class="mui-ellipsis cl">结束时间:' + row['LeaseEndDate'].substr(0, 10) + '</p>' +
+						' <p class="mui-ellipsis PAYid" style="display:none" userId='+row['UserInfoId']+'>' + row['LeaseTableId2'] + '</p>' +
+						'</div>' +
+						'<span class="mui-badge mui-badge-success Surplus" id="state" style="position: absolute;top: 50px;"><a>'+row['UavNumber']+'</a>架</span>' +
+						'<p class="mui-ellipsis mony">￥<a>' + row['PreTotal'] + '</a></p>' +
+						'<span class="mui-badge mui-badge-red deleteUav" id="delete" leaseid='+row['LeaseTableId2']+' data-index="' + i + '">删除</span>	' +
+						'</li>' +
+						'<li class="mui-table-view-cell mui-media lease_information">' +
+						'<span clas="font_12">租赁天数:<a clas="font_12">' + row['ActualLeaseDay'] + '</a></span>' +
+						'<span clas="font_12">租金:￥<a clas="font_12">' + row['PreRent'] + '</a></span>' +
+						'<span clas="font_12">押金:￥<a clas="font_12">' + row['PreDeposit'] + '</a></span>' +
+						'<span>'+replace_plant+'</span>' +
+						'</li></div>'
+					);
+					if(row['PreLoss']!=null&&row['PreLoss']!=""){
+						$html1.find(".lease_information>span").css({
+							"width":"25%"
+						});
+					};
+					//选中
+					$html1.on('tap', function() {
+						var asn_number = "";
+						var index = $(this).attr('data-index');
+						//获取选中的当前套餐的的预售合计
+						var leasePro = $('.mony>a').eq(index).html();
+						//获取当前总价
+						var leaseProtal = $('.footer_content>span>a').html();
+						if($(".Multiselect_img").eq(index).css('display') == 'block') {
+							$(".Multiselect_img").eq(index).css('display', 'none'); //图片隐藏
+							$(".Multiselect_div").eq(index).attr('text_number', '0'); //图片隐藏
+							$(".Multiselect_div").eq(index).css('border', '1px solid #9a9a9a') //图片隐藏 Multiselect_div
+							$('.footer_content>span>a').html(parseInt(leaseProtal) - parseInt(leasePro));
+							$("#hideN").css('border','1px solid #9a9a9a'); 
+						} else {
+							$(".Multiselect_img").eq(index).css('display', 'block');
+							$(".Multiselect_div").eq(index).attr('text_number', '1'); //图片隐藏
+							$(".Multiselect_div").eq(index).css('border', '1px solid #FB9543') //图片隐藏 Multiselect_div\
+							$('.footer_content>span>a').html(parseInt(leasePro) + parseInt(leaseProtal));
+							$(".Multiselect_img_footer").css('display', 'block');
+							$("#hideN").css('border','1px solid #FB9543'); 
+						};
+						$(".Multiselect_div").each(function(f) {
+							asn_number += $(".Multiselect_div").eq(f).attr('text_number');
+						});
+						//console.log(asn_number);
+						if(asn_number.indexOf(1) == -1) {
+							$(".Multiselect_img_footer").css('display', 'none'); //全选
+						};
+					});
+					//点击删除 
+					$html1.find('#delete').on('tap', function() {
+						deleteMoney = 0;
+						var nun = $("#num").text();
+						var index = $(this).attr('data-index');
+						var leaseid = $(this).attr('leaseid');
+						dialog.Dialogbox('提示','确认要移除商品？', function(e) {
+							if(e == 1) {
+								plus.nativeUI.showWaiting();
+								var option = {
+									api: '/PlanManage/LeaseTable2/RemoveForm',
+									data: {
+										keyValue:leaseid,
+									},
+									success: function(res) {
+										var result = JSON.parse(res);
+										if(result['type'] == "1") {
+											app.toast('删除成功');
+											dialog.CloseLogBox();
+											plus.nativeUI.closeWaiting();
+											//删除成功后移除当前类，并且传入一个参数作为父级页面的刷新条件
+											$('.removeLI').each(function(i){
+												if($('.removeLI').eq(i).attr('data-index')==index){
+													$('.removeLI').eq(i).remove();
+												};
+											});
+											if($(".removeLI").length <= 0) {
+												mui.back();
+											};
+											deleteMoney = $('.mony>a').eq(index).html(); 
+										}else{
+											app.toast('删除失败')
+											dialog.CloseLogBox();
+											plus.nativeUI.closeWaiting();
+										};
+									},
+									error: function(data) {
+										app.toast('删除失败');
+										dialog.CloseLogBox();
+											plus.nativeUI.closeWaiting();
+									},
+								};
+								app.post3_3(option);
+							} else {
+								app.toast('已经取消')
+								dialog.CloseLogBox();
+							};
+						});
+					});
+ 
+					$html1.appendTo($("#balance_uav")); 
+					//传入一个参数实时刷新
+					localStorage.clear();
+					localStorage.setItem('num', $("li").length);
+				};
+				getCheckList();
+
+				/*//支付按钮
+				var $htmlBtn = $(
+					'<div class="mui-button-row">' +
+					'<button type="button" id="pay">支付</button> ' +
+					'</div>'
+				);
+				if(result != "") {
+					$htmlBtn.appendTo($(".footer"));
+				};
+				//支付按钮
+				$htmlBtn.find('#pay').on('tap', function() {
+					$(".mui-content").css("opacity","0.3");
+						$(".copyright").show();
+					var PtoatMoney = 0;
+					//拿到当前总共需要支付的金额
+					$('.mony>a').each(function(i) {
+						PtoatMoney += parseInt($(this).html());
+					});
+					var outmoney = PtoatMoney - deleteMoney;
+					app.wndOpenNew('errorLog', './LeaseAgreement.html', {
+						money: outmoney
+					});
+					$("#payment").html(PtoatMoney);
+					getbalance();
+				});*/
+			},
+			error: function() {},
+		}
+		app.post3_4(option);
+	};
+	
+	///////////////////
+
+	//选择支付方式
+	$("#yue").on('tap', function() {
+		var payment_type = new mui.PopPicker();
+		var type = [{
+			text: "余额",
+			value: "余额"
+		}, {
+			text: "拉卡拉",
+			value: "拉卡拉"
+		}];
+		payment_type.setData(type);
+		payment_type.show(function(item) {
+			$("#payment_type").html(item[0]['text']);
+		});
+	});
+
+	//立即支付
+	$("#payMon").on('tap', function() {
+		//app.wndOpenNew('errorLog','./serving.html')
+		//按钮屏蔽方法
+		btnsShield(2, 'payMon');
+		if($("#payment_type").html() == "余额") {
+			//要支付的金额payment  //账户余额account_balance//payment_type支付方式
+			if(parseInt($("#payment").html()) > parseInt($("#account_balance").html())) {
+				app.toast('账户余额不足，请更换支付方式');
+			} else {
+				getUserInfobalance();
+			}
+		} else if($("#payment_type").html() == "拉卡拉") {
+			payButton();
+		};
+	});
+
+	//查询余额,如果当前账号余额足够那么直接扣除账号余额，否则调用拉卡拉接口
+
+	function getbalance(PtoatMoney) {
+		var userInfo = app.accountInfo('info');
+		var option = {
+			api: '/paymax/accountuser',
+			data: {
+				UserInfoId: userInfo.userInfoId
+			},
+			success: function(data) {
+				$('#account_balance').html(data['result']);
+			},
+			error: function() {},
+		}
+		app.post(option);
+	};
+
+	//调用账户余额支付
+	function getUserInfobalance() {
+		var userInfo = app.accountInfo('info');
+		var LeaseTableId = {};
+		var payAaary = [];
+		$(".PAYid").each(function(i) {
+			payAaary.push({
+				LeaseTableId: $("li .PAYid").eq(i).html(),
+				UserInfoId: userInfo.userInfoId
+			});
+		});
+		var LIST = JSON.stringify(payAaary);
+		var option = {
+			api: '/paymax/isaccountuserinfo',
+			data: payAaary,
+			success: function(data) {
+				if(data['status']['desc'] == "成功") {
+					mui.alert('支付成功，当前账户余额剩余:' + data['result'] + '元');
+					mui.back();
+				};
+			},
+			error: function() {},
+		};
+		app.post(option);
+	};
+
+	//拉卡拉支付按钮balance_uav
+	function payButton() {
+		//按钮屏蔽方法
+		btnsShield(2, 'pay');
+		var LeaseTableId = {};
+		var payAaary = [];
+		$(".PAYid").each(function(i) {
+			payAaary.push({
+				LeaseTableId: $("li .PAYid").eq(i).html()
+			});
+		});
+		var option = {
+			api: '/paymax/charge',
+			data: payAaary,
+			success: function(data) {
+				var result = data.result['credential']['lakala_h5'];
+				console.log(result);
+				app.wndOpenNew('errorLog', './serving.html', {
+					form1: result
+				});
+				//html = result;
+				//$(html).submit(); 
+			},
+			error: function() {},
+		};
+		app.post(option);
+	};
+
+	//查询按钮
+	function getCheckList() {
+		$("#check").on('tap', function() {
+			btnsShield(2, 'check');
+			var LeaseTableId = {};
+			var payAaary = [];
+			$(".PAYid").each(function(i) {
+				payAaary.push({
+					LeaseTableId: $("li .PAYid").eq(i).html()
+				});
+				LeaseTableId = $("li .PAYid").eq(i).html();
+			});
+			var option = {
+				api: '/paymax/lists',
+				data: {
+					LeaseTableId: LeaseTableId
+				},
+				success: function(data) {
+				},
+				error: function() {}
+			};
+			app.post(option);
+		});
+	};
+
+
+	//获取商品列表页面传过来的数据
+	function getTopUavListData(){
+		var self = plus.webview.currentWebview();
+		//确认是直接结算
+		if(self.Now_pay==1){
+			//循环表2的数据
+			$('.PAYid').each(function(index){
+				//获取选中的当前套餐的的预售合计 
+				var leasePro = $('.mony>a').eq(index).html();
+				//获取当前总价
+				var leaseProtal = $('.footer_content>span>a').html();
+				//判断当前页面的 数据哪一个和传过来的相等,让他默认选中
+				if($('.PAYid').eq(index).html()==self.leaseTable2){
+					$(".Multiselect_img").eq(index).css('display', 'block');
+					$(".Multiselect_div").eq(index).attr('text_number', '1'); //图片隐藏
+					$(".Multiselect_div").eq(index).css('border', '1px solid #FB9543') //图片隐藏 Multiselect_div\
+					$('.footer_content>span>a').html(parseInt(leasePro) + parseInt(leaseProtal));
+					$(".Multiselect_img_footer").css({
+						'display':'block',
+					});
+					$("#hideN").css('border','1px solid #FB9543'); 
+				};
+			});
+		};
+	};
+	
+	
+	//支付
+
+	$("#pay").on('tap', function() {
+		var leaseIdArray = [];
+		var uavNumber = [];
+		if($(".Multiselect_img_footer").css('display')=="none"){
+			app.toast('请选中你要支付的飞机');
+			return false;
+		};
+		//拿到当前总共需要支付的金额
+		$(".PAYid").each(function(q) {
+			if($(".Multiselect_div").eq(q).attr('text_number')=="1" ){//判断被选中的租赁单
+				leaseIdArray.push({"leases":$(".PAYid").eq(q).html(),"uavN":$(".Surplus>a").eq(q).html(),"UserId":$(".PAYid").eq(q).attr("userId")});
+			};
+		});
+		var outmoney =  $('.footer_content>span>a').html();
+		mui.openWindow({
+			url:'./Pay.html',
+			id:'Pay',
+			extras:{
+				parameter:leaseIdArray,
+				Money:$("#colr").text(),
+			}
+		})
+	});
+	
+	app.ready(function() {
+		getLeaseList(); 
+		if($("#balance_uav")!=""){
+			$("#bg_container").css("display","none");
+		};
+		setTimeout(function(){
+			getTopUavListData();////获取商品列表页面传过来的数据
+		},300);
+		
+		NoData.bgImg('mui-content','../../img/BGIMG.png');
+	});
+			//-------------页面加载完成调用 结束-------------------------------------
+	window.addEventListener('pageflowerfresh',function(e){
+		$("#balance_uav").html("");
+		$("#colr").text(0);
+		getLeaseList();
+	});
+</script>

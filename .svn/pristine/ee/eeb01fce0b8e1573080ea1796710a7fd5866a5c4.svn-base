@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+		<link href="../../../css/list.css" rel="stylesheet" />
+		<link href="../../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../../css/mui.poppicker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/Bcurrency.css" />
+	</head>
+	<style>
+		* {
+			color: #666666;
+		}
+		
+		html,
+		body,
+		.mui-content {
+			height: 100%;
+			width: 100%;
+		}
+		
+		.bar>div>span {
+			display: inline-block;
+		}
+		
+		.bar>div>span:nth-child(2) {
+			display: none;
+		}
+		
+		.Uav-time,
+		.Order span:nth-child(2) {
+			float: right;
+		}
+		
+		.mentNum,
+		.PaymentNum,
+		.ReceivedNum {
+			right: 30%;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">维修扣款</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row bar App-Tittle">
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<span class="tittle activeT">待扣款</span>
+					<span class="PaymentNum"></span>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<span class="tittle">已完成</span>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="List">
+
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../../js/mui.min.js"></script>
+<script src="../../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/mui.picker.min.js"></script>
+<script src="../../../js/mui.poppicker.min.js"></script>
+<script src="../../../js/mui.enterfocus.js"></script>
+<script src="../../../js/jquery-2.1.4.min.js"></script>
+<script src="../../../js/jquery.serialize-json.js"></script>
+<script src="../../../js/validator.js"></script>
+<script src="../../../js/hx.functor.js"></script>
+<script src="../../../js/app.js"></script>
+<script src="../../../js/data-unit.js"></script>
+<script src="../../../js/getData.js"></script>
+<script src="../../../js/setData.js"></script>
+<script>
+	mui.init();
+	var UserInfo, sendData, localOrders;
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		sendData = {
+			"page": 1,
+			"rows": 100,
+			"sidx": "CreateDate",
+			"sord": "desc",
+			"queryJson": JSON.stringify({
+//				Status: 1
+			})
+		};
+		Order.List(sendData);
+		Order.tap();
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+
+	//订单提交对象
+	var Order = {
+		//时间筛选
+		search: function() {
+			app.contentHTML("#List");
+			//开始查询并且返回查询结果
+			$("#search").on('tap', function() {
+				btnsShield(3, 'search');
+				s = $("#SrarchStart").val();
+				e = $("#SrarchEnd").val();
+				if(s == "" && e == "") {
+					app.toast('请选择时间')
+					return false;
+				};
+				var sendData = {
+					"page": 1,
+					"rows": 999,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						StartTime: s,
+						EndTime: e,
+						DeleteMark: 0
+					})
+				};
+				Order.List(sendData);
+			});
+		},
+		//数量
+		Num: function() {
+			mentNum = 0;
+			PaymentNum = 0;
+			ReceivedNum = 0;
+			var rows = localOrders
+			for(var i in rows) {
+				var row = rows[i];
+				//待扣款数量
+				if(row.AuditStatus == 5) {
+					PaymentNum++;
+				}
+			}
+			//判断当前如果当前数量超过99，那么最多只显示99 、、
+			//进行中订单数量
+			//待扣款数量
+			if(PaymentNum > 0) {
+				if(PaymentNum > 99) {
+					PaymentNum = 99;
+				};
+				$('.PaymentNum').show().text(PaymentNum)
+			} else {
+				$('.PaymentNum').hide();
+			};
+		},
+
+		//获取订单列表
+		List: function(sendData) {
+			console.log(JSON.stringify(sendData))
+			getLeaseInterface.getRepairMain(sendData, function(cb) {
+				console.log(JSON.stringify(cb))
+				localOrders = cb['rows']; //获取的结果赋值给全局变量localOrders
+				//Order.Num();
+				var data = [];
+				for(var i in localOrders) {
+					var row = localOrders[i];
+					if(row.Status == 2) {
+						data.push(localOrders[i]);
+					}
+				}
+				Order.showList(data);
+			});
+		},
+
+		//展示列表
+		showList: function(orders) {
+			$('#List').html('');
+			var rows = orders;
+			for(var i in rows) {
+				var row = rows[i];
+				var $html = $(
+					'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' >' +
+					'<a href="javascript:;">' +
+					'<div class="Uav">' +
+					'<img class="mui-media-object mui-pull-left Icon" src="../../../img/XzUav.png">' + //（' + row['SN'] + '）
+					'<span class="Name font_14">' + row['CreateUserName'] + '</span><span class="CarrierSpecs font_12">(序列号：' + row['UavSN'] + ')</span>' +
+					'<span class="LeaseStatus"></span>' +
+					'</div>' +
+					'<div class="mui-media-body" style="color:#eee;font-size: 12px;">' +
+					'<p class="mui-ellipsis EquipmentLease" style="display: inline-block;">报修时间：' + row['CreateDate'].substr(0,10) + '</p>' +
+					'<p class="mui-ellipsis EquipmentLease" style="display: inline-block;float: right;">维修费用：'+row['RepairCost']+'元</p>' +
+					'</div>' +
+					'</li>'
+				);
+
+				$html.appendTo($('#List'));
+				//查看明细
+				$html.on('tap', function() {
+					var index = $(this).attr('data-index');
+					mui.openWindow({
+						url: './repairPamentDetails.html',
+						id: 'repairPamentDetails',
+						extras: {
+							data: rows[index]
+						}
+					});
+				});
+			};
+		},
+
+		tap: function() {
+			//bar的循环点击筛选
+			$(".App-Tittle>div").each(function(i) {
+				$(".App-Tittle>div").eq(i).on('tap', function() {
+					//判断如果重复点击当前已经选中的状态 activeT
+					if($(".App-Tittle>div>.tittle").eq(i).hasClass('activeT')) {
+						return false;
+					};
+					$("#List").html('');
+					$(".App-Tittle>div>.tittle").removeClass('activeT');
+					$(".App-Tittle>div>.tittle").eq(i).addClass('activeT');
+					console.log($(".App-Tittle>div>.tittle").eq(i).text())
+					switch($(".App-Tittle>div>.tittle").eq(i).text()) {
+						case '待扣款':
+							var qr_orders = [];
+							console.log(JSON.stringify(localOrders))
+							for(var j = 0; j < localOrders.length; j++) {
+								if(localOrders[j].Status == 2) {
+									qr_orders.push(localOrders[j]);
+								}
+							}
+							Order.showList(qr_orders);
+							app.DeleteSearch();
+							break;
+						case '已完成':
+						console.log(JSON.stringify(localOrders))
+							var qr_orders = [];
+							for(var j = 0; j < localOrders.length; j++) {
+								console.log(localOrders[j].Status)
+								if(localOrders[j].Status == 4) {
+									qr_orders.push(localOrders[j]);
+								}
+							}
+							Order.showList(qr_orders);
+							Order.search();
+							break;
+					};
+				})
+			});
+		}
+	};
+
+	//回调刷新
+	window.addEventListener('pageflowerfresh', function() {
+		Order.List(sendData);
+	});
+</script>

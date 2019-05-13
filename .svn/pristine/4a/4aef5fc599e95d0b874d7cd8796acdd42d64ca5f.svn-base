@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.poppicker.css" />
+		<link href="../../css/list.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-content {
+			padding-bottom: 140px !important;
+		}
+		
+		.tittle {
+			width: 70% !important;
+			min-width: 70% !important;
+		}
+		
+		.Surplus {
+			position: absolute;
+			right: 10px;
+			bottom: 35px;
+			background: white;
+		}
+		
+		.payment,
+		.received {
+			position: relative;
+		}
+		
+		.PaymentNum,
+		.ReceivedNum {
+			position: absolute;
+			width: 14px;
+			height: 14px;
+			background: red;
+			right: 18px;
+			top: 3px;
+			border-radius: 100%;
+			font-size: 8px;
+			text-align: center;
+			line-height: 15px;
+			color: white;
+			display: none;
+		}
+		
+		.ApplyUav {
+			background: white;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a class="mui-pull-right colorY" id="hisLease">历史租赁单</a>-->
+			<h1 class="mui-title ">药剂列表</h1>
+		</header>
+		<div>
+			<ul class="mui-table-view mui-scroll" id="getNoPayList">
+				
+			
+					
+					
+				</ul>
+		
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	
+	mui.init();
+	var UserInfo = "";
+	app.ready(function(){
+		UserInfo = app.accountInfo('info');
+//		btnClickEvents();
+		getyaoji();
+//		preload();//预加载
+		NoData.bgImg('mui-content','../../img/BGIMG.png');
+		
+	});
+	mui(".mui-scroll-wrapper").scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	
+	
+	function getyaoji(){
+		var option = {
+			api:'/AccountCenter/Commodity/GetPageListJson',
+			data:{
+				"page": 1,
+				"rows": 102,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					//"CommodityName":"一点透"
+				})
+			},
+			success:function(data){
+				
+				var $html = "";
+				var result = JSON.parse(data);
+				var rows = result['rows'];
+				
+				for(var i in rows){
+					var row = rows[i]
+					
+				var $html = $(
+						'<li class="mui-table-view-cell mui-media leaseList">'+
+					        '<a href="javascript:;">'+
+					            '<img class="mui-media-object mui-pull-left" src="../../img/leaseUav.png">'+
+					            '<div class="mui-media-body">'+
+					               ' 租赁人:'+row.CommodityName+''+
+					                '<p class="mui-ellipsis">序列号：'+row.CommodityBrand+'</p>'+
+					               ' <p class="mui-ellipsis">型号：'+row.Constituents+'</p>'+
+					            '</div>'+
+					        '</a>'+
+					   ' </li>'
+					);
+					$html.appendTo($("#getNoPayList"));
+					
+				}
+			
+			},
+			error:function(data){
+				
+			}
+		};
+		app.post3_4(option);
+	};
+	
+	var entiy = {
+		CommodityName:"?????",
+		CommodityBrand:"????",
+	}
+	function setyaoji(){
+		var option = {
+			api:'/SystemManage/DataItemDetail/GetDataItemListJson',
+			data:{
+				data:  { EnCode: "CompanyNature" },
+			},
+			success:function(data){
+				console.log(data);
+			},
+			error:function(data){
+				
+			}
+		};
+		app.post3_3(option);
+	};
+	
+	
+	
+	
+	
+</script>

@@ -1,0 +1,346 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link href="../../css/Purchase.css" rel="stylesheet" />
+		<link href="../../css/Commodity.css" rel="stylesheet" />
+		<style type="text/css">
+			.btns {
+				width: 100%;
+				margin: 0 auto;
+				text-align: center;
+				position: fixed;
+				bottom: 8px;
+				z-index: 9;
+			}
+			
+			.btns>button {
+				width: 90%;
+				height: 44px;
+				font-size: 16px;
+				border-radius: 4px;
+				border: none;
+			}
+			/*.btns>button:last-child {
+				background: #FF6666;
+			}*/
+			
+			.mui-scroll-wrapper {
+				top: 110px;
+			}
+			
+			.mui-table-view .mui-table-view-cell .mui-media-body {
+				height: 100px;
+				margin: 5px;
+			}
+			
+			.mui-table-view .mui-table-view-cell img {
+				border: 2px solid #DEEEFE;
+				border-radius: 2px;
+				height: 100px;
+				width: 100px;
+			}
+			
+			.mui-table-view .mui-table-view-cell .mui-media-body {
+				height: 100px;
+				/*border: 1px solid red;*/
+				font-size: 16px;
+				line-height: 30px;
+				width: 40%;
+				padding-left: 30px;
+			}
+			
+			.font_10 {
+				font-size: 14px;
+			}
+			
+			.mui-table-view .mui-btn .mui-btn-red a {
+				margin-bottom: 5px;
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">药剂管理</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view" style="position: fixed;top: 45px; left: 9px; z-index: 8;">
+				<li class="mui-table-view-cell list">
+					<div class="mui-row brand brand-active ">
+						<div class="mui-col-sm-3 mui-col-xs-3">
+							<span>药剂品牌 &nbsp;&nbsp;</span>
+						</div>
+						<span class="iconfont font_12 showBrand">&#xe741;</span>
+					</div>
+				</li>
+			</ul>
+			<div class="mui-scroll-wrapper" style="margin-bottom: 60px;">
+				<div class="mui-scroll">
+					<ul class="mui-table-view CommodityLists" id="OA_task_2">
+
+					</ul>
+					<ul class="mui-table-view CommodityLists3" id="OA_task_3">
+
+					</ul>
+				</div>
+			</div>
+			<div class="btns">
+				<button type="button" class="mui-btn mui-btn-blue" id="Increase">添加商品</button>
+				<!--<button type="button" class="mui-btn mui-btn-blue" id="Edit">编辑</button>-->
+			</div>
+		</div>
+
+	</body>
+
+</html>
+<script src="../../js/mui.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script type="text/javascript">
+	mui.init({});
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var medicamlist = null;
+	app.ready(function() {
+
+		UserInfo = app.accountInfo('info');
+		drug.PurchaseList(UserInfo.CompanyId);
+		drug.CommodityList(UserInfo.CompanyId);
+	});
+
+	var drug = {
+		//商品列表
+		CommodityList: function(GoodsManufactorId) {
+			var send = {
+				"page": 1,
+				"rows": 999,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					GoodsManufactor: GoodsManufactorId,
+				})
+			};
+			getLeaseInterface.getCommodity(send, function(cb) {
+				$('.CommodityLists').html('');
+				var rows = cb['rows'];
+				medicamlist = rows;
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<li class="mui-table-view-cell mui-media  CommodityList list" CommId=' + i + '>' +
+						'<div class="mui-slider-right mui-disabled">' +
+						'<a class="mui-btn mui-btn-red delete " id=' + row['CommodityId'] + '  CommId=' + i + '>删除</a>' +
+						'</div>' +
+						'<div class="mui-slider-handle">' +
+						'<img class="mui-media-object mui-pull-left" src=' + (app.his_host + row['Imges']) + ' alt="暂无图片" />' +
+						'<div class="mui-media-body">' +
+						'<div class="title-name">' +
+						'' + row['CommodityName'] + '' +
+						'</div>' +
+						'<div class="Specifications font_10">' +
+						'规格：' + row['Constituents'] + '' +
+						'</div>' +
+						'<div class="money">' +
+						'￥' + row['Price'] + '.00' +
+						'</div>' +
+						'</div>' +
+						'</div>' +
+						'</li>'
+					);
+					$html.appendTo($('.CommodityLists'));
+					$html.on('tap', function() {
+						var index = $(this).attr('CommId');
+						mui.openWindow({
+							url: "./CommodityDetails.html",
+							id: 'CommodityDetails',
+							extras: {
+								Commodity: medicamlist[index]
+							}
+						})
+
+					});
+					//删除商品
+					$html.find('.delete').on('tap', function(event) {
+						event.stopPropagation();
+						var id = $(this).attr('id');
+						var index = $(this).attr('CommId');
+						var sendData = {
+							keyValue: id
+						};
+						dialog.Dialogbox('提示', '确认删除当前品牌？', function(cbs) {
+							if(cbs == 1) {
+								Medicament.DeleteCommodity(sendData, function(cb) {
+									if(cb['type'] == 1) {
+										app.toast('删除成功!');
+										$("#CommodityList").eq(index).remove();
+										var objView = plus.webview.getWebviewById("MedicamentManage");
+										objView.reload(true);
+
+									} else {
+										app.toast('删除失败');
+									}
+									dialog.CloseLogBox();
+								});
+
+							} else if(cbs == 0) {
+								dialog.CloseLogBox();
+							} else {
+								app.toast('已取消');
+							};
+						});
+					});
+				};
+			});
+		},
+		//获取品牌列表
+		PurchaseList: function(GoodsManufactorId) {
+			var send = {
+				"page": 1,
+				"rows": 100,
+				"sidx": "CreateDate",
+				"sord": "desc",
+				"queryJson": JSON.stringify({
+					GoodsManufactorId: GoodsManufactorId
+				})
+			};
+			Orders.OrdersBrand(send, function(cb) {
+				var rows = cb['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					var $html = $(
+						'<span class="brand-items" index-id="' + row['GoodsBrandId'] + '"> ' +
+						'<span class="font_14" id=' + row['GoodsBrandId'] + ' Manufactor=' + row['GoodsManufactorId'] + '>' + row['GoodsBrandName'] + '</span>' +
+						'</span>'
+					);
+					$html.appendTo($(".brand"));
+					$html.on("tap", function() {
+						var index = JSON.stringify($(this).attr('index-id'));
+						$('.CommodityLists').html('');
+						for(var j in medicamlist) {
+							if(index == JSON.stringify(medicamlist[j].CommodityBrand)) {
+								var $html = $(
+									'<li class="mui-table-view-cell mui-media  CommodityList list" CommId=' + j + '>' +
+									'<div class="mui-slider-right mui-disabled">' +
+									'<a class="mui-btn mui-btn-red delete" id=' + medicamlist[j]['CommodityId'] + '   CommId=' + j + '>删除</a>' +
+									'</div>' +
+									'<div class="mui-slider-handle">' +
+									'<img class="mui-media-object mui-pull-left" src=' + (app.his_host + medicamlist[j]['Imges']) + ' alt="暂无图片" />' +
+									'<div class="mui-media-body">' +
+									'<div class="title-name">' +
+									'' + medicamlist[j]['CommodityName'] + '' +
+									'</div>' +
+									'<div class="Specifications font_10">' +
+									'规格：' + medicamlist[j]['Constituents'] + '' +
+									'</div>' +
+									'<div class="money">' +
+									'￥' + medicamlist[j]['Price'] + '.00' +
+									'</div>' +
+									'</div>' +
+									'</div>' +
+									'</li>'
+								);
+								$html.appendTo($('.CommodityLists'));
+								$html.on('tap', function() {
+									var index = $(this).attr('CommId');
+									mui.openWindow({
+										url: "./CommodityDetails.html",
+										id: 'CommodityDetails',
+										extras: {
+											Commodity: medicamlist[index]
+										}
+									})
+								});
+								//删除商品
+								$html.find('.delete').on('tap', function(event) {
+									event.stopPropagation();
+									var id = $(this).attr('id');
+									var index = $(this).attr('CommId');
+									var sendData = {
+										keyValue: id
+									};
+									dialog.Dialogbox('提示', '确认删除当前品牌？', function(cbs) {
+										if(cbs == 1) {
+
+											Medicament.DeleteCommodity(sendData, function(cb) {
+												if(cb['type'] == 1) {
+													app.toast('删除成功!');
+													$("#CommodityList").eq(index).remove();
+													var objView = plus.webview.getWebviewById("MedicamentManage");
+													objView.reload(true);
+
+												} else {
+													app.toast('删除失败');
+												}
+												dialog.CloseLogBox();
+											});
+
+										} else if(cbs == 0) {
+											dialog.CloseLogBox();
+										} else {
+											app.toast('已取消');
+										};
+									});
+								});
+
+							}
+						}
+					});
+
+				};
+				drug.tap();
+			});
+		},
+		tap: function() {
+			//bar 循环点击
+			$(".brand-items").each(function(i) {
+				$(this).on('tap', function() {
+					$(".brand-items>span").removeClass('brand-items-active');
+					$(".brand-items>span").eq(i).addClass('brand-items-active');
+
+				});
+
+			});
+
+			$("#Increase").on('tap', function() {
+				mui.openWindow({
+					url: './MedList.html',
+					id: 'MedList'
+				})
+			});
+			//展开药剂品牌
+			$(".showBrand").on('tap', function() {
+				if($(".brand").hasClass('brand-active')) {
+					$(".brand").removeClass('brand-active');
+				} else {
+					$(".brand").addClass('brand-active');
+				};
+			});
+		}
+	};
+	//回调刷新
+	window.addEventListener('fresh', function() {
+		var objView = plus.webview.getWebviewById("MedicamentManage");
+		objView.reload(true);
+		drug.PurchaseList(UserInfo.CompanyId);
+		drug.CommodityList(UserInfo.CompanyId);
+	});
+</script>

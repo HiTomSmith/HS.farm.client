@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+
+		<style>
+			.mui-content {
+				padding-bottom: 60px;
+			}
+			
+			.mui-input-group {
+				margin: 0;
+			}
+			
+			.mui-input-row {
+				border-bottom: 1px solid rgba(239, 239, 244, 0.3);
+			}
+			
+			.mui-input-row .mui-input-clear~.mui-icon-clear,
+			.mui-input-row .mui-input-password~.mui-icon-eye,
+			.mui-input-row .mui-input-speech~.mui-icon-speech {
+				top: 15px !important;
+			}
+			
+			.mui-input-row>input {
+				height: 100%;
+				line-height: 40px !important;
+			}
+			
+			#Img,
+			.imgkey {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.IdInfo,
+			.IdInfo1 {
+				width: 70%;
+				height: 160px;
+				border: 1px dashed #C0C0C0;
+				margin: 0 auto;
+				position: relative;
+			}
+			
+			.IdInfo1 {
+				margin-top: 20px;
+			}
+			
+			.iconfont {
+				font-size: 48px;
+				color: #BEBEBE;
+				position: absolute;
+				left: calc((100% - 48px) /2);
+				top: 30%;
+			}
+			
+			.IdInfoText {
+				position: absolute;
+				width: 100%;
+				font-size: 14px;
+				text-align: center;
+				bottom: 20%;
+				color: #3D3D3D;
+			}
+			
+			.IdBack,
+			.IdJust {
+				overflow: hidden;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">实名认证</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<form class="mui-input-group  mui-scroll">
+				<div class="mui-input-row">
+					<label class="">真实姓名</label>
+					<input type="text" class="mui-input-clear name" id="RealName" placeholder="请输入真实姓名">
+				</div>
+				<div class="mui-input-row">
+					<label class="">身份证</label>
+					<input type="text" class="mui-input-clear idpeople" id="IdInfo" placeholder="请输入身份证">
+					<input type="hidden" id="ckjl.id" name="ckjl.id" value="429">
+				</div>
+				<div class="mui-input-row" style="border:none">
+					<label>证件照片</label>
+				</div>
+				<div class="IdInfo IdJust OICQ" onclick="UploadPicture('OICQ')">
+					<span class="iconfont">&#xe6e0;</span>
+					<span class="IdInfoText">身份证正面照片</span>
+				</div>
+				<div class="IdInfo1 IdBack WeChat" onclick="UploadPicture('WeChat')">
+					<span class="iconfont">&#xe6e0;</span>
+					<span class="IdInfoText">身份证反面照片</span>
+				</div>
+			</form>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="btn-primary">确定</button>
+		</div>
+	</body>
+
+</html>
+
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/hx.plugin.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	//-------------页面加载完成调用 开始---------------------------
+	mui.init({
+		preloadPages: [{
+			url: '../../login.html',
+			id: 'login',
+		}],
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		bounce: true, //滚动条是否有弹力默认是true
+		indicators: false, //是否显示滚动条,默认是true
+	});
+	var UserInfo = "";
+	var OpenIds= "";
+	var OrganizeIds = "";
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		btn_set();
+		var backButtonPress = 0;
+		mui.back = function() {
+			var message_wx = plus.webview.getWebviewById('message_wx')
+			if(message_wx) {
+				plus.webview.close('message_wx');
+			} else {
+				//返回事件更改
+				backButtonPress++;
+				if(backButtonPress > 1) {
+					plus.runtime.quit();
+				} else {
+					plus.nativeUI.toast('再按一次退出应用');
+				}
+				setTimeout(function() {
+					backButtonPress = 0;
+				}, 1000);
+			}
+		};
+	});
+
+	function btn_set() {
+		$("#btn-primary").on('tap', function() {
+			btnsShield(3, "btn-primary");
+			var idpoeple = $(".idpeople").val();
+			if($(".name").val() == "") {
+				mui.toast('请输入姓名');
+				return false;
+			}
+			if($(".idpeople").val() == "") {
+				mui.toast('请输入身份证号');
+				return false;
+			}
+			if(!(/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/ || /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(idpoeple))) {
+				mui.toast("请输入正确的身份证号");
+				return false;
+			}
+			//判断身份证照片是否上传
+			if(!$(".OICQ").attr('value')) {
+				app.toast('请上传身份证照片正面！');
+				return false;
+			};
+			//判断身份证照片是否上传
+			if(!$(".WeChat").attr('value')) {
+				app.toast('请上传身份证照片反面！');
+				return false;
+			};
+			plus.nativeUI.showWaiting();
+			setPersonal(); //姓名手机号，身份证
+		})
+	}
+	//拍照或从相册选取
+	function UploadPicture(id) {
+		plus.nativeUI.actionSheet({
+			cancel: "取消",
+			buttons: [{
+					title: '拍照'
+				},
+				{
+					title: '相册选取'
+				},
+			]
+		}, function(e) {
+			switch(e.index) {
+				case 1:
+					Photograph(id);
+					break;
+				case 2:
+					galleryImg(id);
+					break;
+			};
+		});
+	};
+
+	//拍照
+	function Photograph(divid) {
+		var cmr = plus.camera.getCamera();
+		cmr.captureImage(function(p) {
+			plus.io.resolveLocalFileSystemURL(p, function(entry) {
+				compressImage(entry.toLocalURL(), entry.name, divid);
+			}, function(e) {
+				plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+			});
+		}, function(e) {}, {
+			filename: "_doc/camera/",
+			index: 1
+		});
+	};
+
+	//相册选取
+	//相册选取图片  
+	function galleryImg(divid) {
+		plus.gallery.pick(function(p) {
+			plus.io.resolveLocalFileSystemURL(p, function(entry) {
+				compressImage(entry.toLocalURL(), entry.name, divid);
+			}, function(e) {
+				plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+			});
+		}, function(e) {}, {
+			filename: "_doc/camera/",
+			filter: "image"
+		});
+	}
+
+	///图片压缩
+	function compressImage(url, filename, divid) {
+		//alert(url+'----------'+filename+'-----------------'+divid);
+		var name = "_doc/upload/" + divid + "-" + filename; //_doc/upload/F_ZDDZZ-1467602809090.jpg
+		plus.zip.compressImage({
+				src: url, //src: (String 类型 )压缩转换原始图片的路径  
+				dst: name, //压缩转换目标图片的路径  
+				quality: 20, //quality: (Number 类型 )压缩图片的质量.取值范围为1-100  
+				overwrite: true //overwrite: (Boolean 类型 )覆盖生成新文件  
+			},
+			function(event) {
+				//uploadf(event.target,divid);  
+				var path = name; //压缩转换目标图片的路径  
+				//event.target获取压缩转换后的图片url路  
+				//filename图片名称  
+				saveimage(event.target, divid, filename, path);
+			},
+			function(error) {
+				plus.nativeUI.toast("压缩图片失败，请稍候再试");
+			});
+	};
+
+	///保存显示图片
+	function saveimage(url, divid, name, path) {
+		var state = 0;
+		var wt = plus.nativeUI.showWaiting();
+		//  plus.storage.clear();   
+		name = name.substring(0, name.indexOf("."));
+		var id = document.getElementById("ckjl.id").value;
+		var itemname = id + "img-" + divid;
+		var itemvalue = plus.storage.getItem(itemname);
+		if(itemvalue == null) {
+			itemvalue = "{" + name + "," + path + "," + url + "}";
+		} else {
+			itemvalue = itemvalue + "{" + name + "," + path + "," + url + "}";
+		}
+		plus.storage.setItem(itemname, itemvalue);
+
+		var src = 'src="' + url + '"';
+		//alert("itemvalue="+itemvalue);
+
+		showImgDetail(name, divid, id, src);
+		wt.close();
+	};
+	//加载页面初始化需要加载的图片信息  
+	function showImgDetail(imgId, imgkey, id, src) {
+		var html = "";
+		html += '<div  id="Img' + imgId + imgkey + '" class="image-item ">';
+		html += '    <img class="imgkey" id=' + imgkey + ' data-preview-src="" data-preview-group="1" ' + src + '/>';
+		html += '</div>';
+		$("." + imgkey).html('');
+		$("." + imgkey).append(html);
+		getImgBase64(imgkey);
+	}
+
+	//将图片转换为base64上传
+	function image2Base64(img) {
+		var canvas = document.createElement("canvas");
+//		canvas.width = img.width / 5;
+//		canvas.height = img.height / 5;
+        canvas.width = img.width;
+		canvas.height = img.height;
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+		var newImageData = canvas.toDataURL("image/jpeg", 1); //重新生成图片
+		sendData = newImageData.split(',')[1]; //newImageData.replace("data:"+fileType+";base64,",' ');
+		var data = window.atob(sendData);
+		var ia = new Uint8Array(data.length);
+		for(var i = 0; i < data.length; i++) {
+			ia[i] = data.charCodeAt(i);
+		};
+		blob = new Blob([ia], {
+			type: "image/jpeg"
+		});
+		return blob;
+	};
+
+	function getImgBase64(imgkey) {
+		var base64 = "";
+		var img = new Image();
+		img.src = $("#" + imgkey).attr('src');
+		img.onload = function() {
+			base64 = image2Base64(img);
+			var formData = new FormData();
+			formData.append(imgkey, base64);
+			setPicture(formData, imgkey); //上传身份证正反面；
+		}
+	}
+
+	//发送编辑的个人信息数据
+	function setPersonal() {
+		var userInfo = app.accountInfo('info');
+		//alert(userInfo.UserId+'---------'+userInfo.Account+'---------'+$("#IdInfo").val()+'--------------'+$("#RealName").val());
+		var option = {
+			api: '/Login/IdInfo',
+			data: {
+				userid: userInfo.UserId,
+				phone: userInfo.Account,
+				idinfo: $("#IdInfo").val(),
+				realname: $("#RealName").val(),
+				OpenId:(OpenIds!="")?OpenIds:"",
+				OrganizeId:(OrganizeIds!="")?OrganizeIds:"",
+			},
+			success: function(data) {
+				var data = eval("(" + data + ")");
+				if(data['type'] == 1) {
+					app.toast('认证成功，正在重新登陆');
+					ISFlyer();
+				} else {
+					app.toast('实名认证失败，请输入真实信息');
+					plus.nativeUI.closeWaiting();
+				};
+			},
+			error: function() {
+				app.toast('发送失败');
+			}
+		}
+		app.post3_1(option);
+	};
+
+	//认证成功调一次租赁接口\
+	function getAddress() {
+		var sendData = {
+			userEntity: {
+				UserId: UserInfo.UserId,
+				Account: UserInfo.Account,
+				Password: UserInfo.Password,
+				Secretkey: UserInfo.Secretkey,
+				RealName: $("#RealName").val(),
+				Gender: 0,
+				Mobile: UserInfo.Account,
+				PostId: $("#IdInfo").val(),
+				DeleteMark: 0,
+				EnabledMark: 1,
+				CreateUserId: UserInfo.UserId,
+			}
+		};
+		LeaseInterface.SaveLeaseUser(sendData, function(cb) {
+			plus.nativeUI.closeWaiting();
+			app.storage("autoLogin", "false");
+			app.outLogin();
+			app.restart();
+		});
+	};
+
+	//上传身份证正反面
+	function setPicture(formData, imgkey) {
+		plus.nativeUI.showWaiting();
+		$.ajax({
+			url: app.req_host + '/PersonCenter/UploadFileApp', //请求地址
+			type: 'post',
+			data: formData, //发送数据
+			async: false,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				var result = JSON.parse(data);
+				if(result['type'] == 1) {
+					app.toast('上传成功')
+					$("." + imgkey).attr('value', true);
+				} else {
+					app.toast('上传失败！请更换图片');
+				};
+				plus.nativeUI.closeWaiting();
+			},
+			error: function() {
+				app.toast('上传失败');
+				target.value = "";
+				plus.nativeUI.closeWaiting();
+			}
+		});
+	};
+
+		//使用身份证信息查证当前注册人员是否为那个服务站飞手
+		function ISFlyer(){
+			var option = {
+				api: '/XhxManage/XHX_UAVDriver/GetPageListJson',
+				data: {
+					"page": 1,
+					"rows": 1,
+					"sidx": "CreateDate",
+					"sord": "desc",
+					"queryJson": JSON.stringify({
+						IDnumber:$("#IdInfo").val()
+					})
+				},
+				success: function(data) {
+					//getAddress();
+					var rows = JSON.stringify(data);
+					var result = rows.rows;
+					//当前用户是某个服务站下的员工
+					if($("#IdInfo").val()==result[0]['IDnumber']){
+						OpenIds = 6;
+						OrganizeIds = result[0]['OrganizeId'];
+					}else{
+						OpenIds = 7;
+					};
+				},
+				error: function() {
+					app.toast('发送失败');
+				}
+			}
+			app.post3_2(option);
+		};
+</script>

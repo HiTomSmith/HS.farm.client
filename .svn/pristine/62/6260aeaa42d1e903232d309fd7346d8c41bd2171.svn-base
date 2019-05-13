@@ -1,0 +1,844 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style>
+			body {
+				background: #F5F5F5;
+			}
+			
+			#banner {
+				height: 150px;
+				/*background: yellow;*/
+				/*background-color: #FFFFFF;*/
+			}
+			
+			#banner img {
+				height: 145px;
+				width: 100%;
+			}
+			
+			#pages {
+				height: 60px;
+				/*background: red;*/
+				/*background-color: #FFFFFF;*/
+			}
+			
+			#pages-1 {
+				height: 55px;
+				/*background: yellow;*/
+				display: flex;
+				justify-content: space-between
+			}
+			
+			.page-1-1 {
+				width: 33.1%;
+				/*background: purple;*/
+				background-color: #FFFFFF;
+			}
+			
+			.page-1-1-1 {
+				height: 30px;
+				/*background: blue;*/
+				text-align: center;
+				line-height: 30px;
+				color: #C0C0C0;
+				font-size: 13px;
+			}
+			
+			.page-1-1-2 {
+				height: 25px;
+				line-height: 25px;
+				text-align: center;
+				/*background: purple;*/
+				font-size: 13px;
+			}
+			
+			.page-1-1-2-1 {
+				color: deepskyblue;
+			}
+			
+			.page-1-1-2-2 {
+				color: orangered;
+			}
+			
+			.page-1-1-2-3 {
+				color: orange;
+			}
+			
+			.info {
+				height: 130px;
+				/*background-color: #FFFFFF;*/
+			}
+			/*#infoNo{
+				height: 115px;
+			}*/
+			
+			.info-1 {
+				/*background: skyblue;*/
+			}
+			
+			.info-2 {
+				/*background: burlywood;*/
+			}
+			
+			.info-3 {
+				/*background: orange;*/
+			}
+			
+			.info-1-1 {
+				height: 33px;
+				line-height: 33px;
+				/*background: red;*/
+				background: #FFFFFF;
+			}
+			
+			.info-1-1 span {
+				/*line-height: 33px;*/
+				font-size: 14px;
+			}
+			
+			.info-1-1 .info-1-right {
+				float: right;
+				margin-right: 10px;
+			}
+			
+			.info-1-1 .info-1-left {
+				margin-left: 6px;
+			}
+			
+			#info-1-2 {
+				margin-top: 1px;
+				height: 92px;
+				/*background: skyblue;*/
+				display: flex;
+				justify-content: space-between;
+				background: #F5F5F5;
+			}
+			
+			#info-1-2 .info-1-2-1 {
+				background: #FFFFFF;
+				overflow: hidden;
+			}
+			
+			.info-1-2 {
+				margin-top: 1px;
+				height: 92px;
+				/*background: skyblue;*/
+				background-color: #FFFFFF;
+			}
+			
+			.info-1-2 .info-1-2-1 {
+				width: 49.8%;
+				/*background: bisque;*/
+			}
+			
+			.info-1-2-1-1 {
+				width: 67%;
+				/*background: red;*/
+				height: 92px;
+				float: left;
+			}
+			
+			.info-1-2-1-2 {
+				width: 33%;
+				/*background:orchid;*/
+				height: 92px;
+				float: left;
+			}
+			
+			.info-1-2-1-2 button {
+				margin: 28px auto;
+			}
+			
+			.info-1-2-1-1-1 {
+				height: 46px;
+				/*background: red;*/
+				line-height: 92px;
+			}
+			
+			.info-1-2-1-1-1 span {
+				margin-left: 10px;
+			}
+			
+			.info-1-2-1-1-2 {
+				height: 12px;
+				/*background: red;*/
+				font-size: 12px;
+				line-height: 12px;
+				color: #C0C0C0;
+			}
+			
+			.info-1-2-1-1-2 span {
+				margin-left: 10px;
+			}
+			
+			.info-1-2-1-1-3 {
+				height: 34px;
+				/*background: red;*/
+				font-size: 12px;
+				line-height: 34px;
+				color: #C0C0C0;
+			}
+			
+			.info-1-2-1-1-3 span {
+				margin-left: 10px;
+			}
+			
+			.mui-btn {
+				border-radius: 5px;
+				border: 1px solid #15AE3F;
+				background: #15AE3F;
+			}
+			
+			.info-1-2-5 {
+				height: 46px;
+				/*background: red;*/
+				line-height: 46px;
+				font-size: 15px;
+				
+			}
+			
+			.info-1-2-6 {
+				line-height: 46px;
+				height: 46px;
+				/*background: blueviolet;*/
+				font-size: 12px;
+				color: #C0C0C0;
+			}
+			
+			.info-1-2-6 span {
+				float: left;
+				margin-left: 10px;
+			}
+			
+			.info-1-2-6 button {
+				margin-top: 6px;
+				float: right;
+				margin-right: 10px;
+			}
+			
+			.font-l {
+				margin-left: 10px;
+			}
+			
+			.font-r {
+				float: right;
+				margin-right: 20px;
+				
+			}
+			.font-rr{
+				font-size: 18px;
+				color: #1E9FEF;
+			}
+			.info-1-1 .batteryUse {
+				letter-spacing: 20px;
+			}
+			
+			.info-1-1 img {
+				height: 12px;
+				width: 2px;
+				float: left;
+				margin-left: 8px;
+				margin-top: 10px;
+			}
+			
+			#more-1,
+			#more-2,
+			#more-3 {
+				color: #1E9FEF;
+			}
+			
+			.mengbi {
+				width: 100%;
+				height: 100%;
+				background: #747474;
+				position: fixed;
+				top: 0;
+				z-index: 11101;
+				opacity: 0.8;
+				display: none;
+			}
+			
+			.bottom {
+				height: 360px;
+				position: relative;
+				z-index: 999;
+			}
+			/*.mui-table-view>.info {
+				height: auto;
+			}*/
+			
+			.mui-table-view {
+				/*width: calc(100% - 8px);*/
+				margin: 0 auto;
+				background: #F5F5F5;
+			}
+			
+			.info-4 {
+				height: 240px;
+			}
+			
+			.add-1 {
+				line-height: 92px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../../js/mui.min.js"></script>
+
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="banner">
+					<img src="../../img/allready.png" />
+				</div>
+				<div id="pages">
+					<div id="pages-1">
+						<div class="page-1-1">
+							<div class="page-1-1-1">
+								<span>租机数量</span>
+							</div>
+							<div class="page-1-1-2 page-1-1-2-1">
+								<span>0台</span>
+							</div>
+						</div>
+						<div class="page-1-1">
+							<div class="page-1-1-1 medica">
+								<span>药剂优惠</span>
+							</div>
+							<div class="page-1-1-2 page-1-1-2-2">
+								<span>0元</span>
+							</div>
+						</div>
+						<div class="page-1-1">
+							<div class="page-1-1-1">
+								<span>电池分期</span>
+							</div>
+							<div class="page-1-1-2 page-1-1-2-3">
+								<span class="batteryUse">0套</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="bottom mui-scroll-wrapper-1">
+					<!--<div class="title"><span></span> &nbsp;&nbsp;我的租赁单</div>-->
+					<div class="mui-table-view mui-scroll" id="getNoPayList">
+						<div class="info info-1">
+							<div class="info-1-1">
+								<img src="../../img/readygo.png" />
+								<span class="info-1-left title">租赁信息</span>
+								<span class="info-1-right" id="more-1">更多</span>
+							</div>
+							<div class="info-1-2" id="info-1-2">
+								<div class="info-1-2-1">
+									<div class="info-1-2-1-1">
+										<div class="info-1-2-1-1-1 navlist-1 ">
+											<span>新机租赁</span>
+										</div>
+										<div class="info-1-2-1-1-2  navName-1">
+											<span></span>
+										</div>
+										<div class="info-1-2-1-1-3 navDate-1">
+											<span></span>
+										</div>
+									</div>
+									<div class="info-1-2-1-2">
+										<button type="button" class="mui-btn mui-btn-primary xiangqing-1">租赁</button>
+									</div>
+								</div>
+								<div class="info-1-2-1">
+									<div class="info-1-2-1-1">
+										<div class="info-1-2-1-1-1 navlist-2 ">
+											<span>新机租赁</span>
+										</div>
+										<div class="info-1-2-1-1-2  navName-2">
+											<span></span>
+										</div>
+										<div class="info-1-2-1-1-3 navDate-2">
+											<span></span>
+										</div>
+									</div>
+									<div class="info-1-2-1-2">
+										<button type="button" class="mui-btn mui-btn-primary xiangqing-2">租赁</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="info info-2">
+							<div class="info-1-1">
+								<img src="../../img/readygo.png" />
+								<span class="info-1-left">药剂优惠</span>
+								<span class="info-1-right" id="more-2">更多</span>
+							</div>
+							<div class="info-1-2">
+								<div class="info-1-2-5">
+									<span class="font-l">药剂专享红包</span>
+									<span class="medicaDate font-r"></span>
+									
+								</div>
+								<div class="info-1-2-6">
+									<span class="font-rr" id="nowPrice">￥0</span>
+									<button type="button" class="mui-btn mui-btn-primary buyMedica">购买药剂</button>
+								</div>
+							</div>
+						</div>
+						<div class="info info-3" id="infoNo">
+							<div class="info-1-1">
+								<img src="../../img/readygo.png" />
+								<span class="info-1-left">电池分期</span>
+								<span class="info-1-right" id="more-3">更多</span>
+							</div>
+							<div class="info-1-2">
+								<div class="info-1-2-5">
+									<span class="font-l batteryName">电池名称</span>
+									<span class="useDate font-r"></span>
+									
+
+								</div>
+								<div class="info-1-2-6">
+									<span class="font-rr batteryMoney-1">￥0</span>
+									<button type="button" class="mui-btn mui-btn-primary payMoneyGo">立即购买</button>
+								</div>
+							</div>
+						</div>
+
+						<!--<div class="info info-3" id="infoNo">
+					<div class="info-1-1">
+						<img src="../../img/readygo.png"/>
+						<span class="info-1-left">电池分期</span>
+						<span class="info-1-right" id="more-3">更多</span>
+					</div>
+					<div class="info-1-2">
+						<div class="info-1-2-5">
+							<span class="font-l batteryName">电池名称</span>
+							<span class="font-r batteryMoney-1">￥5000</span>
+							
+						</div>
+						<div class="info-1-2-6">
+							<span class="useDate">有效期至:2018.06.28 00 : 00</span>
+							<button type="button" class="mui-btn mui-btn-primary payMoneyGo">立即购买</button>
+						</div>
+					</div>
+				</div>
+				
+								<div class="info info-3" id="infoNo">
+					<div class="info-1-1">
+						<img src="../../img/readygo.png"/>
+						<span class="info-1-left">电池分期</span>
+						<span class="info-1-right" id="more-3">更多</span>
+					</div>
+					<div class="info-1-2">
+						<div class="info-1-2-5">
+							<span class="font-l batteryName">电池名称</span>
+							<span class="font-r batteryMoney-1">￥5000</span>
+							
+						</div>
+						<div class="info-1-2-6">
+							<span class="useDate">有效期至:2018.06.28 00 : 00</span>
+							<button type="button" class="mui-btn mui-btn-primary payMoneyGo">立即购买</button>
+						</div>
+					</div>
+				</div>-->
+						<div class="info info-4" id="infoNo">
+
+						</div>
+
+					</div>
+				</div>
+				<div class="mengbi"></div>
+			</div>
+		</div>
+
+	</body>
+
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.picker.js"></script>
+	<script src="../../js/mui.poppicker.js"></script>
+	<script src="../../js/mui.enterfocus.js"></script>
+	<script src="../../js/jquery-2.1.4.min.js"></script>
+	<script src="../../js/jquery.serialize-json.js"></script>
+	<script src="../../js/validator.js"></script>
+	<script src="../../js/hx.functor.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="../../js/data-unit.js"></script>
+	<script src="../../js/getData.js"></script>
+	<script src="../../js/setData.js"></script>
+	<script>
+		mui.init();
+		var userInfo = null;
+		var status = "close";
+		var page = null;
+		var _teamId = "";
+		var messageLen = 0;
+		var uavList;
+		app.ready(function() {
+			mui("#slider").slider({
+				interval: 2000
+			});
+			var _self, _next, _index, timer, Homep, navNumber, navName1, navName2, navlist1, navlist2, navDate1, navDate2, medicaAl, medicaPrice, medicaNowPrice, letMe, batteryMoney
+			_self = plus.webview.currentWebview();
+			_next = plus.webview.getWebviewById("Lease");
+			index = plus.webview.getWebviewById("page");
+			page = plus.webview.getWebviewById('page');
+			Homep = plus.webview.getWebviewById('Homep');
+			userInfo = app.accountInfo('info');
+			_teamId = userInfo.RoleId;
+			//		console.log(JSON.stringify(userInfo))
+			info.uav();
+			info.battery();
+			//getAppMessage();
+			//Tap();
+
+			Tap();
+
+		});
+		
+		mui(".mui-scroll-wrapper").scroll({
+			//		bounce: true, //滚动条是否有弹力默认是true
+			//		indicators: false, //是否显示滚动条,默认是true
+			scrollY: false, //是否竖向滚动
+			scrollX: false, //是否横向滚动
+
+		});
+		mui(".mui-scroll-wrapper-1").scroll({
+			bounce: true, //滚动条是否有弹力默认是true
+			indicators: false, //是否显示滚动条,默认是true
+		});
+
+		var info = {
+			uav: function() {
+
+				var senddata = {
+					OrganizeId: userInfo.CompanyId,
+
+				};
+				console.log(JSON.stringify(senddata))
+				getLeaseInterface.getLeaseingRecord(senddata, function(cb) {
+					console.log(11111)
+					    console.log(JSON.stringify(cb))  
+						console.log(userInfo.CompanyId);
+//						console.log(JSON.stringify(cb)[0]); 
+//						console.log(cb.message.length);
+						if(cb.message == "[]") {
+//							alert(2222)
+//							console.log('hhhh');						
+							
+							$('.xiangqing-1').click(function() {
+//								alert(111);
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+//									extras: {
+//										data: uavList[0],
+//					
+//									}
+								})
+							})
+							$('.xiangqing-2').click(function() {
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+//									extras: {
+//										data: uavList[1],
+//					
+//									}
+								})
+							})
+							if($('.xiangqing-1').text()=='租赁'){
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+								})
+							}
+							if($('.xiangqing-2').text()=='租赁'){
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+								})
+							}
+						} else if(cb.message == "[0]"){
+//							$('.navlist-1').css('line-height','92px');
+							$('.navlist-2').css('line-height','92px');
+							
+							uavList = JSON.parse(cb.message);
+							
+//							console.log(JSON.stringify(uavList[0]));
+							//			    console.log(JSON.stringify(uavList[1]));
+
+							//			    console.log(uavList[0]. )
+
+							//无人机的数量和设置
+							navNumber = uavList.length;
+							
+							$('.page-1-1-2-1 span').text(navNumber + '台');
+
+							//租赁信息设置
+							//if(navName1=uavList[0]['GoodsName']==)
+							navName1 = uavList[0]['GoodsName'];
+//							navName2 = uavList[1]['GoodsName'];
+							$('.navName-1 span').text(navName1);
+//							$('.navName-2 span').text(navName2);
+
+							letMe = uavList[0]['LeaseState'];
+
+							//租赁单号设置
+
+							navlist1 = uavList[0]['SN'];
+//							navlist2 = uavList[1]['SN'];
+							$('.navlist-1 span').text(navlist1);
+//							$('.navlist-2 span').text(navlist2);
+
+							//返还日期设置
+							navDate1 = uavList[0]['LeaseEndDate'];
+//							navDate2 = uavList[1]['LeaseEndDate'];
+							$('.navDate-1 span').text('返还:' + navDate1);
+//							$('.navDate-2 span').text('返还:' + navDate2);
+							
+							$('.xiangqing-1').text('详情');
+//							$('.navlist-2').css('line-height','88px');
+							$('.xiangqing-1').click(function() {
+								mui.openWindow({
+									url: '../Lease/LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: uavList[0],
+					
+									}
+								})
+							})
+							$('.xiangqing-2').click(function() {
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+//									extras: {
+//										data: uavList[1],
+//					
+//									}
+								})
+							})
+							if($('.xiangqing-1').text()=='租赁'){
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+								})
+							}
+							if($('.xiangqing-2').text()=='租赁'){
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+								})
+							}
+						}else{
+							$('.navlist-1').css('line-height','46px');
+							$('.navlist-2').css('line-height','46px');
+							uavList = JSON.parse(cb.message);
+//							console.log(JSON.stringify(uavList[0]));
+							//			    console.log(JSON.stringify(uavList[1]));
+
+							//			    console.log(uavList[0]. )
+
+							//无人机的数量和设置
+							navNumber = uavList.length;
+//							console.log(navNumber);
+							$('.page-1-1-2-1 span').text(navNumber + '台');
+
+							//租赁信息设置
+							//if(navName1=uavList[0]['GoodsName']==)
+							navName1 = uavList[0]['GoodsName'];
+							navName2 = uavList[1]['GoodsName'];
+							$('.navName-1 span').text(navName1);
+							$('.navName-2 span').text(navName2);
+
+							letMe = uavList[0]['LeaseState'];
+
+							//租赁单号设置
+
+							navlist1 = uavList[0]['SN'];
+							navlist2 = uavList[1]['SN'];
+							$('.navlist-1 span').text(navlist1);
+							$('.navlist-2 span').text(navlist2);
+
+							//返还日期设置
+							navDate1 = uavList[0]['LeaseEndDate'];
+							navDate2 = uavList[1]['LeaseEndDate'];
+							$('.navDate-1 span').text('返还:' + navDate1);
+							$('.navDate-2 span').text('返还:' + navDate2);
+							
+							$('.xiangqing-1').text('详情');
+							$('.xiangqing-2').text('详情');
+							
+							$('.xiangqing-1').click(function() {
+								mui.openWindow({
+									url: '../Lease/LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: uavList[0],
+					
+									}
+								})
+							})
+							$('.xiangqing-2').click(function() {
+								mui.openWindow({
+									url: '../Lease/LeasDetails-3.html',
+									id: 'LeasDetails_3',
+									extras: {
+										data: uavList[1],
+					
+									}
+								})
+							})
+							if($('.xiangqing-1').text()=='租赁'){
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+								})
+							}
+							if($('.xiangqing-2').text()=='租赁'){
+								mui.openWindow({
+									url: '../Lease/NewLease.html',
+									id: 'NewLease',
+								})
+							}
+						}
+					});
+				},
+			 
+			battery: function() {
+
+				var senddata = {
+					userId: userInfo.UserId,
+				};
+
+				Orders.GetBattery_Commodity(senddata, function(cb) {
+					console.log(JSON.stringify(cb));
+					
+					if(JSON.stringify(cb.UserWelfare) != '[]'){
+					  
+//						console.log(JSON.stringify(cb.UserWelfare));
+					
+						medicaAl = cb.UserWelfare;
+//						console.log(medicaAl[0]['Amount']);
+	   
+						//				设置优惠券
+						medicaPrice = medicaAl[0]['Amount'];
+						medicaNowPrice = medicaAl[0]['Balance'];
+//						console.log(medicaNowPrice) 
+						$('.page-1-1-2-2 span').text(medicaPrice + '元');
+						$('#nowPrice').text('￥' + medicaNowPrice);	
+					}
+					if(cb.GoodsOrder){
+//						console.log(JSON.stringify(cb.GoodsOrder))
+
+						batteryMoney = cb.GoodsOrder; 
+						var dateTimego=batteryMoney.CreateDate
+//						var demoAlertGo = dateTimego.getFullYear() + "-" + (dateTimego.getMonth() + 1) + "-" + dateTimego.getDate();
+						var dataMessage=dateTimego.substring(0,10);
+					
+
+						//设置电池价格
+						$('.batteryMoney-1').text('￥' + batteryMoney.PayMoney);
+						//设置电池名称
+						$('.batteryName').text(batteryMoney.Description);
+						//设置电池日期
+						$('.useDate').text('还款日期:' + dataMessage);
+						
+							//设置电池分期数量
+						$('.batteryUse').text(cb.GetPurchasedBatteryNums + '套');
+					}
+					
+					if(JSON.stringify(cb.GetUserExpireMoneyExpire) != '[]'){
+						//设置优惠券有效期
+							
+						var dateTimego2=cb.GetUserExpireMoneyExpire[0]['CheckDate'];
+						 var dataMessage2=dateTimego2.substring(0,10);
+
+						$('.medicaDate').text('有' + cb.GetUserExpireMoneyExpire[0].Amount + '元的优惠券至' + dataMessage2 + '到期')
+					 
+					}
+				
+				
+				});
+	
+				},
+	
+			}
+			$('#more-1').click(function() {
+				mui.openWindow({
+					url: '../Lease/LeaseList.html',
+					id: 'LeaseList'
+				})
+	
+			})
+			$('#more-2').click(function() {
+				mui.openWindow({
+					url: '../Medicament/Order.html',
+					id: 'Order'
+	
+				})
+			})
+			$('#more-3').click(function() {
+				mui.openWindow({
+					url: '../Battery/batteryOrder.html',
+					id: 'batteryOrder'
+				})
+			})
+			
+			$('.buyMedica').click(function() {
+				mui.openWindow({
+					url: '../Medicament/Purchase.html',
+					id: 'Purchase'
+				})
+			})
+			$('.payMoneyGo').click(function() {
+				mui.openWindow({
+					url: '../Battery/battery.html',
+					id: 'battery.html'
+				})
+			})  
+					
+                    
+
+		function Tap() {
+			var menuType = true;
+			//关闭册页
+			$(".mengbi").on('tap', function() {
+				clearTimeout(run);
+				if(menuType) {
+					closeOrOpenWindow(page);
+					menuType = false;
+				};
+				var run = setTimeout(function() {
+					menuType = true;
+				}, 2000)
+			});
+			$(".title").on('swipeup', function() {
+				var off = $(".bottom").offset().top;
+				var len = $("#getNoPayList>.info").length;
+				if(off > 100 && len > 0) {
+					$(".bottom").animate({
+						top: -(off + 6) + 'px',
+						height: "900px",
+					}).css({
+						'background-position': 'center 30%',
+					});
+				};
+			});
+			$(".title").on('swipedown ', function() {
+				$(".bottom").animate({
+					top: "0px",
+					height: "360px"
+				}).css({
+					'background-position': 'center 30%',
+				});
+			});
+
+		}
+	</script>
+
+</html>

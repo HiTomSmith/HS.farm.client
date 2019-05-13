@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-row{
+			text-align: center;
+			height:40px;
+			line-height: 40px;
+		}
+		.active{
+			border-bottom: 1px solid #15AE3F;
+			color: #15AE3F;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">战绩</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="tap_top">
+		    	<div class="mui-row">
+		    	    <div class="mui-col-sm-6 mui-col-xs-6 active" id="SSMyRecord">我的战绩</div>
+		    	    <!--<div class="mui-col-sm-6 mui-col-xs-6" id="SSAllRecord">团队战绩</div>-->
+		    	</div>
+		    </div>
+		</div>
+	</body>
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script>
+	mui.init({
+		swipeBack: false, 
+		subpages:[
+			{
+				url:'SSMyRecord.html',
+				id:'SSMyRecord',
+				styles:{
+					top:'85px',
+					left:'0'
+				}
+			},
+			{
+				url:'SSAllRecord.html',
+				id:'SSAllRecord',
+				styles:{
+					top:'85px',
+					left:'-100%'
+				}
+			}
+		]
+	});
+	
+	
+	app.ready(function(){ 
+		
+		var osaction = plus.webview.currentWebview().tap;
+		if(osaction == "osaction") {
+			mui.back = function() {
+				app.CustomClose(osaction);
+			}
+		}
+		
+		//切换战绩
+		$("#SSMyRecord").on('tap',function(){
+			var SSMyRecord = plus.webview.getWebviewById('SSMyRecord');
+			var SSAllRecord = plus.webview.getWebviewById('SSAllRecord');
+			if(!$("#SSMyRecord").hasClass('active')){
+				$("#SSMyRecord").addClass('active');
+				$("#SSAllRecord").removeClass('active');
+				plus.webview.startAnimation({
+				view: SSMyRecord,
+				styles: {
+						
+						fromLeft:"100%",
+						toLeft: "0",
+					}
+				}
+//				{
+//					view: SSAllRecord,
+//					styles: {
+//						fromLeft: "0",
+//						toLeft: "-100%",
+//					}
+//				}
+				);
+			};
+		});
+//		$("#SSAllRecord").on('tap',function(){
+//			var SSMyRecord = plus.webview.getWebviewById('SSMyRecord');
+//			var SSAllRecord = plus.webview.getWebviewById('SSAllRecord');
+//			if(!$("#SSAllRecord").hasClass('active')){
+//				$("#SSMyRecord").removeClass('active');
+//				$("#SSAllRecord").addClass('active');
+//				plus.webview.startAnimation({
+//				view: SSMyRecord,
+//				styles: {
+//						
+//						fromLeft: "0",
+//						toLeft:  "100%"
+//					}
+//				}, {
+//					view: SSAllRecord,
+//					styles: {
+//						fromLeft:"-100%",
+//						toLeft:"0",
+//					}
+//				});
+//			};
+//		});
+		
+	});
+</script>

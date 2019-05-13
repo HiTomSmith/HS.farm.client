@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/LeasDetails-2.css" />
+	</head>
+	<style>
+		#FalseUavIntact {
+			padding-bottom: 140px;
+		}
+		
+		.imgLoad>.IdInfo {
+			margin: 0 30%;
+			height: 160px;
+			border: 1px dashed #C0C0C0;
+			background-image: url(../../img/MG-1.png);
+			background-size: 100% 45%;
+			background-repeat: no-repeat;
+		}
+		
+		.imgLoad>.IdInfo>.iconfont {
+			text-align: center;
+			font-size: 48px;
+			color: #BEBEBE;
+			padding-top: 100px;
+		}
+		
+		.imgLoad>.name {
+			text-align: center;
+			margin-top: 10px;
+		}
+		
+		ul,
+		li {
+			list-style: none;
+		}
+		
+		.UPimg-title {
+			height: 40px;
+			border-top: 3px solid #eee;
+			border-bottom: 1px solid #eee;
+			margin-bottom: 20px;
+		}
+		
+		.UPimg-block {
+			border-left: 3px solid #0690FD;
+			height: 20px;
+			line-height: 20px;
+			font-size: 12px;
+			margin: 10px 0px;
+			padding-left: 5px;
+			margin-left: 5px;
+			font-size: 14px;
+		}
+		
+		.FalseImg {
+			border: 1px dashed #C0C0C0;
+			border-radius: 4px;
+			background-image: url(../../img/MG-1.png);
+			background-repeat: no-repeat;
+			background-size: 100% 50%;
+			height: 100px;
+		}
+		
+		.FalseImg>.iconfont {
+			height: 100px;
+			text-align: center;
+			padding-top: 70px;
+		}
+		
+		.FalseImg-title {
+			text-align: center;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a class="mui-pull-right colorY" id="hisLease">历史租赁单</a>-->
+			<h1 class="mui-title ">上传试飞照</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group badform" enctype="multipart/form-data" id="UavIntact" method="post" style="margin-top: 100px;">
+				<ul class="mui-table-view">
+					<div class="imgLoad">
+						<div class="IdInfo comAircraft" id="comAircraft" img-value="">
+							<div class="iconfont">&#xe6e0;</div>
+						</div>
+						<div class="name">整机图</div>
+					</div>
+					<div class="imgLoad">
+						<div class="IdInfo comAircraft" id="SealedBox" img-value="">
+							<div class="iconfont">&#xe6e0;</div>
+						</div>
+						<div class="name">封箱单</div>
+					</div>
+				</ul>
+
+			</form>
+			<div class="mui-input-group badform" enctype="multipart/form-data" id="FalseUavIntact" method="post">
+
+			</div>
+			<canvas id="canvas" style="display: none;"></canvas>
+			<button type="button" class="mui-btn mui-btn-blue mui-btn-block BtnStyles" id="next">上传照片</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/base64.js"></script>
+<script>
+	mui.init();
+	var UserInfo = "";
+	var GoodsInfo = null;
+	var _self, LeaseDetail, mark;
+	var orderList = [];
+	var FalseFmart = new FormData(); //全局二进制，压缩上传图片；
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		_self = plus.webview.currentWebview();
+		console.log(JSON.stringify(_self))
+		LeaseDetail = _self.data;
+		getExp(LeaseDetail['LeaseTableId']);
+		Taps();
+	});
+
+	//首先调用物流单
+	function getExp(leaseid) {
+		console.log(leaseid) 
+		var option = {
+			api: '/PlanManage/Express/GetPageListJson',
+			data: {
+				"page": 1,
+				"rows": 1,
+				"sidx": "LeaseTableId",
+				"sord": "asc",
+				"queryJson": JSON.stringify({
+					LeaseTableId: leaseid,
+				})
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				orderList = result['rows'];
+				var rows = result['rows'];
+				for(var i in rows) {
+					var row = rows[i];
+					$("#CreateUserId").val(UserInfo.UserId); //创建人主键 
+					$("#CreateUserName").val(UserInfo.UserName); //创建人 
+					$("#ConsigneeId").val(UserInfo.UserId); //收货验收人主键
+					$("#Consignee").val(UserInfo.UserName); //收获验收人
+					$("#ConsignorId").val(row['SendUserId']); //发货验收人主键
+					$("#Consignor").val(row['SendUserName']); //发货验收人
+					$("#ExpressId").val(row['ExpressId']); //物流主键
+					$("#LeaseTableId").val(row['LeaseTableId']); //租赁单主键
+					$("#ToAddress").val(row['ToAddress']);
+					var Good = JSON.parse(row['GoodsInfo']);
+					GoodsInfo = Good;
+					$("#SN").val(Good['UavSN']); //SN
+					$("#StockId").val(Good['StockId']); //租赁单主键
+					$("#GoodsId").val(Good['GoodsId']); //租赁单主键
+				};
+			},
+			error: function(data) {}
+		};
+		app.post3_4(option)
+	};
+
+	///完好调这个
+	function IsTrue() {
+		console.log(JSON.stringify(orderList))
+		var stau = $("#AcceptancePhase").val();
+		//上传整机
+		if($("#comAircraft").attr("img-value") == "") {
+			app.toast('请上传试飞正常图片');
+			return false;
+		};
+		//上传封箱单B面
+		if($("#SealedBox").attr("img-value") == "") {
+			app.toast('请上传封箱单图片');
+			return false;
+		};
+		var sendData = {
+			leaseId: LeaseDetail['LeaseTableId'],
+			useImage: $("#comAircraft").attr("img-value"),
+			sortingBImage:$("#SealedBox").attr("img-value")
+		}
+		console.log(JSON.stringify(sendData))
+		LeaseInterface.StartUsing(sendData, function(cb) {
+			console.log(JSON.stringify(cb))
+			if(cb['type'] == "1") {
+				app.toast('上传成功');
+				var Farther = plus.webview.getWebviewById("LeaseList");
+				mui.fire(Farther,'pageflowerfresh')
+				mui.back();
+			} else {
+				app.toast('上传失败');
+			};
+		});
+
+	};
+
+	//事件
+	function Taps() {
+		//上传图片
+		$(".comAircraft").each(function(i) {
+
+			$(".comAircraft").eq(i).on('tap', function() {
+				var id = $(this).attr("id");
+				console.log(id)
+				var value = $(this).attr("img-value");
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: [{
+							title: '拍照'
+						},
+						{
+							title: '相册选取'
+						},
+						{
+							title: '删除原图'
+						},
+					]
+				}, function(e) {
+					switch(e.index) {
+						case 1:
+							Photo(id);
+							break;
+						case 2:
+							galleryImg(id);
+							break;
+						case 3:
+							deleteImg(id);
+							break;
+					};
+				});
+			});
+		});
+
+	}
+
+	//拍照
+	function Photo(divid) {
+		var cmr = plus.camera.getCamera();
+		cmr.captureImage(function(p) {
+			plus.io.resolveLocalFileSystemURL(p, function(entry) {
+				ShowAndUploader(entry.toLocalURL(), entry.name, divid);
+			}, function(e) {
+				plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+			});
+		}, function(e) {}, {
+			filename: "_doc/camera/",
+			index: 1
+		});
+	}
+	//相册选取
+	function galleryImg(divid) {
+		plus.gallery.pick(function(p) {
+			plus.io.resolveLocalFileSystemURL(p, function(entry) {
+				ShowAndUploader(entry.toLocalURL(), entry.name, divid);
+			}, function(e) {
+				plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+			});
+		}, function(e) {}, {
+			filename: "_doc/camera/",
+			filter: "image"
+		});
+	}
+
+	//删除div图片
+
+	function deleteImg(divid) {
+
+		$("#" + divid).attr("img-value", "");
+
+		$("#" + divid).css({
+			'border': '1px dashed #C0C0C0',
+			'border-radius': '4px',
+			'background-image': 'url(../../img/MG-1.png)',
+			'background-repeat': 'no-repeat',
+			'background-size': '100% 50%',
+			'background-position': 'top'
+		});
+		$("#" + divid).html('<div class="iconfont">&#xe6e0;</div>')
+		//		console.log($("#" + divid).html());
+
+	}
+
+	//显示并且上传
+	function ShowAndUploader(url, name, divid) {
+
+		$("#" + divid).css({
+			'background-image': 'url(' + url + ')',
+			'background-size': '100% 100%',
+			'background-repeat': 'no-repeat',
+			'background-position': 'center',
+		}).html('');
+		//将图片转换为base64上传
+		function image2Base64(img) {
+			//将图片放入到canvas画布
+			var canvas = document.createElement("canvas");
+//			canvas.width = img.width / 5;
+//			canvas.height = img.height / 5;
+            canvas.width = img.width;
+			canvas.height = img.height;
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+			
+			var newImageData = canvas.toDataURL("image/jpeg", 1); //重新生成图片（将画布保存成图片格式）
+			sendData = newImageData.split(',')[1]; //newImageData.replace("data:"+fileType+";base64,",' ');
+			var data = window.atob(sendData);//对用base-64编码过的字符串进行解码
+			var ia = new Uint8Array(data.length);
+			for(var i = 0; i < data.length; i++) { 
+				ia[i] = data.charCodeAt(i);
+			};
+			blob = new Blob([ia], {
+				type: "image/jpeg"
+			});//Blob对象可以看做是存放二进制数据的容器
+			return blob;
+		};
+
+		var img = document.createElement("img");
+
+		img.src = url;
+		img.onload = function() {
+			var base64 = image2Base64(img);
+
+			var formData = new FormData();
+			formData.append(img, base64);
+			setPicture(formData, divid);
+		};
+	}
+
+	function setPicture(formData, imgkey) {
+		plus.nativeUI.showWaiting();
+
+		$.ajax({
+			url: app.his_root + '/AccountCenter/Commodity/UploadFileApp', //请求地址
+			type: 'post',
+			data: formData, //发送数据
+			async: false,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				console.log(data);
+				var result = JSON.parse(data);
+				if(result['type'] == 1) {
+					app.toast('上传成功')
+					$("#" + imgkey).attr("img-value", result['message'])
+					console.log($("#" + imgkey).attr("img-value"))
+
+				} else {
+					app.toast('上传失败！请更换图片');
+				};
+				plus.nativeUI.closeWaiting();
+			},
+			error: function() {
+				app.toast('上传失败');
+				target.value = "";
+				plus.nativeUI.closeWaiting();
+			}
+		});
+	};
+
+	///下一步
+	$("#next").on('tap', function() {
+		var stau = $("#AcceptancePhase").val();
+		IsTrue();
+	});
+</script>

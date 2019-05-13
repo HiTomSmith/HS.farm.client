@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title>任务执行者</title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+		<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet.pm@0.18.0/dist/leaflet.pm.css" />
+		<script src="https://unpkg.com/leaflet.pm@0.18.0/dist/leaflet.pm.min.js"></script>
+	</head>
+	<style>
+		html,body{
+			overflow: hidden;
+		}
+		.mui-content{
+			margin-top:36px !important;
+		}
+		.mui-row {
+			border-top: 1px solid #efeff4;
+		}
+		
+		.mui-row>div {
+			text-align: center !important;
+			line-height: 40px;
+			font-size:10px;
+		}
+		
+		.font_14,.font_12 {
+			font-size: 14px !important;
+			color: #686666;
+		}
+		.font_12{
+			font-size: 12px !important;
+			color: #686666;
+		}
+		
+		.Executor {
+			background: #efeff4;
+		}
+		
+		.mui-badge {
+			background: white;
+		}
+		
+		.colorgagy {
+			color: #9D9D9D;
+		}
+		
+		.mui-pull-right {
+			color: #FB9543;
+			line-height: 24px;
+			font-size:12px !important;
+		}
+		
+		.btns {
+			width: 100%;
+			margin: 0 auto;
+			text-align: center;
+			position: fixed;
+			bottom: 20px;
+			z-index: 9;
+		}
+		
+		.btns>button {
+			width: 80%;
+			height: 44px;
+			font-size: 16px;
+			border-radius: 65px;
+			border: none;
+		}
+		
+		.btns>button:last-child {
+			margin-left: 10px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">任务执行者</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<ul class="mui-table-view mui-scroll">
+				<li class=" mui-table-view-cell Executor font_14">执行飞手</li>
+			</ul>
+		</div>
+		<div class="btns">
+			<button type="button" class="mui-btn mui-btn-blue" id="SeeTrajectory">查看轨迹</button>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/setData.js"></script>
+<script src="../../js/getData.js"></script>
+<script>
+	mui.init();
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var _self = ""; //
+	var TaskDistributionData = ""; //分包数据
+	var TaskButionId = ""; //分包主键
+	var TaskDistributionState = "" //分包状态：0未发布1已发布
+	var UserInfo = "" //用户信息
+	var _teamId = ""; //团队主键
+	var fatherView = "";//父级页面
+	app.ready(function() {
+		_self = plus.webview.currentWebview();
+		TaskDistributionData = _self.TaskDistributionData; //分包数据
+		TaskButionId = TaskDistributionData.TaskDistributionId; //分包主键
+		TaskDistributionState = TaskDistributionData.TeamExamine; //分包状态：0未发布1已发布
+		UserInfo = app.accountInfo('info'); //用户信息
+		_teamId = UserInfo.RoleId; //团队主键
+		fatherView = plus.webview.getWebviewById('TaskList');
+		//任务详情
+		Task.TaskDetail(TaskDistributionData);
+		//任务执行者
+		Task.Executor(TaskButionId);
+		//功能按钮类
+		Operation.Btns();
+	});
+
+	//获取任务详情
+	var Task = {
+		TaskDetail: function(TaskDistributionData) {
+			var row = TaskDistributionData;
+			var TaskLen = 0; //任务数量
+			var TaskArea = 0; //任务总作业量
+			var onlyTeaskArea = (row['RegionArea']==null)?0:row['RegionArea'];//单个任务的总作业量
+			if(row['ProjectName'] == null) {
+				ProjectName =  row['Description'];
+			} else {
+				if(row['ProjectName'] == null) {
+					row['ProjectName'] = "";
+				};
+				ProjectName = row['ProjectName'] + '<span style="font-size:12px"> ' + row['TaskName'] + '</span>';
+			};
+			console.log(row['Quantity']);
+			var $html = $(
+				'<li class="mui-table-view-cell mui-media"  value=' + row['TaskDistributionId'] + '>' +
+				'<a href="javascript:;">' +
+				'<img class="mui-media-object mui-pull-left" src="../../img/rw.png">' +
+				'<div class="mui-media-body font_14">' +
+				'' + ProjectName + '' +
+				'<p class="mui-ellipsis font_size12" >作物种类：<span>' + row['WorkDescription'] + '</span></p>' +
+				'<p class="mui-ellipsis font_size12">单价：<span>' + row['Price'] + '</span></p>' +
+				'</div>' +
+				'</a>' +
+				'</li>' +
+				'<div class="mui-row font_12 colorgagy"  value=' + row['TaskDistributionId'] + '>' +
+				'<div class="mui-col-sm-4 mui-col-xs-4 ">已作业亩数: <span>' + row['SprayArea']  + '</span></div>' +
+				'<div class="mui-col-sm-4 mui-col-xs-4 ">已评估亩数: <span>' + row['RealArea'] + '</span></div>' +
+				'<div class="mui-col-sm-4 mui-col-xs-4 ">合格率: <span>' + row['SprayQuality'] + '%</span></div>' +
+				'</div>'
+			);
+			$('.Executor').before($html);
+		},
+		//执行者
+		Executor: function(TaskButionId) {
+			//获取执行者列表
+			UseIdGetList.getTaskExecuteView({
+				TaskDistributionId: TaskButionId,
+				Examine: 1
+			}, function(data) {
+				//1.先去重
+				var rows = [];
+				var result = [];
+				for(var i=0;i<data.length;i++){
+					if((_objIsInArray(data[i],rows))==-1){
+						rows.push(data[i]);
+					};
+				};
+				//2.workUser一样的时候相加
+				for(var i=0;i<rows.length;i++){
+					for(var j=i+1;j<rows.length;j++){
+						if(rows[i]['WorkUser']==rows[j]['WorkUser']){
+							rows[i]['SprayArea'] +=rows[j]['SprayArea'];
+							rows[i]['RealArea'] +=rows[j]['RealArea'];
+							if(rows[i]['WorkUser']==rows[j]['WorkUser']){
+								delete rows[j];
+							};
+						}else{ 
+							rows[i]['SprayArea'] =rows[j]['SprayArea'];
+							rows[i]['RealArea'] =rows[j]['RealArea'];
+						};
+					};
+				};
+				for(var i in rows) {
+					var row = rows[i];
+					var WorkArea = (row['SprayArea']==null)?"0":row['SprayArea'].toFixed(2); //已经作业
+					var WorkPGArea = (row['RealArea']==null)?"0":row['RealArea'].toFixed(2); //已经评估
+					var IMEI = (row['IMEI'] == null) ? "暂未绑定设备" : row['IMEI'];
+					var $html = $(
+						'<li class="mui-table-view-cell font_14">' +
+						'' + row['RealName'] + '' +
+						'<p class="mui-ellipsis">设备号:' + IMEI + '</p>' +
+						'<span class="mui-badge colorgagy">已作业亩数:' + WorkArea  + '</span>' +
+						'</li>'
+					);
+					$('.Executor').after($html);
+				};
+			});
+		},
+	};
+	
+	///去重
+	 function _objIsInArray(obj,arr){
+	     let tmpStatus=false;
+	     for(let j=0;j<arr.length;j++){
+	       if(obj.Region==arr[j].Region){
+	         return j;
+	         break;
+	       }else{
+	         tmpStatus=false;
+	       }
+	     }
+	     if(!tmpStatus){
+	       return -1;
+	     }
+   }
+
+	//操作类
+	var Operation = {
+		//、按钮
+		Btns: function() {
+			//查看轨迹
+			$("#SeeTrajectory").on('tap', function() {
+				Operation.SeeTaskTrajectory();
+			});
+		},
+		//查看任务轨迹
+		SeeTaskTrajectory: function() {
+			mui.openWindow({
+				url: './TaskDetial.html',
+				id: 'TaskDetial',
+				extras: {
+					TaskDistributionId: TaskButionId
+				},
+			})
+		},
+	};
+</script>

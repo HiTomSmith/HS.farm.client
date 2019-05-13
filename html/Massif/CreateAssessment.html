@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=2,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link rel="stylesheet" href="../../css/leaflet.css">
+		<link rel="stylesheet" href="../../css/leaflet.pm.css" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/CreateAssessment.css" />
+	</head>
+	<style>
+		.handdraw {
+			overflow: hidden;
+		}
+		
+		.bggray {
+			background: #f5f5f5;
+			color: #15AE3F;
+		}
+		
+		.bggray>span {
+			color: #15AE3F;
+		}
+		
+		.footer>span {
+			border-top: 1px solid #F5F5F5;
+		}
+		
+		.user>a>img {
+			width: 46px !important;
+			height: 46px !important;
+			border-radius: 100%;
+			margin-top: 6px;
+		}
+		
+		.playController {
+			position: fixed;
+			bottom: 192px;
+			z-index: 10000;
+			width: 100%;
+			text-align: center;
+			height: 30px;
+			font-size: 12px;
+			line-height: 36px;
+			padding-bottom: 8px;
+		}
+		
+		.pro {
+			width: 60%;
+			height: 8px;
+			background: rgba(204, 204, 204, 0.7);
+			margin: 12px auto;
+			border-radius: 20px;
+			position: relative;
+			overflow: hidden;
+		}
+		
+		.progress {
+			position: absolute;
+			left: 0;
+			background: #00D1A4;
+			height: 100%;
+			border-radius: 20px;
+		}
+		
+		#startORend {
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			float: left;
+			border-radius: 100%;
+			border: none;
+			padding: 0;
+			margin-left: 14px;
+		}
+		
+		#Speed {
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			float: right;
+			border-radius: 50%;
+			border: none;
+			padding: 0;
+			margin-right: 14px;
+			color: #15AE3F;
+		}
+		
+		#start,
+		#end {
+			font-size: 20px;
+			color: #15AE3F;
+		}
+		
+		#save {
+			margin: 0;
+			border-radius: 4px;
+			width: 94%;
+			margin: 0 auto;
+		}
+		
+		#Speed {
+			font-size: 15px;
+		}
+		
+		#TaskPreson,
+		#TaskArea,
+		#TaskDate,
+		#plantimei {
+			color: #15AE3F;
+		}
+		/*#plantimei{
+			font-size: 10px;
+		}*/
+		
+		.mui-active {
+			background: white !important;
+		}
+		
+		.zuoyemushu {
+			margin-left: 3%;
+		}
+		
+		.shijian {
+			margin-left: 15%;
+		}
+		
+		.zuoyemushu1 {
+			margin-left: 25%;
+		}
+		
+		.shijian1 {
+			margin-left: 20%;
+		}
+		
+		.addColor {
+			background: #DDDDDD;
+		}
+	</style>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">作业评估</h1>
+		</header>
+		<div class="mui-content wrapper">
+			<div class="Map" id="example2"></div>
+			<div class="footer">
+				<button type="button" class="mui-btn mui-btn-blue" id="Measure">开始评估</button>
+			</div>
+			<div class="playController">
+				<div class="proController">
+					<button id="startORend">
+						<span class="iconfont" id="start">&#xe741;</span>
+						<span class="iconfont" id="end" style="display: none;">&#xe763;</span>
+					</button>
+					<button class="iconfont font_18" id="Speed">1X</button>
+				</div>
+				<div class="pro">
+					<div class="progress"></div>
+				</div>
+			</div>
+			<div class="mui-row">
+				<div class="mui-col-sm-3 mui-col-xs-3 font_14">
+					<span id="plantimei" class="font_16">无</span>
+					<br/> 飞机编号
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3 font_14">
+					<span id="TaskPreson" class="font_16">无</span>
+					<br/> 作业人
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3 font_14">
+					<span id="TaskArea" class="font_16">0</span>
+					<br/> 亩数(亩)
+				</div>
+				<div class="mui-col-sm-3 mui-col-xs-3 font_14">
+					<span id="TaskDate" class="font_16">0</span>
+					<br/> 喷幅宽度(米)
+				</div>
+			</div>
+			<div class="trajectory">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="SeeTrajectory">
+						选择轨迹
+					</li>
+					<li class="mui-table-view-cell">
+						<span style="float: left;">轨迹</span>
+						<span class="zuoyemushu">作业亩数</span>
+						<span class="shijian">时间</span>
+						<span style="float: right;">选中</span>
+					</li>
+				</ul>
+			</div>
+			<div class="Assessment">
+				<ul class="mui-table-view">
+					<span class="iconfont" id="close">&#xe6f3;</span>
+					<li class="mui-table-view-cell mui-media user">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-left" src="../../img/my-fill-light.png">
+							<div class="mui-media-body">
+								<span id="Name"></span>
+								<p id="Account"></p>
+							</div>
+						</a>
+					</li>
+					<div class="title"><span></span> &nbsp;&nbsp;评估方式</div>
+					<li class="EvaluationMethod">
+						<div class="mui-row mode">
+							<div class="mui-col-sm-4 mui-col-xs-4">
+								<div class="modeChildren">
+									<span>轨迹</span><br/>
+									<span class="ss pggj">亩数:<span>0</span>亩</span>
+								</div>
+							</div>
+							<div class="mui-col-sm-4 mui-col-xs-4">
+								<div class="modeChildren">
+									<span>区域</span><br/>
+									<span class="ss taskmu">亩数:<span>0</span>亩</span>
+								</div>
+							</div>
+							<div class="mui-col-sm-4 mui-col-xs-4">
+								<div class="Hand modeChildren">
+									<span>手绘添加</span><br/>
+									<span class="ss handdraw">亩数:<span>0</span>亩</span>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell AssStar">
+						<div class="mui-row">
+							<div class="mui-col-sm-3 mui-col-xs-3">规范性</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Normalization">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Normalization">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Normalization">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Normalization">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Normalization">&#xe6f5;</div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell AssStar">
+						<div class="mui-row">
+							<div class="mui-col-sm-3 mui-col-xs-3">服务及时性</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Task">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Task">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Task">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Task">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont Task">&#xe6f5;</div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell AssStar">
+						<div class="mui-row">
+							<div class="mui-col-sm-3 mui-col-xs-3">服务态度</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont service">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont service">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont service">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont service">&#xe6f5;</div>
+							<div class="mui-col-sm-1 mui-col-xs-1 iconfont service">&#xe6f5;</div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell AssStar">
+						<textarea class="font_14 Description" name="" rows="" cols="40" placeholder="请输入您的评价"></textarea>
+					</li>
+				</ul>
+
+				<li>
+					<button type="button" class="mui-btn mui-btn-blue mui-btn-block" id="save">确定</button>
+				</li>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/leaflet.js"></script>
+<script src="../../js/leaflet.pm.min.js"></script>
+<script src="../../js/Leaflet.AccuratePosition.js"></script>
+<script src="../../js/GeometryUtil.js"></script>
+<script src="../../js/wgs84-to-gcj02.js"></script>
+<script src="../../js/xhx-map.js"></script>
+<script src="../../js/map.js"></script>
+<script src="../../js/getData.js"></script>
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init({});
+	var result2 = [];
+	var gpsList = [];
+	var linarr = [];
+	var _self = "";
+	var Imei = "";
+	var entityData;
+	var Dji_RecodeIdResult = [];
+	//工作量区域数组
+	var worknumberList = [];
+	//飞行轨迹定义
+	var track = XHX_track.creatNew(map2, linarr, "track");
+	//	//飞机定义
+	//var flyMark = XHX_flymarker.creatNew(map2, [31.01321213123, 121.0], "fly");
+	//定时器
+	var run = "";
+	//清楚所有数组
+	var send = [];
+	//绘制的对象
+	var DrawObj = "";
+	var runs = 0;
+	//计时器的速度
+	var ms = 100;
+	//计时器倍数
+	var Multiple = 4;
+	//飞机定义
+	var flyMark = XHX_flymarker.creatNew(map2, [31.01, 121.0], "fly");
+	app.ready(function() {
+
+		userInfo = app.accountInfo('info');
+		//		console.log(JSON.stringify(userInfo))
+		_self = plus.webview.currentWebview();
+		//		console.log(JSON.stringify(_self)) 
+
+		//获取当前分包下所有的作业轨迹workUserId,carrierId
+
+		//		console.log(_self.taskId);
+
+		getWorkNumberNoEstimate(_self.taskId, _self.workUserId, _self.carrierId);
+		//点击事件
+		btns();
+		//判断如果type==1；则是选择地块创建的任务，可以结束
+		if(_self.deletes == 0) {
+			$("header").append('<a class="mui-pull-right" style="margin-top: 12px;" id="endTask">结束任务</a>');
+			//结束任务
+			$("#endTask").on('tap', function() {
+				var Assessment = plus.webview.getWebviewById('Assessment');
+				var SSTaskList = plus.webview.getWebviewById('SSTaskList');
+				var str = "";
+				$(".list").each(function(i) {
+					str += $(".state12").eq(i).text();
+				});
+				//判断是否有未评估的轨迹
+				if(str.indexOf('未评估') != -1) {
+					app.toast('还有未评估的轨迹不能结束任务！');
+					return false;
+				};
+				dialog.Dialogbox('任务详情', '是否结束任务', function(cb) {
+					if(cb == 1) {
+						TaskObj.UserEndTask({
+							keyValue: _self.TaskDistributionId,
+						}, function(cb) {
+							if(cb['type'] == "1") {
+								app.toast('任务已结束');
+								mui.fire(Assessment, 'pageflowrefresh');
+								mui.fire(SSTaskList, 'pageflowrefresh');
+								var User = plus.webview.getWebviewById('User');
+								mui.fire(User, 'pageflowrefresh');
+								mui.back();
+							};
+							plus.nativeUI.closeWaiting();
+						});
+					} else if(cb == 0) {
+						dialog.CloseLogBox();
+					} else {
+						app.toast('已取消');
+					};
+				});
+			});
+		};
+
+		/////任务结束不可评估
+		if(_self.deletes == 1) {
+			$("#Measure").attr('disabled', 'disabled');
+		};
+	});
+
+	function getWorkNumberNoEstimate(taskId, workUserId, carrierId) {
+		var queryJson = {
+			taskDistributionId: taskId,
+			workUserId: workUserId,
+			carrierId: carrierId,
+		};
+		//		console.log(JSON.stringify(queryJson));
+
+		var option = {
+			api: '/XhxManage/XHX_Users/GetAssessmentRecord',
+			data: queryJson,
+			success: function(data) {
+				//				console.log(data)
+				var result = JSON.parse(data);
+				var t = 0;
+				var totalTrack = 0;
+				var totalAreal = 0;
+				for(var i in result) {
+					var row = result[i];
+					if(row['new_work_area'] == 0 || row['new_work_area'] == null) {
+						continue;
+					}
+
+					var $html = $(
+						'<li class="mui-table-view-cell fontText1 list" carrierCord= ' + row['CarrierCord'] + '  work_area= ' + row['new_work_area'] + ' data-index=' + t + ' IMEI=' + row['CarrierId'] + ' WorkUserId=' + row['WorkerId'] + ' Dji_RecodeId=' + row['Dji_RecodeId'] + ' WorderName=' + row['WorderName'] + ' phone=' + row['LiaisonType'] + '>' +
+						//						'' + (parseInt(i) + 1) + '&nbsp;&nbsp;&nbsp;<span class="fontText zuoyemushu1">' + ((row['new_work_area']!=null)?row['new_work_area']/100:0) + '</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fontText shijian1">' + row['timestamp'] + '</span>' +
+						'' + (t) + '&nbsp;&nbsp;&nbsp;<span class="fontText zuoyemushu1">' + ((row['new_work_area'] != null) ? row['new_work_area'] / 100 : 0) + '</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fontText shijian1">' + row['timestamp'] + '</span>' +
+						'<span style="float: right;" class="state12"><input Dji_RecodeId=' + row['Dji_RecodeId'] + ' type="checkbox" class="choosebtn" disabled="disabled"/></span>' +
+						'</li>'
+					);
+					$html.appendTo($(".trajectory>ul"));
+					$html.on('tap', function() {
+						var index = $(this).attr("data-index");
+						var carrierCord = $(this).attr("carrierCord");
+						var work_area = $(this).attr("work_area");
+						var WorkUserId = $(this).attr("WorkUserId");
+						var WorderName = $(this).attr("WorderName")
+						var Dji_RecodeId = $(this).attr("Dji_RecodeId");
+						var DjiId = $(".choosebtn").eq(index).attr("Dji_RecodeId");
+						//						console.log(index)
+						if(!$(".choosebtn").eq(index).prop("checked")) {
+							$(".list").eq(index).addClass('bggray');
+							$(".choosebtn").eq(index).prop('checked', true);
+							totalTrack += parseFloat(work_area);
+							if(Dji_RecodeIdResult[index] != Dji_RecodeId) {
+								Dji_RecodeIdResult.push(DjiId);
+							}
+							getWorkNumberTrack(Dji_RecodeId);
+						} else {
+							$(".list").eq(index).removeClass('bggray');
+							$(".choosebtn").eq(index).prop('checked', false);
+							totalTrack -= parseFloat(work_area);
+							for(var m in Dji_RecodeIdResult) {
+								if(Dji_RecodeId == Dji_RecodeIdResult[m]) {
+									Dji_RecodeIdResult.splice(m, 1);
+								}
+							}
+							XHX_track.removetrack(map2, Dji_RecodeId);
+						}
+						console.log(Dji_RecodeIdResult) 
+						console.log(totalTrack) 
+						$("#TaskPreson").text(WorderName).attr('userId', WorkUserId);
+						$("#plantimei").text(carrierCord);
+						$("#TaskArea").text(((work_area != null) ? work_area / 100 : 0)).attr({
+							//							'IMEI': result[index]['CarrierId'],
+							//							'WorkNumberId': result[index]['WorkNumberId'],
+							//							'status': result[index]['IsAssessment']
+						});
+						$(".pggj>span").text(totalTrack / 100).attr('realArea', totalTrack / 100); //轨迹作业量，俗称喷洒量
+					});
+					t++
+				};
+				//				$(".taskmu>span").text(result[index]['new_work_area'] / 100).attr('realArea', result[index]['new_work_area'] / 100); //区域作业量
+
+				//				console.log(Dji_RecodeIdResult);
+				//单条轨迹点击事件  
+				//TrajectoryClick(result); 
+				//轨迹条数
+				$("#TrajectoryLen").text('（共' + result.length + '条轨迹）');
+			},
+			error: function() {
+				//console.log("接口失败");
+			},
+		};
+		app.post3_2(option);
+	}
+
+	//单条轨迹点击事件
+	function TrajectoryClick(result) {
+		//		console.log(JSON.stringify(result))
+		$(".list").each(function(i) {
+			$(".list").eq(i).on('tap', function() {
+				var Dji_RecodeId = $(this).attr("Dji_RecodeId");
+				if(!$(this).hasClass('queren')) {
+					$(this).addClass('queren');
+					result2.push(i);
+					Dji_RecodeIdResult.push(Dji_RecodeId);
+					$(this).find('input').prop('checked', true);
+					//					console.log(Dji_RecodeIdResult)
+				} else {
+					$(this).removeClass('queren');
+					$(this).find('input').prop('checked', false);
+					for(var j in result2) {
+						if(result2[j] == i) {
+							result2.splice(j, 1)
+						}
+					}
+					for(var m in Dji_RecodeIdResult) {
+						if(Dji_RecodeId == Dji_RecodeIdResult[m]) {
+							Dji_RecodeIdResult.splice(m, 1);
+						}
+					}
+					//					console.log(Dji_RecodeIdResult)
+					track.setLatLngs([]);
+				}
+				var index = i;
+				var Dji_RecodeId = $(this).attr('Dji_RecodeId');
+				//				console.log(Dji_RecodeId)
+				$(".list").each(function(l) {
+					$(".list").removeClass('bggray');
+				});
+				$(".list").eq(index).addClass('bggray');
+				$("#plantimei").text(result[index]['CarrierCord'])
+				$("#TaskPreson").text(result[index]['WorderName']).attr('userId', result[index]['UserId']);
+				//				console.log(index)
+				//				console.log(result[index]['new_work_area']);
+				$("#TaskArea").text(((result[index]['new_work_area'] != null) ? result[index]['new_work_area'] / 100 : 0)).attr({
+					'IMEI': result[index]['CarrierId'],
+					'WorkNumberId': result[index]['WorkNumberId'],
+					'status': result[index]['IsAssessment']
+				});
+				$(".pggj>span").text(result[index]['new_work_area'] / 100).attr('realArea', result[index]['new_work_area'] / 100); //轨迹作业量，俗称喷洒量
+				$(".taskmu>span").text(result[index]['new_work_area'] / 100).attr('realArea', result[index]['new_work_area'] / 100); //区域作业量
+				getWorkNumberTrack(Dji_RecodeId);
+			});
+		});
+	}
+	//获取轨迹面积累加
+	function TempEstimate(Dji_RecodeIdResult) {
+		var Dji_RecodeIdResult = Dji_RecodeIdResult.join(",");
+		var send = {
+			taskIds: Dji_RecodeIdResult,
+			userId: userInfo.UserId
+		};
+		//		console.log(JSON.stringify(send))
+		XHX_IMEI.TempEstimate(send, function(cb) {
+			entityData = cb;
+			//			console.log(cb.TaskDistributionId)
+			//			console.log(111)
+			var result = JSON.parse(cb.Region);
+			//			console.log(result)
+			var latlng = [];
+			for(var i in result) {
+				var row = result[i];
+				var temp = WGS84_to_GCJ02.creatNew().transform(row.Lat, row.Lng);
+
+				var latlngs = {
+					lat: temp[0],
+					lng: temp[1]
+				}
+				//console.log(JSON.stringify(latlngs))
+				latlng.push(latlngs);
+				//				console.log(JSON.stringify(row))
+			}
+
+			var s = (L.GeometryUtil.geodesicArea(latlng) / 666.0).toFixed(2);
+			//			console.log(L.GeometryUtil.geodesicArea(latlng))
+			$(".taskmu>span").text(s).attr('realarea', s);
+			XHX_region.creatNew(map2, latlng, cb.WorkEstimateId);
+
+		});
+	}
+
+	//加载单个作业区域的的作业轨迹
+	function getWorkNumberTrack(Dji_RecodeId) {
+		//		console.log(Dji_RecodeId)
+		var option = {
+			api: '/XhxManage/XHX_Dji_Recode/GetDetailsJson',
+			data: {
+				keyValue: Dji_RecodeId
+			},
+			success: function(data) {
+				var result = JSON.parse(data);
+				//				console.log(JSON.stringify(result[0]))
+				//DrawObj = result;
+				runs = 0;
+				Multiple = 4;
+				$("#Speed").text('1X');
+				//切换轨迹停止定时器
+				if(run != "") {
+					$("#start").show();
+					$("#end").hide();
+					$(".progress").css({
+						"width": 0
+					});
+					for(var i in send) {
+						clearInterval(send[i]);
+					};
+					run = "";
+				};
+				if(result.length > 0) {
+					$("#TaskDate").text(result[0]['farm_delta_y']);
+					var position = WGS84_to_GCJ02.creatNew().transform(parseFloat(result[0]['lati']), parseFloat(result[0]['longi']));
+					map2.setView(position, 19);
+				}
+
+				var track1 = XHX_track.creatNew(map2, linarr, Dji_RecodeId);
+
+				for(var i in result) {
+
+					var row = result[i];
+					//坐标转换
+					var temp = WGS84_to_GCJ02.creatNew().transform(parseFloat(row.lati), parseFloat(row.longi));
+					//绘制轨迹
+					//flyLine.setPath(linarr);
+					track1 = track1.addLatLng(temp);
+				};
+
+				$("#startORend").off();
+				//轨迹回放 
+				$("#startORend").on('tap', function() {
+					backBool(result);
+					$("#startORend").off();
+				});
+				//回放
+				function backBool(DarwData) {
+					track = track.setLatLngs([]);
+					$("#start").hide();
+					$("#end").show();
+					StartDraw(DarwData);
+				};
+ 
+				//开始绘制
+				function StartDraw(DarwData) {
+					
+					DrawObj = XHX_track.getalltrack(map2);
+//					console.log(DrawObj) 
+					//清除所选轨迹
+					XHX_track.removealltrack(map2);
+
+					//				    console.log(JSON.stringify(DrawObj))			
+					function timer() {
+						runs++;
+						//播放完成停止定时器
+						if(runs >= DrawObj.length) {
+							//console.log(runs+'----------------------------'+DrawObj.length);
+							for(var i in send) {
+								clearInterval(send[i]);
+							};
+							$(".progress").css({
+								"width": "100%"
+							});
+							$("#start").show();
+							$("#end").hide();
+							$("#startORend").on('tap', function() {
+								$(".progress").css({
+									"width": 0
+								});
+								backBool(DarwData);
+								$("#startORend").off();
+							});
+							runs = 0;
+							$("#Speed").off();
+						} else {
+							//							console.log(runs)
+							var row = DrawObj[runs];
+							//							console.log(JSON.stringify(row))
+							//var temp = WGS84_to_GCJ02.creatNew().transform(parseFloat(row.lat), parseFloat(row.lng));
+
+							//console.log(JSON.stringify(temp))
+							track = track.addLatLng(row);
+							//飞机定义
+							//console.log(parseFloat(row.Lat)+'--------------'+parseFloat(row.Lng));
+							//flyMark = XHX_flymarker.creatNew(map2, [parseFloat(row.Lat),parseFloat(row.Lng)],"fly");
+							flyMark = flyMark.setLatLng(row);
+							var Prowidth = (runs / DrawObj.length) * 102;
+							$(".progress").css({
+								"width": Prowidth + '%'
+							});
+						};
+						//暂停定时器
+						function StopDraw() {
+							for(var i in send) {
+								clearInterval(send[i]);
+							};
+							//console.log(i+'暂停-------------');
+						};
+						//继续定时器
+						function StartDraws() {
+							clearInterval(run);
+							run = setInterval(timer, ms * Multiple);
+							send.push(run);
+							//console.log(i+'继续-------------');
+						};
+						//暂停 、
+						$("#end").on('tap', function() {
+							$("#start").show();
+							$("#end").hide();
+							StopDraw();
+						});
+						//、 继续
+						$("#start").on('tap', function() {
+							$("#start").hide();
+							$("#end").show();
+							StartDraws();
+						});
+					};
+					Multiple = 4;
+					run = setInterval(timer, ms * Multiple);
+					send.push(run);
+
+					//加速播放
+					function Multiples() {
+						if(Multiple != 0) {
+							Multiple--;
+							if(Multiple < 1) {
+								Multiple = 4;
+							};
+						};
+						//						console.log(Multiple);
+						switch(Multiple) {
+							case 4:
+								$("#Speed").text('1X');
+								break;
+							case 3:
+								$("#Speed").text('2X');
+								break;
+							case 2:
+								$("#Speed").text('3X');
+								break;
+							case 1:
+								$("#Speed").text('4X');
+								break;
+						};
+						//判断 轨迹是否运行完成
+						if(runs >= DrawObj.length) {
+							for(var i in send) {
+								clearInterval(send[i]);
+							};
+							Multiple = 4;
+						} else {
+							for(var i in send) {
+								clearInterval(send[i]);
+							};
+							run = setInterval(timer, ms * Multiple);
+							send.push(run);
+						};
+					};
+					$("#Speed").off();
+					//修改倍速
+					$("#Speed").on('tap', function() {
+						//console.log($(".pro").width()+'-------------------'+$(".progress").width());
+						if($(".pro").width() >= $(".progress").width()) {
+							Multiples();
+						};
+					});
+				};
+			},
+			error: function() {
+				//console.log("接口失败");
+			},
+		};
+		app.post3_2(option);
+	}
+
+	///=btns
+	function btns() {
+		///查看作业轨迹\
+		$("#SeeTrajectory").on('tap', function() {
+			if($(".trajectory").css('bottom') == "-98px") {
+				$(".trajectory").animate({
+					'bottom': '52px'
+				}).css('overflow-y', 'scroll');
+				$(".mui-row").animate({
+					'bottom': '242px'
+				});
+				$(".playController").animate({
+					'bottom': '332px'
+				});
+			} else {
+				$(".trajectory").animate({
+					'bottom': '-98px'
+				}).css('overflow', 'hidden');
+				$(".mui-row").animate({
+					'bottom': '102px'
+				});
+				$(".playController").animate({
+					'bottom': '192px'
+				});
+			};
+		});
+
+		//开始评估
+		$("#Measure").on('tap', function() {
+			var zt = "";
+			if($(".trajectory").css('bottom') != '52px') {
+				app.toast('请选择轨迹，然后进行评估');
+				return false;
+			};
+			if($("#TaskArea").text() == 0) {
+				app.toast('请选择轨迹，然后进行评估');
+				return false;
+			};
+
+			$(".state12").each(function(i) {
+				zt = $(".state12").eq(i).text();
+			});
+			if(zt.indexOf('已评估') != -1) {
+				app.toast('当前轨迹已经评估');
+				return false;
+			};
+			$(".mui-row").animate({
+				'bottom': '102px'
+			});
+			$(".playController").animate({
+				'bottom': '192px'
+			});
+			$(".fontText1").each(function(i) {
+				$(".trajectory,.footer").animate({
+					'left': '-100%'
+				});
+				$(".Assessment").animate({
+					'left': '0'
+				});
+				if($(".fontText1").eq(i).hasClass('bggray')) {
+					$("#Name").text('飞手姓名:' + $(".fontText1").eq(i).attr('WorderName'));
+					$("#Account").text('电话:' + $(".fontText1").eq(i).attr('phone'));
+					//获取头像
+
+					var userId = $(".fontText1").eq(i).attr('value');
+					UseIdGetName.getUsers(userId, function(cb) {
+						//判断头像是否为空
+						var HeadIcon = "";
+						if(cb['HeadIcon'] != null) { 
+							HeadIcon = app.req_host + cb['HeadIcon'];
+						};
+						$(".user>a>img").attr('src', HeadIcon);
+					});
+				};
+				return;
+			});
+			TempEstimate(Dji_RecodeIdResult);
+
+		})
+
+		///关闭评估
+		$('#close').on('tap', function() {
+			window.location.reload()
+			//			$(".Assessment").animate({
+			//				'left': '100%',
+			//				'bottom': '0px'
+			//			});
+			//			$(".trajectory").animate({
+			//				'bottom': '-98px',
+			//				'left': '0px'
+			//			});
+			////			$(".mui-row").animate({
+			////				'bottom': '102px'
+			////			});
+			////			$(".playController").animate({
+			////				'bottom': '192px'
+			////			});
+			//
+			//			$(".footer").animate({
+			//				'bottom': '0px',
+			//				'left': '0px'
+			//			});
+		});
+
+		///
+		$(".fontText1").each(function(i) {
+			$(".fontText1").eq(i).on('tap', function() {
+				$(".fontText1").removeClass('Selected');
+				$(".fontText1").eq(i).addClass('Selected')
+			});
+		});
+
+		//评估方式 
+		$(".modeChildren").each(function(i) {
+			$(".modeChildren").eq(i).on('tap', function() {
+				$(".modeChildren").css({
+					"background": "white",
+					"color": "#717171",
+					"border": "#c3c3c3"
+				});
+
+				$(".ss>span").removeAttr('who');
+
+				$(".modeChildren").eq(i).css({
+					"background": " #15AE3F",
+					"color": "white",
+					"border": " #15AE3F"
+				});
+
+				$(".ss>span").eq(i).attr('who', 'YES');
+
+				console.log($(".modeChildren").eq(i).html());
+			});
+		});
+
+		////作业质量打星
+		$(".Task").each(function(i) {
+			//&#xe6f4;
+			$(".Task").eq(i).on('tap', function() {
+				$(".Task").html('&#xe6f5;');
+				$(".Task").css("color", "#B8B9C1");
+				$(".Task").removeAttr('num');
+				for(var j = 0; j < i + 1; j++) {
+					$(".Task").eq(j).html('&#xe6f4;');
+					$(".Task").eq(j).css("color", "#F29234");
+					$(".Task").eq(j).attr('num', 'true');
+				};
+			});
+		});
+
+		//规范性
+		$(".Normalization").each(function(i) {
+			//&#xe6f4;
+			$(".Normalization").eq(i).on('tap', function() {
+				$(".Normalization").html('&#xe6f5;');
+				$(".Normalization").css("color", "#B8B9C1");
+				$(".Normalization").removeAttr('num');
+				for(var j = 0; j < i + 1; j++) {
+					$(".Normalization").eq(j).html('&#xe6f4;');
+					$(".Normalization").eq(j).css("color", "#F29234");
+					$(".Normalization").eq(j).attr('num', 'true');
+				};
+			});
+		});
+
+		///service 服务态度打星
+		$(".service").each(function(i) {
+			//&#xe6f4;
+			$(".service").eq(i).on('tap', function() {
+				$(".service").html('&#xe6f5;');
+				$(".service").css("color", "#B8B9C1");
+				$(".service").removeAttr('num');
+				for(var j = 0; j < i + 1; j++) {
+					$(".service").eq(j).html('&#xe6f4;');
+					$(".service").eq(j).attr('num', 'true');
+					$(".service").eq(j).css("color", "#F29234");
+				};
+			});
+		});
+
+		//手绘
+		$(".Hand").on('tap', function() {
+			drawRegion();
+
+		});
+		//保存数据
+		$("#save").on('tap', function() {
+
+			var service = 0;
+			var Task = 0;
+			var Normalization = 0;
+			var type = "";
+			var SaveEntity = {
+				//				keyValue: '',
+				entity: entityData
+			};
+			$(".service").each(function(i) {
+				if($(".service").eq(i).attr('num') == "true") {
+					service++;
+				};
+			});
+			$(".Task").each(function(i) {
+				if($(".Task").eq(i).attr('num') == "true") {
+					Task++;
+				};
+			});
+			$(".Normalization").each(function(i) {
+				if($(".Normalization").eq(i).attr('num') == "true") {
+					Normalization++;
+				};
+			});
+
+			if($(".pggj>span").attr('who') != undefined) {
+
+				entityData.EstimateArea = $(".pggj>span").attr('realarea');
+			} else if($(".taskmu>span").attr('who') != undefined) {
+
+				entityData.EstimateArea = $(".taskmu>span").attr('realarea');
+			} else if($(".handdraw>span").attr('who') != undefined) {
+
+				entityData.EstimateArea = $(".handdraw>span").attr('realarea');
+			} else {
+				app.toast('请选择评估方式');
+				return false;
+			}
+
+			console.log(entityData.EstimateArea)
+
+			if(Task == 0) {
+				app.toast('请为作业质量打分');
+				return false;
+			};
+			if(service == 0) {
+				app.toast('请为服务态度打分');
+				return false;
+			};
+			entityData.Description = $('.Description').val();
+			entityData.RegionArea = $(".taskmu").text();
+			entityData.SprayQuality = service * 20;
+			entityData.Quality = Task * 20;
+			entityData.Normalization = Normalization * 20;
+			entityData.TrackArea = $(".pggj>span").text();
+			entityData.ManualArea = $(".handdraw>span").text();
+			//			entityData.EstimateArea = $(".taskmu").text();
+			//console.log($(".handdraw>span").text())
+			
+			console.log(JSON.stringify(SaveEntity))
+			//			console.log(JSON.stringify(entityData))
+			var option = {
+				api: '/XhxManage/XHX_DJI_WorkEstimate/SaveEstimate',
+				data: SaveEntity,
+				success: function(data) {
+					console.log(data)
+					var result = JSON.parse(data);
+					if(result['type'] == 1) {
+						app.toast('评估成功');
+						$("#TaskArea").attr('status', '1');
+						$(".list").each(function(i) {
+							if($(".list").eq(i).attr('IMEI') == entityData.IMEI) {
+								$(".state12").eq(i).text('状态：已评估');
+								$("#TaskArea").attr('status', '1');
+							};
+						});
+						$(".Assessment").animate({
+							'left': '100%'
+						});
+						$(".trajectory,.footer").animate({
+							'left': '0'
+						});
+						plus.nativeUI.closeWaiting();
+						window.location.reload()
+						var Assessment = plus.webview.getWebviewById("Assessment");
+						mui.fire(Assessment,'pageflowrefresh');
+						var FarmExecute = plus.webview.getWebviewById("FarmExecute");
+						mui.fire(FarmExecute,'pageflowrefresh');
+					} else {
+						app.toast('评估失败');
+						plus.nativeUI.closeWaiting();
+					};
+				},
+				error: function(data) {
+					app.toast('评估失败');
+				}
+			};
+			if(entityData.Region == null) {
+				dialog.Dialogbox('任务评估', '当前作业轨迹为无效轨迹，是否设置为无效？', function(cb) {
+					if(cb == 1) {
+						plus.nativeUI.showWaiting();
+						app.post3_1(option);
+					} else if(cb == 0) {
+						dialog.CloseLogBox();
+					} else {
+						app.toast('已取消');
+					}
+
+				})
+			}else{
+				plus.nativeUI.showWaiting();
+				app.post3_1(option);
+			}
+			
+		});
+	};
+
+	function Area(s) {
+		var Area = 0;
+		if(s.length > 7) {
+			Area = ((s / 10000).toFixed(1)) + '万';
+		} else {
+			Area = s;
+		};
+		$(".handdraw>span").text(Area).attr('realArea', Area); //手绘工作量
+	};
+</script>

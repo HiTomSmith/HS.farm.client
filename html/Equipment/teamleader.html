@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="theme-color" content="RGBA(181,209,237,0)">
+		<meta name="msapplication-TileColor" content="#de7300">
+		<title></title>
+		<link href="../../css/mui.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/mui.picker.css" rel="stylesheet" />
+		<link href="../../css/list.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/Bcurrency.css" />
+	</head>
+	<style>
+
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon iconfont  mui-pull-right" id="TwoCode" data-sn="">&#xe751;</a>
+			<!--			<a class="mui-icon iconfont  mui-pull-right" id="AddEquipment">&#xe6e2;</a>-->
+			<h1 class="mui-title">设备</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-row">
+				<div class="mui-col-sm-4 mui-col-xs-4 font_14">
+					<div class="tittle activeT" id="quanbushebei">全部设备</div>
+					<div class="mentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_14">
+					<div class="tittle" id="xianzhizhong">闲置中</div>
+					<div class="PaymentNum"></div>
+				</div>
+				<div class="mui-col-sm-4 mui-col-xs-4 font_14">
+					<div class="tittle" id="waipaizhong">外派</div>
+					<div class="ReceivedNum"></div>
+				</div>
+			</div>
+			<ul class="mui-table-view mui-scroll" id="userEquipment">
+				<!--<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row[' OwnerId '] + ' UserId='+row[' UserId ']+'>
+					<a href="javascript:;">
+						<div class="Uav">
+							<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">
+							<span class="CarrierSpecs font_18">ggg</span><span class="IMEI font_14">fg33</span><span class="font_12 UavStatus">闲置中</span>
+						</div>
+						<div class="mui-media-body">
+							<p class="mui-ellipsis EquipmentOwner">所属人:hjkk</p>
+							<p class="mui-ellipsis EquipmentLease" value='+row[' IMEI ']+'></p>
+							<p class="mui-ellipsis EquipmentUser">使用人：l;</p>
+						</div>
+					</a> <button class="mui-badge Delivery" id="TB" userNmae='+userNmae+' data-index=' + i + ' value=' + row[' WorkUser '] + ' IMEI=' + row[' IMEI '] + '>jhkk</button>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/webviewGroup.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/mui.enterfocus.js"></script>
+<script src="../../js/jquery-2.1.4.min.js"></script>
+<script src="../../js/jquery.serialize-json.js"></script>
+<script src="../../js/validator.js"></script>
+<script src="../../js/hx.functor.js"></script>
+<script src="../../js/app.js"></script>
+<script src="../../js/data-unit.js"></script>
+<script src="../../js/getData.js"></script> 
+<script src="../../js/setData.js"></script>
+<script>
+	mui.init();
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false //不显示滚动条
+	});
+	var sendData, EquipmentData, sn, dataResult, stutsat;
+	var UserInfo = "";
+	app.ready(function() {
+		UserInfo = app.accountInfo('info');
+		var userId =UserInfo.UserId;
+		console.log(JSON.stringify(UserInfo))
+		var teamid=plus.webview.currentWebview().row2;
+		//Equipment.addUserEquipment();
+		Equipment.getUserSHEBEI(userId); 
+		EquipmentStatus(); //切换全部设备、使用中 、外派 
+		NoData.bgImg('mui-content', '../../img/BGIMG.png');
+	});
+	
+	function getUserEquipment1(sendData,cb){
+		console.log(JSON.stringify(sendData))
+		var option = {
+			api:'/XhxManage/XHX_Users/View_User_Equipment',
+			data:{
+				"queryJson": JSON.stringify({
+					ManageId : sendData,
+					OrganizeId:UserInfo.CompanyId
+				}) 
+			},
+			success:function(data){ 
+				var result=JSON.parse(data);
+				cb(result);
+			},
+			error:function(data){
+				app.toast('失败')
+			}
+		};
+		app.post3_2(option)
+	};
+
+	var Equipment = {
+
+		getUserSHEBEI: function(sendData) { 
+			
+			console.log(JSON.stringify(sendData))
+			getUserEquipment1(sendData, function(cb) { 
+				console.log(JSON.stringify(cb)) 
+				dataResult = cb;  
+				Equipment.Num();  
+				var rows = cb; 
+				console.log(JSON.stringify(rows)) 
+				Equipment.showlist(rows);
+			})
+		},
+
+		showlist: function(rows) {
+			console.log(JSON.stringify(rows))
+			$('#userEquipment').html('');
+			for(var i in rows) {
+				var row = rows[i]; 
+				if(row['WorkUserName'] == UserInfo['UserName']) {
+					userNmae = "暂无";
+					stutsat = "闲置中";
+				} else {
+					userNmae = row['WorkUserName'];
+					stutsat = "外派中";
+				}
+				var $html = $(
+					'<li class="mui-table-view-cell mui-media list" data-index=' + i + ' value=' + row['OwnerId'] + ' UserId=' + row['UserId'] + '>' +
+					'<a href="javascript:;">' +
+					'<div class="Uav">' +
+					'<img class="mui-media-object mui-pull-left Icon" src="../../img/XzUav.png">' +
+					'<span class="CarrierSpecs font_18">' + row['CarrierSpecs'] + '</span><span class="IMEI font_14">（' + row['CarrierCord'] + '）</span><span class="font_12 UavStatus">' + stutsat + '</span>' +
+					'</div>' +
+					'<div class="mui-media-body">' +
+					'<p class="mui-ellipsis EquipmentOwner">所属人:' + row['RealName'] + '</p>' +
+					'' + ((row['Ownership'] == 4) ? '<p class="mui-ellipsis EquipmentLease" value=' + row['IMEI'] + '>租赁人：' + ((row['RealName']) ? row['RealName'] : '暂无') + '</p>' : ' ') + '' +
+					'<p class="mui-ellipsis EquipmentUser">使用人：' + userNmae + '</p>' +
+					'</div>' +
+					' </a>' +
+					'<button class="mui-badge Delivery TBQ" WorkUserName='+row['WorkUserName']+'   userNmae=' + userNmae + ' IsWordOk='+row['IsWordOk']+' data-index=' + i + '  value=' + row['WorkUser'] + ' CarrierId=' + row['CarrierId'] + ' CarrierCord='+ 
+					'' +row['CarrierCord'] + '>' + (row['IsWordOk']==1&&row['WorkUserName'] == UserInfo['UserName'] ? '扫描' : (userNmae == "暂无" ? '外派' : '收回'))+ '</button>'+
+					' </li>' 
+				);
+				$html.appendTo($('#userEquipment'));
+				if($html.find('.Delivery').text() == "delete") {
+					$html.find('.Delivery').remove();
+				};
+				$html.find('.TBQ').on('tap', function() {
+					var index = $(this).attr('data-index');
+					var userid = $(this).attr('value');
+					var CarrierCord = $(this).attr('CarrierCord');
+					var CarrierId = $(this).attr('CarrierId');
+					var IsWordOk=$(this).attr('IsWordOk');
+					var WorkUserName=$(this).attr('WorkUserName');
+//					console.log(CarrierId);
+					var User = $(this).attr('userNmae');
+//					console.log(User)
+					if(IsWordOk==1&&WorkUserName == UserInfo['UserName']) {
+						//扫描
+						mui.openWindow({
+							url: '../TwoCode/TwoCode.html',
+							id: 'TwoCode',
+							extras: {
+								"status": "3",
+								"workerid": userid,
+								CarrierCord:CarrierCord,
+								"IMEI": CarrierId
+							}
+						})
+						
+					} else if(User == "暂无") {//判断当前是否有使用人
+						//外派
+						getTeamPreson(CarrierId);
+					} else {
+						//收回
+						mui.openWindow({
+							url: '../TwoCode/TwoCode.html',
+							id: 'TwoCode', 
+							extras: {
+								"status": "4",
+								"workerid": userid,
+								"CarrierCord": CarrierCord,
+								"CarrierId": CarrierId,
+								"teamleader":'1'
+							}
+						})
+					};
+				});
+			}
+		},
+		Num: function() {
+			mentNum = 0;
+			PaymentNum = 0;
+			ReceivedNum = 0;
+			var rows = dataResult;
+			for(var i in rows) {
+				var row = rows[i];
+				//全部设备数量
+				if(1) {
+					mentNum++;
+				}
+				//闲置中数量
+				if(row['WorkUserName'] == null || row['WorkUserName'] == row['RealName']) {
+					PaymentNum++;
+				}
+				//外派数量
+				if(row['WorkUserName'] != row['RealName'] && row['WorkUserName'] != null) {
+					ReceivedNum++;
+				}
+			}
+			//判断当前如果当前数量超过99，那么最多只显示99 、、 
+			if(mentNum > 0) {
+				if(mentNum > 99) {
+					mentNum = 99;
+				};
+				$('.mentNum').show().text(mentNum);
+			} else {
+				$('.mentNum').hide();
+			};
+			if(PaymentNum > 0) {
+				if(PaymentNum > 99) {
+					PaymentNum = 99;
+				};
+				$('.PaymentNum').show().text(PaymentNum)
+			} else {
+				$('.PaymentNum').hide();
+			};
+			if(ReceivedNum > 0) {
+				if(ReceivedNum > 99) {
+					ReceivedNum = 99;
+				};
+				$('.ReceivedNum').show().text(ReceivedNum)
+			} else {
+				$('.ReceivedNum').hide();
+			};
+		},
+		//添加设备
+		addUserEquipment: function() {
+			var sendData = {
+				userId: UserInfo.UserId,
+				SN: sn 
+			}
+			UseIdGetList.addEquipment(sendData, function(cb) {
+				if(cb['type'] == '1') {
+					app.toast('设备添加成功！');
+				} else {
+					app.toast(cb['message']);       
+				};
+			});
+		}
+	}
+
+	//扫码设备二维码
+	$("#TwoCode").on('tap', function() {
+		if(UserInfo.OpenId == 5) {
+			var state = "1";
+		} else if(UserInfo.OpenId == 6) {
+			var state = "3";
+		} else {
+			var state = "1";
+		}
+		mui.openWindow({
+			url: '../TwoCode/TwoCode.html',
+			id: 'TwoCode',
+			extras: {
+				status: state
+			}
+		});
+	});
+	//全部设备，使用中 ，外派切换
+	function EquipmentStatus() {
+		$(".mui-row>div").each(function(i) {
+			$(".mui-row>div").eq(i).on('tap', function() {
+				//判断如果重复点击当前已经选中的状态 activeT
+				if($(".mui-row>div>.tittle").eq(i).hasClass('activeT')) {
+					return false;
+				};
+				$('#userEquipment').html('');
+				$(".mui-row>div>.tittle").removeClass('activeT');
+				$(".mui-row>div>.tittle").eq(i).addClass('activeT');
+
+				switch($(".mui-row>div>.tittle").eq(i).text()) {
+					case '全部设备':
+						
+						Equipment.showlist(dataResult);
+						 //获取用户所有的设备
+						break;
+					case '闲置中':
+						var sendData1 = [];
+						for(var j in dataResult) {
+							var row = dataResult[j];
+							if(row['WorkUserName'] == row['RealName'] || row['WorkUserName'] == null) {
+								sendData1.push(dataResult[j])
+							}
+						}
+						Equipment.showlist(sendData1); //获取用户所有的闲置中 设备
+						break;
+					case '外派':
+						var sendData1 = [];
+						for(var j in dataResult) {
+							var row = dataResult[j];
+							if(row['WorkUserName'] != row['RealName'] && row['WorkUserName'] != null) {
+								sendData1.push(dataResult[j])
+							}
+						}
+						Equipment.showlist(sendData1);; //获取用户所有的 外派 设备
+						break;
+				};
+			});
+		});
+	};
+
+	//获取团队成员列表
+	function getTeamPreson(IMEI) {
+		var Team = [];
+		var TeamPreson = new mui.PopPicker();
+		var sendData = {};
+		//判断为服务站的时候
+		if(UserInfo.OpenId == 5) {
+			sendData.Description = UserInfo.CompanyId;
+			sendData.IsAgree = 1
+		} else {
+			sendData.TeamId = UserInfo.RoleId;
+			sendData.IsAgree = 1
+		};
+		UseIdGetList.getUserTeamTeamPreson(sendData, function(cb) {
+			for(var i in cb) {
+				var row = cb[i];
+				if(row['UserId'] != UserInfo.UserId && JSON.stringify(Team).indexOf(row['UserName']) == -1) {
+					Team.push({
+						text: row['UserName'],
+						value: row['UserId'],
+						value1: row['IsSendMachine']
+					});
+				};
+			};
+			TeamPreson.setData(Team);
+			console.log(JSON.stringify(Team));
+			TeamPreson.show(function(item) {
+				console.log(JSON.stringify(item));
+				sendEquipment(IMEI, item[0]['value'], UserInfo.RoleId);
+//				if(item[0]['value1'] == 0) {
+//					sendEquipment(IMEI, item[0]['value'], UserInfo.RoleId);
+//				} else {
+//					app.toast('你已经向他指派过了'); 
+//				};
+			});
+		});
+	};
+	//派送
+	//调用派发接口
+	function sendEquipment(imei, userid, team) {
+		console.log(imei);
+		console.log(userid);
+		console.log(team);
+		var option = {
+			api: '/XhxManage/XHX_Carrier/DistributeXHX',
+			data: {
+				UserId: UserInfo.UserId,
+				WorkUsersId: userid,
+				IMEI: imei,
+				TeamId: team
+			},
+			success: function(data) {
+				var result = eval("(" + data + ")");
+				console.log(JSON.stringify(result));
+				if(result['type'] == "1") {
+					app.toast('派送成功，请等待领取');
+					window.location.reload();
+				} else {
+					app.toast('派送失败！');
+				};
+				plus.nativeUI.closeWaiting();
+			},
+			error: function(data) {}
+		};
+		app.post3_1(option)
+	};
+
+	//判断当前帐号是嗨森植保帐号的时候
+	function IsHs() {
+		if(UserInfo['OpenId'] == 4) {
+			var sendData = {
+				queryJson: JSON.stringify({
+					Ownership: 5
+				})
+			};
+			UseIdGetList.getUserEquipment(sendData, function(cb) {
+				$(".EquipmentLease").each(function(j) {
+					for(var i in cb) {
+						var row = cb[i];
+						if($(".EquipmentLease").eq(j).attr('value') == row['IMEI']) {
+							$(".EquipmentLease").eq(j).text('租赁人：' + row['RealName']);
+						};
+					};
+				});
+			});
+		};
+	};
+
+	//转换sn
+	function getSN(url) {
+		var index = url.lastIndexOf("\#");
+		var newUrl = url.substring(index + 1, url.length);
+		return newUrl
+	}
+
+	window.addEventListener('goback', function(e) {
+		sn = e.detail.SN;
+		sn = getSN(sn);
+//		console.log(sn)
+		if(sn != null) {
+			Equipment.addUserEquipment();
+		}
+
+	}); 
+	//回调刷新
+	window.addEventListener('pageflowrefresh', function(e) {
+		location.reload();
+	});
+</script>
